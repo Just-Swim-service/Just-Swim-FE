@@ -10,6 +10,14 @@
       "StackName": "amplify-justswim-dev-142356",
       "StackId": "arn:aws:cloudformation:ap-northeast-2:913706565150:stack/amplify-justswim-dev-142356/94284d60-d142-11ee-90e3-06eac6906a8f",
       "AmplifyAppId": "d3bicvlrg0z4j5"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3bicvlrg0z4j5",
+          "type": "cicd"
+        }
+      }
     }
   }
 }
