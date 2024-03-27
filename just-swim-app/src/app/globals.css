@@ -47,8 +47,8 @@ button {
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 /* 참고 */
@@ -84,4 +84,18 @@ table {
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
+
+  // 변수 활용 예시
+  :root {
+    --primary-color: #A9A9A9;
+  p {
+    color: var(--primary-color);
+  }
+  h1 {
+    background-color: var(--primary-color);
+  }
+  div {
+    border-color: var(--primary-color);
+  }
+
 */
