@@ -60,13 +60,30 @@ export default function Login() {
       routeChooseType();
     }
   };
-  
+
   return (
-    <div>
-      <h1 onClick={onClickGoogle}>구글 로그인</h1>
-      <h1 onClick={onClickNaver}>네이버 로그인</h1>
-      <h1 onClick={onClickKakao}>카카오톡 로그인</h1>
-      <h1 onClick={onClickApple}>애플 로그인</h1>
+    <div className='container'>
+      <header>
+        <h3>안녕하세요 Just Swim 입니다 🏊🏻‍♂️</h3>
+        <p>웰컴투수영랜드</p>
+      </header>
+      <main>
+        <div>
+          <button onClick={onClickGoogle}>구글 로그인</button>
+        </div>
+        <div>
+          <button onClick={onClickNaver}>네이버 로그인</button>
+        </div>
+        <div>
+          <button onClick={onClickKakao}>카카오톡 로그인</button>
+        </div>
+        <div>
+          <button onClick={onClickApple}>애플 로그인</button>
+        </div>
+      </main>
+      <footer>
+        빈 공간
+      </footer>
     </div>
   );
 }
