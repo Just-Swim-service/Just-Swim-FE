@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import styles from './page.module.css';
 
 export default function Login() {
   const router = useRouter();
@@ -52,38 +53,35 @@ export default function Login() {
     }
   };
 
-  const onClickApple = () => {
-    if (checkCookie()) {
-      router.replace(`/${type}`);
-    } else {
-      console.log('애플 로그인');
-      routeChooseType();
-    }
-  };
-
   return (
-    <div className='container'>
-      <header>
-        <h3>안녕하세요 Just Swim 입니다 🏊🏻‍♂️</h3>
-        <p>웰컴투수영랜드</p>
-      </header>
-      <main>
+    <div className={styles.container}>
+      <div className={styles.header}>
         <div>
-          <button onClick={onClickGoogle}>구글 로그인</button>
+          <h3>안녕하세요 Just Swim 입니다 🏊🏻‍♂️</h3>
         </div>
         <div>
-          <button onClick={onClickNaver}>네이버 로그인</button>
+          <p>웰컴투수영랜드</p>
         </div>
-        <div>
-          <button onClick={onClickKakao}>카카오톡 로그인</button>
+      </div>
+      {/* TODO: 이미지 넣기 */}
+      <div className={styles.section}>
+        <div className={styles.buttonWrapper}>
+          <button onClick={onClickKakao} className={styles.kakaoButton}>
+            카카오로 계속하기
+          </button>
         </div>
-        <div>
-          <button onClick={onClickApple}>애플 로그인</button>
+        <div className={styles.buttonWrapper}>
+          <button onClick={onClickNaver} className={styles.naverButton}>
+            네이버로 계속하기
+          </button>
         </div>
-      </main>
-      <footer>
-        빈 공간
-      </footer>
+        <div className={styles.buttonWrapper}>
+          <button onClick={onClickGoogle} className={styles.googleButton}>
+            Google로 계속하기
+          </button>
+        </div>
+      </div>
+      <div className={styles.footer}></div>
     </div>
   );
 }
