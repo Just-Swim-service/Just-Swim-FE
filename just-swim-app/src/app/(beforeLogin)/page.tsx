@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import OnBoardingHeader from './_component/onBoarding/OnBoardingFooter';
+import OnBoardingHeader from './_component/onBoarding/OnBoardingHeader';
 import OnBoardingSection from './_component/onBoarding/OnBoardingSection';
 import OnBoardingFooter from './_component/onBoarding/OnBoardingFooter';
 
