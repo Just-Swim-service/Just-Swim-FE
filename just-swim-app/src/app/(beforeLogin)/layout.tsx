@@ -1,4 +1,4 @@
-import styles from './_component/onBoardingComponent/OnBoarding.module.css';
+import styles from './_component/onBoarding/OnBoarding.module.css';
 
 export default function Layout({children}: { children: React.ReactNode }) {
   return (
