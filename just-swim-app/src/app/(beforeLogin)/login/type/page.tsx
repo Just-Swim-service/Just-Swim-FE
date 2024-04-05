@@ -9,7 +9,7 @@ export default function Login() {
   const type = '';
 
   return (
-    <div className={styles.container}>
+    <>
       <div className={styles.header}>
         <div>
           <h3>
@@ -85,6 +85,6 @@ export default function Login() {
           <button className={styles.SelectButton}>선택</button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,11 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import OnBoardingHeader from './_onBoardingComponent/OnBoardingFooter';
-import OnBoardingSection from './_onBoardingComponent/OnBoardingSection';
-import OnBoardingFooter from './_onBoardingComponent/OnBoardingFooter';
+import OnBoardingHeader from './_component/onBoardingComponent/OnBoardingFooter';
+import OnBoardingSection from './_component/onBoardingComponent/OnBoardingSection';
+import OnBoardingFooter from './_component/onBoardingComponent/OnBoardingFooter';
 
-export default function Login() {
+export default function Home() {
   const router = useRouter();
   const type = '';
 
