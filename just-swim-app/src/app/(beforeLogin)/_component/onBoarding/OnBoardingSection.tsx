@@ -8,10 +8,6 @@ import Google from '@/../public/assets/google.svg';
 import { snsLoginEventHandler } from '../../_function/snsLoginEventHandler';
 import { useRouter } from 'next/navigation';
 
-{
-  /* <Image src={LeftBtnSVG} alt="leftBtn" width={35} /> */
-}
-
 export default function OnBoardingSection() {
   const router = useRouter();
   const { onClickGoogle, onClickNaver, onClickKakao } =
@@ -23,7 +19,7 @@ export default function OnBoardingSection() {
         <div className={styles.buttonWrapper}>
           <button onClick={onClickKakao} className={styles.kakaoButton}>
             <div>
-              <Image src={Kakao} alt="kakao" />
+              <Image className={styles.snsImage} src={Kakao} alt="kakao" />
               <p>카카오로 계속하기</p>
             </div>
           </button>
@@ -31,7 +27,7 @@ export default function OnBoardingSection() {
         <div className={styles.buttonWrapper}>
           <button onClick={onClickNaver} className={styles.naverButton}>
             <div>
-              <Image src={Naver} alt="naver" />
+              <Image className={styles.snsImage} src={Naver} alt="naver" />
               <p>네이버로 계속하기</p>
             </div>
           </button>
@@ -39,7 +35,7 @@ export default function OnBoardingSection() {
         <div className={styles.buttonWrapper}>
           <button onClick={onClickGoogle} className={styles.googleButton}>
             <div>
-              <Image src={Google} alt="google" />
+              <Image className={styles.snsImage} src={Google} alt="google" />
               <p>Google로 계속하기</p>
             </div>
           </button>

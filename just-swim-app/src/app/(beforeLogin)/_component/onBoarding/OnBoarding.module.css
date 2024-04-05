@@ -30,6 +30,7 @@
 }
 
 .buttonWrapper {
+  position: relative;
   display: flex;
   width: 328px; /* 너비를 328px로 설정*/
   height: 52px;
@@ -37,6 +38,13 @@
   border: none;
   cursor: pointer;
   font-size: 16px;
+}
+
+.snsImage {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translate(-50%, -50%);
 }
 
 .googleButton {
