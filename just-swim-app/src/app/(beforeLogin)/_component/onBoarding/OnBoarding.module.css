@@ -16,7 +16,7 @@
   display: flex;
   gap: 10px;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   /* background-color: #1ec800; */
 }
 
