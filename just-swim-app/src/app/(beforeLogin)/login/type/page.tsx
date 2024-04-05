@@ -10,15 +10,12 @@ export default function Login() {
   const [type, setType] = useState<string>('');
   const router = useRouter();
   const handleType = (type: string) => setType(type);
-  const handleRoute = (type: string) => {
-    router.push(`/${type}`);
-  };
 
   return (
     <>
       <SelectTypeHeader />
       <SelectTypeSection type={type} handleType={handleType} />
-      <SelectTypeFooter type={type} handleRoute={handleRoute} />
+      <SelectTypeFooter type={type} />
     </>
   );
 }
