@@ -1,22 +1,21 @@
+'use client';
+
 import styles from './OnBoarding.module.css';
 import Image from 'next/image';
 import Kakao from '@/../public/assets/kakao.svg';
 import Naver from '@/../public/assets/naver.svg';
 import Google from '@/../public/assets/google.svg';
+import { snsLoginEventHandler } from '../../_function/snsLoginEventHandler';
+import { useRouter } from 'next/navigation';
 
 {
   /* <Image src={LeftBtnSVG} alt="leftBtn" width={35} /> */
 }
 
-export default function OnBoardingSection({
-  onClickKakao,
-  onClickNaver,
-  onClickGoogle,
-}: {
-  onClickKakao: () => void;
-  onClickNaver: () => void;
-  onClickGoogle: () => void;
-}) {
+export default function OnBoardingSection() {
+  const router = useRouter();
+  const { onClickGoogle, onClickNaver, onClickKakao } =
+    snsLoginEventHandler(router);
   return (
     <>
       {/* TODO: 이미지 넣기 */}
