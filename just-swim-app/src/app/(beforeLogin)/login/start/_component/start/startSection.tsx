@@ -6,6 +6,7 @@ export default function StartSection({
 }: {
   param: ReadonlyURLSearchParams;
 }) {
+
   return (
     <>
       {/* TODO: 이미지 넣기 */}
