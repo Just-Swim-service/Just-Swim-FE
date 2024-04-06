@@ -5,7 +5,7 @@ import SelectTypeSection from './_component/selectType/SelectTypeSection';
 import SelectTypeFooter from './_component/selectType/SelectTypeFooter';
 import { useState } from 'react';
 
-export default function Login() {
+export default function SelectType() {
   const [type, setType] = useState<string>('');
   const handleType = (type: string) => setType(type);
 

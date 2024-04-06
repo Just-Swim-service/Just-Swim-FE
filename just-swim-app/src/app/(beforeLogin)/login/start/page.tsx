@@ -5,7 +5,7 @@ import StartSection from './_component/start/startSection';
 import StartFooter from './_component/start/startFooter';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function Welcome() {
+export default function Start() {
   const param = useSearchParams();
   const router = useRouter();
   const handleRoute = () => {
