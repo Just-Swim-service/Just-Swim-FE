@@ -1,5 +1,4 @@
 import styles from './SelectType.module.css';
-import Link from 'next/link';
 
 export default function SelectTypeSection({
   type,

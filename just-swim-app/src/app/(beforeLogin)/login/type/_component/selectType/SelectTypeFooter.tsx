@@ -6,7 +6,6 @@ export default function SelectTypeFooter({ type }: { type: string }) {
     <>
       <div className={styles.footer}>
         <div className={styles.buttonWrapper}>
-          {/* type 값에 따라 styles 다른거 설정하기 */}
           <Link
             href={{
               pathname: `/login/start`,
