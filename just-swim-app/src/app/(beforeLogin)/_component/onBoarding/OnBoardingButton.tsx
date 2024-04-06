@@ -1,8 +1,10 @@
-import styles from './OnBoarding.module.css';
+// import styles from '@/app/(beforeLogin)/_component/onBoarding/OnBoarding.module.css';
+import styles from '@/app/(beforeLogin)/_component/onBoarding/OnBoarding.module.css';
+
 import Image from 'next/image';
-import Kakao from '@/../public/assets/kakao.svg';
-import Naver from '@/../public/assets/naver.svg';
-import Google from '@/../public/assets/google.svg';
+import Kakao from '/public/assets/kakao.svg';
+import Naver from '/public/assets/naver.svg';
+import Google from '/public/assets/google.svg';
 
 export default function OnBoardingButton({
   name,
