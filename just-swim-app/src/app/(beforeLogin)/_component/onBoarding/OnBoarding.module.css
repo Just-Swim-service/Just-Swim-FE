@@ -20,6 +20,10 @@
   /* background-color: #1ec800; */
 }
 
+.header > div > p {
+  color: #9fa2a4;
+}
+
 .section {
   flex-grow: 2;
   display: flex;
