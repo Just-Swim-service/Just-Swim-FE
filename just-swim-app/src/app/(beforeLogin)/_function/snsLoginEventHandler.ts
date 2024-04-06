@@ -5,12 +5,12 @@ export const snsLoginEventHandler = (router: AppRouterInstance) => {
   const type = '';
 
   const routeChooseType = () => {
-    router.replace('/login/type');
+    router.push('/login/type');
   };
 
   const onClickGoogle = () => {
     if (checkCookie(type)) {
-      router.replace(`/${type}`);
+      router.push(`/${type}`);
     } else {
       console.log('구글 로그인');
       routeChooseType();
@@ -19,7 +19,7 @@ export const snsLoginEventHandler = (router: AppRouterInstance) => {
 
   const onClickNaver = () => {
     if (checkCookie(type)) {
-      router.replace(`/${type}`);
+      router.push(`/${type}`);
     } else {
       console.log('네이버 로그인');
       routeChooseType();
