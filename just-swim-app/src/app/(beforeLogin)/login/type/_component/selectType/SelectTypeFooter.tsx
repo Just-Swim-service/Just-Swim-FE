@@ -8,7 +8,7 @@ export default function SelectTypeFooter({ type }: { type: string }) {
         <div className={styles.buttonWrapper}>
           <Link
             href={{
-              pathname: `/login/start`,
+              pathname: `/login/type/profile`,
               query: { type: `${type}` },
             }}>
             <button
