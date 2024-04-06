@@ -1,4 +1,4 @@
-import styles from './start.module.css';
+import styles from '@/app/(beforeLogin)/Common.module.css';
 
 export default function StartHeader() {
   return (
