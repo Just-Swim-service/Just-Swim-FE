@@ -9,7 +9,7 @@ export default function ProfileHeader({ name }: { name: string }) {
           <h3>
             {name} 분들이 알아볼 수 있도록
             <br />
-            프로필 이미지와 이름을 설정해주세요.
+            프로필 이미지와 이름을 설정해주세요
           </h3>
         </div>
         <div>

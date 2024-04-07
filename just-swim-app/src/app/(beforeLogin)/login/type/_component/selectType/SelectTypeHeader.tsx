@@ -8,7 +8,7 @@ export default function SelectTypeHeader() {
           <h3>
             원활한 서비스 이용을 위해
             <br />
-            회원 타입을 선택해주세요.
+            회원 타입을 선택해주세요
           </h3>
         </div>
         <div>

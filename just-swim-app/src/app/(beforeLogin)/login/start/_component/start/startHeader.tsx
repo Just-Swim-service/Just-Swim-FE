@@ -5,7 +5,7 @@ export default function StartHeader() {
     <>
       <div className={styles.header}>
         <div>
-          <h3>환영합니다.</h3>
+          <h3>환영합니다!</h3>
         </div>
       </div>
     </>

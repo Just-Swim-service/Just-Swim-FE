@@ -14,7 +14,7 @@ export default function OnBoardingHeader() {
           <p>
             원활한 서비스 이용을 위해
             <br />
-            회원 가입 혹은 로그인을 진행해 주세요
+            회원 가입 혹은 로그인을 진행해 주세요.
           </p>
         </div>
       </div>
