@@ -1,11 +1,13 @@
 import styles from '@/app/(beforeLogin)/Common.module.css';
+import Logo from '/public/assets/logo.svg';
+import Image from 'next/image';
 
 export default function OnBoardingHeader() {
   return (
     <>
       <div className={styles.header}>
         <div className={styles.headerLogo}>
-          <h2> SWIM 로고 </h2>
+          <Image className={styles.logo} src={Logo} alt="SWIM 로고" />
           <h3>수영인들을 위한 소통 창구</h3>
         </div>
         <div>
