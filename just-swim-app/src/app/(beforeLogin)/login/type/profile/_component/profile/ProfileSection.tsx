@@ -3,13 +3,7 @@ import styles from './Profile.module.css';
 import Gallery from '/public/assets/gallery.svg';
 import { symlink } from 'fs';
 
-export default function ProfileSection({
-  type,
-  handleType,
-}: {
-  type: string;
-  handleType: (type: string) => void;
-}) {
+export default function ProfileSection() {
   return (
     <>
       {/* TODO: 이미지 넣기 */}
@@ -40,7 +34,7 @@ export default function ProfileSection({
         </div>
         <div>
           {/* <input type="text" value={nickname} onChange={handleChange} /> */}
-          <input type="text" className={styles.nickname}/>
+          <input type="text" className={styles.nickname} />
         </div>
       </div>
     </>

@@ -3,16 +3,16 @@
 import ProfileHeader from './_component/profile/ProfileHeader';
 import ProfileSection from './_component/profile/ProfileSection';
 import ProfileFooter from './_component/profile/ProfileFooter';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function Profile() {
-  const [type, setType] = useState<string>('');
-  const handleType = (type: string) => setType(type);
+  const type = useSearchParams().get('type')?.toString();
+  const name = type === 'instructor' ? '수강생' : '강사';
 
   return (
     <>
-      <ProfileHeader />
-      <ProfileSection type={type} handleType={handleType} />
+      <ProfileHeader name={name} />
+      <ProfileSection />
       <ProfileFooter type={type} />
     </>
   );

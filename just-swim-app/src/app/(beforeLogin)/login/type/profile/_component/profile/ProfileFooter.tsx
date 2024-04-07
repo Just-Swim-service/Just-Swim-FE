@@ -1,7 +1,7 @@
 import styles from './Profile.module.css';
 import Link from 'next/link';
 
-export default function ProfileFooter({ type }: { type: string }) {
+export default function ProfileFooter({ type }: { type: string | undefined }) {
   return (
     <>
       <div className={styles.footer}>
@@ -9,7 +9,7 @@ export default function ProfileFooter({ type }: { type: string }) {
           <Link
             href={{
               pathname: `/login/start`,
-              query: { type: `${type}` },
+              query: { type: type },
             }}>
             <button className={`${styles.SelectButton} ${styles.isActive}`}>
               다음
@@ -20,7 +20,7 @@ export default function ProfileFooter({ type }: { type: string }) {
           <Link
             href={{
               pathname: `/login/start`,
-              query: { type: `${type}` },
+              query: { type: type },
             }}>
             <button className={`${styles.SelectButton} ${styles.isNotActive}`}>
               건너뛰기

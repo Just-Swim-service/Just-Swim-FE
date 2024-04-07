@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Start() {
   const param = useSearchParams();
+  console.log(param);
   const router = useRouter();
   const handleRoute = () => {
     const redirectTimeout = setTimeout(() => {
