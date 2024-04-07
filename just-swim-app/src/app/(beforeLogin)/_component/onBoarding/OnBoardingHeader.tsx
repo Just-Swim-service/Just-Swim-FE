@@ -4,11 +4,16 @@ export default function OnBoardingHeader() {
   return (
     <>
       <div className={styles.header}>
-        <div>
-          <h3>안녕하세요 Just Swim 입니다 🏊🏻‍♂️</h3>
+        <div className={styles.headerLogo}>
+          <h2> SWIM 로고 </h2>
+          <h3>수영인들을 위한 소통 창구</h3>
         </div>
         <div>
-          <p>웰컴투수영랜드</p>
+          <p>
+            원활한 서비스 이용을 위해
+            <br />
+            회원 가입 혹은 로그인을 진행해 주세요
+          </p>
         </div>
       </div>
     </>

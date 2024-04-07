@@ -17,6 +17,14 @@
   justify-content: flex-start;
 }
 
+.headerLogo {
+  color: #3689ff;
+}
+
+.headerLogo > h2 {
+  margin-bottom: 15px;
+}
+
 .header > div > p {
   color: #9fa2a4;
 }
