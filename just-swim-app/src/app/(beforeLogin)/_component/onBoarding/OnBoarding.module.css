@@ -1,0 +1,63 @@
+.section {
+  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  /* background-color: aqua; */
+}
+
+.buttonWrapper {
+  position: relative;
+  display: flex;
+  width: 328px; /* 너비를 328px로 설정*/
+  height: 52px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.snsImage {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translate(-50%, -50%);
+}
+
+.googleButton {
+  background-color: #ffffff; /* 구글 버튼은 하얀색 */
+  color: #000000; /* 텍스트 색상 */
+  border: #e1e4e6 1px solid;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.naverButton {
+  background-color: #37c42a; /* 네이버 버튼은 녹색 */
+  color: #ffffff; /* 텍스트 색상 */
+  border: #e1e4e6 1px solid;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.kakaoButton {
+  background-color: #ffe812; /* 카카오 버튼은 노란색 */
+  color: #000000; /* 텍스트 색상 */
+  border: #e1e4e6 1px solid;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.footer {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* background-color: #1ec800; */
+}
+
+.footerInfo {
+  font-size: 0.7rem;
+  color: #9fa2a4;
+}

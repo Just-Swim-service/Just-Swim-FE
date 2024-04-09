@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  height: 640px; /* 높이를 640px로 고정 */
+  margin: 0 auto;
+  /* FIX: layout 이나 body 에 넣어도 괜찮을듯? */
+  padding: 70px 16px 19px 16px;
+  border: #e1e4e6 1px solid;
+}
+
+.header {
+  flex-grow: 1;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.headerLogo {
+  color: #3689ff;
+}
+
+.logo {
+  margin-bottom: 15px;
+}
+
+.header > div > p {
+  color: #9fa2a4;
+}
