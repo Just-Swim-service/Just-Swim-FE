@@ -1,9 +1,9 @@
 // import styles from './_component/onBoarding/OnBoarding.module.css';
-import styles from './Common.module.css';
+import  './Common.scss';
 
 export default function Layout({children}: { children: React.ReactNode }) {
   return (
-    <div className={styles.container}>
+    <div className="container">
       {children}
     </div>
   );
