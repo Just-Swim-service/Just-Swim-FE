@@ -6,6 +6,7 @@
   margin: 0 auto;
   padding-top: 19px;
   border: #e1e4e6 1px solid;
+  background-color: #3689ff;
 }
 
 .header {
@@ -30,6 +31,7 @@
 
 /* footer */
 .footer {
+  background-color: #333;
   color: white;
   padding: 20px;
   text-align: center;
@@ -50,8 +52,4 @@
 
 .bottomNavBar button:hover {
   background-color: rgba(255, 255, 255, 0.1);
-}
-
-.isActive {
-  background-color: #333;
 }
