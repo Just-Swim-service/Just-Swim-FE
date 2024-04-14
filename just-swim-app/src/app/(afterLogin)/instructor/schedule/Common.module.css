@@ -1,55 +1,38 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 360px;
-  height: 640px; /* 높이를 640px로 고정 */
+  width: inherit;
+  height: inherit;
   margin: 0 auto;
-  padding-top: 19px;
-  border: #e1e4e6 1px solid;
-  background-color: #3689ff;
+  /* border: #e1e4e6 1px solid; */
 }
 
 .header {
-  flex-grow: 1;
   display: flex;
-  gap: 10px;
   flex-direction: column;
-  justify-content: flex-start;
+  gap: 10px;
 }
 
-.headerLogo {
-  color: #3689ff;
+.topNavBarWrapper {
+  display: flex;
+  background-color: #fafafa;
+  justify-content: space-between;
 }
 
-.logo {
-  margin-bottom: 15px;
+.topNavBarWrapper button {
+  background-color: #d9d9d9;
+  width: 34px;
+  height: 34px;
+  margin: 7px 16px 7px 0;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .header > div > p {
   color: #9fa2a4;
 }
 
-/* footer */
-.footer {
-  background-color: #333;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-
-.bottomNavBar {
-  display: flex;
-  justify-content: space-between;
-}
-
-.bottomNavBar button {
-  background-color: transparent;
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 10px 20px;
-}
-
-.bottomNavBar button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.section {
+  flex-grow: 2;
+  background-color: antiquewhite;
 }

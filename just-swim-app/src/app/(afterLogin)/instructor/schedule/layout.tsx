@@ -5,17 +5,17 @@ import styles from './Common.module.css';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [type, setType] = useState('weekly');
-  const handleBottomNavClick = (buttonName: string) => {
-    console.log('Button clicked:', buttonName);
-    // 클릭된 버튼에 따른 동작 추가
-  };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.topNavBar}>
+        <div className={styles.topNavBarWrapper}>
           <div>페이지 위치</div>
-          <button>설정</button>
+          <button>
+            <div>
+              사진
+            </div>
+          </button>
         </div>
         <div className={styles.todayInfo}>
           <p>13일 토요일, 오늘</p>
@@ -51,7 +51,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </button>
         </div>
       </div>
-      {children}
+      <div className={styles.section}>
+        <h1>달력</h1>
+        {children}
+      </div>
     </div>
   );
 }
