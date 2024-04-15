@@ -8,6 +8,8 @@ import arrowBackIcon from '/public/assets/icon_arrow_back.png';
 import './classDetail.scss';
 import Profile from '../../../_component/Profile';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
+import ClassInfo from '../../../_component/ClassInfo';
+import deleteIcon from '/public/assets/icon_delete.png';
 
 export default function ClassDetail() {
   return (
@@ -71,6 +73,13 @@ export default function ClassDetail() {
 
       <div className="class_info">
         <h3>수업 정보</h3>
+        <ClassInfo />
+
+        <button className="class_info_delete">
+          <Image src={deleteIcon} alt="수업 삭제" width={24} height={24} />
+          <div>수업 삭제</div>
+        </button>
+        <button className="feedback_btn">수강생 전체 피드백 남기기</button>
       </div>
     </div>
   );

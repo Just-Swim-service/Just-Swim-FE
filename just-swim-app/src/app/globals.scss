@@ -12,6 +12,7 @@
   --gray-600: #7e8184;
   --gray-200: #ebecee;
   --gray-50: #f8f9fa;
+  --red: #ff4d4d;
 }
 
 body {
@@ -28,7 +29,7 @@ html,
 body {
   font-family: 'SUIT Variable';
   max-width: 100vw;
-  overflow-x: hidden;
+  // overflow-x: hidden;
 }
 
 a {

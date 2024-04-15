@@ -1,0 +1,29 @@
+.classInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &_time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      width: 135px;
+      background-color: white;
+      border-style: none;
+    }
+  }
+
+  .input {
+    background-color: white;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    height: 56px;
+    padding: 14px;
+  }
+
+  .bg_white {
+    // background-color: white;
+  }
+}
