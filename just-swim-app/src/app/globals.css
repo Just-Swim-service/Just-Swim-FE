@@ -7,6 +7,84 @@
 
 :root {
   font-size: 16px;
+  --Primary-blue: #3689ff;
+  --Secondary: #7ae8f8;
+  --Chips: #EFF6FF;
+  --Cancel: #ff4d4d;
+  --Black: #050606;
+  --White: #fff;
+
+  --gray-900: #212223;
+  --gray-800: #414245;
+  --gray-700: #5c5e62;
+  --gray-600: #7e8184;
+  --gray-500: #96999c;
+  --gray-400: #bfc5c9;
+  --gray-300: #d7dbde;
+  --gray-200: #ebecee;
+  --gray-100: #f5f5f6;
+  --gray-50: #f8f9fa;
+
+  --line-height: 150%;
+
+  --Body5: 10px;
+  --Body5-letter-spacing: calc(var(--Body5) * -0.03);
+
+  --Body4: 12px;
+  --Body4-letter-spacing: calc(var(--Body4) * -0.03);
+
+  --Body3: 13px;
+  --Body3-letter-spacing: calc(var(--Body3) * -0.03);
+
+  --Body2: 14px;
+  --Body2-letter-spacing: calc(var(--Body2) * -0.03);
+
+  --Body1: 16px;
+  --Body1-letter-spacing: calc(var(--Body1) * -0.03);
+
+  --Title5-M: 14px;
+  --Title5-M-weight: Medium;
+  --Title5-M-letter-spacing: calc(var(--Title5-M) * -0.03);
+
+  --Title5-SB: 14px;
+  --Title5-SB-weight: Semibold;
+  --Title5-SB-letter-spacing: calc(var(--Title5-SB) * -0.03);
+
+  --Title4-M: 15px;
+  --Title5-M-weight: Medium;
+  --Title4-M-letter-spacing: calc(var(--Title4-M) * -0.02);
+
+  --Title4-SB: 15px;
+  --Title4-SB-weight: Semibold;
+  --Title4-SB-letter-spacing: calc(var(--Title4-SB) * -0.02);
+
+  --Title3-M: 16px;
+  --Title3-M-weight: Medium;
+  --Title3-M-letter-spacing: calc(var(--Title3-M) * -0.02);
+
+  --Title3-SB: 16px;
+  --Title3-SB-weight: Semibold;
+  --Title3-SB-letter-spacing: calc(var(--Title3-SB) * -0.02);
+
+  --Title2-M: 19px;
+  --Title2-M-weight: Medium;
+  --Title2-M-letter-spacing: calc(var(--Title2-M) * -0.02);
+
+  --Title2-SB: 19px;
+  --Title2-SB-weight: Semibold;
+  --Title2-SB-letter-spacing: calc(var(--Title2-SB) * -0.02);
+
+  --Title1-B: 23px;
+  --Title1-B-weight: Semibold;
+  --Title1-B-letter-spacing: calc(var(--Title1-B) * -0.02);
+
+  --Heading2: 15px;
+  --Heading2-weight: Medium;
+  --Heading2-letter-spacing: calc(var(--Heading2) * -0.02);
+
+  --Heading1: 24px;
+  --Heading1-weight: Bold;
+  --Heading1-letter-spacing: calc(var(--Heading1) * -0.02);
 }
 
 body {
