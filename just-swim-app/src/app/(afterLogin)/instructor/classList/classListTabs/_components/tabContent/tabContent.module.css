@@ -1,0 +1,34 @@
+.tabList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tabContent {
+  width: 158px;
+  height: auto;
+  background-color: #f8f9fa;
+  border-radius: 13px;
+}
+
+.bar {
+  width: 100%;
+  height: 8px;
+  background-color: #f8f9fa;
+}
+
+.name {
+}
+
+.content {
+}
+
+.location {
+}
+
+.week {
+}
+
+.time {
+}
