@@ -10,13 +10,25 @@
 .header {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+}
+
+.header > div > p {
+  color: #9fa2a4;
 }
 
 .topNavBarWrapper {
   display: flex;
   background-color: #fafafa;
   justify-content: space-between;
+}
+
+.todayInfo {
+  margin: 0 16px;
+}
+
+.TypeButtonWrapper {
+  margin: 0 16px;
 }
 
 .topNavBarWrapper button {
@@ -28,8 +40,19 @@
   cursor: pointer;
 }
 
-.header > div > p {
-  color: #9fa2a4;
+.TypeButtonInfo div {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 5px;
+}
+
+.yaho {
+  fill: red;
+}
+
+.scheduleViewTypeTab button {
+  width: 50%;
 }
 
 .section {
