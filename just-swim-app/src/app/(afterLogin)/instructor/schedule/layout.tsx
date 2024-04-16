@@ -6,6 +6,7 @@ import styles from './Common.module.css';
 import Weekly from '/public/assets/weekly.svg';
 import Monthly from '/public/assets/monthly.svg';
 import Image from 'next/image';
+import BottomNavBar from '../_component/BottomNavBar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [type, setType] = useState('weekly');
@@ -61,6 +62,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <h1>달력</h1>
         {children}
       </div>
+      <BottomNavBar />
     </div>
   );
 }

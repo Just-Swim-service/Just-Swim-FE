@@ -1,42 +1,7 @@
 .container {
-  display: flex;
-  flex-direction: column;
   width: 360px;
   height: 640px; /* 높이를 640px로 고정 */
   margin: 0 auto;
   padding-top: 24px;
   border: #e1e4e6 1px solid;
-}
-
-/* footer 72px */
-.footer {
-  padding: 10px 0;
-  position: absolute;
-  width: inherit;
-  bottom: 0;
-  text-align: center;
-  align-items: flex-end;
-  border: #e1e4e6 1px solid;
-}
-
-.bottomNavBarWrapper {
-  display: flex;
-  justify-content: space-around;
-}
-
-.bottomNavBarWrapper button {
-  background-color: #f5f5f6;
-  color: #9fa2a4;
-  border: none;
-  cursor: pointer;
-  padding: 15px;
-}
-
-.bottomNavBarWrapper button:hover {
-  background-color: #3689ff;
-}
-
-.isActive {
-  background-color: #999;
-  color: #fff;
 }
