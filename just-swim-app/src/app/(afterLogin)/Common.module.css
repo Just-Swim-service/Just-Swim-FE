@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  height: 640px; /* 높이를 640px로 고정 */
+  margin: 0 auto;
+  padding: 19px 16px 19px 16px;
+  border: #e1e4e6 1px solid;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+
+.container::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
