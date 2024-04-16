@@ -57,6 +57,14 @@ table {
   border-spacing: 0;
 }
 
+// mui DatePicker, TimePicker style
+.MuiFormControl-root,
+.MuiInputBase-root,
+.MuiInputBase-root input,
+.MuiOutlinedInput-notchedOutline {
+  height: 51px;
+  border-style: none;
+}
 /* 참고 */
 
 /* 

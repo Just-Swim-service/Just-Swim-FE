@@ -73,7 +73,7 @@ export default function ClassDetail() {
 
       <div className="class_info">
         <h3>수업 정보</h3>
-        <ClassInfo />
+        <ClassInfo islabel={false} bgColor="white" />
 
         <button className="class_info_delete">
           <Image src={deleteIcon} alt="수업 삭제" width={24} height={24} />

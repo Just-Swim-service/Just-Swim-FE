@@ -3,6 +3,16 @@
   flex-direction: column;
   gap: 10px;
 
+  label {
+    color: var(--gray-600);
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  label:not(:first-of-type) {
+    margin-top: 16px;
+  }
+
   &_time {
     display: flex;
     justify-content: space-between;
@@ -10,20 +20,22 @@
 
     div {
       width: 135px;
-      background-color: white;
+      height: 51px;
+      // background-color: white;
       border-style: none;
     }
   }
 
   .input {
     background-color: white;
+
     border: 1px solid transparent;
     border-radius: 3px;
-    height: 56px;
+    height: 51px;
     padding: 14px;
-  }
 
-  .bg_white {
-    // background-color: white;
+    &.gray {
+      background-color: var(--gray-50);
+    }
   }
 }

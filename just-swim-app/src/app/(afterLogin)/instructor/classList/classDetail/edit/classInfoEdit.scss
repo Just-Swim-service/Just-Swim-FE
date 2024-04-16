@@ -1,0 +1,43 @@
+.edit {
+  width: 100%;
+  height: 640px;
+  // background-color: var(--gray-50);
+
+  .inner {
+    padding: 19px 16px 0;
+  }
+
+  h3 {
+    line-height: 150%;
+    margin-bottom: 26px;
+  }
+
+  .class_info1 {
+    input:first-of-type {
+      margin-bottom: 22px;
+    }
+
+    input:last-of-type {
+      margin-bottom: 28px;
+    }
+  }
+
+  .line {
+    width: 100%;
+    height: 8px;
+    background-color: var(--gray-50);
+  }
+
+  .classInfo {
+    gap: 0;
+  }
+
+  .edit_btn {
+    background-color: var(--primary-blue);
+    width: 100%;
+    height: 72px;
+    color: white;
+
+    margin-top: 42px;
+  }
+}

@@ -2,13 +2,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function Datepicker() {
+interface Props {
+  bgColor?: 'gray' | 'white';
+}
+export default function Datepicker({ bgColor = 'white' }: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         slotProps={{ textField: { fullWidth: true } }}
         sx={{
-          bgcolor: 'white',
+          bgcolor: `${bgColor == 'gray' ? '#F8F9FA' : 'white'}`,
+          height: '51px !important',
         }}
       />
       {/* <DatePicker /> */}

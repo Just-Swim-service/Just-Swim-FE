@@ -6,13 +6,25 @@ import 'dayjs/locale/ko';
 
 interface TimepickerProps {
   label: string;
+  bgColor?: 'gray' | 'white';
 }
 
-export default function Timepicker({ label }: TimepickerProps) {
+export default function Timepicker({
+  label,
+  bgColor = 'white',
+}: TimepickerProps) {
   let date = new Date();
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <TimePicker label={label} ampm defaultValue={dayjs(date)} />
+      <TimePicker
+        label={label}
+        ampm
+        defaultValue={dayjs(date)}
+        sx={{
+          bgcolor: `${bgColor == 'gray' ? '#F8F9FA' : 'white'}`,
+          height: '51px',
+        }}
+      />
     </LocalizationProvider>
   );
 }
