@@ -57,6 +57,10 @@ table {
   border-spacing: 0;
 }
 
+li {
+  list-style: none;
+}
+
 // mui DatePicker, TimePicker style
 .MuiFormControl-root,
 .MuiInputBase-root,
