@@ -7,56 +7,56 @@
 
 @mixin Body4-R {
   font-size: 12px;
-  letter-spacing: -0.03px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 400;
 }
 
 @mixin Body3-R {
   font-size: 13px;
-  letter-spacing: -0.03px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 400;
 }
 
 @mixin Body2-R {
   font-size: 14px;
-  letter-spacing: -0.03px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 400;
 }
 
 @mixin Body1-R {
   font-size: 16px;
-  letter-spacing: -0.03px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 400;
 }
 
 @mixin Title5-M {
   font-size: 14px;
-  letter-spacing: -0.03px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 500;
 }
 
 @mixin Title5-SB {
   font-size: 14px;
-  letter-spacing: -0.03px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 600;
 }
 
 @mixin Title4-M {
   font-size: 15px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 500;
 }
 
 @mixin Title4-SB {
   font-size: 15px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 600;
 }
@@ -64,7 +64,7 @@
 
 @mixin Title3-M {
   font-size: 16px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 500;
 }
@@ -72,14 +72,14 @@
 
 @mixin Title3-SB {
   font-size: 16px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 600;
 }
 
 @mixin Title2-M {
   font-size: 19px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 500;
 }
@@ -87,28 +87,28 @@
 
 @mixin Title2-SB {
   font-size: 19px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 600;
 }
 
 @mixin Title1-B {
   font-size: 23px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 700;
 }
 
 @mixin Heading2 {
   font-size: 15px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 500;
 }
 
 @mixin Heading1 {
   font-size: 24px;
-  letter-spacing: -0.02px;
+  letter-spacing: -0.03em;
   line-height: 150%;
   font-weight: 700;
 }
