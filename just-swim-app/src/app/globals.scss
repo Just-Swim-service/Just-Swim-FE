@@ -1,0 +1,228 @@
+@font-face {
+  font-family: 'SUIT Variable';
+  font-weight: 100 900;
+  src: url('../../public/SUIT-Variable-woff2/SUIT-Variable.woff2')
+    format('woff2-variations');
+}
+
+@mixin Body4-R {
+  font-size: 12px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Body3-R {
+  font-size: 13px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Body2-R {
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Body1-R {
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Title5-M {
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Title5-SB {
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin Title4-M {
+  font-size: 15px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Title4-SB {
+  font-size: 15px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+
+@mixin Title3-M {
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+
+@mixin Title3-SB {
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin Title2-M {
+  font-size: 19px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+
+@mixin Title2-SB {
+  font-size: 19px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin Title1-B {
+  font-size: 23px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 700;
+}
+
+@mixin Heading2 {
+  font-size: 15px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Heading1 {
+  font-size: 24px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 700;
+}
+
+:root {
+  font-size: 16px;
+  --Primary-blue: #3689ff;
+  --Secondary: #7ae8f8;
+  --Chips: #EFF6FF;
+  --Cancel: #ff4d4d;
+  --Black: #050606;
+  --White: #fff;
+
+  --gray-900: #212223;
+  --gray-800: #414245;
+  --gray-700: #5c5e62;
+  --gray-600: #7e8184;
+  --gray-500: #96999c;
+  --gray-400: #bfc5c9;
+  --gray-300: #d7dbde;
+  --gray-200: #ebecee;
+  --gray-100: #f5f5f6;
+  --gray-50: #f8f9fa;
+
+  --line-height: 150%;
+}
+
+body {
+  font-size: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  font-family: 'SUIT Variable';
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+button {
+  background: inherit;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 참고 */
+
+/* 
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+
+    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+    --secondary-glow: linear-gradient(
+      to bottom right,
+      rgba(1, 65, 255, 0),
+      rgba(1, 65, 255, 0),
+      rgba(1, 65, 255, 0.3)
+    );
+
+    --tile-start-rgb: 2, 13, 46;
+    --tile-end-rgb: 2, 5, 19;
+    --tile-border: conic-gradient(
+      #ffffff80,
+      #ffffff40,
+      #ffffff30,
+      #ffffff20,
+      #ffffff10,
+      #ffffff10,
+      #ffffff80
+    );
+
+    --callout-rgb: 20, 20, 20;
+    --callout-border-rgb: 108, 108, 108;
+    --card-rgb: 100, 100, 100;
+    --card-border-rgb: 200, 200, 200;
+  }
+
+  // 변수 활용 예시
+  :root {
+    --primary-color: #A9A9A9;
+  p {
+    color: var(--primary-color);
+  }
+  h1 {
+    background-color: var(--primary-color);
+  }
+  div {
+    border-color: var(--primary-color);
+  }
+
+*/
