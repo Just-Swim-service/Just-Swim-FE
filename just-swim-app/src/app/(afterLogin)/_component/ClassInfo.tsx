@@ -1,9 +1,8 @@
 'use client';
 
-import { ReactNode } from 'react';
-import Timepicker from './TimePicker';
+import Timepicker from '../../_component/TimePicker';
+import Datepicker from '../../_component/DatePicker';
 import './classInfo.scss';
-import Datepicker from './DatePicker';
 
 interface Props {
   islabel: boolean;
