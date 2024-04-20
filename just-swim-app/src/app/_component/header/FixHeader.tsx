@@ -1,14 +1,19 @@
 import Image from 'next/image';
 import arrowBackIcon from '/public/assets/icon_arrow_back.png';
-import './header2.scss';
+import './header.scss';
 import Link from 'next/link';
+
+// Link href= 에 들어갈 url 을 받아온다고 생각했습니다.
+type Data = {
+  dataUrl: string;
+};
 
 interface Props {
   leftContent?: string;
   rightContent?: string;
-  feedback: { class: string; dataUrl: string };
+  data: Data;
 }
-export default function Header({ leftContent, rightContent, feedback }: Props) {
+export default function FixHeader({ leftContent, rightContent, data }: Props) {
   return (
     <>
       <header>
@@ -20,9 +25,8 @@ export default function Header({ leftContent, rightContent, feedback }: Props) {
           </Link>
           {leftContent}
         </div>
-        {/* Feedback 객체 정보로 url 로 링크 연결하기 */}
         <Link href={`/`}>
-          <div className="rightLink">{rightContent}</div>
+          <div className="linkToFix">{rightContent}</div>
         </Link>
       </header>
     </>
