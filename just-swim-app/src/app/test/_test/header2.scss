@@ -1,0 +1,38 @@
+@import '../../globals.scss';
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 16px;
+  height: 48px;
+  margin-bottom: 20px; // 삭제 예정
+  border-bottom: var(--gray-100) 1px solid;
+
+  .leftContent {
+    @include Title3-M;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .leftLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 8px;
+  }
+
+  .rightLink {
+    @include Body1-R;
+
+    line-height: 1em;
+    color: var(--Primary-blue);
+    border-bottom: var(--Primary-blue) 1px solid;
+  }
+  // .link {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  // }
+}
