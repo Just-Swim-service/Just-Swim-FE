@@ -4,7 +4,6 @@ import profile from './gallery.svg';
 
 export default function Page() {
   const leftContent = '피드백';
-  const rightContent = '수정하기';
   const user = {
     name: '김재환',
     image: profile,
@@ -22,7 +21,6 @@ export default function Page() {
       <div>
         <FixHeader
           leftContent={leftContent}
-          rightContent={rightContent}
           data={feedback}
         />
       </div>

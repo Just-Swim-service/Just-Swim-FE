@@ -10,10 +10,9 @@ type Data = {
 
 interface Props {
   leftContent?: string;
-  rightContent?: string;
   data: Data;
 }
-export default function FixHeader({ leftContent, rightContent, data }: Props) {
+export default function FixHeader({ leftContent, data }: Props) {
   return (
     <>
       <header>
@@ -26,7 +25,7 @@ export default function FixHeader({ leftContent, rightContent, data }: Props) {
           {leftContent}
         </div>
         <Link href={`/`}>
-          <div className="linkToFix">{rightContent}</div>
+          <div className="linkToFix">수정하기</div>
         </Link>
       </header>
     </>

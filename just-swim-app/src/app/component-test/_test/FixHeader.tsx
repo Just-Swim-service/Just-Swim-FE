@@ -3,17 +3,15 @@ import arrowBackIcon from '/public/assets/icon_arrow_back.png';
 import './header.scss';
 import Link from 'next/link';
 
-// Link href= 에 들어갈 url 을 받아온다고 생각했습니다.
 type Data = {
   dataUrl: string;
 };
 
 interface Props {
   leftContent?: string;
-  rightContent?: string;
   data: Data;
 }
-export default function FixHeader({ leftContent, rightContent, data }: Props) {
+export default function FixHeader({ leftContent, data }: Props) {
   return (
     <>
       <header>
@@ -26,7 +24,7 @@ export default function FixHeader({ leftContent, rightContent, data }: Props) {
           {leftContent}
         </div>
         <Link href={`/`}>
-          <div className="linkToFix">{rightContent}</div>
+          <div className="linkToFix">수정하기</div>
         </Link>
       </header>
     </>
