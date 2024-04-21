@@ -1,4 +1,4 @@
-import FixHeader from './_test/FixHeader';
+import EditHeader from './_test/EditHeader';
 import ProfileHeader from './_test/ProfileHeader';
 import profile from './gallery.svg';
 
@@ -19,10 +19,7 @@ export default function Page() {
         <ProfileHeader leftContent={leftContent} data={user} />
       </div>
       <div>
-        <FixHeader
-          leftContent={leftContent}
-          data={feedback}
-        />
+        <EditHeader leftContent={leftContent} data={feedback} />
       </div>
     </>
   );

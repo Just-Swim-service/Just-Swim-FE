@@ -1,6 +1,8 @@
 @import '../../globals.scss';
 
-header {
+/**** Edit Header ****/
+
+.edit_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,14 +10,41 @@ header {
   height: 48px;
   border-bottom: var(--gray-100) 1px solid;
 
-  .leftLink {
+  .left_content {
+    @include Title3-M;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-right: 8px;
+
+    .left_link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-right: 8px;
+    }
   }
 
-  .leftContent {
+  .link_to_edit {
+    @include Body1-R;
+
+    line-height: 1em;
+    color: var(--Primary-blue);
+    border-bottom: var(--Primary-blue) 1px solid;
+  }
+}
+
+/**** Profile Header ****/
+
+.profile_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 16px;
+  height: 48px;
+  border-bottom: var(--gray-100) 1px solid;
+
+  .left_content {
     @include Title3-M;
 
     display: flex;
@@ -23,15 +52,7 @@ header {
     justify-content: center;
   }
 
-  .linkToFix {
-    @include Body1-R;
-
-    line-height: 1em;
-    color: var(--Primary-blue);
-    border-bottom: var(--Primary-blue) 1px solid;
-  }
-
-  .linkToProfile {
+  .link_to_profile {
     display: flex;
     align-items: center;
     justify-content: center;

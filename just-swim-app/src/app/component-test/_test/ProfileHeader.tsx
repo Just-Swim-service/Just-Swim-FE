@@ -14,10 +14,10 @@ interface Props {
 export default function ProfileHeader({ leftContent, data }: Props) {
   return (
     <>
-      <header>
-        <div className="leftContent">{leftContent}</div>
+      <header className="profile_header">
+        <div className="left_content">{leftContent}</div>
         <Link href={`/`}>
-          <div className="linkToProfile">
+          <div className="link_to_profile">
             <Image src={data.image} alt={data.image} />
           </div>
         </Link>

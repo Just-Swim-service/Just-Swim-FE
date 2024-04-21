@@ -12,20 +12,20 @@ interface Props {
   leftContent?: string;
   data: Data;
 }
-export default function FixHeader({ leftContent, data }: Props) {
+export default function EditHeader({ leftContent, data }: Props) {
   return (
     <>
-      <header>
-        <div className="leftContent">
+      <header className="edit_header">
+        <div className="left_content">
           <Link href={`/`}>
-            <div className="leftLink">
+            <div className="left_link">
               <Image src={arrowBackIcon} alt="뒤로가기" />
             </div>
           </Link>
           {leftContent}
         </div>
         <Link href={`/`}>
-          <div className="linkToFix">수정하기</div>
+          <div className="link_to_edit">수정하기</div>
         </Link>
       </header>
     </>
