@@ -1,20 +1,17 @@
-import styles from './SelectType.module.css';
+import './selectType.scss';
 import Link from 'next/link';
 
 export default function SelectTypeFooter({ type }: { type: string }) {
   return (
     <>
-      <div className={styles.footer}>
-        <div className={styles.buttonWrapper}>
+      <div className="footer">
+        <div className={`button_wrapper ${type ? 'active' : ''}`}>
           <Link
             href={{
               pathname: `/login/type/profile`,
               query: { type: `${type}` },
             }}>
-            <button
-              className={`${styles.SelectButton} ${type ? styles.isActive : styles.isNotActive}`}>
-              선택
-            </button>
+            <button className="select_button">선택</button>
           </Link>
         </div>
       </div>

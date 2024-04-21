@@ -1,5 +1,4 @@
-// import styles from '@/app/(beforeLogin)/_component/onBoarding/OnBoarding.module.css';
-import styles from '@/app/(beforeLogin)/_component/onBoarding/OnBoarding.module.css';
+import './onBoarding.scss';
 
 import Image from 'next/image';
 import Kakao from '/public/assets/kakao.svg';
@@ -19,15 +18,13 @@ export default function OnBoardingButton({
     name === 'kakao' ? Kakao : name === 'naver' ? Naver : Google;
 
   return (
-    <div className={styles.buttonWrapper}>
-      <button onClick={onClick} className={`${styles[name + 'Button']}`}>
+    <div className="button_wrapper">
+      <button onClick={onClick} className={`${name}_button`}>
         <div>
           <Image
-            className={styles.snsImage}
+            className="sns_image"
             src={imgSrc}
             alt={`${name}`}
-            // width={100}
-            // height={100}
           />
           <p>{sns}로 계속하기</p>
         </div>

@@ -15,10 +15,10 @@ export default function BottomNavBar() {
     <div className={styles.footer}>
       {/* 네비게이션 바 */}
       <div className={styles.bottomNavBarWrapper}>
-        <Link href="/instructor/classManagement">
+        <Link href="/instructor/classList/classListTabs">
           <button
-            className={`${type === 'classManagement' ? styles.isActive : ''}`}
-            onClick={() => handleBottomNavClick('classManagement')}>
+            className={`${type === 'classList' ? styles.isActive : ''}`}
+            onClick={() => handleBottomNavClick('classList')}>
             수업
           </button>
         </Link>

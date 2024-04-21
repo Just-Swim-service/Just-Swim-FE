@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation';
 export default function Profile() {
   const type = useSearchParams().get('type')?.toString();
   const name = type === 'instructor' ? '수강생' : '강사';
+  // 타입없이 접근했을 때 처리 필요.
 
   return (
     <>

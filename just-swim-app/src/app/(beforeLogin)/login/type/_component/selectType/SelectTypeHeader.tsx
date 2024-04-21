@@ -1,9 +1,9 @@
-import styles from '@/app/(beforeLogin)/Common.module.css';
+import './selectType.scss';
 
 export default function SelectTypeHeader() {
   return (
     <>
-      <div className={styles.header}>
+      <header>
         <div>
           <h3>
             원활한 서비스 이용을 위해
@@ -14,7 +14,7 @@ export default function SelectTypeHeader() {
         <div>
           <p>이후 회원타입 변경이 불가능합니다.</p>
         </div>
-      </div>
+      </header>
     </>
   );
 }

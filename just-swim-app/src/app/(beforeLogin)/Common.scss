@@ -1,33 +1,37 @@
 @import '../globals.scss';
 
 .container {
-  // display: flex;
-  // flex-direction: column;
+  display: flex;
+  flex-direction: column;
   min-width: 360px;
   min-height: 640px; /* 높이를 640px로 고정 */
   height: 100vh;
-  margin: 0 auto;
-  // padding: 19px 16px 19px 16px;
-  // border: #e1e4e6 1px solid;
-}
+  align-items: center;
+  padding: 19px 16px 19px 16px;
 
-.header {
-  flex-grow: 1;
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-top: 51px;
-}
+  // .header {
+  //   flex-grow: 1;
+  //   display: flex;
+  //   gap: 10px;
+  //   flex-direction: column;
+  //   justify-content: flex-start;
+  //   margin-top: 51px;
+  //   width: 100%;
 
-.headerLogo {
-  color: #3689ff;
-}
+  //   .header-logo {
+  //     @include Title2-M;
 
-.logo {
-  margin-bottom: 15px;
-}
+  //     color: var(--Primary-blue);
+  //   }
 
-.header > div > p {
-  color: #9fa2a4;
+  //   .logo {
+  //     margin-bottom: 15px;
+  //   }
+  // }
+
+  // .header-info > p {
+  //   @include Body2-R;
+
+  //   color: var(--gray-500);
+  // }
 }
