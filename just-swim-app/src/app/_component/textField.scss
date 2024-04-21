@@ -1,0 +1,51 @@
+@import '../globals.scss';
+
+label {
+  @include Title5-M;
+  display: block;
+  color: var(--gray-700);
+
+  span {
+    @include Body4-R;
+    color: var(--Primary-blue);
+    margin-left: 2px;
+  }
+}
+
+.input-box {
+  position: relative;
+
+  input {
+    padding: 15px 16px;
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: 0);
+    position: relative;
+    border: 1.5px solid var(--gray-100);
+    padding-right: 50px;
+    border-radius: 6px;
+
+    .error {
+      border-color: var(--Cancel);
+    }
+  }
+
+  span {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translate(-50%, -50%);
+  }
+}
+
+input::placeholder {
+  color: var(--gray-500);
+}
+
+input:focus {
+  border: 1.5px solid var(--Primary-blue);
+  outline: none;
+}
+
+.hasValue {
+  padding-right: 16px;
+}
