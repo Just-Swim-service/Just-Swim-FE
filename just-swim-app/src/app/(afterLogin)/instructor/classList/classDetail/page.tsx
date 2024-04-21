@@ -13,7 +13,7 @@ import deleteIcon from '/public/assets/icon_delete.png';
 
 export default function ClassDetail() {
   return (
-    <div>
+    <div className='class_detail'>
       <div className="header">
         <div className="row">
           <Image src={arrowBackIcon} alt="뒤로가기" />
