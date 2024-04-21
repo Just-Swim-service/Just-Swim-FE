@@ -117,6 +117,9 @@
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
+    &_no {
+      color: var(--gray-600);
+    }
   }
 }
 

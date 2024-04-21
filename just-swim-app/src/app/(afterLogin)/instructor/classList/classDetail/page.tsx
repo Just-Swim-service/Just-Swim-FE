@@ -11,9 +11,41 @@ import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import ClassInfo from '../../../_component/ClassInfo';
 import deleteIcon from '/public/assets/icon_delete.png';
 
+// 수업 참여자 리스트
+let peopleList = [
+  {
+    name: 'hyebin',
+    profile: 'profile1',
+  },
+  {
+    name: 'hyebin',
+    profile: '',
+  },
+  {
+    name: 'hyebin',
+    profile: 'profile1',
+  },
+  {
+    name: 'hyebin',
+    profile: 'profile1',
+  },
+  {
+    name: 'hyebin',
+    profile: 'profile1',
+  },
+  {
+    name: 'hyebin',
+    profile: 'profile1',
+  },
+  {
+    name: 'hyebin',
+    profile: 'profile1',
+  },
+];
+
 export default function ClassDetail() {
   return (
-    <div className='class_detail'>
+    <div className="class_detail">
       <div className="header">
         <div className="row">
           <Image src={arrowBackIcon} alt="뒤로가기" />
@@ -60,13 +92,19 @@ export default function ClassDetail() {
             <div>{'15명'}</div>
           </div>
           <div className="profile box">
-            <Profile />
-            <Image
-              src={arrowRightIcon}
-              alt="arrow right"
-              width={20}
-              height={20}
-            />
+            {peopleList.length > 0 ? (
+              <>
+                <Profile customers={peopleList} />
+                <Image
+                  src={arrowRightIcon}
+                  alt="arrow right"
+                  width={20}
+                  height={20}
+                />
+              </>
+            ) : (
+              <div className="profile_no">QR(수업 정보)을 공유해주세요!</div>
+            )}
           </div>
         </div>
       </div>

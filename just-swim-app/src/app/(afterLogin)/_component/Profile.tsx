@@ -1,36 +1,11 @@
 import Image from 'next/image';
 import './profile.scss';
-export default function Profile() {
-  let peopleList = [
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-    {
-      name: 'hyebin',
-      profile: '',
-    },
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-  ];
+
+interface Props {
+  customers: {name: string, profile: string}[]
+}
+export default function Profile({customers} : Props) {
+
   return (
     // <div className="img_list">
     //   {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
@@ -49,7 +24,7 @@ export default function Profile() {
 
     <div className="img_list">
       {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
-      {peopleList.map((el, index) => {
+      {customers.map((el, index) => {
         return el.profile ? (
           <Image
             key={index}
