@@ -4,13 +4,13 @@ import  './start.scss';
 export default function StartFooter({ handleRoute }: { handleRoute: any }) {
   return (
     <>
-      <div className="footer">
-        <div className="buttonWrapper">
-          <button className="SelectButton" onClick={handleRoute}>
+      <footer>
+        <div className="button_wrapper">
+          <button className="select_button" onClick={handleRoute}>
             시작하기
           </button>
         </div>
-      </div>
+      </footer>
     </>
   );
 }

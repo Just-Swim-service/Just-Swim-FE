@@ -11,7 +11,7 @@ export default function StartSection({
       {/* TODO: 이미지 넣기 */}
       <div className="section">
         <div>
-          <div className="TypeButtonImg">
+          <div className="type_button_img">
             <div>
               <h3>{param.get('type')}</h3>
             </div>

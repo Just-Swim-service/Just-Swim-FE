@@ -1,5 +1,5 @@
+import styles from '@/app/(beforeLogin)/Common.module.css';
 import Image from 'next/image';
-import styles from './Profile.module.css';
 import Gallery from '/public/assets/gallery.svg';
 import { symlink } from 'fs';
 
@@ -7,13 +7,13 @@ export default function ProfileSection() {
   return (
     <>
       {/* TODO: 이미지 넣기 */}
-      <div className={styles.section}>
+      <section>
         <div>
-          <div className={styles.profileImg}>
-            <div className={styles.galleryButtonWrapper}>
+          <div className="profile_img">
+            <div className="gallery_button_wrapper">
               <button
                 // onClick={handleButtonClick}
-                className={styles.galleryButton}>
+                className="gallery_button">
                 <Image
                   src={Gallery}
                   alt="gallery"
@@ -32,11 +32,9 @@ export default function ProfileSection() {
             </div>
           </div>
         </div>
-        <div>
-          {/* <input type="text" value={nickname} onChange={handleChange} /> */}
-          <input type="text" className={styles.nickname} />
-        </div>
-      </div>
+        {/* <input type="text" value={nickname} onChange={handleChange} /> */}
+        <input type="text" className="nickname" />
+      </section>
     </>
   );
 }
