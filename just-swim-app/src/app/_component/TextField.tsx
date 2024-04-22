@@ -9,7 +9,7 @@ interface Props {
   type: string;
 }
 
-export default function textField({ label, placeholder, type }: Props) {
+export default function TextField({ label, placeholder, type }: Props) {
   const [hasValue, setHasValue] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,12 +22,12 @@ export default function textField({ label, placeholder, type }: Props) {
         {label}
         <span>(필수)</span>
       </label>
-      <div className="input-box">
+      <div className="input_box">
         <input
           type={type}
           placeholder={placeholder}
           onChange={handleChange}
-          className={hasValue ? 'hasValue' : 'input'}
+          className={hasValue ? 'filled' : ''}
         />
         {hasValue && (
           <span>
