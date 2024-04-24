@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.15",
     "@mui/x-date-pickers": "^7.2.0",
+    "@svgr/webpack": "^8.1.0",
     "dayjs": "^1.11.10",
     "next": "14.1.0",
     "react": "^18",
