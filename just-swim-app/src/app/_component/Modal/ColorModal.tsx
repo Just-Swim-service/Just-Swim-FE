@@ -2,12 +2,13 @@ import './colorModal.scss';
 import ColorPicker from './_component/ColorPicker';
 
 export default function ColorModal(props) {
-  const { clickModal } = props;
+  const { showModal, setShowModal } = props;
+
   return (
-    <div onClick={clickModal} className="color_modal">
+    <div className="color_modal">
       <div className="modal_background">
         <div className="modal">
-          <button className="modal_top_btn">
+          <button className="modal_top_btn" onClick={() => setShowModal(false)}>
             <div></div>
           </button>
           <div className="modal_title">
@@ -25,8 +26,12 @@ export default function ColorModal(props) {
             <ColorPicker color="gray" /> */}
           </div>
           <div className="modal_btn">
-            <button className="cancel">취소</button>
-            <button className="save">변경</button>
+            <button className="cancel" onClick={() => setShowModal(false)}>
+              취소
+            </button>
+            <button className="save" onClick={() => setShowModal(false)}>
+              변경
+            </button>
           </div>
         </div>
       </div>

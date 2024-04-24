@@ -14,7 +14,9 @@ interface Props {
 export default function ClassInfo({ islabel, bgColor }: Props) {
   const [showModal, setShowModal] = useState(false);
   // const clickModal = () => setShowModal(!showModal);
-  const clickModal = () => setShowModal(!showModal);
+  const clickModal = () => {
+    setShowModal((prev) => !prev);
+  };
 
   return (
     <div className="classInfo">
@@ -43,7 +45,9 @@ export default function ClassInfo({ islabel, bgColor }: Props) {
         onClick={clickModal}
         className={`input ${bgColor == 'gray' ? 'gray' : 'white'}`}
         placeholder={bgColor}></input>
-      {showModal && <ColorModal clickModal={clickModal} />}
+      {showModal && (
+        <ColorModal showModal={showModal} setShowModal={setShowModal} />
+      )}
     </div>
   );
 }
