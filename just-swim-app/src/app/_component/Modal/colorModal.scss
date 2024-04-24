@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center;
     position: absolute;
-    z-index: 10;
+    z-index: 20;
     top: 0;
     left: 0;
     right: 0;
@@ -40,6 +40,7 @@
         background-color: var(--gray-300);
         width: 30px;
         height: 4px;
+        margin: 0 auto;
       }
     }
     &_title {
