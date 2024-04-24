@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
 import Link from 'next/link';
-import styles from './BottomNavBar.module.css';
+import './bottomNavBar.scss';
 import { useState } from 'react';
 
 export default function BottomNavBar() {
@@ -12,31 +12,22 @@ export default function BottomNavBar() {
   };
 
   return (
-    <div className={styles.footer}>
-      {/* 네비게이션 바 */}
-      <div className={styles.bottomNavBarWrapper}>
-        <Link href="/instructor/classList/classListTabs">
-          <button
-            className={`${type === 'classList' ? styles.isActive : ''}`}
-            onClick={() => handleBottomNavClick('classList')}>
-            수업
-          </button>
-        </Link>
-        <Link href="/instructor/schedule">
-          <button
-            className={`${type === 'schedule' ? styles.isActive : ''}`}
-            onClick={() => handleBottomNavClick('schedule')}>
-            홈
-          </button>
-        </Link>
-        <Link href="/instructor/feedback">
-          <button
-            className={`${type === 'feedback' ? styles.isActive : ''}`}
-            onClick={() => handleBottomNavClick('feedback')}>
-            피드백
-          </button>
-        </Link>
-      </div>
+    <div className="bottom_nav_bar_wrapper">
+      <Link
+        href="/instructor/classList/classListTabs"
+        className={`bottom_nav_bar ${type === 'classList' ? 'active' : ''}`}>
+        <button onClick={() => handleBottomNavClick('classList')}>수업</button>
+      </Link>
+      <Link
+        href="/instructor/schedule"
+        className={`bottom_nav_bar ${type === 'schedule' ? 'active' : ''}`}>
+        <button onClick={() => handleBottomNavClick('schedule')}>홈</button>
+      </Link>
+      <Link
+        href="/instructor/feedback"
+        className={`bottom_nav_bar ${type === 'feedback' ? 'active' : ''}`}>
+        <button onClick={() => handleBottomNavClick('feedback')}>피드백</button>
+      </Link>
     </div>
   );
 }

@@ -1,7 +1,11 @@
 import { ReadonlyURLSearchParams } from 'next/navigation';
-import  './start.scss';
+import './start.scss';
 
-export default function StartFooter({ handleRoute }: { handleRoute: any }) {
+export default function StartFooter({
+  handleRoute,
+}: {
+  handleRoute: () => () => void;
+}) {
   return (
     <>
       <footer>

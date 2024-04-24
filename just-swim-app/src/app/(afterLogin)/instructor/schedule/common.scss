@@ -1,0 +1,78 @@
+@import '../../../globals.scss';
+
+.header {
+  display: flex;
+  flex-direction: column;
+
+  .today_info {
+    margin: 16px 0 6px 16px;
+
+    p {
+      @include Body2-R;
+
+      color: var(--gray-700);
+    }
+
+    h3 {
+      @include Title2-M;
+    }
+  }
+
+  .schedule_view_type_tab {
+    border-bottom: 2px solid var(--gray-200);
+    height: 40px;
+
+    .type_button_wrapper {
+      display: flex;
+      margin: 0 16px;
+      height: inherit;
+
+      .type_button {
+        display: flex;
+        justify-content: center;
+        width: 50%;
+
+        button {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
+
+        h3 {
+          @include Title4-SB;
+
+          color: var(--gray-300);
+        }
+      }
+      .active {
+        background-color: transparent;
+        
+        .tab_img > path {
+          fill: var(--Primary-blue);
+        }
+
+        h3 {
+          color: var(--Primary-blue);
+        }
+
+        button {
+          border-bottom: 2px solid var(--Primary-blue);
+        }
+      }
+    }
+  }
+}
+
+.section {
+  flex-grow: 2;
+  background-color: antiquewhite;
+}
+
+footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 72px;
+}
