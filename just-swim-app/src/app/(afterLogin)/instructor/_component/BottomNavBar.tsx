@@ -19,7 +19,7 @@ export default function BottomNavBar() {
         <button onClick={() => handleBottomNavClick('classList')}>수업</button>
       </Link>
       <Link
-        href="/instructor/schedule"
+        href="/instructor/schedule/weekly/classList"
         className={`bottom_nav_bar ${type === 'schedule' ? 'active' : ''}`}>
         <button onClick={() => handleBottomNavClick('schedule')}>홈</button>
       </Link>

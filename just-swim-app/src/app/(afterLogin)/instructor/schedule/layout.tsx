@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="schedule_view_type_tab">
           <div className="type_button_wrapper">
             <Link
-              href="/instructor/schedule/weekly"
+              href="/instructor/schedule/weekly/classList"
               className={`type_button ${type === 'weekly' ? 'active' : ''}`}>
               <button onClick={() => setType('weekly')}>
                 <Weekly className="tab_img" />
@@ -38,7 +38,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </button>
             </Link>
             <Link
-              href="/instructor/schedule/monthly"
+              href="/instructor/schedule/monthly/classList"
               className={`type_button ${type === 'monthly' ? 'active' : ''}`}>
               <button onClick={() => setType('monthly')}>
                 <Monthly className="tab_img" />
@@ -48,10 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </div>
-      <div className="section">
-        <h1>달력</h1>
-        {children}
-      </div>
+      {children}
       <footer>
         <BottomNavBar />
       </footer>

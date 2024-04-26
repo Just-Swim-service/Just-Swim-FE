@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export default function Instructor() {
-  redirect('/instructor/schedule');
+  redirect('/instructor/schedule/weekly/classList');
   // return (
   //   <div>
   //     <h1>강사 홈</h1>
