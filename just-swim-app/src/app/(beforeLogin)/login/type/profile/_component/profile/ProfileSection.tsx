@@ -14,13 +14,14 @@ export default function ProfileSection() {
               <button
                 // onClick={handleButtonClick}
                 className="gallery_button">
-                <Image
+                <Gallery />
+                {/* <Image
                   src={Gallery}
                   alt="gallery"
                   // onClick={() =>
                   //   inputFileRef.current && inputFileRef.current.click()
                   // } // 이미지 클릭 시 파일 입력 클릭
-                />
+                /> */}
               </button>
               <input
                 type="file"
