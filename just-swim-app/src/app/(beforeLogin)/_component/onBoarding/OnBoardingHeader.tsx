@@ -7,7 +7,8 @@ export default function OnBoardingHeader() {
     <>
       <header>
         <div className="header_logo">
-          <Image className="logo" src={Logo} alt="SWIM 로고" />
+          <Logo className="logo" />
+          {/* <Image className="logo" src={Logo} alt="SWIM 로고" /> */}
           <h3>수영인들을 위한 소통 창구</h3>
         </div>
         <div className="header_info">

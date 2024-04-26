@@ -14,18 +14,31 @@ export default function OnBoardingButton({
   sns: string;
   onClick: () => void;
 }) {
-  const imgSrc: string =
-    name === 'kakao' ? Kakao : name === 'naver' ? Naver : Google;
+  // const imgSrc: string =
+  //   name === 'kakao' ? Kakao : name === 'naver' ? Naver : Google;
+
+  let IconComponent;
+  switch (name) {
+    case 'kakao':
+      IconComponent = Kakao;
+      break;
+    case 'naver':
+      IconComponent = Naver;
+      break;
+    case 'google':
+      IconComponent = Google;
+      break;
+    default:
+      IconComponent = null;
+  }
 
   return (
     <div className="button_wrapper">
       <button onClick={onClick} className={`${name}_button`}>
         <div>
-          <Image
-            className="sns_image"
-            src={imgSrc}
-            alt={`${name}`}
-          />
+          {/* SVG 컴포넌트 출력 */}
+          {IconComponent && <IconComponent className="sns_image" />}{' '}
+          {/* <Image className="sns_image" src={imgSrc} alt={`${name}`} /> */}
           <p>{sns}로 계속하기</p>
         </div>
       </button>
