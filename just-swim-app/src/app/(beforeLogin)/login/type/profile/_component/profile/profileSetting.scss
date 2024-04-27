@@ -1,6 +1,6 @@
 @import '../../../../../../globals.scss';
 
-header {
+.profile_setting_header {
   flex-grow: 1;
   display: flex;
   gap: 10px;
@@ -22,7 +22,7 @@ header {
   }
 }
 
-section {
+.profile_setting_section {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -72,7 +72,7 @@ section {
   }
 }
 
-footer {
+.profile_setting_footer {
   flex-grow: 1;
   display: flex;
   flex-direction: column;

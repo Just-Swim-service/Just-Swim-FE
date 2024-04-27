@@ -1,8 +1,8 @@
 'use client';
 
-import ProfileHeader from './_component/profile/ProfileHeader';
-import ProfileSection from './_component/profile/ProfileSection';
-import ProfileFooter from './_component/profile/ProfileFooter';
+import ProfileHeader from './_component/profile/ProfileSettingHeader';
+import ProfileSection from './_component/profile/ProfileSettingSection';
+import ProfileFooter from './_component/profile/ProfileSettingFooter';
 import { useSearchParams } from 'next/navigation';
 
 export default function Profile() {

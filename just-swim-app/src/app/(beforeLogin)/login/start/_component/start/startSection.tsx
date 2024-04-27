@@ -9,7 +9,7 @@ export default function StartSection({
   return (
     <>
       {/* TODO: 이미지 넣기 */}
-      <div className="section">
+      <div className="start_section">
         <div>
           <div className="type_button_img">
             <div>

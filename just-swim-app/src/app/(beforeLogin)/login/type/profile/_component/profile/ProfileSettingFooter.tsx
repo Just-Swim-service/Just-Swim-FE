@@ -1,10 +1,10 @@
-import "./profile.scss";
+import "./profileSetting.scss";
 import Link from 'next/link';
 
-export default function ProfileFooter({ type }: { type: string | undefined }) {
+export default function ProfileSettingFooter({ type }: { type: string | undefined }) {
   return (
     <>
-      <footer>
+      <div className="profile_setting_footer">
         <div className="button_wrapper">
           <Link
             href={{
@@ -27,7 +27,7 @@ export default function ProfileFooter({ type }: { type: string | undefined }) {
             </button>
           </Link>
         </div>
-      </footer>
+      </div>
     </>
   );
 }

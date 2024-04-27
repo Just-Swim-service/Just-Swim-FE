@@ -3,7 +3,7 @@ import './selectType.scss';
 export default function SelectTypeHeader() {
   return (
     <>
-      <header>
+      <div className='select_type_header'>
         <div>
           <h3>
             원활한 서비스 이용을 위해
@@ -14,7 +14,7 @@ export default function SelectTypeHeader() {
         <div>
           <p>이후 회원타입 변경이 불가능합니다.</p>
         </div>
-      </header>
+      </div>
     </>
   );
 }

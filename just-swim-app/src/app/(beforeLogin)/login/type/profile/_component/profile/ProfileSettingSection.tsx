@@ -1,13 +1,13 @@
-import styles from '@/app/(beforeLogin)/Common.module.css';
+import './profileSetting.scss';
 import Image from 'next/image';
 import Gallery from '/public/assets/gallery.svg';
 import { symlink } from 'fs';
 
-export default function ProfileSection() {
+export default function ProfileSettingSection() {
   return (
     <>
       {/* TODO: 이미지 넣기 */}
-      <section>
+      <section className="profile_setting_section">
         <div>
           <div className="profile_img">
             <div className="gallery_button_wrapper">

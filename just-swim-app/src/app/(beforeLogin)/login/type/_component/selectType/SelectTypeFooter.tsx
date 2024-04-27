@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function SelectTypeFooter({ type }: { type: string }) {
   return (
     <>
-      <div className="footer">
+      <div className="select_type_footer">
         <div className={`button_wrapper ${type ? 'active' : ''}`}>
           <Link
             href={{

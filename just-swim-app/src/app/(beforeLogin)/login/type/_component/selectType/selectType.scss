@@ -1,6 +1,6 @@
 @import '../../../../../globals.scss';
 
-header {
+.select_type_header {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@ header {
   }
 }
 
-section {
+.select_type_section {
   flex-grow: 2;
   display: flex;
   flex-direction: row;
@@ -90,7 +90,7 @@ section {
   }
 }
 
-.footer {
+.select_type_footer {
   flex-grow: 2;
   display: flex;
   flex-direction: column;

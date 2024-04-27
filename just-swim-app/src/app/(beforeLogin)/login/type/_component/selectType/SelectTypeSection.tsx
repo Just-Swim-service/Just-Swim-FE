@@ -9,7 +9,7 @@ export default function SelectTypeSection({
 }) {
   return (
     <>
-      <section>
+      <div className='select_type_section'>
         <div className="type_button_wrapper">
           <button
             className={`type_button ${type === 'instructor' ? 'active' : ''}`}
@@ -53,7 +53,7 @@ export default function SelectTypeSection({
             </div>
           </button>
         </div>
-      </section>
+      </div>
     </>
   );
 }

@@ -1,10 +1,9 @@
-import "./profile.scss";
-import { useSearchParams } from 'next/navigation';
+import "./profileSetting.scss";
 
-export default function ProfileHeader({ name }: { name: string }) {
+export default function ProfileSettingHeader({ name }: { name: string }) {
   return (
     <>
-      <header>
+      <div className="profile_setting_header">
         <div>
           <h3>
             {name} 분들이 알아볼 수 있도록
@@ -15,7 +14,7 @@ export default function ProfileHeader({ name }: { name: string }) {
         <div>
           <p>이후 언제든 변경 가능합니다.</p>
         </div>
-      </header>
+      </div>
     </>
   );
 }
