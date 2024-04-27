@@ -15,7 +15,7 @@ interface Props {
 export default function EditHeader({ leftContent, data }: Props) {
   return (
     <>
-      <header className="edit_header">
+      <div className="edit_header">
         <div className="left_content">
           <Link href={`/`}>
             <div className="left_link">
@@ -27,7 +27,7 @@ export default function EditHeader({ leftContent, data }: Props) {
         <Link href={`/`}>
           <div className="link_to_edit">수정하기</div>
         </Link>
-      </header>
+      </div>
     </>
   );
 }
