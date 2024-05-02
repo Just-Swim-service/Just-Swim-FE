@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import './common.scss';
+import './schedule.scss';
 
 import Weekly from '/public/assets/weekly.svg';
 import Monthly from '/public/assets/monthly.svg';
@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   console.log(type);
   return (
     <>
-      <div className="header">
+      <div className="shedule_header">
         <ProfileHeader leftContent="" data={data} />
         <div className="today_info">
           {/* 날짜로 데이터 바꿔줘야함 */}
@@ -49,9 +49,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
       {children}
-      <footer>
+      <div className='shedule_footer'>
         <BottomNavBar />
-      </footer>
+      </div>
     </>
   );
 }
