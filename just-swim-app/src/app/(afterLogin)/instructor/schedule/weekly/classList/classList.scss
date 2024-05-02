@@ -1,0 +1,14 @@
+@import '../../../../../globals.scss';
+
+.class_list_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 16px;
+  background-color: var(--gray-50);
+  border-top: 2px solid var(--gray-200);
+  height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+

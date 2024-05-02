@@ -7,6 +7,12 @@ export default function ClassList() {
     <>
       <div className='class_list_wrapper'>
         <p>등록된 수업이 없습니다</p>
+        <h1>aa</h1>
+        <h1>aa</h1><h1>aa</h1><h1>aa</h1><h1>aa</h1>
+        <h1>aa</h1><h1>aa</h1><h1>aa</h1><h1>aa</h1>
+        <h1>aa</h1><h1>aa</h1><h1>aa</h1><h1>aa</h1>
+        <h1>aa</h1><h1>aa</h1><h1>aa</h1><h1>aa</h1>
+        <h1>aa</h1><h1>aa</h1><h1>aa</h1><h1>aa</h1>
       </div>
     </>
   );

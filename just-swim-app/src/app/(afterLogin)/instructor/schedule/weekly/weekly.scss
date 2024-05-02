@@ -1,0 +1,76 @@
+@import '../../../../globals.scss';
+
+.week_button_wrapper {
+  width: 100%;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  margin-top: 160px;
+
+  .week_buttons {
+    padding: 12px 20px 17px 20px;
+    height: 112px;
+
+    .week_number {
+      @include Title5-M;
+
+      margin-bottom: 6px;
+      color: var(--Black);
+    }
+
+    .week_button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 56px;
+        background-color: var(--gray-50);
+        border: 1px solid var(--gray-200);
+        border-radius: 10px;
+        padding: 6px 14px;
+
+        .button_day {
+          @include Body4-R;
+        }
+
+        .button_date {
+          @include Title5-M;
+        }
+      }
+    }
+
+    .day_schedule_wrapper {
+      background-color: var(--Primary-blue);
+
+      background-color: var(--gray-50);
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .active {
+      background-color: transparent;
+
+      .tab_img > path {
+        fill: var(--Primary-blue);
+      }
+
+      h3 {
+        color: var(--Primary-blue);
+      }
+
+      button {
+        border-bottom: 2px solid var(--Primary-blue);
+      }
+    }
+  }
+
+  .week_contents {
+    width: 100%;
+  }
+}

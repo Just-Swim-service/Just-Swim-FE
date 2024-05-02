@@ -1,8 +1,10 @@
 @import '../../../globals.scss';
 
-.shedule_header {
+.schedule_header {
+  position: fixed;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   .today_info {
     margin: 16px 0 6px 16px;
@@ -48,7 +50,7 @@
       }
       .active {
         background-color: transparent;
-        
+
         .tab_img > path {
           fill: var(--Primary-blue);
         }
@@ -65,8 +67,12 @@
   }
 }
 
-.shedule_footer {
-  position: absolute;
+.schedule_section {
+  width: 100%;
+}
+
+.schedule_footer {
+  position: fixed;
   width: 100%;
   bottom: 0;
   height: 72px;

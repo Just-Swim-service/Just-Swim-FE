@@ -5,7 +5,6 @@ import './schedule.scss';
 
 import Weekly from '/public/assets/weekly.svg';
 import Monthly from '/public/assets/monthly.svg';
-import Image from 'next/image';
 import BottomNavBar from '../_component/BottomNavBar';
 import ProfileHeader from '../../../_component/header/ProfileHeader';
 import Link from 'next/link';
@@ -16,10 +15,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     name: '김재환',
     image: '/assets/profile1.png',
   };
-  console.log(type);
+  
   return (
     <>
-      <div className="shedule_header">
+      {/* <div className="schedule_container"> */}
+      <div className="schedule_header">
         <ProfileHeader leftContent="" data={data} />
         <div className="today_info">
           {/* 날짜로 데이터 바꿔줘야함 */}
@@ -48,10 +48,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </div>
-      {children}
-      <div className='shedule_footer'>
+      <div className="schedule_section">{children}</div>
+      <div className="schedule_footer">
         <BottomNavBar />
       </div>
+      {/* </div> */}
     </>
   );
 }
