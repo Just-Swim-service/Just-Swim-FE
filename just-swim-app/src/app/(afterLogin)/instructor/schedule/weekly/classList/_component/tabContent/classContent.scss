@@ -1,0 +1,119 @@
+@import '../../../../../../../globals.scss';
+
+.class_content_wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+
+  .class_time {
+    text-align: left;
+
+    p:first-child {
+      @include Body3-R;
+
+      color: var(--gray-400);
+    }
+
+    p:last-child {
+      @include Title5-M;
+
+      color: var(--Black);
+    }
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    border-radius: 8px;
+    padding: 10px 12px 10px 14px;
+    background-color: var(--White);
+
+    .class_info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 7px;
+
+      .first_info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .class_name {
+          @include Title4-M;
+        }
+
+        .class_info {
+          @include Body3-R;
+
+          color: var(--gray-900);
+        }
+      }
+
+      .second_info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
+
+        .class_day {
+          @include Body4-R;
+
+          display: flex;
+          gap: 3px;
+          align-items: center;
+          color: var(--gray-700);
+        }
+
+        span {
+          height: 8px;
+          border-left: 1px solid var(--gray-400);
+        }
+
+        .class_location {
+          @include Body4-R;
+
+          display: flex;
+          gap: 3px;
+          align-items: center;
+          color: var(--gray-700);
+        }
+      }
+    }
+
+    .student_info {
+      display: flex;
+      align-items: flex-start;
+
+      .student {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-left: -6px;
+      }
+
+      .student:last-child {
+        font-size: 8px;
+        background-color: var(--White);
+        box-shadow: 0px 0px 4px rgb(158, 158, 158, 0.2);
+      }
+
+      .empty_student {
+        @include Body5-R;
+        position: absolute;
+        top: 10px; // content 내부에서 상단에 배치
+        right: 12px; // content 내부에서 좌측에 배치
+
+        border-radius: 11px;
+        padding: 2px 10px;
+        color: var(--gray-600);
+        background-color: var(--gray-100);
+      }
+    }
+  }
+}
