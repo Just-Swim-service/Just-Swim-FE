@@ -76,4 +76,17 @@
   width: 100%;
   bottom: 0;
   height: 72px;
+
+  .schedule_add {
+    position: absolute;
+    bottom: 86px;
+    right: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--Primary-blue);
+  }
 }

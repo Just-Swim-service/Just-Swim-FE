@@ -5,6 +5,7 @@ import './schedule.scss';
 
 import Weekly from '/public/assets/weekly.svg';
 import Monthly from '/public/assets/monthly.svg';
+import Plus from '/public/assets/plus.svg';
 import BottomNavBar from '../_component/BottomNavBar';
 import ProfileHeader from '../../../_component/header/ProfileHeader';
 import Link from 'next/link';
@@ -15,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     name: '김재환',
     image: '/assets/profile1.png',
   };
-  
+
   return (
     <>
       {/* <div className="schedule_container"> */}
@@ -51,8 +52,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="schedule_section">{children}</div>
       <div className="schedule_footer">
         <BottomNavBar />
+        <div className="schedule_add">
+          <Plus />
+        </div>
       </div>
-      {/* </div> */}
     </>
   );
 }
