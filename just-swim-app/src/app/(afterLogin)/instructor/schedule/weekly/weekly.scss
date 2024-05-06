@@ -9,7 +9,6 @@
 
   .week_buttons {
     padding: 12px 20px 17px 20px;
-    height: 112px;
 
     .week_number {
       @include Title5-M;
@@ -23,25 +22,48 @@
       justify-content: space-between;
       align-items: center;
 
-      button {
+      .week_button_info {
         display: flex;
         flex-direction: column;
         gap: 5px;
         align-items: center;
         justify-content: center;
-        width: 42px;
-        height: 56px;
-        background-color: var(--gray-50);
-        border: 1px solid var(--gray-200);
-        border-radius: 10px;
-        padding: 6px 14px;
 
-        .button_day {
-          @include Body4-R;
+        button {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          align-items: center;
+          justify-content: center;
+          width: 42px;
+          height: 56px;
+          background-color: var(--gray-50);
+          border: 1px solid var(--gray-200);
+          border-radius: 10px;
+          padding: 6px 14px;
+
+          .button_day {
+            @include Body4-R;
+          }
+
+          .button_date {
+            @include Title5-M;
+          }
         }
 
-        .button_date {
-          @include Title5-M;
+        .class_count {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .class_count_item {
+            width: 6px;
+            height: 6px;
+            background-color: #f1554c;
+            border-radius: 50%;
+            margin-left: -1px;
+            border: 0.5px solid var(--White);
+          }
         }
       }
     }

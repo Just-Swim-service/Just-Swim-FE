@@ -34,8 +34,8 @@ export default function ClassContent({ item }: { item: any }) {
             </div>
           </div>
           <div className="student_info">
-            {/* <div className="students"> */}
-            {item.students?.map((student: any) => (
+            {/* 3개까지만 보여줘야함... */}
+            {item.students?.slice(0, 3).map((student: any) => (
               <div key={student.name} className="student">
                 <Image
                   key={student.name}

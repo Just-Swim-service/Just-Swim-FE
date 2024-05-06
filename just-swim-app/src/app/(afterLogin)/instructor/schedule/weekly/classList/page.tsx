@@ -1,9 +1,7 @@
 import ClassContent from './_component/tabContent/ClassContent';
 import './classList.scss';
 
-// 대안이 필요하다
 export default function ClassList() {
-  // let classList:any = [];
   let classList = [
     {
       name: '아침 5 반',
@@ -25,12 +23,11 @@ export default function ClassList() {
           name: '박예지',
           image: '/assets/no_profile.png',
         },
-      ]
+      ],
     },
     {
       name: '아티스틱 스윔 반',
-      target:
-        '홍길동님 1:1 개별 코칭',
+      target: '홍길동님 1:1 개별 코칭',
       location: '강동구 실내 수영장',
       week: '매주 금,토 요일',
       time: '11:00 ~ 12:00',
@@ -38,12 +35,35 @@ export default function ClassList() {
     },
     {
       name: '수영 고급 연수반',
-      target:
-        '지구력 위주',
+      target: '지구력 위주',
       location: '왕십리 스윔센터',
       week: '매주 금,토 요일',
       time: '11:00 ~ 12:00',
       picker: '#FFC700',
+    },
+    {
+      name: '수영 고급 연수반',
+      target: '지구력 위주',
+      location: '왕십리 스윔센터',
+      week: '매주 금,토 요일',
+      time: '11:00 ~ 12:00',
+      picker: '#FFC700',
+    },
+    {
+      name: '수영 고급 연수반',
+      target: '지구력 위주',
+      location: '왕십리 스윔센터',
+      week: '매주 금,토 요일',
+      time: '11:00 ~ 12:00',
+      picker: '#FFC700',
+    },
+    {
+      name: '수영 고급 연수반',
+      target: '지구력 위주',
+      location: '왕십리 스윔센터',
+      week: '매주 금,토 요일',
+      time: '11:00 ~ 12:00',
+      picker: '#ff0000',
     },
   ];
 
