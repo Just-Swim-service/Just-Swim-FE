@@ -3,6 +3,8 @@
 import Timepicker from '../../_component/TimePicker';
 import Datepicker from '../../_component/DatePicker';
 import './classInfo.scss';
+import { useState } from 'react';
+import ColorModal from '../../_component/Modal/ColorModal';
 
 interface Props {
   islabel: boolean;
@@ -10,6 +12,12 @@ interface Props {
 }
 
 export default function ClassInfo({ islabel, bgColor }: Props) {
+  const [showModal, setShowModal] = useState(false);
+  // const clickModal = () => setShowModal(!showModal);
+  const clickModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
   return (
     <div className="classInfo">
       {islabel ? <label>수업시간</label> : null}
@@ -34,9 +42,12 @@ export default function ClassInfo({ islabel, bgColor }: Props) {
 
       {islabel ? <label>구분 색</label> : null}
       <input
+        onClick={clickModal}
         className={`input ${bgColor == 'gray' ? 'gray' : 'white'}`}
-        placeholder="color picker"
-      />
+        placeholder={bgColor}></input>
+      {showModal && (
+        <ColorModal showModal={showModal} setShowModal={setShowModal} />
+      )}
     </div>
   );
 }
