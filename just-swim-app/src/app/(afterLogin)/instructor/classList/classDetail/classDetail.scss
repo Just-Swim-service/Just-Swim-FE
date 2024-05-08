@@ -1,9 +1,6 @@
 @import '../../../../globals.scss';
-// .container {
-//   width: 360px;
-//   height: 640px;
-//   // background-color: pink;
-//   padding-top: 24px;
+// .class_detail {
+//  padding-bottom: 100px;
 // }
 
 .header {
@@ -20,7 +17,7 @@
 
   .edit {
     text-decoration: underline;
-    color: var(--primary-blue);
+    color: var(--Primary-blue);
   }
 }
 
@@ -120,25 +117,28 @@
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
+    &_no {
+      color: var(--gray-600);
+    }
   }
 }
 
 .class_info {
   background-color: var(--gray-200);
-  padding: 0 16px;
+  padding: 0 16px 50px;
 
   h3 {
     margin-bottom: 27px;
   }
 
   &_delete {
-    margin: 23px auto 24px;
+    margin: 23px auto 110px;
 
     width: 103px;
     height: 79px;
     background-color: white;
     border-radius: 13px;
-    color: var(--red);
+    color: var(--Cancel);
 
     display: flex;
     flex-direction: column;
@@ -148,12 +148,14 @@
   }
 
   .feedback_btn {
-    width: 328px;
+    position: fixed;
+    bottom: 20px;
+    width: calc(100% - 32px);
+
     height: 52px;
     border-radius: 13px;
 
-    margin-bottom: 82px;
-    background-color: var(--primary-blue);
+    background-color: var(--Primary-blue);
     color: white;
   }
 }
