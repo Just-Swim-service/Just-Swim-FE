@@ -5,6 +5,13 @@
     format('woff2-variations');
 }
 
+@mixin Body5-R {
+  font-size: 10px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
 @mixin Body4-R {
   font-size: 12px;
   letter-spacing: -0.03em;
