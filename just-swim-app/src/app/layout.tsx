@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import './globals.scss';
+import '@/app/globals.scss';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
