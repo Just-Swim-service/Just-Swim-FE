@@ -1,6 +1,16 @@
 {
   "compilerOptions": {
-    "baseUrl": "/",
+    "baseUrl": ".",
+    // "paths": {
+    //   "@/*": ["./src/*"]
+    // },
+    "paths": {
+      "@/*": ["./src/*"],
+      "@_component/*": ["src/app/_component/*"],
+      "@afterLogin/*": ["src/app/(afterLogin)/*"],
+      "@beforeLogin/*": ["src/app/(beforeLogin)/*"],
+      "@assets/*": ["./public/assets/*"]
+    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -17,10 +27,7 @@
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    ]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
