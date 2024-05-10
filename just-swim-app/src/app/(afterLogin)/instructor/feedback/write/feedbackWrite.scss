@@ -4,7 +4,7 @@
   .title {
     @include Title3-M;
     span {
-      @include Body5;
+      @include Body5-R;
       color: var(--Primary-blue);
     }
   }
@@ -35,7 +35,7 @@
 
       .add_btn {
         background-color: var(--gray-50);
-        @include Body5;
+        @include Body5-R;
         img {
           display: block;
           margin: 0 auto 6px;
