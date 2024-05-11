@@ -1,0 +1,28 @@
+@import '../../../../../../globals.scss';
+
+.button-box {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 28px 0;
+
+  button {
+    width: 159px;
+    height: 152px;
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    text-align: left;
+    padding: 15px;
+    position: relative;
+
+    p {
+      position: absolute;
+      bottom: 15%;
+      @include Title3-M;
+
+      span {
+        @include Title2-M;
+      }
+    }
+  }
+}
