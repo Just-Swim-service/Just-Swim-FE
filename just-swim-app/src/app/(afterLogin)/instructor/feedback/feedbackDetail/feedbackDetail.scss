@@ -1,0 +1,44 @@
+@import '../../../../globals.scss';
+
+.detail_container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.detail_title {
+  margin-bottom: 12px;
+
+  p {
+    @include Title5-M;
+  }
+}
+
+.detail_content {
+  margin-bottom: 22px;
+  padding: 16px;
+  border: 1px solid var(--gray-100);
+  border-radius: 6px;
+  background-color: var(--gray-50);
+  display: flex;
+  align-items: center;
+
+  .detail_icon {
+    margin-right: 16px;
+  }
+
+  p {
+    @include Title5-SB;
+  }
+}
+
+.detail_photo {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+
+  .photo {
+    width: 76px;
+    height: 76px;
+    background-color: var(--gray-100);
+  }
+}
