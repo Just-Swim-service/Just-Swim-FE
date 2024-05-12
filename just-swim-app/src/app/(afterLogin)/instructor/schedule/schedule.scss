@@ -1,4 +1,4 @@
-@import '../../../globals.scss';
+@import '@/app/globals.scss';
 
 .schedule_header {
   position: fixed;
@@ -68,7 +68,7 @@
 }
 
 .schedule_section {
-  width: 100%;
+  width: 100%; 
 }
 
 .schedule_footer {
