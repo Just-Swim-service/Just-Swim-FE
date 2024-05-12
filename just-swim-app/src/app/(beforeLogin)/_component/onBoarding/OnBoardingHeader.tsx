@@ -1,5 +1,6 @@
 import './onBoarding.scss';
-import Logo from '/public/assets/logo.svg';
+import Logo from '@assets/logo.svg';
+// import Logo from '/public/assets/logo.svg';
 import Image from 'next/image';
 
 export default function OnBoardingHeader() {
