@@ -1,10 +1,5 @@
-import Link from 'next/link';
+import { redirect } from "next/navigation";
 
 export default function Monthly() {
-  return (
-    <>
-      <h5>Monthly page</h5>
-      <Link href="/instructor/schedule/monthly/classList"> Monthly ClassList</Link>
-    </>
-  );
+  redirect("/instructor/schedule/monthly/classList");
 }
