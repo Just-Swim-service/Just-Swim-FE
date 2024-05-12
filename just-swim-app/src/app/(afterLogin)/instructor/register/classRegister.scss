@@ -1,0 +1,60 @@
+@import '@/app/globals.scss';
+
+.register_wrapper {
+  width: 100%;
+  height: 640px;
+  // background-color: var(--gray-50);
+
+  .register_section {
+    .register_inner {
+      padding: 22px 16px 8px 16px;
+    }
+
+    .register_class_info {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .line {
+      width: 100%;
+      height: 8px;
+      background-color: var(--gray-50);
+    }
+
+    .register_inner {
+      margin-bottom: 20px;
+    }
+
+    .register_error {
+      @include Body2-R;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      padding: 0 16px;
+      gap: 8px;
+      width: 85%;
+      height: 44px;
+      border-radius: 10px;
+      box-shadow: 0 -2px 0 0 var(--Cancel) inset;
+      color: var(--Cancel);
+    }
+
+    .register_btn {
+      @include Title3-SB;
+      width: 100%;
+      height: 72px;
+      color: white;
+      padding-bottom: 14px;
+      margin-top: 14px;
+      background-color: var(--gray-300);
+      pointer-events: none;
+    }
+    .active {
+      background-color: var(--Primary-blue);
+      pointer-events: all;
+    }
+  }
+}

@@ -9,6 +9,7 @@ import Plus from '/public/assets/plus.svg';
 import BottomNavBar from '../_component/BottomNavBar';
 import ProfileHeader from '../../../_component/header/ProfileHeader';
 import Link from 'next/link';
+// import { usePathname } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [type, setType] = useState('weekly');
@@ -16,10 +17,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     name: '김재환',
     image: '/assets/profile1.png',
   };
+  // TODO: type을 어떻게 받아올지 고민해보기
+  // console.log('type', type);
+  // const params = usePathname();
+  // console.log('params', params);
 
   return (
     <>
-      {/* <div className="schedule_container"> */}
       <div className="schedule_header">
         <ProfileHeader leftContent="" data={data} />
         <div className="today_info">
@@ -53,6 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="schedule_footer">
         <BottomNavBar />
         <div className="schedule_add">
+        {/* <div className="schedule_add" onClick={}> */}
           <Plus />
         </div>
       </div>
