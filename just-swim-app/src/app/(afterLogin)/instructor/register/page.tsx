@@ -1,21 +1,24 @@
-// 'use client';
+'use client';
 
 import './classRegister.scss';
 import ClassInfo from '../../_component/ClassInfo';
 import TextField from '@/app/_component/TextField';
 import Warning from '@assets/warning_img.svg';
-// import { useState } from 'react';
+import TipModal from '@/app/_component/Modal/TipModal';
+import { useState } from 'react';
 
 export default function ClassRegister() {
   // const [check, setCheck] = useState(false);
   // const handleRegisterButton = () => {
   //   setCheck(!check);
   // };
-
   const check = true;
+  const [showModal, setShowModal] = useState(true);
 
   return (
     <div className="register_section">
+      {/* 모달 */}
+      {showModal && <TipModal setShowModal={setShowModal} />}
       <div className="register_inner">
         <div className="register_class_info">
           {/* 글자수 안내 메시지 추가 필요 */}
