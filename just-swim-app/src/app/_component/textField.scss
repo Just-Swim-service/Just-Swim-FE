@@ -4,6 +4,7 @@ label {
   @include Title5-M;
   display: block;
   color: var(--gray-700);
+  margin-bottom: 6px;
 
   span {
     @include Body5-R;
