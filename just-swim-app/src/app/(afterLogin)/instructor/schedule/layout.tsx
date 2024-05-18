@@ -7,7 +7,7 @@ import Weekly from '/public/assets/weekly.svg';
 import Monthly from '/public/assets/monthly.svg';
 import Plus from '/public/assets/plus.svg';
 import BottomNavBar from '../_component/BottomNavBar';
-import ProfileHeader from '../../../_component/header/ProfileHeader';
+import ProfileHeader from '../../../_component/Header/ProfileHeader';
 import Link from 'next/link';
 // import { usePathname } from 'next/navigation';
 
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="schedule_footer">
         <BottomNavBar />
         <div className="schedule_add">
-        {/* <div className="schedule_add" onClick={}> */}
+          {/* <div className="schedule_add" onClick={}> */}
           <Plus />
         </div>
       </div>

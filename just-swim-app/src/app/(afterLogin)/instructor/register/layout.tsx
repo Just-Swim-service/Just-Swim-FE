@@ -1,4 +1,4 @@
-import EditHeader from '@/app/_component/header/EditHeader';
+import EditHeader from '@/app/_component/Header/EditHeader';
 import './classRegister.scss';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
