@@ -7,6 +7,62 @@
   position: fixed;
   margin-top: 160px;
 
+  .schedule_modal {
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    gap: 16px;
+    padding: 10px 16px 0 16px;
+    height: 100%;
+    background: white;
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(50%);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+
+    .modal_header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+      .bar {
+        display: flex;
+        align-self: center;
+        width: 30px;
+        height: 4px;
+        border-radius: 4px;
+        background-color: var(--gray-300);
+      }
+    }
+
+    .class_list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    &.full {
+      transform: translateY(10%);
+    }
+
+    &.half {
+      transform: translateY(50%);
+    }
+
+    &.hidden {
+      transform: translateY(100%);
+    }
+
+    .close_modal_button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  }
+
   .month_and_week {
     display: flex;
     flex-direction: column;
@@ -173,11 +229,11 @@
                 // }
               }
 
-              .react-calendar__month-view__days__day {
-              }
+              // .react-calendar__month-view__days__day {
+              // }
 
-              .react-calendar__month-view__days__day--neighboringMonth {
-              }
+              // .react-calendar__month-view__days__day--neighboringMonth {
+              // }
 
               .react-calendar__month-view__days__day--weekend {
                 abbr {
