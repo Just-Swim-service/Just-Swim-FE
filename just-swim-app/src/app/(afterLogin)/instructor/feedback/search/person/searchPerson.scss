@@ -106,13 +106,20 @@
       margin: 20px auto;
       border-radius: 13px;
 
-      &.disabled {
-      color: var(--gray-300);
+
+
+      &:disabled {
+
+      background-color: var(--gray-300);
         
       }
     }
+
 
     position: fixed;
     bottom: 0;
   }
 }
+
+
+

@@ -162,7 +162,7 @@ export default function SearchPerson() {
           ))} */}
 
         <div className="main_btn">
-          <button type="button" disabled={Object.keys(checkItems).length ==0} className='' onClick={()=> {console.log('dff')}}>{checkLength()}명 선택하기</button>
+          <button type="button" disabled={checkLength()==0} onClick={()=> {console.log('dff')}}>{checkLength()}명 선택하기</button>
         </div>
       </div>
     </div>
