@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import Header from '@_component/Header';
@@ -35,11 +35,11 @@ export default function SearchPerson() {
     },
     {
       '아침 6반': [
-        { name: '김고독', profile: 'profile1' },
-        { name: '김고독', profile: 'no_profile' },
-        { name: '김고독', profile: 'profile1' },
-        { name: '김고독', profile: 'profile1' },
-        { name: '김고독', profile: 'no_profile' },
+        { name: '김해피', profile: 'profile1' },
+        { name: '김감자', profile: 'no_profile' },
+        { name: '김감자', profile: 'profile1' },
+        { name: '김감자', profile: 'profile1' },
+        { name: '김감자', profile: 'no_profile' },
       ],
     },
   ];
@@ -50,19 +50,23 @@ export default function SearchPerson() {
     setValue(newValue);
   };
 
-  const [checkedState, setCheckedState] = useState({});
-  const handleChecked = (event: React.ChangeEvent) => {
-    const { id, checked } = event.target;
-    // console.log(event.target);
-    setCheckedState({
-      ...checkedState,
-      [id]: checked,
-    });
-  };
+  const [isChecked, setIsChecked] = useState(false);
+  const [checkItems, setCheckItems] = useState({})
+
+  const checkItemHandler = (e, id: string) => {
+      setCheckItems(prev => ({
+        ...prev, [id]: !prev[id]
+      }));
+  }
+
+  const checkLength = () => {
+    let len = Object.values(checkItems).filter(item => item == true)
+    return len.length
+  }
 
   useEffect(() => {
-    console.log(Object.keys(checkedState).length);
-  }, [checkedState]);
+    console.log(checkItems)
+  },[checkItems])
 
   return (
     <div className="search_person">
@@ -112,15 +116,17 @@ export default function SearchPerson() {
       <div className="divider"></div>
 
       <div className="pad">
-        {customerList2.map((group, index) => (
+        {customerList2.map((group:object, index:number) => (
           <div key={index} className="group">
-            <div className="group_name">{Object.keys(group)[0]}</div>
-            {group[Object.keys(group)[0]].map((customer, idx) => (
+            <div className="group_name">{Object.keys(group)}</div>
+            {/* {console.log(Object.values(group))} */}
+            {Object.values(group)[0].map((customer: {name: string, profile: string}, idx:number) => (
+              // console.log(customer)
               <li key={idx} className="customer">
                 <input
                   type="checkbox"
-                  id={`checkbox ${idx}`}
-                  onChange={(event) => handleChecked(event, idx)}
+                  id={`${index}${idx}`}
+                  onChange={e => checkItemHandler(e, `${index}${idx}`)}
                 />
                 <label className="row" htmlFor={`checkbox ${idx}`}>
                   <Image
@@ -129,12 +135,14 @@ export default function SearchPerson() {
                     width={34}
                     height={34}
                   />
-                  <div>{customer.name}</div>
+
+                  <div>{customer.name} {isChecked}</div>
                 </label>
                 <div className="customer_class_name">아침 5반</div>
               </li>
             ))}
           </div>
+          
         ))}
 
         {/* {customerList.map((el, index) => (
@@ -154,7 +162,7 @@ export default function SearchPerson() {
           ))} */}
 
         <div className="main_btn">
-          <button type="button">{Object.keys(checkedState).length}명 선택하기</button>
+          <button type="button" disabled={Object.keys(checkItems).length ==0} className='' onClick={()=> {console.log('dff')}}>{checkLength()}명 선택하기</button>
         </div>
       </div>
     </div>
