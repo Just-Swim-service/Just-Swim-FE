@@ -2,12 +2,12 @@
 
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import Header from '../../../../_component/Header';
+import Header from '../../../../../_component/Header';
 import './feedbackWrite.scss';
 import addIcon from '/public/assets/add.png';
 import profile from '/public/assets/profile1.png';
-import Datepicker from '../../../../_component/DatePicker';
-import Input from '../../../../_component/Input';
+import Datepicker from '../../../../../_component/DatePicker';
+import Input from '../../../../../_component/Input';
 import deleteButton from '/public/assets/delete_button.png';
 import Link from 'next/link';
 
@@ -48,6 +48,7 @@ export default function FeedbackWrite() {
               <div className="add_txt">추가하기</div>
             </Link>
 
+            <div>
             <div className="box">
               <button className="box_delete">
                 <Image src={deleteButton} alt="delete" />
@@ -59,36 +60,9 @@ export default function FeedbackWrite() {
                 <div className="class">아침5반</div>
               </div>
             </div>
-            <div className="box">
-              <button className="box_delete">
-                <Image src={deleteButton} alt="delete" />
-              </button>
-              <div className="profile">
-                <Image src={profile} alt="프로필 이미지" />
-                <div className="name">김고독</div>
-                <div className="class">아침5반</div>
-              </div>
-            </div>
-            <div className="box">
-              <button className="box_delete">
-                <Image src={deleteButton} alt="delete" />
-              </button>
-              <div className="profile">
-                <Image src={profile} alt="프로필 이미지" />
-                <div className="name">김고독</div>
-                <div className="class">아침5반</div>
-              </div>
-            </div>
-            <div className="box">
-              <button className="box_delete">
-                <Image src={deleteButton} alt="delete" />
-              </button>
-              <div className="profile">
-                <Image src={profile} alt="프로필 이미지" />
-                <div className="name">김고독</div>
-                <div className="class">아침5반</div>
-              </div>
-            </div>
+          </div>
+
+         
           </div>
         </div>
 

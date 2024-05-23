@@ -15,13 +15,13 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
 export default function SearchPerson() {
-  const customerList = [
-    { name: '김고독', profile: 'profile1' },
-    { name: '김고독', profile: 'no_profile' },
-    { name: '김고독', profile: 'profile1' },
-    { name: '김고독', profile: 'profile1' },
-    { name: '김고독', profile: 'no_profile' },
-  ];
+  // const customerList = [
+  //   { name: '김고독', profile: 'profile1' },
+  //   { name: '김고독', profile: 'no_profile' },
+  //   { name: '김고독', profile: 'profile1' },
+  //   { name: '김고독', profile: 'profile1' },
+  //   { name: '김고독', profile: 'no_profile' },
+  // ];
 
   const customerList2 = [
     {
