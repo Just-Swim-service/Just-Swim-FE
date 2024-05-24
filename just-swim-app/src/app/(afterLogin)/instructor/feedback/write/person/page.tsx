@@ -10,8 +10,10 @@ import Datepicker from '../../../../../_component/DatePicker';
 import Input from '../../../../../_component/Input';
 import deleteButton from '/public/assets/delete_button.png';
 import Link from 'next/link';
+import { useCotomerStore } from '@/app/store/store';
 
 export default function FeedbackWrite() {
+
   const fileRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
     console.log('fileRef', fileRef);
@@ -48,7 +50,7 @@ export default function FeedbackWrite() {
               <div className="add_txt">추가하기</div>
             </Link>
 
-            <div>
+            <div>{}
             <div className="box">
               <button className="box_delete">
                 <Image src={deleteButton} alt="delete" />
@@ -86,9 +88,6 @@ export default function FeedbackWrite() {
                 </div>
               );
             })}
-            {/* <div className="added_file">dd</div> */}
-            {/* <div className="added_file">dd</div> */}
-            {/* <form method="post" encType="multipart/form-data" className="box"> */}
             <div className="box" onClick={handleClick}>
               <label htmlFor="chooseFile">
                 <div className="add">

@@ -13,8 +13,10 @@ import './searchPerson.scss';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import {useCostomerStore} from '@/app/store/store'
 
 export default function SearchPerson() {
+  const {customerList, checkItem, removeItem} =  useCostomerStore()
   // const customerList = [
   //   { name: '김고독', profile: 'profile1' },
   //   { name: '김고독', profile: 'no_profile' },
@@ -23,26 +25,26 @@ export default function SearchPerson() {
   //   { name: '김고독', profile: 'no_profile' },
   // ];
 
-  const customerList2 = [
-    {
-      '아침 5반': [
-        { name: '김고독', profile: 'profile1' },
-        { name: '김고독', profile: 'no_profile' },
-        { name: '김고독', profile: 'profile1' },
-        { name: '김고독', profile: 'profile1' },
-        { name: '김고독', profile: 'no_profile' },
-      ],
-    },
-    {
-      '아침 6반': [
-        { name: '김해피', profile: 'profile1' },
-        { name: '김감자', profile: 'no_profile' },
-        { name: '김감자', profile: 'profile1' },
-        { name: '김감자', profile: 'profile1' },
-        { name: '김감자', profile: 'no_profile' },
-      ],
-    },
-  ];
+  // const customerList2 = [
+  //   {
+  //     '아침 5반': [
+  //       { name: '김고독', profile: 'profile1' },
+  //       { name: '김고독', profile: 'no_profile' },
+  //       { name: '김고독', profile: 'profile1' },
+  //       { name: '김고독', profile: 'profile1' },
+  //       { name: '김고독', profile: 'no_profile' },
+  //     ],
+  //   },
+  //   {
+  //     '아침 6반': [
+  //       { name: '김해피', profile: 'profile1' },
+  //       { name: '김감자', profile: 'no_profile' },
+  //       { name: '김감자', profile: 'profile1' },
+  //       { name: '김감자', profile: 'profile1' },
+  //       { name: '김감자', profile: 'no_profile' },
+  //     ],
+  //   },
+  // ];
 
   const [value, setValue] = useState('one');
 
@@ -51,22 +53,34 @@ export default function SearchPerson() {
   };
 
   const [isChecked, setIsChecked] = useState(false);
-  const [checkItems, setCheckItems] = useState({})
+  // const [checkItems, setCheckItems] = useState({})
 
-  const checkItemHandler = (e, id: string) => {
-      setCheckItems(prev => ({
-        ...prev, [id]: !prev[id]
-      }));
+  const checkItemHandler = (e, id: number) => {
+    // e.preventDefault();  // Prevent the form from submitting on checkbox change
+    // console.log(id)
+
+    checkItem(id)
+      // setCheckItems(prev => ({
+      //   ...prev, [id]: !prev[id]
+      // }));
   }
 
   const checkLength = () => {
-    let len = Object.values(checkItems).filter(item => item == true)
-    return len.length
-  }
+    const checkedCount = customerList.reduce((acc, group) => {
+      const customers = Object.values(group)[0];
+      const checkedCustomers = customers.filter((customer) => customer.check);
+      return acc + checkedCustomers.length;
+    }, 0);
+    console.log('Checked items count:', checkedCount);
+    return checkedCount;
+  };
 
-  useEffect(() => {
-    console.log(checkItems)
-  },[checkItems])
+  // useEffect(() => {
+  //   // console.log(checkItems)
+  //   console.log(customerList)
+  //   console.log(checkLength())
+
+  // },[customerList,checkLength])
 
   return (
     <div className="search_person">
@@ -114,55 +128,52 @@ export default function SearchPerson() {
       </div>
 
       <div className="divider"></div>
+      {/* <div>{customerList.map((el, index) => 
+         (
+          <li key={index}>{el.name}
+           <input
+                  type="checkbox"
+                  id={index}
+                  onChange={e => checkItemHandler(e, el.id)}
+                />
+          </li>
+         
+        )
+      )}</div> */}
 
       <div className="pad">
-        {customerList2.map((group:object, index:number) => (
+        {Object.entries(customerList).map((group, index:number) => (
           <div key={index} className="group">
-            <div className="group_name">{Object.keys(group)}</div>
-            {/* {console.log(Object.values(group))} */}
-            {Object.values(group)[0].map((customer: {name: string, profile: string}, idx:number) => (
-              // console.log(customer)
-              <li key={idx} className="customer">
+            <div className="group_name">{Object.keys(group) && Object.keys(group[1])}</div>
+            {Object.values(group[1]).map(customer => (
+              customer.map(item => (
+                <li key={item.id} className="customer">
                 <input
                   type="checkbox"
-                  id={`${index}${idx}`}
-                  onChange={e => checkItemHandler(e, `${index}${idx}`)}
+                  id={`item.id`}
+                  onChange={e => checkItemHandler(e, item.id)}
                 />
-                <label className="row" htmlFor={`checkbox ${idx}`}>
+                <label className="row" htmlFor={`checkbox ${item.id}`}>
                   <Image
-                    src={`/assets/${customer.profile}.png`}
+                    src={`/assets/${item.profile}.png`}
                     alt="profile"
                     width={34}
                     height={34}
                   />
-
-                  <div>{customer.name} {isChecked}</div>
+                  <div>{item.name}</div>
                 </label>
                 <div className="customer_class_name">아침 5반</div>
               </li>
+              ))  
+            
             ))}
           </div>
           
-        ))}
-
-        {/* {customerList.map((el, index) => (
-            <li key={index} className="customer">
-              <input type="checkbox" id={`checkbox ${index}`} />
-              <label className="row" htmlFor={`checkbox ${index}`}>
-                <Image
-                  src={`/assets/${el.profile}.png`}
-                  alt="profile"
-                  width={34}
-                  height={34}
-                />
-                <div>{el.name}</div>
-              </label>
-              <div className="customer_class_name">아침 5반</div>
-            </li>
-          ))} */}
+        ) )
+        }
 
         <div className="main_btn">
-          <button type="button" disabled={checkLength()==0} onClick={()=> {console.log('dff')}}>{checkLength()}명 선택하기</button>
+          <button type='button' disabled={checkLength() == 0} onClick={()=> console.log('ff')}>{checkLength()}명 선택하기</button>
         </div>
       </div>
     </div>
