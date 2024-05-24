@@ -1,0 +1,125 @@
+@import '../../../../../globals.scss';
+
+.search_person {
+  // padding: 17px 16px 0;
+  .pad {
+    padding: 0 16px;
+  }
+  .title {
+    @include Title2-SB;
+  }
+  .search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    input {
+      background-color: var(--gray-50);
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      height: 44px;
+
+      padding: 10px 32px;
+    }
+
+    button {
+      position: absolute;
+      left: 10px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+  }
+
+  .title {
+    justify-content: space-between;
+    margin: 4px 0;
+
+    font-size: 16px;
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 14px;
+      color: var(--Primary-blue);
+    }
+  }
+
+  .divider {
+    background-color: var(--gray-50);
+    width: 100%;
+    height: 5px;
+    margin-bottom: 22px;
+  }
+
+  .group {
+    margin-bottom: 20px;
+  }
+
+  .pad:last-of-type {
+    padding-bottom: 100px;
+  }
+
+  .group_name {
+    @include Title4-M;
+  }
+
+  .customer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 13px 0;
+    border-bottom: 1px solid var(--gray-200);
+
+    input {
+      margin-right: 8px;
+    }
+
+    label {
+      flex: 1;
+    }
+
+    &_class_name {
+      background-color: var(--Chips);
+      color: var(--Primary-blue);
+      border-radius: 11px;
+      padding: 2px 10px;
+    }
+  }
+
+  .main_btn {
+    width: 100%;
+    // background-color: var(--White);
+    button {
+      background-color: var(--Primary-blue);
+
+      width: 90%;
+      height: 52px;
+      color: var(--White);
+      @include Title3-SB;
+      margin: 20px auto;
+      border-radius: 13px;
+
+
+
+      &:disabled {
+
+      background-color: var(--gray-300);
+        
+      }
+    }
+
+
+    position: fixed;
+    bottom: 0;
+  }
+}
+
+
+
