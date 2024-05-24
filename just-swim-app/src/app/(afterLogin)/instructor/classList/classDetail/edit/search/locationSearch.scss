@@ -1,0 +1,80 @@
+@import '../../../../../../globals.scss';
+
+.location_search {
+  &_input {
+    padding: 0 16px;
+    margin: 0 auto;
+
+    .search {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      input {
+        background-color: var(--gray-50);
+        border: none;
+        border-radius: 8px;
+        width: 100%;
+        height: 44px;
+
+        padding: 10px 32px;
+      }
+      button {
+        position: absolute;
+        left: 10px;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .divider {
+    background-color: var(--gray-50);
+    width: 100%;
+    height: 8px;
+    margin-bottom: 22px;
+
+    margin: 14px 0;
+  }
+
+  &_output {
+    padding: 16px;
+    height: 100dvh;
+    .location {
+      display: flex;
+      padding: 9.5px 0;
+      border-bottom: 1px solid var(--gray-100);
+
+      input {
+        margin-right: 10px;
+      }
+
+      &_info {
+        display: flex;
+        flex-direction: column;
+        @include Body4-R;
+        color: var(--gray-600);
+        .title {
+          @include Title5-M;
+          color: var(--Black);
+        }
+      }
+    }
+
+    .button_box {
+      position: fixed;
+      bottom: 20px;
+      width: 93%;
+
+      .submit_btn {
+        @include Title3-SB;
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 13px;
+        background-color: var(--Primary-blue);
+        color: white;
+        padding: 14px 0;
+      }
+    }
+  }
+}
