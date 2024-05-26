@@ -58,7 +58,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <BottomNavBar />
         <div className="schedule_add">
           {/* <div className="schedule_add" onClick={}> */}
-          <Plus />
+          <Link href="/instructor/register">
+            <Plus />
+          </Link>
         </div>
       </div>
     </>
