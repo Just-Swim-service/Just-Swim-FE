@@ -177,7 +177,7 @@ export default function Layout({
                 13일, <span>토</span>
               </div>
             </div>
-            <div className="class_list_wrapper">
+            <div className="month_class_list_wrapper">
               {classList?.length > 0 ? (
                 <div className="class_list">
                   {classList?.map((item: any) => (
