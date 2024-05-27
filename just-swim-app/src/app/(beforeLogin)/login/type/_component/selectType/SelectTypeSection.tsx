@@ -1,4 +1,4 @@
-import './selectType.scss';
+import styles from './selectType.module.scss';
 
 export default function SelectTypeSection({
   type,
@@ -9,15 +9,16 @@ export default function SelectTypeSection({
 }) {
   return (
     <>
-      <div className='select_type_section'>
-        <div className="type_button_wrapper">
+      <div className={styles.select_type_section}>
+        <div className={styles.type_button_wrapper}>
           <button
-            className={`type_button ${type === 'instructor' ? 'active' : ''}`}
+            className={`${styles.type_button} ${styles[type === 'instructor' ? 'active' : '']}`}
+            // className={`type_button ${type === 'instructor' ? 'active' : ''}`}
             onClick={() => handleType('instructor')}>
-            <div className="type_button_img">
+            <div className={styles.type_button_img}>
               <div></div>
             </div>
-            <div className="type_button_info">
+            <div className={styles.type_button_info}>
               <div>
                 <h3>수영 강사</h3>
               </div>
@@ -32,14 +33,14 @@ export default function SelectTypeSection({
           </button>
         </div>
 
-        <div className="type_button_wrapper">
+        <div className={styles.type_button_wrapper}>
           <button
-            className={`type_button ${type === 'customer' ? 'active' : ''}`}
+            className={`${styles.type_button} ${styles[type === 'customer' ? 'active' : '']}`}
             onClick={() => handleType('customer')}>
-            <div className="type_button_img">
+            <div className={styles.type_button_img}>
               <div></div>
             </div>
-            <div className="type_button_info">
+            <div className={styles.type_button_info}>
               <div>
                 <h3>수강생/보호자</h3>
               </div>

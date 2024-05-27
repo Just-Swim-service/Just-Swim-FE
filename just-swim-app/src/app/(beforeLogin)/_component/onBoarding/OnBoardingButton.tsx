@@ -1,4 +1,4 @@
-import './onBoarding.scss';
+import styles from './onBoarding.module.scss';
 
 import Image from 'next/image';
 import Kakao from '/public/assets/kakao.svg';
@@ -33,11 +33,11 @@ export default function OnBoardingButton({
   }
 
   return (
-    <div className="button_wrapper">
-      <button onClick={onClick} className={`${name}_button`}>
+    <div className={styles.button_wrapper}>
+      <button onClick={onClick} className={`${styles[name + '_button']}`}>
         <div>
           {/* SVG 컴포넌트 출력 */}
-          {IconComponent && <IconComponent className="sns_image" />}{' '}
+          {IconComponent && <IconComponent className={styles.sns_image} />}{' '}
           {/* <Image className="sns_image" src={imgSrc} alt={`${name}`} /> */}
           <p>{sns}로 계속하기</p>
         </div>

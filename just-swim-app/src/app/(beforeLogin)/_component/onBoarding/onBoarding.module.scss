@@ -1,6 +1,6 @@
 @import '@/app/globals.scss';
 
-header {
+.header {
   flex-grow: 1;
   display: flex;
   gap: 10px;
@@ -12,7 +12,7 @@ header {
   .header_logo {
     @include Title2-M;
 
-    color: var(--Primary-blue);
+    color: $--Primary-blue;
   }
 
   .logo {
@@ -22,11 +22,11 @@ header {
   .header_info > p {
     @include Body2-R;
 
-    color: var(--gray-500);
+    color: $--gray-500;
   }
 }
 
-section {
+.section {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@ section {
       @include Title4-M;
 
       background-color: #ffffff; /* 구글 버튼은 하얀색 */
-      color: var(--Black); /* 텍스트 색상 */
+      color: $--Black;
       border: #e1e4e6 1px solid;
       width: 100%;
       border-radius: 8px;
@@ -64,7 +64,7 @@ section {
       @include Title4-M;
 
       background-color: #37c42a; /* 네이버 버튼은 녹색 */
-      color: var(--White); /* 텍스트 색상 */
+      color: $--White;
       border: #e1e4e6 1px solid;
       width: 100%;
       border-radius: 8px;
@@ -74,7 +74,7 @@ section {
       @include Title4-M;
 
       background-color: #ffe812; /* 카카오 버튼은 노란색 */
-      color: var(--Black);
+      color: $--Black;
       border: #e1e4e6 1px solid;
       width: 100%;
       border-radius: 8px;
@@ -92,6 +92,6 @@ section {
   .footer_info {
     @include Body4-R;
 
-    color: var(--gray-500);
+    color: $--gray-500;
   }
 }

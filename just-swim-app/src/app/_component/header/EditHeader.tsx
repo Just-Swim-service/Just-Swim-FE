@@ -24,11 +24,9 @@ export default function EditHeader({ leftContent, data }: Props) {
           </Link>
           {leftContent}
         </div>
-        {data && (
-          <Link href={`/`}>
-            <div className="link_to_edit">수정하기</div>
-          </Link>
-        )}
+        <Link href={`/`}>
+          <div className="link_to_edit">수정하기</div>
+        </Link>
       </div>
     </>
   );

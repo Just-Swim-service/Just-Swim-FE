@@ -1,9 +1,9 @@
-import "./profileSetting.scss";
+import styles from './profileSetting.module.scss';
 
 export default function ProfileSettingHeader({ name }: { name: string }) {
   return (
     <>
-      <div className="profile_setting_header">
+      <div className={styles.profile_setting_header}>
         <div>
           <h3>
             {name} 분들이 알아볼 수 있도록
