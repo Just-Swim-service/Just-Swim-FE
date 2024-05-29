@@ -3,7 +3,7 @@
 .register_wrapper {
   width: 100%;
   height: 640px;
-  // background-color: var(--gray-50);
+  // background-color: $--gray-50;
 
   .register_section {
     .register_inner {
@@ -19,7 +19,7 @@
     .line {
       width: 100%;
       height: 8px;
-      background-color: var(--gray-50);
+      background-color: $--gray-50;
     }
 
     .register_inner {
@@ -38,8 +38,8 @@
       width: 85%;
       height: 44px;
       border-radius: 10px;
-      box-shadow: 0 -2px 0 0 var(--Cancel) inset;
-      color: var(--Cancel);
+      box-shadow: 0 -2px 0 0 $--Cancel inset;
+      color: $--Cancel;
     }
 
     .register_btn {
@@ -49,11 +49,11 @@
       color: white;
       padding-bottom: 14px;
       margin-top: 14px;
-      background-color: var(--gray-300);
+      background-color: $--gray-300;
       pointer-events: none;
     }
     .active {
-      background-color: var(--Primary-blue);
+      background-color: $--Primary-blue;
       pointer-events: all;
     }
   }

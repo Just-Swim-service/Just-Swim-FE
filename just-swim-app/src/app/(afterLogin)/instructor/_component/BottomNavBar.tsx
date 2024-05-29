@@ -1,7 +1,7 @@
 'use client';
 
+import styled from './bottomNavBar.module.scss';
 import Link from 'next/link';
-import './bottomNavBar.scss';
 import { useState } from 'react';
 
 export default function BottomNavBar() {
@@ -12,20 +12,20 @@ export default function BottomNavBar() {
   };
 
   return (
-    <div className="bottom_nav_bar_wrapper">
+    <div className={styled.bottom_nav_bar_wrapper}>
       <Link
         href="/instructor/classList/classListTabs"
-        className={`bottom_nav_bar ${type === 'classList' ? 'active' : ''}`}>
+        className={`${styled.bottom_nav_bar} ${styled[type === 'classList' ? 'active' : '']}`}>
         <button onClick={() => handleBottomNavClick('classList')}>수업</button>
       </Link>
       <Link
         href="/instructor/schedule/weekly/classList"
-        className={`bottom_nav_bar ${type === 'schedule' ? 'active' : ''}`}>
+        className={`${styled.bottom_nav_bar} ${styled[type === 'schedule' ? 'active' : '']}`}>
         <button onClick={() => handleBottomNavClick('schedule')}>홈</button>
       </Link>
       <Link
         href="/instructor/feedback/feedbackView"
-        className={`bottom_nav_bar ${type === 'feedback' ? 'active' : ''}`}>
+        className={`${styled.bottom_nav_bar} ${styled[type === 'feedback' ? 'active' : '']}`}>
         <button onClick={() => handleBottomNavClick('feedback')}>피드백</button>
       </Link>
     </div>

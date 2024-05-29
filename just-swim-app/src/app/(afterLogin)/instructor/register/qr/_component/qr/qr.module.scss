@@ -9,7 +9,7 @@
   h3 {
     @include Title2-SB;
 
-    color: var(--Black);
+    color: $--Black;
   }
 }
 
@@ -17,8 +17,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: var(--gray-50);
-  border: 1px solid var(--gray-100);
+  background-color: $--gray-50;
+  border: 1px solid $--gray-100;
   padding: 26px 16px;
 
   .class_name {
@@ -31,7 +31,7 @@
     @include Title5-M;
 
     margin-bottom: 24px;
-    color: var(--gray-600);
+    color: $--gray-600;
   }
 
   .instructor {
@@ -45,8 +45,8 @@
     margin: 0 auto 12px;
     width: 169px;
     height: 40px;
-    background-color: var(--White);
-    border: 1px solid var(--gray-200);
+    background-color: $--White;
+    border: 1px solid $--gray-200;
     border-radius: 10px;
   }
 
@@ -64,7 +64,7 @@
     justify-content: center;
     margin-bottom: 51px;
     gap: 16px;
-    color: var(--gray-700);
+    color: $--gray-700;
 
     .qr_save,
     .qr_share {
@@ -81,9 +81,9 @@
 
         width: 32px;
         height: 32px;
-        border: 1px solid var(--gray-200);
+        border: 1px solid $--gray-200;
         border-radius: 100%;
-        background-color: var(--White);
+        background-color: $--White;
       }
     }
   }
@@ -112,11 +112,11 @@
     width: 100%;
     height: 100%;
     border-radius: 8px;
-    color: var(--Primary-blue);
+    color: $--Primary-blue;
   }
 
   .active {
-    background-color: var(--Primary-blue);
-    color: var(--White);
+    background-color: $--Primary-blue;
+    color: $--White;
   }
 }

@@ -14,7 +14,7 @@
       @include Title5-M;
 
       margin-bottom: 6px;
-      color: var(--Black);
+      color: $--Black;
     }
 
     .week_button {
@@ -37,8 +37,8 @@
           justify-content: center;
           width: 42px;
           height: 56px;
-          background-color: var(--gray-50);
-          border: 1px solid var(--gray-200);
+          background-color: $--gray-50;
+          border: 1px solid $--gray-200;
           border-radius: 10px;
           padding: 6px 14px;
 
@@ -62,32 +62,32 @@
             background-color: #f1554c;
             border-radius: 50%;
             margin-left: -1px;
-            border: 0.5px solid var(--White);
+            border: 0.5px solid $--White;
           }
         }
       }
     }
 
     .day_schedule_wrapper {
-      background-color: var(--Primary-blue);
+      background-color: $--Primary-blue;
 
-      background-color: var(--gray-50);
-      border-top: 1px solid var(--gray-100);
+      background-color: $--gray-50;
+      border-top: 1px solid $--gray-100;
     }
 
     .active {
       background-color: transparent;
 
       .tab_img > path {
-        fill: var(--Primary-blue);
+        fill: $--Primary-blue;
       }
 
       h3 {
-        color: var(--Primary-blue);
+        color: $--Primary-blue;
       }
 
       button {
-        border-bottom: 2px solid var(--Primary-blue);
+        border-bottom: 2px solid $--Primary-blue;
       }
     }
   }
