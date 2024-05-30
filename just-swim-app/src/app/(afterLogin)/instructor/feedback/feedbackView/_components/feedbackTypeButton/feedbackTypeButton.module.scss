@@ -1,23 +1,22 @@
-@import '../../../../../../globals.scss';
+@import '@/app/globals.scss';
 
-.button-box {
+.button_box {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 28px 0;
 
   button {
     width: 159px;
     height: 152px;
-    background-color: var(--gray-100);
-    border: 1px solid var(--gray-200);
+    background-color: $--gray-100;
+    border: 1px solid $--gray-200;
     border-radius: 10px;
     text-align: left;
     padding: 15px;
-    position: relative;
+    display: flex;
+    align-items: flex-end;
 
     p {
-      position: absolute;
-      bottom: 15%;
       @include Title3-M;
 
       span {

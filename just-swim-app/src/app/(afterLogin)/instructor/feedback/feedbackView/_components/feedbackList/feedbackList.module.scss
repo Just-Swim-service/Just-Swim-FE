@@ -1,27 +1,24 @@
-@import '../../../../../../globals.scss';
+@import '@/app/globals.scss';
 
-.feedbackList-box {
-  background-color: var(--gray-50);
+.feedbackList_box {
+  background-color: $--gray-50;
 
-  .feedbackList-text {
-    padding: 20px 16px;
-
-    h2 {
-      @include Title4-SB;
-      color: var(--gray-600);
+  .feedbackList_text {
+    .prev {
+      @include Title3-SB;
+      color: $--gray-600;
     }
 
-    h3 {
+    p {
       @include Body3-R;
-      color: var(--gray-600);
+      color: $--gray-600;
     }
   }
 
-  .feedbackList-Card {
-    background-color: var(--White);
-    border: 1px solid var(--gray-100);
+  .feedbackList_Card {
+    background-color: $--White;
+    border: 1px solid $--gray-100;
     border-radius: 14px;
-    margin: 0 16px;
     padding: 14px 10px;
 
     div {

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import './feedbackList.scss';
+import styles from './feedbackList.module.scss';
 
 export default function FeedbackList() {
   let feedbackList = [
@@ -40,15 +40,15 @@ export default function FeedbackList() {
   ];
 
   return (
-    <div className="feedbackList-box">
-      <div className="feedbackList-text">
-        <h2>이전 기록</h2>
-        <h3>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</h3>
+    <div className={styles.feedbackList_box}>
+      <div className={styles.feedbackList_text}>
+        <p className={styles.prev}>이전 기록</p>
+        <p>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</p>
       </div>
 
       <div>
         {feedbackList.map((item) => (
-          <div className="feedbackList-Card">
+          <div className={styles.feedbackList_Card}>
             <div>
               <p>
                 <span>
@@ -107,9 +107,9 @@ export default function FeedbackList() {
                 {item.type}
               </p>
             </div>
-            <p className="content">{item.content}</p>
-            <p className="target">
-              <span className="icon">
+            <p className={styles.content}>{item.content}</p>
+            <p className={styles.target}>
+              <span className={styles.icon}>
                 <svg
                   width="22"
                   height="22"
