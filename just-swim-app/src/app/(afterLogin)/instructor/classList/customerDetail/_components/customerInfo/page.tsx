@@ -1,13 +1,13 @@
-import './customerInfo.scss';
+import styles from './customerInfo.module.scss';
 
 export default function CustomerInfo() {
   return (
     <>
-      <div className="customerInfo">
-        <div className="circle"></div>
-        <p className="name">홍길동</p>
-        <div className="userInfo">
-          <span className="icon">
+      <div className={styles.customer_info}>
+        <div className={styles.circle}></div>
+        <p className={styles.name}>홍길동</p>
+        <div className={styles.user_info}>
+          <span className={styles.icon}>
             <svg
               width="16"
               height="17"
@@ -21,7 +21,9 @@ export default function CustomerInfo() {
             </svg>
           </span>
           <p>1998년 11월 11일</p>
-          <span className="icon">
+        </div>
+        <div className={styles.user_info}>
+          <span className={styles.icon}>
             <svg
               width="20"
               height="17"
@@ -39,7 +41,9 @@ export default function CustomerInfo() {
             </svg>
           </span>
           <p>11223344abcd@gmail.com</p>
-          <span className="icon">
+        </div>
+        <div className={styles.user_info}>
+          <span className={styles.icon}>
             <svg
               width="13"
               height="21"
@@ -55,7 +59,7 @@ export default function CustomerInfo() {
           <p>등록된 번호가 없습니다.</p>
         </div>
       </div>
-      <div className="bar"></div>
+      <div className={styles.bar}></div>
     </>
   );
 }
