@@ -1,15 +1,43 @@
 'use client';
 
-import './feedbackDetail.scss';
+import styles from './feedbackDetail.module.scss';
 
 export default function FeedbackDetail() {
   return (
-    <div className="detail_container">
-      <div className="detail_title">
-        <p>피드백 기준 수업일</p>
+    <div className={styles.detail_container}>
+      <div className={styles.feedback_date}>
+        <span className={styles.icon}>
+          <svg
+            width="18"
+            height="19"
+            viewBox="0 0 18 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_2321_2526)">
+              <path
+                d="M15.1873 3.14889C15.3208 3.11435 15.4613 3.11731 15.5933 3.15744C15.7252 3.19757 15.8436 3.27331 15.9353 3.37633C16.027 3.47936 16.0885 3.60568 16.1131 3.74141C16.1376 3.87713 16.1243 4.017 16.0745 4.14564L11.5745 15.7706C11.53 15.8858 11.4578 15.9881 11.3642 16.0687C11.2706 16.1492 11.1586 16.2054 11.0382 16.2322C10.9177 16.2591 10.7924 16.2558 10.6735 16.2226C10.5546 16.1895 10.4457 16.1275 10.3565 16.0421L7.82003 13.6159L6.91778 14.5174C6.44078 14.9944 5.62478 14.6569 5.62478 13.9819V11.5159L1.73153 7.79214C1.63493 7.69972 1.56479 7.58317 1.52837 7.45454C1.49195 7.32591 1.49057 7.18988 1.52438 7.06054C1.55819 6.9312 1.62595 6.81325 1.72065 6.7189C1.81536 6.62454 1.93356 6.55722 2.06303 6.52389L15.1873 3.14889ZM13.6018 6.37764L7.60328 11.3329L10.5808 14.1814L13.6018 6.37764ZM12.4183 5.41014L3.74303 7.63989L6.51203 10.2874L12.4183 5.40864V5.41014Z"
+                fill="#7E8184"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_2321_2526">
+                <rect
+                  width="18"
+                  height="18"
+                  fill="white"
+                  transform="translate(0 0.5)"
+                />
+              </clipPath>
+            </defs>
+          </svg>
+        </span>
+        <p>2024.03.22 전송된 피드백</p>
       </div>
-      <div className="detail_content">
-        <span className="detail_icon">
+      <div className={styles.detail_title}>
+        <p>피드백 기준일</p>
+      </div>
+      <div className={styles.detail_content}>
+        <span className={styles.detail_icon}>
           <svg
             width="20"
             height="20"
@@ -31,11 +59,11 @@ export default function FeedbackDetail() {
         </span>
         <p>3월 12일, 2024년</p>
       </div>
-      <div className="detail_title">
+      <div className={styles.detail_title}>
         <p>피드백 대상</p>
       </div>
-      <div className="detail_content">
-        <span className="detail_icon">
+      <div className={styles.detail_content}>
+        <span className={styles.detail_icon}>
           <svg
             width="13"
             height="17"
@@ -50,23 +78,23 @@ export default function FeedbackDetail() {
         </span>
         <p>User 1122 님</p>
       </div>
-      <div className="detail_title">
+      <div className={styles.detail_title}>
         <p>첨부 파일</p>
       </div>
-      <div className="detail_photo">
-        <div className="photo"></div>
-        <div className="photo"></div>
+      <div className={styles.detail_photo}>
+        <div className={styles.photo}></div>
+        <div className={styles.photo}></div>
       </div>
-      <div className="detail_title">
+      <div className={styles.detail_title}>
         <p>첨부 링크</p>
       </div>
-      <div className="detail_content">
+      <div className={styles.detail_content}>
         <p>https://github.com/Just-Swim-service</p>
       </div>
-      <div className="detail_title">
+      <div className={styles.detail_title}>
         <p>피드백</p>
       </div>
-      <div className="detail_content">
+      <div className={styles.detail_content}>
         <p>
           회원님! 오늘 자세는 좋았으나 마지막 스퍼트가 부족해 보였어요 호흡하실
           때에도 팔 각도를 조정해 주시면 좋을 것 같습니다.

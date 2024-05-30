@@ -1,0 +1,58 @@
+@import '@/app/globals.scss';
+
+.detail_container {
+  width: 90%;
+  margin: 0 auto;
+
+  .feedback_date {
+    @include Title5-M;
+    color: $--gray-600;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .icon {
+      font-size: 18px;
+      margin-right: 4px;
+    }
+  }
+
+  .detail_title {
+    margin-bottom: 12px;
+
+    p {
+      @include Title5-M;
+    }
+  }
+
+  .detail_content {
+    height: 21px;
+    margin-bottom: 22px;
+    padding: 16px 15px;
+    border: 1px solid $--gray-100;
+    border-radius: 6px;
+    background-color: $--gray-50;
+    display: flex;
+    align-items: center;
+
+    .detail_icon {
+      margin-right: 16px;
+    }
+
+    p {
+      @include Title5-SB;
+    }
+  }
+
+  .detail_photo {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+
+    .photo {
+      width: 76px;
+      height: 76px;
+      background-color: $--gray-100;
+    }
+  }
+}
