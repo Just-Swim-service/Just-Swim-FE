@@ -1,9 +1,9 @@
-import './feedbackRecord.scss';
+import styles from './feedbackRecord.module.scss';
 
 export default function FeedbackRecord() {
   return (
     <>
-      <p className="title">
+      <p className={styles.title}>
         <span>
           <svg
             width="18"
@@ -19,9 +19,9 @@ export default function FeedbackRecord() {
         </span>
         피드백 기록
       </p>
-      <div className="feedBox">
-        <div className="textFlex">
-          <p className="day">
+      <div className={styles.feed_box}>
+        <div className={styles.text_flex}>
+          <p className={styles.day}>
             <span>
               <svg
                 width="18"
@@ -49,8 +49,8 @@ export default function FeedbackRecord() {
             </span>
             2023년 1월 12일 수업
           </p>
-          <div className="textLine"></div>
-          <p className="type">
+          <div className={styles.text_line}></div>
+          <p className={styles.type}>
             <span>
               <svg
                 width="16"
@@ -67,15 +67,15 @@ export default function FeedbackRecord() {
             개별 피드백
           </p>
         </div>
-        <div className="feedContent">
-          <p className="content">
+        <div className={styles.feed_content}>
+          <p className={styles.content}>
             회원님! 오늘 자세는 아주 좋았으나 마지막 스퍼트가 부족해 보였어요.
             호흡하실 때 지난 시간에 말씀드린 것처럼 하시면 더 좋을 것 같습니다.
             관련 영상 링크 첨부해 드리니 꼭 다음 시간 전까지 시청하고 오세요!
             오늘도 수고하셨습니다.
           </p>
-          <div className="feedPhoto">
-            <p className="photo">
+          <div>
+            <p className={styles.photo}>
               <span>
                 <svg
                   width="76"
@@ -91,7 +91,7 @@ export default function FeedbackRecord() {
             </p>
           </div>
         </div>
-        <p className="feedLink">
+        <p className={styles.feed_link}>
           <span>
             <svg
               width="16"
@@ -108,8 +108,8 @@ export default function FeedbackRecord() {
           https://www.notion.so/4-73697ca598274d27beb4
         </p>
       </div>
-      <div className="buttonBox">
-        <button className="feedButton">피드벡 남기기</button>
+      <div className={styles.button_box}>
+        <button className={styles.feed_button}>피드벡 남기기</button>
       </div>
     </>
   );
