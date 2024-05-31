@@ -9,7 +9,9 @@ import Datepicker from '@/app/_component/DatePicker';
 import { useState } from 'react';
 import Link from 'next/link';
 import ColorModal from '@/app/_component/Modal/ColorModal';
+import location_icon from '/public/assets/input_icon_location.png';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function ClassInfoEdit() {
   const router = useRouter();
@@ -70,18 +72,34 @@ export default function ClassInfoEdit() {
             <Datepicker bgColor="gray" />
 
             <label htmlFor="location">수업 위치</label>
-            <input
-              id="location"
-              className={`input gray`}
-              placeholder="강동구 실내 수영장"
-              onClick={() => router.push('edit/search')}
-            />
+
+            <div className="location_input">
+              <input
+                id="location"
+                className={`input gray`}
+                placeholder="강동구 실내 수영장"
+                onClick={() => router.push('edit/search')}
+              />
+              <Image
+                src={location_icon}
+                alt="location icon"
+                width={20}
+                height={20}
+                className="locatin_icon"
+              />
+            </div>
 
             <label>종료 일자</label>
             <Datepicker bgColor="gray" />
 
             <label>구분 색</label>
-            <input onClick={clickModal} className={`input gray`}></input>
+            <div className="color_input">
+              <input
+                onClick={clickModal}
+                className={`input gray`}
+                placeholder="구분색"></input>
+              <div className="pick_color" />
+            </div>
             {showModal && (
               <ColorModal showModal={showModal} setShowModal={setShowModal} />
             )}

@@ -47,7 +47,35 @@
         }
       }
 
+      .location_input,
+      .color_input {
+        position: relative;
+        width: inherit;
+        input {
+          padding-left: 50px;
+        }
+        .pick_color {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 10px;
+          width: 30px;
+          height: 30px;
+          background-color: red;
+          border-radius: 6px;
+        }
+        .input#location {
+          padding-left: 45px;
+        }
+        .locatin_icon {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 10px;
+        }
+      }
       .input {
+        width: 100%;
         background-color: white;
 
         border: 1px solid transparent;
