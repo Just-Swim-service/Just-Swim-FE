@@ -1,9 +1,9 @@
-import styles from '@/app/(beforeLogin)/Common.module.css';
+import './selectType.scss';
 
 export default function SelectTypeHeader() {
   return (
     <>
-      <div className={styles.header}>
+      <div className='select_type_header'>
         <div>
           <h3>
             원활한 서비스 이용을 위해

@@ -1,26 +1,27 @@
+import './profileSetting.scss';
 import Image from 'next/image';
-import styles from './Profile.module.css';
 import Gallery from '/public/assets/gallery.svg';
 import { symlink } from 'fs';
 
-export default function ProfileSection() {
+export default function ProfileSettingSection() {
   return (
     <>
       {/* TODO: 이미지 넣기 */}
-      <div className={styles.section}>
+      <section className="profile_setting_section">
         <div>
-          <div className={styles.profileImg}>
-            <div className={styles.galleryButtonWrapper}>
+          <div className="profile_img">
+            <div className="gallery_button_wrapper">
               <button
                 // onClick={handleButtonClick}
-                className={styles.galleryButton}>
-                <Image
+                className="gallery_button">
+                <Gallery />
+                {/* <Image
                   src={Gallery}
                   alt="gallery"
                   // onClick={() =>
                   //   inputFileRef.current && inputFileRef.current.click()
                   // } // 이미지 클릭 시 파일 입력 클릭
-                />
+                /> */}
               </button>
               <input
                 type="file"
@@ -32,11 +33,9 @@ export default function ProfileSection() {
             </div>
           </div>
         </div>
-        <div>
-          {/* <input type="text" value={nickname} onChange={handleChange} /> */}
-          <input type="text" className={styles.nickname} />
-        </div>
-      </div>
+        {/* <input type="text" value={nickname} onChange={handleChange} /> */}
+        <input type="text" className="nickname" />
+      </section>
     </>
   );
 }

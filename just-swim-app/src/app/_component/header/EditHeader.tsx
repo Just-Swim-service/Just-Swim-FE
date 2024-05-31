@@ -10,7 +10,7 @@ type Data = {
 
 interface Props {
   leftContent?: string;
-  data: Data;
+  data?: Data;
 }
 export default function EditHeader({ leftContent, data }: Props) {
   return (
@@ -24,9 +24,11 @@ export default function EditHeader({ leftContent, data }: Props) {
           </Link>
           {leftContent}
         </div>
-        <Link href={`/`}>
-          <div className="link_to_edit">수정하기</div>
-        </Link>
+        {data && (
+          <Link href={`/`}>
+            <div className="link_to_edit">수정하기</div>
+          </Link>
+        )}
       </div>
     </>
   );

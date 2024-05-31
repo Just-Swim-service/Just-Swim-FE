@@ -1,10 +1,9 @@
-import styles from '@/app/(beforeLogin)/Common.module.css';
-import { useSearchParams } from 'next/navigation';
+import "./profileSetting.scss";
 
-export default function ProfileHeader({ name }: { name: string }) {
+export default function ProfileSettingHeader({ name }: { name: string }) {
   return (
     <>
-      <div className={styles.header}>
+      <div className="profile_setting_header">
         <div>
           <h3>
             {name} 분들이 알아볼 수 있도록
