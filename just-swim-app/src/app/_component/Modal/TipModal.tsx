@@ -1,6 +1,6 @@
 'use client';
 
-import './tipModal.scss';
+import styled from './tipModal.module.scss';
 import ColorPicker from './_component/ColorPicker';
 import { Dispatch, SetStateAction, useState } from 'react';
 import Link from 'next/link';
@@ -18,15 +18,15 @@ export default function TipModal({
     setShowModal(false);
   };
   return (
-    <div className="tip_modal">
-      <div className="modal_background">
-        <div className="modal">
-          <div className="modal_header">
-            <div className="circle_1">1</div>
+    <div className={styled.tip_modal}>
+      <div className={styled.modal_background}>
+        <div className={styled.modal}>
+          <div className={styled.modal_header}>
+            <div className={styled.circle_1}>1</div>
             <p>-</p>
-            <div className={`circle_2 ${next === '2' ? 'active' : ''}`}>2</div>
+            <div className={`${styled.circle_2} ${styled[next === '2' ? 'active' : '']}`}>2</div>
           </div>
-          <div className="modal_title">
+          <div className={styled.modal_title}>
             <div>작성 꿀팁</div>
             <div>
               {next === '1' ? (
@@ -44,11 +44,11 @@ export default function TipModal({
               )}
             </div>
           </div>
-          <div className="tip_modal_footer">
-            <div className="button_wrapper">
+          <div className={styled.tip_modal_footer}>
+            <div className={styled.button_wrapper}>
               {next === '1' ? (
                 <button
-                  className="select_button active"
+                  className={`${styled.select_button} ${styled.active}`}
                   onClick={handleTipModal}>
                   다음
                 </button>
@@ -58,20 +58,20 @@ export default function TipModal({
                     pathname: `/instructor/register`,
                   }}>
                   <button
-                    className="select_button active"
+                    className={`${styled.select_button} ${styled.active}`}
                     onClick={handleShowModal}>
                     확인
                   </button>
                 </Link>
               )}
             </div>
-            <div className="button_wrapper">
+            <div className={styled.button_wrapper}>
               {next === '1' ? (
                 <Link
                   href={{
                     pathname: `/instructor/register`,
                   }}>
-                  <button className="select_button" onClick={handleShowModal}>
+                  <button className={styled.select_button} onClick={handleShowModal}>
                     건너뛰기
                   </button>
                 </Link>

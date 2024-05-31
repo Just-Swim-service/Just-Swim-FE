@@ -1,5 +1,5 @@
 import ClassContent from './_component/tabContent/ClassContent';
-import './classList.scss';
+import styled from './classList.module.scss';
 
 export default function ClassList() {
   let classList = [
@@ -69,15 +69,15 @@ export default function ClassList() {
 
   return (
     <>
-      <div className="class_list_wrapper">
+      <div className={styled.class_list_wrapper}>
         {classList?.length > 0 ? (
-          <div className="class_list">
+          <div className={styled.class_list}>
             {classList?.map((item: any) => (
               <ClassContent key={item.name} item={item} />
             ))}
           </div>
         ) : (
-          <p className="empty_class">등록된 수업이 없습니다</p>
+          <p className={styled.empty_class}>등록된 수업이 없습니다</p>
         )}
       </div>
     </>

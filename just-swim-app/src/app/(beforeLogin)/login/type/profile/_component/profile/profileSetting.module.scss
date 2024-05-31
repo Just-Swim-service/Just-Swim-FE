@@ -12,13 +12,13 @@
   h3 {
     @include Title2-SB;
 
-    color: var(--Black);
+    color: $--Black;
   }
 
   p {
     @include Body2-R;
 
-    color: var(--gray-500);
+    color: $--gray-500;
   }
 }
 
@@ -47,9 +47,9 @@
       bottom: 0;
       width: 34px;
       height: 34px;
-      border: var(--gray-200) 1px solid;
+      border: $--gray-200 1px solid;
       border-radius: 50%;
-      background-color: var(--White);
+      background-color: $--White;
     }
 
     .gallery_button {
@@ -62,9 +62,9 @@
   .nickname {
     @include Title2-SB;
 
-    color: var(--Black);
+    color: $--Black;
     border: none;
-    border-bottom: 1px solid var(--gray-100);
+    border-bottom: 1px solid $--gray-100;
     padding: 10px 0px;
     outline: none;
     text-align: center;
@@ -98,13 +98,13 @@
   }
 
   .active {
-    background-color: var(--Primary-blue);
-    color: var(--White);
+    background-color: $--Primary-blue;
+    color: $--White;
   }
 
   .inactive {
     border: none;
-    background-color: var(--White);
-    color: var(--Primary-blue);
+    background-color: $--White;
+    color: $--Primary-blue;
   }
 }

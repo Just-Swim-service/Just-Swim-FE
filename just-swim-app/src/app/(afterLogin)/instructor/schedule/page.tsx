@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+
 export default function Schedule() {
-  return null;
+  redirect('/instructor/schedule/weekly');
+
 }

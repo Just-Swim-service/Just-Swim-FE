@@ -1,5 +1,5 @@
 import { ReadonlyURLSearchParams } from 'next/navigation';
-import './start.scss';
+import styles from './start.module.scss';
 
 export default function StartFooter({
   handleRoute,
@@ -8,9 +8,9 @@ export default function StartFooter({
 }) {
   return (
     <>
-      <div className='start_footer'>
-        <div className="button_wrapper">
-          <button className="select_button" onClick={handleRoute}>
+      <div className={styles.start_footer}>
+        <div className={styles.button_wrapper}>
+          <button className={styles.select_button} onClick={handleRoute}>
             시작하기
           </button>
         </div>

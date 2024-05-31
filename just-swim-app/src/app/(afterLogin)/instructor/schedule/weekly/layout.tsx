@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import './weekly.scss';
+import styled from './weekly.module.scss';
 
 export default function Weekly({
   children,
@@ -38,24 +38,24 @@ export default function Weekly({
 
   return (
     <>
-      <div className="week_button_wrapper">
-        <div className="week_buttons">
-          <div className="week_number">5월 1주차</div>
-          <div className="week_button">
+      <div className={styled.week_button_wrapper}>
+        <div className={styled.week_buttons}>
+          <div className={styled.week_number}>5월 1주차</div>
+          <div className={styled.week_button}>
             {/* 요일 버튼 */}
             {dummySchedule.map((item) => (
-              <div className="week_button_info" key={item.date}>
+              <div className={styled.week_button_info} key={item.date}>
                 <button onClick={() => handleDayClick(item)}>
-                  <div className="button_day">{item.day}</div>
-                  <div className="button_date">{item.date}</div>
+                  <div className={styled.button_day}>{item.day}</div>
+                  <div className={styled.button_date}>{item.date}</div>
                 </button>
                 {/* 개수 조정 가능해야함 */}
-                <div className="class_count">
+                <div className={styled.class_count}>
                   {Array.from(
                     { length: Math.min(item.classCnt, 3) },
                     (_, index) => (
                       // 색 바꾸기 위해서 수업 정보 있어야함
-                      <div key={index} className="class_count_item"></div>
+                      <div key={index} className={styled.class_count_item}></div>
                     ),
                   )}
                 </div>
@@ -63,7 +63,7 @@ export default function Weekly({
             ))}
           </div>
         </div>
-        <div className="week_contents">{children}</div>
+        <div className={styled.week_contents}>{children}</div>
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import './profileSetting.scss';
+import styles from './profileSetting.module.scss';
 import Image from 'next/image';
 import Gallery from '/public/assets/gallery.svg';
 import { symlink } from 'fs';
@@ -7,13 +7,13 @@ export default function ProfileSettingSection() {
   return (
     <>
       {/* TODO: 이미지 넣기 */}
-      <section className="profile_setting_section">
+      <section className={styles.profile_setting_section}>
         <div>
-          <div className="profile_img">
-            <div className="gallery_button_wrapper">
+          <div className={styles.profile_img}>
+            <div className={styles.gallery_button_wrapper}>
               <button
                 // onClick={handleButtonClick}
-                className="gallery_button">
+                className={styles.gallery_button}>
                 <Gallery />
                 {/* <Image
                   src={Gallery}
@@ -34,7 +34,7 @@ export default function ProfileSettingSection() {
           </div>
         </div>
         {/* <input type="text" value={nickname} onChange={handleChange} /> */}
-        <input type="text" className="nickname" />
+        <input type="text" className={styles.nickname} />
       </section>
     </>
   );

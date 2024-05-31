@@ -1,6 +1,7 @@
 'use client';
 
-import './monthly.scss';
+import './calendar.scss';
+import styled from './monthly.module.scss';
 import Calendar from 'react-calendar';
 import { useEffect, useRef, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -163,42 +164,42 @@ export default function Layout({
 
   return (
     <>
-      <div className="month_wrapper">
+      <div className={styled.month_wrapper}>
         {showModal && (
           <div
-            className={`schedule_modal ${modalPosition}`}
+            className={`${styled.schedule_modal} ${styled.modalPosition}`}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             onTransitionEnd={handleTransitionEnd}>
-            <div className="modal_header">
-              <div className="bar"></div>
+            <div className={styled.modal_header}>
+              <div className={styled.bar}></div>
               <div>
                 13일, <span>토</span>
               </div>
             </div>
-            <div className="month_class_list_wrapper">
+            <div className={styled.month_class_list_wrapper}>
               {classList?.length > 0 ? (
-                <div className="class_list">
+                <div className={styled.class_list}>
                   {classList?.map((item: any) => (
                     <ClassContent key={item} item={item} />
                   ))}
                 </div>
               ) : (
-                <p className="empty_class">등록된 수업이 없습니다</p>
+                <p className={styled.empty_class}>등록된 수업이 없습니다</p>
               )}
             </div>
           </div>
         )}
-        <div className="month_and_week">
-          <div className="month">
+        <div className={styled.month_and_week}>
+          <div className={styled.month}>
             {month + 1}월 <span>{'>'}</span>
           </div>
-          <div className="week_wrapper">
+          <div className={styled.week_wrapper}>
             {week.map((day) => (
               // `type_button ${type === 'weekly' ? 'active' : ''}`
               <div
-                className={`week ${day === '토' ? 'blue' : ''} ${day === '일' ? 'red' : ''}`}
+                className={`${styled.week} ${styled[day === '토' ? 'blue' : '']} ${styled[day === '일' ? 'red' : '']}`}
                 key={day}>
                 {day}
               </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import './classRegister.scss';
+import styled from './classRegister.module.scss';
 import ClassInfo from '../../_component/ClassInfo';
 import TextField from '@/app/_component/TextField';
 import Warning from '@assets/warning_img.svg';
@@ -16,11 +16,11 @@ export default function ClassRegister() {
   const [showModal, setShowModal] = useState(true);
 
   return (
-    <div className="register_section">
+    <div className={styled.register_section}>
       {/* 모달 */}
       {showModal && <TipModal setShowModal={setShowModal} />}
-      <div className="register_inner">
-        <div className="register_class_info">
+      <div className={styled.register_inner}>
+        <div className={styled.register_class_info}>
           {/* 글자수 안내 메시지 추가 필요 */}
           <div>
             <TextField
@@ -38,17 +38,17 @@ export default function ClassRegister() {
           </div>
         </div>
       </div>
-      <div className="line"></div>
-      <div className="register_inner">
+      <div className={styled.line}></div>
+      <div className={styled.register_inner}>
         <ClassInfo islabel={true} bgColor={'gray'} />
       </div>
-      <div className="register_error">
+      <div className={styled.register_error}>
         <Warning />
         <p>이미 같은 일정으로 등록된 수업이 있습니다.</p>
       </div>
       <button
         // onClick={handleRegisterButton}
-        className={`register_btn ${check ? 'active' : ''}`}>
+        className={`${styled.register_btn} ${styled[check ? 'active' : '']}`}>
         수업 등록
       </button>
     </div>

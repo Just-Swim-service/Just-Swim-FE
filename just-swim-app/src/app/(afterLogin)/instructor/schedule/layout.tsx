@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import './schedule.scss';
+import styled from './schedule.module.scss';
 
 import Weekly from '/public/assets/weekly.svg';
 import Monthly from '/public/assets/monthly.svg';
@@ -24,40 +24,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="schedule_header">
+      <div className={styled.schedule_header}>
         <ProfileHeader leftContent="" data={data} />
-        <div className="today_info">
+        <div className={styled.today_info}>
           {/* 날짜로 데이터 바꿔줘야함 */}
           <p>13일 토요일, 오늘</p>
           <h3>이후 등록된 수업이 없습니다.</h3>
           {/* <div>예정된 수업이 2개 있습니다.</div> */}
         </div>
-        <div className="schedule_view_type_tab">
-          <div className="type_button_wrapper">
+        <div className={styled.schedule_view_type_tab}>
+          <div className={styled.type_button_wrapper}>
             <Link
               href="/instructor/schedule/weekly/classList"
-              className={`type_button ${type === 'weekly' ? 'active' : ''}`}>
+              className={`${styled.type_button} ${styled[type === 'weekly' ? 'active' : '']}`}>
               <button onClick={() => setType('weekly')}>
-                <Weekly className="tab_img" />
+                <Weekly className={styled.tab_img} />
                 <h3>주간</h3>
               </button>
             </Link>
             <Link
               href="/instructor/schedule/monthly/classList"
-              className={`type_button ${type === 'monthly' ? 'active' : ''}`}>
+              className={`${styled.type_button} ${styled[type === 'monthly' ? 'active' : '']}`}>
               <button onClick={() => setType('monthly')}>
-                <Monthly className="tab_img" />
+                <Monthly className={styled.tab_img} />
                 <h3>월간</h3>
               </button>
             </Link>
           </div>
         </div>
       </div>
-      <div className="schedule_section">{children}</div>
-      <div className="schedule_footer">
+      <div className={styled.schedule_section}>{children}</div>
+      <div className={styled.schedule_footer}>
         <BottomNavBar />
-        <div className="schedule_add">
-          {/* <div className="schedule_add" onClick={}> */}
+        <div className={styled.schedule_add}>
           <Link href="/instructor/register">
             <Plus />
           </Link>

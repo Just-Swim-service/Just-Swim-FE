@@ -1,9 +1,9 @@
-import './qr.scss';
+import styled from './qr.module.scss';
 
 export default function QrHeader() {
   return (
     <>
-      <div className="qr_header">
+      <div className={styled.qr_header}>
         <h3>
           수업 등록이 완료되었습니다.
           <br />

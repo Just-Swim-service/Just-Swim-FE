@@ -12,7 +12,7 @@
     p {
       @include Body2-R;
 
-      color: var(--gray-700);
+      color: $--gray-700;
     }
 
     h3 {
@@ -21,7 +21,7 @@
   }
 
   .schedule_view_type_tab {
-    border-bottom: 2px solid var(--gray-200);
+    border-bottom: 2px solid $--gray-200;
     height: 40px;
 
     .type_button_wrapper {
@@ -45,22 +45,22 @@
         h3 {
           @include Title4-SB;
 
-          color: var(--gray-300);
+          color: $--gray-300;
         }
       }
       .active {
         background-color: transparent;
 
         .tab_img > path {
-          fill: var(--Primary-blue);
+          fill: $--Primary-blue;
         }
 
         h3 {
-          color: var(--Primary-blue);
+          color: $--Primary-blue;
         }
 
         button {
-          border-bottom: 2px solid var(--Primary-blue);
+          border-bottom: 2px solid $--Primary-blue;
         }
       }
     }
@@ -68,7 +68,7 @@
 }
 
 .schedule_section {
-  width: 100%; 
+  width: 100%;
 }
 
 .schedule_footer {
@@ -87,6 +87,6 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background-color: var(--Primary-blue);
+    background-color: $--Primary-blue;
   }
 }
