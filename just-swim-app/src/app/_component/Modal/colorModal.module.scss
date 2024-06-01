@@ -37,7 +37,7 @@
       height: 4px;
       padding: 10px 165px;
       div {
-        background-color: var(--gray-300);
+        background-color: $--gray-300;
         width: 30px;
         height: 4px;
         margin: 0 auto;
@@ -50,7 +50,7 @@
       }
       div:nth-child(2) {
         @include Title5-M;
-        color: var(--gray-600);
+        color: $--gray-600;
       }
     }
 
@@ -80,13 +80,13 @@
         border-radius: 13px;
 
         &.cancel {
-          background-color: var(--Chips);
-          color: var(--Primary-blue);
+          background-color: $--Chips;
+          color: $--Primary-blue;
         }
 
         &.save {
-          background-color: var(--Primary-blue);
-          color: var(--White);
+          background-color: $--Primary-blue;
+          color: $--White;
         }
       }
 

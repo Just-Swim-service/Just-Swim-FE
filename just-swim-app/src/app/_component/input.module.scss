@@ -10,19 +10,19 @@
     label {
       // display: block;
       font-size: 14px;
-      color: var(--gray-600);
+      color: $--gray-600;
       line-height: 150%;
     }
 
     span {
       @include Body5-R;
       margin-left: 2px;
-      color: var(--Primary-blue);
+      color: $--Primary-blue;
     }
   }
 
   input {
-    background-color: var(--gray-50);
+    background-color: $--gray-50;
     border: 1px solid transparent;
     border-radius: 3px;
     height: 56px;

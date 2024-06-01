@@ -1,4 +1,4 @@
-import './input.scss';
+import styled from './input.module.scss';
 
 interface Props {
   label: string;
@@ -9,8 +9,8 @@ interface Props {
 
 export default function Input({ label, defaultValue, type, require }: Props) {
   return (
-    <div className="comp_input">
-      <div className="require">
+    <div className={styled.comp_input}>
+      <div className={styled.require}>
         <label>{label}</label>
         {require ? <span>(필수)</span> : null}
       </div>

@@ -1,10 +1,12 @@
+@import '@/app/globals.scss';
+
 .classInfo {
   display: flex;
   flex-direction: column;
   gap: 10px;
 
   label {
-    color: var(--gray-600);
+    color: $--gray-600;
     font-size: 14px;
     margin-bottom: 10px;
   }
@@ -35,7 +37,7 @@
     padding: 14px;
 
     &.gray {
-      background-color: var(--gray-50);
+      background-color: $--gray-50;
     }
   }
 }

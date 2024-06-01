@@ -1,9 +1,11 @@
+@import '@/app/globals.scss';
+
 .search {
   position: relative;
   display: flex;
   align-items: center;
   input {
-    background-color: var(--gray-50);
+    background-color: $--gray-50;
     border: none;
     border-radius: 8px;
     width: 100%;
@@ -34,7 +36,7 @@
   font-size: 16px;
   button {
     font-size: 14px;
-    color: var(--primary-blue);
+    color: $--Primary-blue;
   }
 }
 
@@ -44,7 +46,7 @@
   justify-content: flex-start;
 
   padding: 13px 0;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid $--gray-200;
 
   input {
     margin-right: 8px;

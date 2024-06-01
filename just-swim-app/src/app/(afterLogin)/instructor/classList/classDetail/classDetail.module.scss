@@ -17,7 +17,7 @@
 
   .edit {
     text-decoration: underline;
-    color: var(--Primary-blue);
+    color: $--Primary-blue;
   }
 }
 
@@ -31,7 +31,7 @@
   }
 
   .desc {
-    color: var(--gray-600);
+    color: $--gray-600;
     font-size: 14px;
   }
 
@@ -43,8 +43,8 @@
     width: 169px;
     height: 40px;
     margin: 24px auto 0;
-    background-color: var(--gray-50);
-    border: 1px solid var(--gray-200);
+    background-color: $--gray-50;
+    border: 1px solid $--gray-200;
     border-radius: 10px;
   }
 
@@ -65,7 +65,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: var(--gray-700);
+      color: $--gray-700;
       font-size: 12px;
 
       .circle {
@@ -75,7 +75,7 @@
 
         width: 32px;
         height: 32px;
-        border: 1px solid var(--gray-200);
+        border: 1px solid $--gray-200;
         border-radius: 100%;
       }
     }
@@ -84,7 +84,7 @@
 
 .invite {
   padding: 23px 16px 22px;
-  background-color: var(--gray-200);
+  background-color: $--gray-200;
 
   h3 {
     margin-bottom: 10px;
@@ -109,7 +109,7 @@
 
     div:nth-child(1) {
       font-size: 10px;
-      color: var(--gray-700);
+      color: $--gray-700;
     }
   }
   .profile {
@@ -118,13 +118,13 @@
     flex-direction: row;
     justify-content: space-between;
     &_no {
-      color: var(--gray-600);
+      color: $--gray-600;
     }
   }
 }
 
 .class_info {
-  background-color: var(--gray-200);
+  background-color: $--gray-200;
   padding: 0 16px 50px;
 
   h3 {
@@ -138,7 +138,7 @@
     height: 79px;
     background-color: white;
     border-radius: 13px;
-    color: var(--Cancel);
+    color: $--Cancel;
 
     display: flex;
     flex-direction: column;
@@ -155,7 +155,7 @@
     height: 52px;
     border-radius: 13px;
 
-    background-color: var(--Primary-blue);
+    background-color: $--Primary-blue;
     color: white;
   }
 }

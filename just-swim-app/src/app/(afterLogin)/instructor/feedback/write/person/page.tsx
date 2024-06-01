@@ -3,17 +3,15 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import Header from '../../../../../_component/Header';
-import './feedbackWrite.scss';
 import addIcon from '/public/assets/add.png';
 import profile from '/public/assets/profile1.png';
 import Datepicker from '../../../../../_component/DatePicker';
 import Input from '../../../../../_component/Input';
 import deleteButton from '/public/assets/delete_button.png';
 import Link from 'next/link';
-import { useCotomerStore } from '@/app/store/store';
+import styled from './feedbackWrite.module.scss';
 
 export default function FeedbackWrite() {
-
   const fileRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
     console.log('fileRef', fileRef);
@@ -31,84 +29,76 @@ export default function FeedbackWrite() {
     // 합체!
     setImages((prev) => prev.concat(selectedFiles));
   };
+
   return (
     <>
       <Header title="개별 피드백 작성하기" />
-      <div className="feedback_write">
-        <div className="select_customer">
-          <div className="title">
+      <div className={styled.feedback_write}>
+        <div className={styled.select_customer}>
+          <div className={styled.title}>
             수강생 선택하기 <span>(필수)</span>
           </div>
-          <div className="sub_title">
+          <div className={styled.sub_title}>
             피드백을 남길 수강생의 정보를 확인해주세요
           </div>
-          <div className="flex">
+          <div className={styled.flex}>
             <Link
               href={'/instructor/feedback/search/person'}
-              className="box add_btn">
+              className={`${styled.box} ${styled.add_btn}`}>
               <Image src={addIcon} alt="add" />
-              <div className="add_txt">추가하기</div>
+              <div className={styled.add_txt}>추가하기</div>
             </Link>
-
-            <div>{}
-            <div className="box">
-              <button className="box_delete">
-                <Image src={deleteButton} alt="delete" />
-              </button>
-
-              <div className="profile">
-                <Image src={profile} alt="프로필 이미지" />
-                <div className="name">김고독</div>
-                <div className="class">아침5반</div>
+            <div>
+              <div className={styled.box}>
+                <button className={styled.box_delete}>
+                  <Image src={deleteButton} alt="delete" />
+                </button>
+                <div className={styled.profile}>
+                  <Image src={profile} alt="프로필 이미지" />
+                  <div className={styled.name}>김고독</div>
+                  <div className={styled.class}>아침5반</div>
+                </div>
               </div>
             </div>
           </div>
-
-         
-          </div>
         </div>
 
-        <div className="feedback_content">
-          <div className="wrap">
-            <div className="title">
+        <div className={styled.feedback_content}>
+          <div className={styled.wrap}>
+            <div className={styled.title}>
               피드백 기준 수업일 <span>(필수)</span>
             </div>
             <Datepicker bgColor="gray" />
           </div>
-          <div className="title">첨부 파일</div>
-          <div className="sub_title">
+          <div className={styled.title}>첨부 파일</div>
+          <div className={styled.sub_title}>
             최대 4개의 20MB 이하 파일만 첨부 가능합니다
           </div>
-
-          <div className="flex">
-            {images.map((url, i) => {
-              return (
-                <div key={url} className="added_file">
-                  <Image src={url} width="78" height="78" alt={`image${i}`} />
-                </div>
-              );
-            })}
-            <div className="box" onClick={handleClick}>
-              <label htmlFor="chooseFile">
-                <div className="add">
+          <div className={styled.flex}>
+            {images.map((url, i) => (
+              <div key={url} className={styled.added_file}>
+                <Image src={url} width="78" height="78" alt={`image${i}`} />
+              </div>
+            ))}
+            <div className={styled.box} onClick={handleClick}>
+              <label htmlFor="chooseFile2">
+                <div className={styled.add}>
                   <Image src={addIcon} alt="add" />
                 </div>
               </label>
               <input
                 type="file"
                 id="chooseFile2"
-                name="chooseFile"
+                name="chooseFile2"
                 accept="image/*"
                 multiple
                 ref={fileRef}
                 onChange={handleChange}
               />
             </div>
-            {/* </form> */}
           </div>
-
-          <div className="title">첨부 링크</div>
-          <div className="link">
+          <div className={styled.title}>첨부 링크</div>
+          <div className={styled.link}>
             <input type="text" />
             <button>
               <svg
@@ -128,14 +118,15 @@ export default function FeedbackWrite() {
               </svg>
             </button>
           </div>
-
-          <div className="title">
+          <div className={styled.title}>
             피드백 남기기 <span>(필수)</span>
           </div>
-          <textarea className="feedback_area"></textarea>
+          <textarea
+            placeholder="피드백을 입력해주세요"
+            className={styled.feedback_area}></textarea>
         </div>
       </div>
-      <button className="submit_btn">전송하기</button>
+      <button className={styled.submit_btn}>전송하기</button>
     </>
   );
 }
