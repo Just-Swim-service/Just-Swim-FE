@@ -5,11 +5,11 @@ import QRCode from '/public/assets/qr_code.png';
 import downloadIcon from '/public/assets/icon_download.png';
 import shareIcon from '/public/assets/icon_share.png';
 import arrowBackIcon from '/public/assets/icon_arrow_back.png';
-import './classDetail.scss';
 import Profile from '../../../_component/Profile';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import ClassInfo from '../../../_component/ClassInfo';
 import deleteIcon from '/public/assets/icon_delete.png';
+import styled from './classDetail.module.scss';
 
 // 수업 참여자 리스트
 let peopleList = [
@@ -45,38 +45,42 @@ let peopleList = [
 
 export default function ClassDetail() {
   return (
-    <div className="class_detail">
-      <div className="header">
+    <div className={styled.class_detail}>
+      <div className={styled.header}>
         <div className="row">
           <Image src={arrowBackIcon} alt="뒤로가기" />
           <div>수업 정보</div>
         </div>
-        <Link href="/instructor/classList/classDetail/edit" className="edit">
+        <Link
+          href="/instructor/classList/classDetail/edit"
+          className={styled.edit}>
           수정하기
         </Link>
       </div>
 
-      <div className="qr">
+      <div className={styled.qr}>
         <h2>아침 5반</h2>
-        <div className="desc">초보반으로, 배영 및 접영 위주로 수업합니다.</div>
+        <div className={styled.desc}>
+          초보반으로, 배영 및 접영 위주로 수업합니다.
+        </div>
 
-        <div className="instructor">
+        <div className={styled.instructor}>
           <Image src={profile} alt="프로필" />
           <div>홍길동 강사님 수업</div>
         </div>
 
-        <Image className="qr_image" src={QRCode} alt="qr" />
+        <Image className={styled.qr_image} src={QRCode} alt="qr" />
 
-        <div className="save_share">
-          <div className="col">
-            <div className="circle">
+        <div className={styled.save_share}>
+          <div className={styled.col}>
+            <div className={styled.circle}>
               <Image src={downloadIcon} alt="저장" />
             </div>
             <div>저장하기</div>
           </div>
 
-          <div className="col">
-            <div className="circle">
+          <div className={styled.col}>
+            <div className={styled.circle}>
               <Image src={shareIcon} alt="공유" />
             </div>
             <div>공유하기</div>
@@ -84,14 +88,14 @@ export default function ClassDetail() {
         </div>
       </div>
 
-      <div className="invite">
+      <div className={styled.invite}>
         <h3>초대된 수강생</h3>
-        <div className="student">
-          <div className="count box">
+        <div className={styled.student}>
+          <div className={`${styled.count} ${styled.box}`}>
             <div>현재 인원</div>
             <div>{'15명'}</div>
           </div>
-          <div className="profile box">
+          <div className={`${styled.profile} ${styled.box}`}>
             {peopleList.length > 0 ? (
               <>
                 <Profile customers={peopleList} />
@@ -103,21 +107,25 @@ export default function ClassDetail() {
                 />
               </>
             ) : (
-              <div className="profile_no">QR(수업 정보)을 공유해주세요!</div>
+              <div className={styled.profile_no}>
+                QR(수업 정보)을 공유해주세요!
+              </div>
             )}
           </div>
         </div>
       </div>
 
-      <div className="class_info">
+      <div className={styled.class_info}>
         <h3>수업 정보</h3>
         <ClassInfo islabel={false} bgColor="white" />
 
-        <button className="class_info_delete">
+        <button className={styled.class_info_delete}>
           <Image src={deleteIcon} alt="수업 삭제" width={24} height={24} />
           <div>수업 삭제</div>
         </button>
-        <button className="feedback_btn">수강생 전체 피드백 남기기</button>
+        <button className={styled.feedback_btn}>
+          수강생 전체 피드백 남기기
+        </button>
       </div>
     </div>
   );

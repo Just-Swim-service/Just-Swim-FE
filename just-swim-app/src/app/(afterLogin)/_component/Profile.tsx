@@ -1,11 +1,10 @@
 import Image from 'next/image';
-import './profile.scss';
+import styled from './profile.module.scss';
 
 interface Props {
-  customers: {name: string, profile: string}[]
+  customers: { name: string; profile: string }[];
 }
-export default function Profile({customers} : Props) {
-
+export default function Profile({ customers }: Props) {
   return (
     // <div className="img_list">
     //   {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
@@ -22,7 +21,7 @@ export default function Profile({customers} : Props) {
     //   })}
     // </div>
 
-    <div className="img_list">
+    <div className={styled.img_list}>
       {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
       {customers.map((el, index) => {
         return el.profile ? (

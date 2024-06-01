@@ -1,4 +1,4 @@
-@import '../../../../../../globals.scss';
+@import '@/app/globals.scss';
 
 .location_search {
   &_input {
@@ -11,7 +11,7 @@
       align-items: center;
 
       input {
-        background-color: var(--gray-50);
+        background-color: $--gray-50;
         border: none;
         border-radius: 8px;
         width: 100%;
@@ -29,7 +29,7 @@
   }
 
   .divider {
-    background-color: var(--gray-50);
+    background-color: $--gray-50;
     width: 100%;
     height: 8px;
     margin-bottom: 22px;
@@ -39,11 +39,11 @@
 
   &_output {
     padding: 16px;
-    height: 100dvh;
+    height: 100vh;
     .location {
       display: flex;
       padding: 9.5px 0;
-      border-bottom: 1px solid var(--gray-100);
+      border-bottom: 1px solid $--gray-100;
 
       input {
         margin-right: 10px;
@@ -53,10 +53,10 @@
         display: flex;
         flex-direction: column;
         @include Body4-R;
-        color: var(--gray-600);
+        color: $--gray-600;
         .title {
           @include Title5-M;
-          color: var(--Black);
+          color: $--Black;
         }
       }
     }
@@ -71,7 +71,7 @@
         width: 100%;
         margin: 0 auto;
         border-radius: 13px;
-        background-color: var(--Primary-blue);
+        background-color: $--Primary-blue;
         color: white;
         padding: 14px 0;
       }

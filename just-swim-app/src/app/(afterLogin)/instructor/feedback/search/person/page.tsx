@@ -8,15 +8,14 @@ import searchIcon from '/public/assets/icon_search.png';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import iconArrowDown from '@assets/icon_arrow_down.svg';
 import Link from 'next/link';
-import './searchPerson.scss';
-
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import {useCostomerStore} from '@/app/store/store'
+import { useCostomerStore } from '@/app/store/store';
+import styled from './searchPerson.module.scss';
 
 export default function SearchPerson() {
-  const {customerList, checkItem, removeItem} =  useCostomerStore()
+  const { customerList, checkItem, removeItem } = useCostomerStore();
   // const customerList = [
   //   { name: '김고독', profile: 'profile1' },
   //   { name: '김고독', profile: 'no_profile' },
@@ -59,11 +58,11 @@ export default function SearchPerson() {
     // e.preventDefault();  // Prevent the form from submitting on checkbox change
     // console.log(id)
 
-    checkItem(id)
-      // setCheckItems(prev => ({
-      //   ...prev, [id]: !prev[id]
-      // }));
-  }
+    checkItem(id);
+    // setCheckItems(prev => ({
+    //   ...prev, [id]: !prev[id]
+    // }));
+  };
 
   const checkLength = () => {
     const checkedCount = customerList.reduce((acc, group) => {
@@ -83,11 +82,11 @@ export default function SearchPerson() {
   // },[customerList,checkLength])
 
   return (
-    <div className="search_person">
+    <div className={styled.search_person}>
       <Header title="회원 선택" />
 
-      <div className="pad">
-        <div className="title">
+      <div className={styled.pad}>
+        <div className={styled.title}>
           피드백을 남길 <br />
           수강생을 선택해주세요
         </div>
@@ -109,15 +108,15 @@ export default function SearchPerson() {
           </Tabs>
         </Box>
 
-        <div className="inner">
-          <div className="search">
+        <div className={styled.inner}>
+          <div className={styled.search}>
             <input type="text" placeholder="수강생 이름으로 검색" />
             <button>
               <Image src={searchIcon} alt="검색" />
             </button>
           </div>
 
-          <div className="row title">
+          <div className={`${styled.row} ${styled.title}`}>
             <div>수업명</div>
             <button>
               <div>오름차순</div>
@@ -127,53 +126,45 @@ export default function SearchPerson() {
         </div>
       </div>
 
-      <div className="divider"></div>
-      {/* <div>{customerList.map((el, index) => 
-         (
-          <li key={index}>{el.name}
-           <input
-                  type="checkbox"
-                  id={index}
-                  onChange={e => checkItemHandler(e, el.id)}
-                />
-          </li>
-         
-        )
-      )}</div> */}
+      <div className={styled.divider}></div>
 
-      <div className="pad">
-        {Object.entries(customerList).map((group, index:number) => (
-          <div key={index} className="group">
-            <div className="group_name">{Object.keys(group) && Object.keys(group[1])}</div>
-            {Object.values(group[1]).map(customer => (
-              customer.map(item => (
-                <li key={item.id} className="customer">
-                <input
-                  type="checkbox"
-                  id={`item.id`}
-                  onChange={e => checkItemHandler(e, item.id)}
-                />
-                <label className="row" htmlFor={`checkbox ${item.id}`}>
-                  <Image
-                    src={`/assets/${item.profile}.png`}
-                    alt="profile"
-                    width={34}
-                    height={34}
+      <div className={styled.pad}>
+        {Object.entries(customerList).map((group, index: number) => (
+          <div key={index} className={styled.group}>
+            <div className={styled.group_name}>
+              {Object.keys(group) && Object.keys(group[1])}
+            </div>
+            {Object.values(group[1]).map((customer) =>
+              customer.map((item) => (
+                <li key={item.id} className={styled.customer}>
+                  <input
+                    type="checkbox"
+                    id={`item.id`}
+                    onChange={(e) => checkItemHandler(e, item.id)}
                   />
-                  <div>{item.name}</div>
-                </label>
-                <div className="customer_class_name">아침 5반</div>
-              </li>
-              ))  
-            
-            ))}
+                  <label className={styled.row} htmlFor={`checkbox ${item.id}`}>
+                    <Image
+                      src={`/assets/${item.profile}.png`}
+                      alt="profile"
+                      width={34}
+                      height={34}
+                    />
+                    <div>{item.name}</div>
+                  </label>
+                  <div className={styled.customer_class_name}>아침 5반</div>
+                </li>
+              )),
+            )}
           </div>
-          
-        ) )
-        }
+        ))}
 
-        <div className="main_btn">
-          <button type='button' disabled={checkLength() == 0} onClick={()=> console.log('ff')}>{checkLength()}명 선택하기</button>
+        <div className={styled.main_btn}>
+          <button
+            type="button"
+            disabled={checkLength() == 0}
+            onClick={() => console.log('ff')}>
+            {checkLength()}명 선택하기
+          </button>
         </div>
       </div>
     </div>
