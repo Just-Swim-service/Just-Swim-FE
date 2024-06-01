@@ -1,4 +1,4 @@
-import styles from './SelectType.module.css';
+import styles from './selectType.module.scss';
 
 export default function SelectTypeSection({
   type,
@@ -9,55 +9,50 @@ export default function SelectTypeSection({
 }) {
   return (
     <>
-      {/* TODO: 이미지 넣기 */}
-      <div className={styles.section}>
-        <div>
-          <div className={styles.TypeButtonWrapper}>
-            <button
-              className={`${styles.TypeButton} ${type === 'instructor' ? styles.isActive : ''}`}
-              onClick={() => handleType('instructor')}>
-              <div className={styles.TypeButtonImg}>
-                <div></div>
+      <div className={styles.select_type_section}>
+        <div className={styles.type_button_wrapper}>
+          <button
+            className={`${styles.type_button} ${styles[type === 'instructor' ? 'active' : '']}`}
+            // className={`type_button ${type === 'instructor' ? 'active' : ''}`}
+            onClick={() => handleType('instructor')}>
+            <div className={styles.type_button_img}>
+              <div></div>
+            </div>
+            <div className={styles.type_button_info}>
+              <div>
+                <h3>수영 강사</h3>
               </div>
-              <div className={styles.TypeButtonInfo}>
-                <div>
-                  <h3>수영 강사</h3>
-                </div>
-                <div>
-                  <p
-                    className={`${type === 'instructor' ? styles.isActive : ''}`}>
-                    수영 강습 이력을
-                    <br />
-                    보유하신 분
-                  </p>
-                </div>
+              <div>
+                <p>
+                  수영 강습 이력을
+                  <br />
+                  보유하신 분
+                </p>
               </div>
-            </button>
-          </div>
+            </div>
+          </button>
         </div>
 
-        <div>
-          <div className={styles.TypeButtonWrapper}>
-            <button
-              className={`${styles.TypeButton} ${type === 'customer' ? styles.isActive : ''}`}
-              onClick={() => handleType('customer')}>
-              <div className={styles.TypeButtonImg}>
-                <div></div>
+        <div className={styles.type_button_wrapper}>
+          <button
+            className={`${styles.type_button} ${styles[type === 'customer' ? 'active' : '']}`}
+            onClick={() => handleType('customer')}>
+            <div className={styles.type_button_img}>
+              <div></div>
+            </div>
+            <div className={styles.type_button_info}>
+              <div>
+                <h3>수강생/보호자</h3>
               </div>
-              <div className={styles.TypeButtonInfo}>
-                <div>
-                  <h3>수강생/보호자</h3>
-                </div>
-                <div>
-                  <p className={`${type === 'customer' ? styles.isActive : ''}`}>
-                    수영 강습 수강생
-                    <br />
-                    혹은 보호자
-                  </p>
-                </div>
+              <div>
+                <p>
+                  수영 강습 수강생
+                  <br />
+                  혹은 보호자
+                </p>
               </div>
-            </button>
-          </div>
+            </div>
+          </button>
         </div>
       </div>
     </>

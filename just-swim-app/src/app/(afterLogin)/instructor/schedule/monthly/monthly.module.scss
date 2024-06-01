@@ -1,0 +1,106 @@
+@import '@/app/globals.scss';
+@import 'react-calendar/dist/Calendar.css';
+
+.month_wrapper {
+  width: inherit;
+  height: 100%;
+  position: fixed;
+  margin-top: 160px;
+
+  .schedule_modal {
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    gap: 16px;
+    padding: 10px 16px 0 16px;
+    height: 100%;
+    background: white;
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(50%);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+
+    .modal_header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+      .bar {
+        display: flex;
+        align-self: center;
+        width: 30px;
+        height: 4px;
+        border-radius: 4px;
+        background-color: $--gray-300;
+      }
+    }
+
+    &.full {
+      transform: translateY(10%);
+    }
+
+    &.half {
+      transform: translateY(50%);
+    }
+
+    &.hidden {
+      transform: translateY(100%);
+    }
+
+    .month_class_list_wrapper {
+      text-align: center;
+      height: 100vh;
+      overflow-y: auto;
+      scrollbar-width: none;
+
+      .class_list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+    }
+  }
+
+  .month_and_week {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px 6px 16px;
+    border-bottom: 2px solid $--gray-200;
+
+    .month {
+      @include Title4-M;
+      display: flex;
+      align-items: center;
+
+      span {
+        color: $--Primary-blue;
+        margin-left: 6px;
+      }
+    }
+
+    .week_wrapper {
+      @include Body4-R;
+
+      display: flex;
+      justify-content: space-around;
+      .week {
+        display: flex;
+        // flex-basis: 14.285714285714286%;
+        justify-content: center;
+        align-items: center;
+        height: 24px;
+      }
+      .blue {
+        color: $--Primary-blue;
+      }
+      .red {
+        color: $--Cancel;
+      }
+    }
+  }
+}

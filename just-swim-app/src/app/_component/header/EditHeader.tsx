@@ -10,7 +10,7 @@ type Data = {
 
 interface Props {
   leftContent?: string;
-  data: Data;
+  data?: Data;
 }
 export default function EditHeader({ leftContent, data }: Props) {
   return (

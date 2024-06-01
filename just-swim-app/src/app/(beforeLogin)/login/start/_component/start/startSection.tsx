@@ -1,5 +1,5 @@
 import { ReadonlyURLSearchParams } from 'next/navigation';
-import './start.scss';
+import styles from './start.module.scss';
 
 export default function StartSection({
   param,
@@ -9,9 +9,9 @@ export default function StartSection({
   return (
     <>
       {/* TODO: 이미지 넣기 */}
-      <div className="section">
+      <div className={styles.start_section}>
         <div>
-          <div className="TypeButtonImg">
+          <div className={styles.type_button_img}>
             <div>
               <h3>{param.get('type')}</h3>
             </div>

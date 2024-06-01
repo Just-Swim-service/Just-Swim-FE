@@ -1,0 +1,92 @@
+@import '@/app/globals.scss';
+
+.schedule_header {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .today_info {
+    margin: 16px 0 6px 16px;
+
+    p {
+      @include Body2-R;
+
+      color: $--gray-700;
+    }
+
+    h3 {
+      @include Title2-M;
+    }
+  }
+
+  .schedule_view_type_tab {
+    border-bottom: 2px solid $--gray-200;
+    height: 40px;
+
+    .type_button_wrapper {
+      display: flex;
+      margin: 0 16px;
+      height: inherit;
+
+      .type_button {
+        display: flex;
+        justify-content: center;
+        width: 50%;
+
+        button {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
+
+        h3 {
+          @include Title4-SB;
+
+          color: $--gray-300;
+        }
+      }
+      .active {
+        background-color: transparent;
+
+        .tab_img > path {
+          fill: $--Primary-blue;
+        }
+
+        h3 {
+          color: $--Primary-blue;
+        }
+
+        button {
+          border-bottom: 2px solid $--Primary-blue;
+        }
+      }
+    }
+  }
+}
+
+.schedule_section {
+  width: 100%;
+}
+
+.schedule_footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  height: 72px;
+
+  .schedule_add {
+    position: absolute;
+    bottom: 86px;
+    right: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: $--Primary-blue;
+  }
+}

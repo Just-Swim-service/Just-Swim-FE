@@ -1,5 +1,4 @@
-// import styles from '@/app/(beforeLogin)/_component/onBoarding/OnBoarding.module.css';
-import styles from '@/app/(beforeLogin)/_component/onBoarding/OnBoarding.module.css';
+import styles from './onBoarding.module.scss';
 
 import Image from 'next/image';
 import Kakao from '/public/assets/kakao.svg';
@@ -15,20 +14,31 @@ export default function OnBoardingButton({
   sns: string;
   onClick: () => void;
 }) {
-  const imgSrc: string =
-    name === 'kakao' ? Kakao : name === 'naver' ? Naver : Google;
+  // const imgSrc: string =
+  //   name === 'kakao' ? Kakao : name === 'naver' ? Naver : Google;
+
+  let IconComponent;
+  switch (name) {
+    case 'kakao':
+      IconComponent = Kakao;
+      break;
+    case 'naver':
+      IconComponent = Naver;
+      break;
+    case 'google':
+      IconComponent = Google;
+      break;
+    default:
+      IconComponent = null;
+  }
 
   return (
-    <div className={styles.buttonWrapper}>
-      <button onClick={onClick} className={`${styles[name + 'Button']}`}>
+    <div className={styles.button_wrapper}>
+      <button onClick={onClick} className={`${styles[name + '_button']}`}>
         <div>
-          <Image
-            className={styles.snsImage}
-            src={imgSrc}
-            alt={`${name}`}
-            // width={100}
-            // height={100}
-          />
+          {/* SVG 컴포넌트 출력 */}
+          {IconComponent && <IconComponent className={styles.sns_image} />}{' '}
+          {/* <Image className="sns_image" src={imgSrc} alt={`${name}`} /> */}
           <p>{sns}로 계속하기</p>
         </div>
       </button>

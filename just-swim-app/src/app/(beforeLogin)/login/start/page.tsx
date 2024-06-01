@@ -7,14 +7,17 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Start() {
   const param = useSearchParams();
-  console.log(param);
   const router = useRouter();
   const handleRoute = () => {
-    const redirectTimeout = setTimeout(() => {
-      router.push(`/${param.get('type')}`);
-    }, 2000);
-
-    return () => clearTimeout(redirectTimeout);
+    const userType = param.get('type');
+    if (!userType) {
+      return;
+    }
+    if (userType === 'instructor') {
+      router.push(`/instructor`);
+    } else {
+      router.push(`/customer`);
+    }
   };
 
   return (
