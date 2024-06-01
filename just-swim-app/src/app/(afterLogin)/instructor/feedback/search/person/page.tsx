@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Header from '@_component/Header';
 import searchIcon from '/public/assets/icon_search.png';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
-import iconArrowDown from '@assets/icon_arrow_down.svg';
+import iconArrowDown from '@assets/icon_arrow_down.png';
 import Link from 'next/link';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
