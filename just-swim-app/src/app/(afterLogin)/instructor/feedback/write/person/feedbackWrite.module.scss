@@ -162,6 +162,7 @@
         padding: 15px 16px;
         background-color: $--gray-50;
         border: none;
+        border-radius: 6px;
       }
       button {
         width: 48px;
@@ -180,6 +181,7 @@
 
       background-color: $--gray-50;
       border: none;
+      border-radius: 8px;
 
       &::placeholder {
         text-align: center;
