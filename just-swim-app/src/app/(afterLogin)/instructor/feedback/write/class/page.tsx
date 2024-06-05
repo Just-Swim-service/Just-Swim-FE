@@ -106,7 +106,7 @@ export default function FeedbackWrite() {
             </div>
             <Link
               href={'/instructor/feedback/search/person'}
-              className={`${styled.box} ${styled.add_btn}`}>
+              classNaame={`${styled.box} ${styled.add_btn}`}>
               <Image src={addIcon} alt="add" />
               <div className={styled.add_txt}>추가하기</div>
             </Link>

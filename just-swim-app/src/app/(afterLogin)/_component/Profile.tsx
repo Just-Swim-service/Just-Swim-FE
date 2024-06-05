@@ -5,15 +5,15 @@ interface Props {
   customers: { name: string; profile: string }[];
   width: number;
   height: number;
-  xMargin: number;
-  count: boolean;
+  xMargin?: number;
+  count?: boolean;
 }
 export default function Profile({
   customers,
   width,
   height,
   xMargin = -5,
-  count,
+  count = false,
 }: Props) {
   return (
     <div className={styled.row}>
