@@ -1,3 +1,19 @@
+@import '@/app/globals.scss';
+
 .img_list {
   display: flex;
+
+  img:first-child,
+  img:last-child {
+    margin: 0 !important;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.count {
+  @include Title5-SB;
 }
