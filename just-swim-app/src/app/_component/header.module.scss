@@ -1,9 +1,14 @@
+@import '@/app/globals.scss';
+
 .header {
-  height: 46px;
-  background-color: yellow;
   display: flex;
-  //   justify-content: space-between;
+  gap: 8px;
+
+  height: 48px;
+
   align-items: center;
-  padding: 11px 16px;
-  margin-bottom: 20px;
+  padding: 13px 16px;
+  border-bottom: 1px solid $--gray-100;
+
+  @include Title3-M;
 }
