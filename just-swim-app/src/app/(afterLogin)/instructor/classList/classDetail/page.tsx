@@ -65,7 +65,7 @@ export default function ClassDetail() {
         </div>
 
         <div className={styled.instructor}>
-          <Image src={profile} alt="프로필" />
+          <Image src={profile} alt="프로필" width={24} height={24} />
           <div>홍길동 강사님 수업</div>
         </div>
 
@@ -98,7 +98,12 @@ export default function ClassDetail() {
           <div className={`${styled.profile} ${styled.box}`}>
             {peopleList.length > 0 ? (
               <>
-                <Profile customers={peopleList} />
+                <Profile
+                  customers={peopleList}
+                  width={32}
+                  height={32}
+                  xMargin={-5}
+                />
                 <Image
                   src={arrowRightIcon}
                   alt="arrow right"

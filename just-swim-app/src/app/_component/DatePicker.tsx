@@ -26,6 +26,7 @@ export default function Datepicker({ bgColor = 'white' }: Props) {
         sx={{
           bgcolor: `${bgColor == 'gray' ? '#F8F9FA' : 'white'}`,
           height: '51px !important',
+          borderRadius: '6px',
         }}
       />
     </LocalizationProvider>
