@@ -106,7 +106,7 @@ export default function FeedbackWrite() {
             </div>
             <Link
               href={'/instructor/feedback/search/person'}
-              classNaame={`${styled.box} ${styled.add_btn}`}>
+              className={`${styled.box} ${styled.add_btn}`}>
               <Image src={addIcon} alt="add" />
               <div className={styled.add_txt}>추가하기</div>
             </Link>
@@ -176,7 +176,9 @@ export default function FeedbackWrite() {
             className={styled.feedback_area}></textarea>
         </div>
       </div>
-      <button className={styled.submit_btn}>전송하기</button>
+      <Link href="confirm" className={styled.submit_btn}>
+        전송하기
+      </Link>
     </>
   );
 }
