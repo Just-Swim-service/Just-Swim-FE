@@ -4,18 +4,15 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import Header from '../../../../../_component/Header';
 import addIcon from '/public/assets/add.png';
-import profile from '/public/assets/profile1.png';
 import Datepicker from '../../../../../_component/DatePicker';
-import Input from '../../../../../_component/Input';
 import deleteButton from '/public/assets/delete_button.png';
 import Link from 'next/link';
 import styled from './feedbackWrite.module.scss';
 import Location from '@assets/location.svg';
-import Calendar from '@assets/calendar.svg';
+// import Calendar from '@assets/calendar.svg';
+import CalendarSVG from '@/app/_component/svg/CalendarSVG';
 import Clock from '@assets/clock.svg';
-import arrowRightIcon from '@assets/icon_arrow_right.png';
 
-import { height, width } from '@mui/system';
 import Profile from '@/app/(afterLogin)/_component/Profile';
 
 export default function FeedbackWrite() {
@@ -84,7 +81,7 @@ export default function FeedbackWrite() {
                     </div>
 
                     <div className={styled.info_row}>
-                      <Calendar />
+                      <CalendarSVG width={14} height={14} />
                       <div className={styled.days}>금,토 요일</div>
                     </div>
 
@@ -116,7 +113,7 @@ export default function FeedbackWrite() {
         <div className={styled.feedback_content}>
           <div className={styled.wrap}>
             <div className={styled.title}>
-              피드백 기준 수업일 <span>(필수)</span>
+              피드백 기준일 <span>(필수)</span>
             </div>
             <Datepicker bgColor="gray" />
           </div>
