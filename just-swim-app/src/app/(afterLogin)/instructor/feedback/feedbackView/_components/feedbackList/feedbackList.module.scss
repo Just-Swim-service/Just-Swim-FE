@@ -1,0 +1,54 @@
+@import '@/app/globals.scss';
+
+.feedbackList_box {
+  background-color: $--gray-50;
+
+  .feedbackList_text {
+    .prev {
+      @include Title3-SB;
+      color: $--gray-600;
+    }
+
+    p {
+      @include Body3-R;
+      color: $--gray-600;
+    }
+  }
+
+  .feedbackList_Card {
+    background-color: $--White;
+    border: 1px solid $--gray-100;
+    border-radius: 14px;
+    padding: 14px 10px;
+
+    .target {
+      @include Title5-SB;
+      color: $--Black;
+    }
+
+    .content {
+      @include Body2-R;
+      color: $--gray-800;
+    }
+
+    div {
+      display: flex;
+
+      span {
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+
+      .icon {
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+
+      p {
+        margin-right: 14px;
+        color: $--gray-700;
+        @include Body4-R;
+      }
+    }
+  }
+}
