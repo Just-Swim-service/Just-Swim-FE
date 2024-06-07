@@ -1,0 +1,66 @@
+@import '@/app/globals.scss';
+
+.title {
+  @include Title3-M;
+
+  span {
+    width: 18px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+}
+.tab_list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.tab_content {
+  width: 146px;
+  height: fit-content;
+  min-height: 0;
+  background-color: $--gray-50;
+  border-radius: 13px;
+  padding: 6px;
+  margin-bottom: 12px;
+
+  .text_content {
+    margin: 16px 12px 20px 12px;
+
+    .name {
+      @include Title3-SB;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .target {
+      @include Body2-R;
+    }
+
+    .icon {
+      margin-right: 6px;
+      vertical-align: middle;
+      color: $--gray-700;
+    }
+
+    .info {
+      @include Body3-R;
+      margin: 18px 0;
+      color: $--gray-900;
+
+      p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: $--gray-200;
+  margin: 22px 0;
+}
