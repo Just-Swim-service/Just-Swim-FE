@@ -5,8 +5,8 @@
 
   span {
     width: 18px;
-    text-align: center;
     margin-right: 6px;
+    vertical-align: middle;
   }
 }
 
@@ -20,43 +20,57 @@
   .text_flex {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 18px;
+    align-items: center;
 
     .day {
       @include Title5-M;
+      margin-right: 10px;
+      color: $--gray-900;
 
       span {
-        margin-right: 10px;
+        margin-right: 7px;
         vertical-align: middle;
       }
     }
 
     .text_line {
       width: 1px;
-      height: inherit;
+      height: 14px;
       background-color: $--gray-300;
     }
 
     .type {
       @include Title5-M;
+      margin-left: 10px;
+      color: $--gray-900;
 
       span {
-        margin-right: 10px;
+        margin-right: 7px;
         vertical-align: middle;
+        color: $--Black;
       }
     }
   }
 
   .feed_content {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: 70% 1fr;
+    display: flex;
+    gap: 5px;
+
+    .content {
+      @include Body2-R;
+    }
 
     .photo {
       @include Title5-M;
       color: $--gray-500;
       text-align: center;
+
+      div {
+        width: 76px;
+        height: 76px;
+        background-color: $--gray-200;
+        border-radius: 9px;
+      }
     }
   }
 

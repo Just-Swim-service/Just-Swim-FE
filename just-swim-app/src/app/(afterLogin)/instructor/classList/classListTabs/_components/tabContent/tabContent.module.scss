@@ -21,7 +21,7 @@
   margin-bottom: 12px;
 
   .text_content {
-    margin: 12px;
+    margin: 16px 12px 20px 12px;
 
     .name {
       @include Title3-SB;
@@ -30,13 +30,26 @@
       margin-bottom: 4px;
     }
 
+    .target {
+      @include Body2-R;
+    }
+
     .icon {
       margin-right: 6px;
+      vertical-align: middle;
+      color: $--gray-700;
     }
 
     .info {
-      @include Body2-R;
+      @include Body3-R;
       margin: 18px 0;
+      color: $--gray-900;
+
+      p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     .profile_box {
@@ -48,10 +61,10 @@
         img:nth-child(n + 2) {
           margin-left: -8px;
         }
+      }
 
-        p {
-          @include Title5-SB;
-        }
+      p {
+        @include Title5-SB;
       }
     }
   }
