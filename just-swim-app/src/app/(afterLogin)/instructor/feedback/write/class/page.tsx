@@ -9,7 +9,6 @@ import deleteButton from '/public/assets/delete_button.png';
 import Link from 'next/link';
 import styled from './feedbackWrite.module.scss';
 import Location from '@assets/location.svg';
-// import Calendar from '@assets/calendar.svg';
 import CalendarSVG from '@/app/_component/svg/CalendarSVG';
 import Clock from '@assets/clock.svg';
 
@@ -68,7 +67,6 @@ export default function FeedbackWrite() {
                   <Image src={deleteButton} alt="delete" />
                 </button>
                 <div className={styled.class}>
-                  {/* <Image src={profile} alt="프로필 이미지" /> */}
                   <div className={styled.row}>
                     <div className={styled.classname}>아침 5 반</div>
                     <div className={styled.tag}>전체</div>
@@ -109,7 +107,11 @@ export default function FeedbackWrite() {
             </Link>
           </div>
         </div>
+      </div>
 
+      <div className={styled.divider}></div>
+
+      <div className={styled.feedback_write}>
         <div className={styled.feedback_content}>
           <div className={styled.wrap}>
             <div className={styled.title}>
