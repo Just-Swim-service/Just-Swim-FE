@@ -12,6 +12,7 @@ import location_icon from '/public/assets/input_icon_location.png';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styled from './classInfoEdit.module.scss';
+import RepeatDatepicker from '@/app/_component/RepeatDatePicker';
 
 export default function ClassInfoEdit() {
   const router = useRouter();
@@ -90,7 +91,7 @@ export default function ClassInfoEdit() {
             </div>
 
             <label>종료 일자</label>
-            <Datepicker bgColor="gray" />
+            <RepeatDatepicker bgColor="gray" />
 
             <label>구분 색</label>
             <div className={styled.color_input}>

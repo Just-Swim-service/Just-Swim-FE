@@ -63,7 +63,7 @@
 
 .invite {
   padding: 23px 16px 22px;
-  background-color: $--gray-200;
+  background-color: $--gray-50;
 
   h3 {
     margin-bottom: 10px;
@@ -102,15 +102,86 @@
   }
 }
 
-.class_info {
-  background-color: $--gray-200;
+.class {
+  background-color: $--gray-50;
   padding: 0 16px 50px;
 
   h3 {
     margin-bottom: 27px;
   }
 
-  &_delete {
+  .classInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .require {
+      display: flex;
+      font-size: 14px;
+      align-items: center;
+
+      span {
+        color: $--Primary-blue;
+        @include Body5-R;
+        margin-left: 2px;
+      }
+    }
+
+    &_time {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      div {
+        width: 135px;
+        height: 51px;
+        border-style: none;
+      }
+    }
+
+    .location_input,
+    .color_input {
+      position: relative;
+      width: inherit;
+      input {
+        padding-left: 50px;
+      }
+      .pick_color {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 10px;
+        width: 30px;
+        height: 30px;
+        background-color: red;
+        border-radius: 6px;
+      }
+      .input#location {
+        padding-left: 45px;
+      }
+      .locatin_icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 10px;
+      }
+    }
+    .input {
+      width: 100%;
+      background-color: white;
+
+      border: 1px solid transparent;
+      border-radius: 3px;
+      height: 51px;
+      padding: 14px;
+
+      &.gray {
+        background-color: $--gray-50;
+      }
+    }
+  }
+
+  .delete {
     margin: 23px auto 110px;
 
     width: 103px;

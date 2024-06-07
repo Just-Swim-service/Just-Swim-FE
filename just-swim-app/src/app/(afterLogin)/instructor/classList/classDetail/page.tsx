@@ -1,16 +1,23 @@
+'use client';
+
 import Image from 'next/image';
-import Link from 'next/link';
 import profile from '/public/assets/profile1.png';
 import QRCode from '/public/assets/qr_code.png';
 import downloadIcon from '/public/assets/icon_download.png';
 import shareIcon from '/public/assets/icon_share.png';
-import arrowBackIcon from '/public/assets/icon_arrow_back.png';
 import Profile from '../../../_component/Profile';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import ClassInfo from '../../../_component/ClassInfo';
 import deleteIcon from '/public/assets/icon_delete.png';
 import styled from './classDetail.module.scss';
 import Header from '@/app/_component/Header';
+import location_icon from '/public/assets/input_icon_location.png';
+import ColorModal from '@/app/_component/Modal/ColorModal';
+import Datepicker from '@/app/_component/DatePicker';
+import Timepicker from '@/app/_component/TimePicker';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import RepeatDatepicker from '@/app/_component/RepeatDatePicker';
 
 // 수업 참여자 리스트
 let peopleList = [
@@ -45,23 +52,20 @@ let peopleList = [
 ];
 
 export default function ClassDetail() {
+  const router = useRouter();
+
+  const [showModal, setShowModal] = useState(false);
+  // const clickModal = () => setShowModal(!showModal);
+  const clickModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
   return (
     <div className={styled.class_detail}>
       <Header
         title="수업 정보"
         editURL="/instructor/classList/classDetail/edit"
       />
-      {/* <div className={styled.header}>
-        <div className="row">
-          <Image src={arrowBackIcon} alt="뒤로가기" />
-          <div>수업 정보</div>
-        </div>
-        <Link
-          href="/instructor/classList/classDetail/edit"
-          className={styled.edit}>
-          수정하기
-        </Link>
-      </div> */}
 
       <div className={styled.qr}>
         <h2>아침 5반</h2>
@@ -125,11 +129,51 @@ export default function ClassDetail() {
         </div>
       </div>
 
-      <div className={styled.class_info}>
+      <div className={styled.class}>
         <h3>수업 정보</h3>
-        <ClassInfo islabel={false} bgColor="white" />
+        {/* <ClassInfo islabel={false} bgColor="white" /> */}
 
-        <button className={styled.class_info_delete}>
+        <div className={styled.classInfo}>
+          <div className={styled.classInfo_time}>
+            <Timepicker label="시작" />
+            ~
+            <Timepicker label="끝" />
+          </div>
+          {/* hyebin 매주 요일 지정 구현하기 */}
+
+          <Datepicker />
+
+          <div className={styled.location_input}>
+            <input
+              id="location"
+              className={`${styled.input} ${styled.white}`}
+              placeholder="강동구 실내 수영장"
+              onClick={() => router.push('edit/search')}
+            />
+            <Image
+              src={location_icon}
+              alt="location icon"
+              width={20}
+              height={20}
+              className={styled.locatin_icon}
+            />
+          </div>
+
+          <RepeatDatepicker />
+
+          <div className={styled.color_input}>
+            <input
+              className={`${styled.input} ${styled.white}`}
+              onClick={clickModal}
+              placeholder="구분색"></input>
+            <div className={styled.pick_color} />
+          </div>
+          {showModal && (
+            <ColorModal showModal={showModal} setShowModal={setShowModal} />
+          )}
+        </div>
+
+        <button className={styled.delete}>
           <Image src={deleteIcon} alt="수업 삭제" width={24} height={24} />
           <div>수업 삭제</div>
         </button>
