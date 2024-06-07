@@ -1,115 +1,57 @@
-import styles from './feedbackRecord.module.scss';
+import styled from './feedbackRecord.module.scss';
+import HistoryEdu from '@assets/history_edu.svg';
+import Day from '@assets/day.svg';
+import AccountBox from '@assets/account_box.svg';
+import Link from '@assets/link.svg';
 
 export default function FeedbackRecord() {
   return (
     <>
-      <p className={styles.title}>
+      <p className={styled.title}>
         <span>
-          <svg
-            width="18"
-            height="15"
-            viewBox="0 0 18 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M6 15C5.49231 15 5.05785 14.8166 4.69662 14.4497C4.33477 14.0822 4.15385 13.6406 4.15385 13.125V10.3125H6.92308V8.20312C6.38462 8.17188 5.87323 8.05063 5.38892 7.83938C4.904 7.62875 4.46154 7.3125 4.06154 6.89063V5.85938H3L0 2.8125C0.553846 2.09375 1.23846 1.58594 2.05385 1.28906C2.86923 0.992188 3.69231 0.84375 4.52308 0.84375C4.93846 0.84375 5.34246 0.875 5.73508 0.9375C6.12708 1 6.52308 1.11719 6.92308 1.28906V0H18V12.1875C18 12.9688 17.7308 13.6328 17.1923 14.1797C16.6538 14.7266 16 15 15.2308 15H6ZM8.76923 10.3125H14.3077V12.1875C14.3077 12.4531 14.3963 12.6756 14.5735 12.855C14.7502 13.035 14.9692 13.125 15.2308 13.125C15.4923 13.125 15.7114 13.035 15.888 12.855C16.0652 12.6756 16.1538 12.4531 16.1538 12.1875V1.875H8.76923V2.4375L14.3077 8.0625V9.375H13.0154L10.3846 6.70312L10.2 6.89063C9.98462 7.10938 9.75754 7.30469 9.51877 7.47656C9.28062 7.64844 9.03077 7.78125 8.76923 7.875V10.3125ZM3.78462 3.98438H5.90769V6C6.09231 6.125 6.28462 6.21094 6.48461 6.25781C6.68462 6.30469 6.89231 6.32812 7.10769 6.32812C7.46154 6.32812 7.78092 6.27344 8.06585 6.16406C8.35015 6.05469 8.63077 5.85938 8.90769 5.57812L9.09231 5.39062L7.8 4.07813C7.35385 3.625 6.85385 3.285 6.3 3.05813C5.74615 2.83188 5.15385 2.71875 4.52308 2.71875C4.21538 2.71875 3.92308 2.74219 3.64615 2.78906C3.36923 2.83594 3.09231 2.90625 2.81538 3L3.78462 3.98438ZM6 13.125H12.6C12.5538 12.9844 12.5194 12.8359 12.4966 12.6797C12.4732 12.5234 12.4615 12.3594 12.4615 12.1875H6V13.125Z"
-              fill="black"
-            />
-          </svg>
+          <HistoryEdu />
         </span>
         피드백 기록
       </p>
-      <div className={styles.feed_box}>
-        <div className={styles.text_flex}>
-          <p className={styles.day}>
+      <div className={styled.feed_box}>
+        <div className={styled.text_flex}>
+          <p className={styled.day}>
             <span>
-              <svg
-                width="18"
-                height="19"
-                viewBox="0 0 18 19"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_657_666)">
-                  <path
-                    d="M15 2.75H14.25V1.25H12.75V2.75H5.25V1.25H3.75V2.75H3C2.175 2.75 1.5 3.425 1.5 4.25V16.25C1.5 17.075 2.175 17.75 3 17.75H15C15.825 17.75 16.5 17.075 16.5 16.25V4.25C16.5 3.425 15.825 2.75 15 2.75ZM15 16.25H3V8H15V16.25ZM15 6.5H3V4.25H15V6.5Z"
-                    fill="#050606"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_657_666">
-                    <rect
-                      width="18"
-                      height="18"
-                      fill="white"
-                      transform="translate(0 0.5)"
-                    />
-                  </clipPath>
-                </defs>
-              </svg>
+              <Day />
             </span>
             2023년 1월 12일 수업
           </p>
-          <div className={styles.text_line}></div>
-          <p className={styles.type}>
+          <div className={styled.text_line}></div>
+          <p className={styled.type}>
             <span>
-              <svg
-                width="16"
-                height="15"
-                viewBox="0 0 16 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M13.8333 0H2.16667C1.25 0 0.5 0.75 0.5 1.66667V13.3333C0.5 14.25 1.25 15 2.16667 15H13.8333C14.75 15 15.5 14.25 15.5 13.3333V1.66667C15.5 0.75 14.75 0 13.8333 0ZM12.1667 13.3333H3.83333V13.1333C5.01667 12.1833 6.46667 11.6667 8 11.6667C9.53333 11.6667 10.9833 12.1833 12.1667 13.1333V13.3333ZM13.8333 12.3833C12.3333 10.9083 10.275 10 8 10C5.725 10 3.66667 10.9083 2.16667 12.3833V1.66667H13.8333V12.3833ZM8 8.33333C9.60833 8.33333 10.9167 7.025 10.9167 5.41667C10.9167 3.80833 9.60833 2.5 8 2.5C6.39167 2.5 5.08333 3.80833 5.08333 5.41667C5.08333 7.025 6.39167 8.33333 8 8.33333ZM8 4.16667C8.69167 4.16667 9.25 4.725 9.25 5.41667C9.25 6.10833 8.69167 6.66667 8 6.66667C7.30833 6.66667 6.75 6.10833 6.75 5.41667C6.75 4.725 7.30833 4.16667 8 4.16667Z"
-                  fill="#050606"
-                />
-              </svg>
+              <AccountBox />
             </span>
             개별 피드백
           </p>
         </div>
-        <div className={styles.feed_content}>
-          <p className={styles.content}>
+        <div className={styled.feed_content}>
+          <p className={styled.content}>
             회원님! 오늘 자세는 아주 좋았으나 마지막 스퍼트가 부족해 보였어요.
             호흡하실 때 지난 시간에 말씀드린 것처럼 하시면 더 좋을 것 같습니다.
             관련 영상 링크 첨부해 드리니 꼭 다음 시간 전까지 시청하고 오세요!
             오늘도 수고하셨습니다.
           </p>
           <div>
-            <p className={styles.photo}>
-              <span>
-                <svg
-                  width="76"
-                  height="76"
-                  viewBox="0 0 76 76"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <rect width="76" height="76" rx="9" fill="#EBECEE" />
-                </svg>
-              </span>
-              <br />
+            <p className={styled.photo}>
+              <div></div>
               +3장
             </p>
           </div>
         </div>
-        <p className={styles.feed_link}>
+        <p className={styled.feed_link}>
           <span>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12 4H8.8V5.6H12C13.32 5.6 14.4 6.68 14.4 8C14.4 9.32 13.32 10.4 12 10.4H8.8V12H12C14.208 12 16 10.208 16 8C16 5.792 14.208 4 12 4ZM7.2 10.4H4C2.68 10.4 1.6 9.32 1.6 8C1.6 6.68 2.68 5.6 4 5.6H7.2V4H4C1.792 4 0 5.792 0 8C0 10.208 1.792 12 4 12H7.2V10.4ZM4.8 7.2H11.2V8.8H4.8V7.2Z"
-                fill="#3689FF"
-              />
-            </svg>
+            <Link />
           </span>
           https://www.notion.so/4-73697ca598274d27beb4
         </p>
       </div>
-      <div className={styles.button_box}>
-        <button className={styles.feed_button}>피드벡 남기기</button>
+      <div className={styled.button_box}>
+        <button className={styled.feed_button}>피드벡 남기기</button>
       </div>
     </>
   );
