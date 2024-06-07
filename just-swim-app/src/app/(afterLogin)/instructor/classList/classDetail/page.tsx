@@ -10,6 +10,7 @@ import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import ClassInfo from '../../../_component/ClassInfo';
 import deleteIcon from '/public/assets/icon_delete.png';
 import styled from './classDetail.module.scss';
+import Header from '@/app/_component/Header';
 
 // 수업 참여자 리스트
 let peopleList = [
@@ -46,7 +47,11 @@ let peopleList = [
 export default function ClassDetail() {
   return (
     <div className={styled.class_detail}>
-      <div className={styled.header}>
+      <Header
+        title="수업 정보"
+        editURL="/instructor/classList/classDetail/edit"
+      />
+      {/* <div className={styled.header}>
         <div className="row">
           <Image src={arrowBackIcon} alt="뒤로가기" />
           <div>수업 정보</div>
@@ -56,7 +61,7 @@ export default function ClassDetail() {
           className={styled.edit}>
           수정하기
         </Link>
-      </div>
+      </div> */}
 
       <div className={styled.qr}>
         <h2>아침 5반</h2>

@@ -1,25 +1,4 @@
 @import '@/app/globals.scss';
-// .class_detail {
-//  padding-bottom: 100px;
-// }
-
-.header {
-  height: 46px;
-  // background-color: yellow;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 11px 16px;
-
-  .row {
-    display: flex;
-  }
-
-  .edit {
-    text-decoration: underline;
-    color: $--Primary-blue;
-  }
-}
 
 .qr {
   background-color: white;

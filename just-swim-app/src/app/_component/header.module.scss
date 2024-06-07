@@ -11,4 +11,11 @@
   border-bottom: 1px solid $--gray-100;
 
   @include Title3-M;
+
+  .edit {
+    flex-grow: 1;
+    text-align: end;
+    color: $--Primary-blue;
+    text-decoration: underline;
+  }
 }
