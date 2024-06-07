@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import styles from './feedbackTypeButton.module.scss';
+import styled from './feedbackTypeButton.module.scss';
 
 export default function FeedbackTypeButton() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function FeedbackTypeButton() {
 
   return (
     <>
-      <div className={styles.button_box}>
+      <div className={styled.button_box}>
         <button onClick={handleIndividualClick}>
           <p>
             <span>개별</span>

@@ -1,108 +1,57 @@
 'use client';
 
 import EditHeader from '@/app/_component/header/EditHeader';
-import styles from './feedbackDetail.module.scss';
+import styled from './feedbackDetail.module.scss';
+import Send from '../../../../../../public/assets/send.svg';
+import Calendar from '../../../../../../public/assets/calendar.svg';
+import UserTypeIndividual from '../../../../../../public/assets/user_type_individual.svg';
 
 export default function FeedbackDetail() {
-  const data = {
-    name: '강사',
-    image: '',
-  };
-
   return (
     <>
-      <EditHeader leftContent="피드백 기록 보기" data={data} />
-      <div className={styles.detail_container}>
-        <div className={styles.feedback_date}>
-          <span className={styles.icon}>
-            <svg
-              width="18"
-              height="19"
-              viewBox="0 0 18 19"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <g clip-path="url(#clip0_2321_2526)">
-                <path
-                  d="M15.1873 3.14889C15.3208 3.11435 15.4613 3.11731 15.5933 3.15744C15.7252 3.19757 15.8436 3.27331 15.9353 3.37633C16.027 3.47936 16.0885 3.60568 16.1131 3.74141C16.1376 3.87713 16.1243 4.017 16.0745 4.14564L11.5745 15.7706C11.53 15.8858 11.4578 15.9881 11.3642 16.0687C11.2706 16.1492 11.1586 16.2054 11.0382 16.2322C10.9177 16.2591 10.7924 16.2558 10.6735 16.2226C10.5546 16.1895 10.4457 16.1275 10.3565 16.0421L7.82003 13.6159L6.91778 14.5174C6.44078 14.9944 5.62478 14.6569 5.62478 13.9819V11.5159L1.73153 7.79214C1.63493 7.69972 1.56479 7.58317 1.52837 7.45454C1.49195 7.32591 1.49057 7.18988 1.52438 7.06054C1.55819 6.9312 1.62595 6.81325 1.72065 6.7189C1.81536 6.62454 1.93356 6.55722 2.06303 6.52389L15.1873 3.14889ZM13.6018 6.37764L7.60328 11.3329L10.5808 14.1814L13.6018 6.37764ZM12.4183 5.41014L3.74303 7.63989L6.51203 10.2874L12.4183 5.40864V5.41014Z"
-                  fill="#7E8184"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_2321_2526">
-                  <rect
-                    width="18"
-                    height="18"
-                    fill="white"
-                    transform="translate(0 0.5)"
-                  />
-                </clipPath>
-              </defs>
-            </svg>
+      <EditHeader leftContent="피드백 기록 보기" data={{ dataUrl: '/' }} />
+      <div className={styled.detail_container}>
+        <div className={styled.feedback_date}>
+          <span className={styled.icon}>
+            <Send />
           </span>
           <p>2024.03.22 전송된 피드백</p>
         </div>
-        <div className={styles.detail_title}>
+        <div className={styled.detail_title}>
           <p>피드백 기준일</p>
         </div>
-        <div className={styles.detail_content}>
-          <span className={styles.detail_icon}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <g clip-path="url(#clip0_1281_1430)">
-                <path
-                  d="M5.83333 9.16699H7.5V10.8337H5.83333V9.16699ZM17.5 5.00033V16.667C17.5 17.5837 16.75 18.3337 15.8333 18.3337H4.16667C3.24167 18.3337 2.5 17.5837 2.5 16.667L2.50833 5.00033C2.50833 4.08366 3.24167 3.33366 4.16667 3.33366H5V1.66699H6.66667V3.33366H13.3333V1.66699H15V3.33366H15.8333C16.75 3.33366 17.5 4.08366 17.5 5.00033ZM4.16667 6.66699H15.8333V5.00033H4.16667V6.66699ZM15.8333 16.667V8.33366H4.16667V16.667H15.8333ZM12.5 10.8337H14.1667V9.16699H12.5V10.8337ZM9.16667 10.8337H10.8333V9.16699H9.16667V10.8337Z"
-                  fill="#212223"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_1281_1430">
-                  <rect width="20" height="20" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
+        <div className={styled.detail_content}>
+          <span className={styled.detail_icon}>
+            <Calendar />
           </span>
           <p>3월 12일, 2024년</p>
         </div>
-        <div className={styles.detail_title}>
+        <div className={styled.detail_title}>
           <p>피드백 대상</p>
         </div>
-        <div className={styles.detail_content}>
-          <span className={styles.detail_icon}>
-            <svg
-              width="13"
-              height="17"
-              viewBox="0 0 13 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12.5714 16.1071H11V14.5357C11 13.9106 10.7517 13.311 10.3096 12.869C9.86756 12.4269 9.26801 12.1786 8.64286 12.1786H3.92857C3.30342 12.1786 2.70387 12.4269 2.26182 12.869C1.81977 13.311 1.57143 13.9106 1.57143 14.5357V16.1071H0V14.5357C0 13.4938 0.413902 12.4945 1.15065 11.7578C1.8874 11.021 2.88665 10.6071 3.92857 10.6071H8.64286C9.68478 10.6071 10.684 11.021 11.4208 11.7578C12.1575 12.4945 12.5714 13.4938 12.5714 14.5357V16.1071ZM6.28572 9.42857C5.66663 9.42857 5.0536 9.30663 4.48164 9.06972C3.90967 8.8328 3.38997 8.48555 2.95221 8.04779C2.51445 7.61003 2.1672 7.09033 1.93028 6.51836C1.69337 5.9464 1.57143 5.33337 1.57143 4.71428C1.57143 4.0952 1.69337 3.48217 1.93028 2.91021C2.1672 2.33824 2.51445 1.81854 2.95221 1.38078C3.38997 0.94302 3.90967 0.595769 4.48164 0.358854C5.0536 0.121939 5.66663 -9.22514e-09 6.28572 0C7.53602 1.8631e-08 8.73512 0.496682 9.61922 1.38078C10.5033 2.26488 11 3.46398 11 4.71428C11 5.96459 10.5033 7.16369 9.61922 8.04779C8.73512 8.93189 7.53602 9.42857 6.28572 9.42857ZM6.28572 7.85714C7.11925 7.85714 7.91865 7.52602 8.50805 6.93662C9.09745 6.34722 9.42857 5.54782 9.42857 4.71428C9.42857 3.88075 9.09745 3.08135 8.50805 2.49195C7.91865 1.90255 7.11925 1.57143 6.28572 1.57143C5.45218 1.57143 4.65278 1.90255 4.06338 2.49195C3.47398 3.08135 3.14286 3.88075 3.14286 4.71428C3.14286 5.54782 3.47398 6.34722 4.06338 6.93662C4.65278 7.52602 5.45218 7.85714 6.28572 7.85714Z"
-                fill="#050606"
-              />
-            </svg>
+        <div className={styled.detail_content}>
+          <span className={styled.detail_icon}>
+            <UserTypeIndividual />
           </span>
           <p>User 1122 님</p>
         </div>
-        <div className={styles.detail_title}>
+        <div className={styled.detail_title}>
           <p>첨부 파일</p>
         </div>
-        <div className={styles.detail_photo}>
-          <div className={styles.photo}></div>
-          <div className={styles.photo}></div>
+        <div className={styled.detail_photo}>
+          <div className={styled.photo}></div>
+          <div className={styled.photo}></div>
         </div>
-        <div className={styles.detail_title}>
+        <div className={styled.detail_title}>
           <p>첨부 링크</p>
         </div>
-        <div className={styles.detail_content}>
+        <div className={styled.detail_content}>
           <p>https://github.com/Just-Swim-service</p>
         </div>
-        <div className={styles.detail_title}>
+        <div className={styled.detail_title}>
           <p>피드백</p>
         </div>
-        <div className={styles.detail_content}>
+        <div className={styled.detail_content}>
           <p>
             회원님! 오늘 자세는 좋았으나 마지막 스퍼트가 부족해 보였어요 호흡하실
             때에도 팔 각도를 조정해 주시면 좋을 것 같습니다.

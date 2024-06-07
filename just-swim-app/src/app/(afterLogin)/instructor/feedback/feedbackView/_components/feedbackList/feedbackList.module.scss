@@ -21,32 +21,33 @@
     border-radius: 14px;
     padding: 14px 10px;
 
-    div {
-      display: flex;
-      margin-bottom: 10px;
-
-      p {
-        @include Title5-M;
-        margin-right: 22px;
-
-        span {
-          margin-right: 7px;
-          vertical-align: middle;
-        }
-      }
+    .target {
+      @include Title5-SB;
+      color: $--Black;
     }
 
     .content {
       @include Body2-R;
-      margin-bottom: 12px;
+      color: $--gray-800;
     }
 
-    .target {
-      @include Body3-R;
+    div {
+      display: flex;
+
+      span {
+        margin-right: 12px;
+        vertical-align: middle;
+      }
 
       .icon {
-        margin-right: 8px;
+        margin-right: 5px;
         vertical-align: middle;
+      }
+
+      p {
+        margin-right: 14px;
+        color: $--gray-700;
+        @include Body4-R;
       }
     }
   }
