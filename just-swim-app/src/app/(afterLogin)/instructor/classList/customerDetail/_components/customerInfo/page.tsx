@@ -1,61 +1,34 @@
-import './customerInfo.scss';
+import styled from './customerInfo.module.scss';
+import DateRange from '@assets/date_range.svg';
+import Phone from '@assets/phone.svg';
+import Email from '@assets/email.svg';
 
 export default function CustomerInfo() {
   return (
     <>
-      <div className="customerInfo">
-        <div className="circle"></div>
-        <p className="name">홍길동</p>
-        <div className="userInfo">
-          <span className="icon">
-            <svg
-              width="16"
-              height="17"
-              viewBox="0 0 16 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M3.83333 7.66699H5.5V9.33366H3.83333V7.66699ZM15.5 3.50033V15.167C15.5 16.0837 14.75 16.8337 13.8333 16.8337H2.16667C1.24167 16.8337 0.5 16.0837 0.5 15.167L0.508333 3.50033C0.508333 2.58366 1.24167 1.83366 2.16667 1.83366H3V0.166992H4.66667V1.83366H11.3333V0.166992H13V1.83366H13.8333C14.75 1.83366 15.5 2.58366 15.5 3.50033ZM2.16667 5.16699H13.8333V3.50033H2.16667V5.16699ZM13.8333 15.167V6.83366H2.16667V15.167H13.8333ZM10.5 9.33366H12.1667V7.66699H10.5V9.33366ZM7.16667 9.33366H8.83333V7.66699H7.16667V9.33366Z"
-                fill="#050606"
-              />
-            </svg>
+      <div className={styled.customer_info}>
+        <div className={styled.circle}></div>
+        <p className={styled.name}>홍길동</p>
+        <div className={styled.user_info}>
+          <span className={styled.icon}>
+            <DateRange />
           </span>
           <p>1998년 11월 11일</p>
-          <span className="icon">
-            <svg
-              width="20"
-              height="17"
-              viewBox="0 0 20 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M2.49992 3.49984L9.16658 7.6665L15.8333 3.49984V5.99984H17.4999V1.83317C17.4999 0.916504 16.7499 0.166504 15.8333 0.166504H2.49992C1.58325 0.166504 0.841585 0.916504 0.841585 1.83317L0.833252 11.8332C0.833252 12.7498 1.58325 13.4998 2.49992 13.4998H10.8333V11.8332H2.49992V3.49984ZM15.8333 1.83317L9.16658 5.99984L2.49992 1.83317H15.8333Z"
-                fill="#050606"
-              />
-              <path
-                d="M17.5 10.1665V13.4998C17.5 14.4165 16.75 15.1665 15.8333 15.1665C14.9167 15.1665 14.1667 14.4165 14.1667 13.4998V9.74984C14.1667 9.5165 14.35 9.33317 14.5833 9.33317C14.8167 9.33317 15 9.5165 15 9.74984V13.4998H16.6667V9.74984C16.6667 8.59984 15.7333 7.6665 14.5833 7.6665C13.4333 7.6665 12.5 8.59984 12.5 9.74984V13.4998C12.5 15.3415 13.9917 16.8332 15.8333 16.8332C17.675 16.8332 19.1667 15.3415 19.1667 13.4998V10.1665H17.5Z"
-                fill="#3689FF"
-              />
-            </svg>
+        </div>
+        <div className={styled.user_info}>
+          <span className={styled.icon}>
+            <Email />
           </span>
           <p>11223344abcd@gmail.com</p>
-          <span className="icon">
-            <svg
-              width="13"
-              height="21"
-              viewBox="0 0 13 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M4.54545 17.7727H8.18182V16.8636H4.54545V17.7727ZM1.81818 14.1364H10.9091V5.04545H1.81818V14.1364ZM1.81818 20.5C1.31818 20.5 0.890303 20.3221 0.534545 19.9664C0.178182 19.61 0 19.1818 0 18.6818V2.31818C0 1.81818 0.178182 1.39 0.534545 1.03364C0.890303 0.677879 1.31818 0.5 1.81818 0.5H10.9091C11.4091 0.5 11.8373 0.677879 12.1936 1.03364C12.5494 1.39 12.7273 1.81818 12.7273 2.31818V18.6818C12.7273 19.1818 12.5494 19.61 12.1936 19.9664C11.8373 20.3221 11.4091 20.5 10.9091 20.5H1.81818ZM1.81818 3.22727H10.9091V2.31818H1.81818V3.22727ZM1.81818 15.9545V18.6818H10.9091V15.9545H1.81818Z"
-                fill="#BFC5C9"
-              />
-            </svg>
+        </div>
+        <div className={styled.user_info}>
+          <span className={styled.icon}>
+            <Phone />
           </span>
           <p>등록된 번호가 없습니다.</p>
         </div>
       </div>
-      <div className="bar"></div>
+      <div className={styled.bar}></div>
     </>
   );
 }
