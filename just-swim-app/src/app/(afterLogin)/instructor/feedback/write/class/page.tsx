@@ -9,7 +9,7 @@ import deleteButton from '/public/assets/delete_button.png';
 import Link from 'next/link';
 import styled from './feedbackWrite.module.scss';
 import Location from '@assets/location.svg';
-import CalendarSVG from '@/app/_component/svg/CalendarSVG';
+import Calendar_SM from '@assets/calendar_sm.svg';
 import Clock from '@assets/clock.svg';
 
 import Profile from '@/app/(afterLogin)/_component/Profile';
@@ -79,7 +79,7 @@ export default function FeedbackWrite() {
                     </div>
 
                     <div className={styled.info_row}>
-                      <CalendarSVG width={14} height={14} />
+                      <Calendar_SM />
                       <div className={styled.days}>금,토 요일</div>
                     </div>
 
