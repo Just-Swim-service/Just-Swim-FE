@@ -1,23 +1,20 @@
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import calendar_icon from '/public/assets/input_icon_calendar.png';
-import Image from 'next/image';
-import Calendar from '@assets/calendar.svg';
+import Repeat from '@assets/repeat.svg';
 
 interface Props {
   bgColor?: 'gray' | 'white';
 }
 
-function calendarIcon() {
-  return <Calendar width={20} height={20} />;
+function repeatIcon() {
+  return <Repeat width={20} height={20} />;
 }
 
-export default function Datepicker({ bgColor = 'white' }: Props) {
+export default function RepeatDatepicker({ bgColor = 'white' }: Props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DesktopDatePicker
-        slots={{ openPickerIcon: calendarIcon }}
+        slots={{ openPickerIcon: repeatIcon }}
         slotProps={{
           textField: { fullWidth: true },
           inputAdornment: {

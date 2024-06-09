@@ -1,0 +1,240 @@
+@import '@/app/globals.scss';
+
+.confirm_msg {
+  @include Title2-SB;
+  padding: 20px 16px;
+}
+
+.divide {
+  width: 100%;
+  height: 8px;
+  background-color: $--gray-50;
+}
+
+.feedback_confirm {
+  padding: 22px 16px 100px;
+
+  .feedback_content {
+    .wrap {
+      display: flex;
+      border-bottom: 1px solid $--gray-200;
+      padding: 16px 0;
+
+      .title {
+        @include Title5-SB;
+        color: $--gray-700;
+
+        span {
+          color: $--Black;
+        }
+      }
+    }
+
+    .wrap.col {
+      display: flex;
+      flex-direction: column;
+    }
+    .wrap.row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 9px;
+
+        @include Body4-R;
+
+        background-color: $--Chips;
+        color: $--Primary-blue;
+        border-radius: 9px;
+        padding: 4px 9px;
+      }
+    }
+    .flex {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      overflow: hidden;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-top: 6px;
+
+      .box {
+        width: 78px;
+        height: 78px;
+        background-color: $--gray-50;
+
+        flex-shrink: 0;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        label {
+          .add {
+            img {
+              // margin: 0 auto;
+            }
+          }
+        }
+        input,
+        #chooseFile2 {
+          display: none;
+        }
+      }
+
+      .added_file {
+        width: 78px;
+        height: 78px;
+        background-color: $--gray-50;
+
+        flex-shrink: 0;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .link {
+      position: relative;
+
+      display: flex;
+      gap: 8px;
+
+      input {
+        flex: 1;
+        padding: 15px 16px;
+        padding-left: 40px;
+        background-color: $--gray-50;
+        border: none;
+        border-radius: 6px;
+
+        margin-top: 6px;
+      }
+      .svg {
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        transform: translateY(-50%);
+      }
+    }
+
+    .feedback_area {
+      width: 100%;
+      height: 183px;
+
+      padding: 18px 16px;
+
+      background-color: $--gray-50;
+      border: none;
+      border-radius: 8px;
+
+      &::placeholder {
+        text-align: center;
+        padding: 65px 0;
+      }
+    }
+  }
+
+  .confirm_check {
+    margin: 53px 0 22px;
+    display: flex;
+    gap: 6px;
+
+    justify-content: center;
+
+    @include Body4-R;
+  }
+
+  .sub_title {
+    @include Body3-R;
+    color: $--gray-600;
+    margin-top: 2px;
+  }
+
+  /* Hide the ugly default input */
+  #chooseFile {
+    visibility: hidden;
+  }
+
+  .select_customer {
+    .flex {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      overflow: hidden;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-top: 6px;
+
+      padding: 17px 0;
+
+      .add_btn {
+        background-color: $--gray-50;
+        width: 83px;
+        @include Body5-R;
+        img {
+          display: block;
+          margin: 0 auto 6px;
+        }
+      }
+    }
+
+    .box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      background-color: white;
+      border-radius: 10px;
+      border: 1px solid $--gray-200;
+      flex-shrink: 0;
+
+      &_delete {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        z-index: 50;
+      }
+    }
+  }
+}
+
+.btn_wrap {
+  display: flex;
+  gap: 20px;
+
+  position: fixed;
+  bottom: 0;
+
+  width: 100%;
+  padding: 20px 16px;
+
+  background-color: $--White;
+
+  .back_btn,
+  .submit_btn {
+    padding: 14px 10px;
+    border-radius: 13px;
+    flex: 0.5;
+
+    @include Title3-SB;
+  }
+
+  .back_btn {
+    background-color: $--White;
+    border: 1px solid $--gray-200;
+  }
+  .submit_btn {
+    background-color: $--Primary-blue;
+    color: $--White;
+  }
+}

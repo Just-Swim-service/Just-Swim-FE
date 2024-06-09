@@ -5,12 +5,14 @@ import arrowBackIcon from '/public/assets/icon_arrow_back.png';
 
 import { useRouter } from 'next/navigation';
 import styled from './header.module.scss';
+import Link from 'next/link';
 
 interface Props {
   title: string;
+  editURL?: string;
 }
 
-export default function Header({ title }: Props) {
+export default function Header({ title, editURL }: Props) {
   const router = useRouter();
 
   const goBack = () => {
@@ -21,6 +23,13 @@ export default function Header({ title }: Props) {
     <header className={styled.header}>
       <Image src={arrowBackIcon} alt="뒤로가기" onClick={() => goBack()} />
       <div>{title}</div>
+      {editURL ? (
+        <Link href={editURL} className={styled.edit}>
+          수정하기
+        </Link>
+      ) : (
+        <></>
+      )}
     </header>
   );
 }
