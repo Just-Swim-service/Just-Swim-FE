@@ -1,0 +1,61 @@
+@import '@/app/globals.scss';
+
+.container {
+  margin: 0 16px;
+
+  .title {
+    @include Title2-SB;
+    padding: 13px 0;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    label {
+      width: 48%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border: 1px solid $--gray-300;
+      border-radius: 12px;
+      padding: 20px 12px;
+      margin-bottom: 10px;
+
+      [type='radio'] {
+        appearance: none;
+        background-color: $--gray-300;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+      }
+
+      [type='radio']:checked {
+        background-color: $--Primary-blue;
+      }
+
+      .name {
+        @include Title3-SB;
+        margin-bottom: 12px;
+      }
+
+      p {
+        @include Body2-R;
+
+        span {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  button {
+    @include Title3-SB;
+    width: 100%;
+    padding: 14px 0;
+    background-color: $--Primary-blue;
+    color: white;
+    border-radius: 13px;
+  }
+}
