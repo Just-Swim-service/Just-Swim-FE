@@ -1,0 +1,54 @@
+@import '@/app/globals.scss';
+
+.modal_background {
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+
+  .modal {
+    width: 95%;
+    height: 144px;
+    background-color: $--White;
+    border-radius: 8px;
+    margin: auto;
+    padding: 22px 16px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+      @include Title3-SB;
+    }
+
+    div {
+      display: flex;
+      width: inherit;
+      justify-content: space-between;
+
+      button {
+        @include Title3-SB;
+        width: 40%;
+        height: 52px;
+        border-radius: 13px;
+        border: 1px solid $--gray-200;
+        background-color: $--White;
+        color: $--gray-700;
+
+        &:last-child {
+          background-color: $--Cancel;
+          color: $--White;
+          border: none;
+        }
+      }
+    }
+  }
+}

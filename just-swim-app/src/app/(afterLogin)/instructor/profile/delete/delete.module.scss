@@ -1,0 +1,81 @@
+@import '@/app/globals.scss';
+
+.delete_container {
+  width: 90%;
+  margin: 0 auto;
+
+  h1 {
+    @include Title2-SB;
+    color: $--Black;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    @include Body2-R;
+    color: $--gray-600;
+    margin-bottom: 26px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      @include Body1-R;
+      margin-bottom: 24px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      input[type='radio'] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid $--gray-300;
+        border-radius: 50%;
+        outline: none;
+        margin-right: 16px;
+        vertical-align: middle;
+        cursor: pointer;
+
+        &:checked {
+          border: 5px solid $--Primary-blue;
+          background-color: $--White;
+        }
+      }
+
+      input[type='text'] {
+        width: 90%;
+        float: right;
+        margin-top: 4px;
+        padding: 19px 16px;
+        border-radius: 8px;
+        border: 1px solid $--gray-100;
+        background-color: $--gray-50;
+
+        &::placeholder {
+          @include Body2-R;
+          color: $--gray-500;
+        }
+      }
+    }
+  }
+
+  button {
+    @include Title3-SB;
+    position: absolute;
+    bottom: 26px;
+    width: 90%;
+    height: 52px;
+    background-color: $--Cancel;
+    border-radius: 13px;
+    color: $--White;
+  }
+
+  button:disabled {
+    background-color: $--gray-300;
+  }
+}
