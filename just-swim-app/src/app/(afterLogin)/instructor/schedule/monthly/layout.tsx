@@ -1,11 +1,15 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import Calendar from 'react-calendar';
+
+import dayjs, { Dayjs } from 'dayjs';
+
 import './calendar.scss';
 import styled from './monthly.module.scss';
-import Calendar from 'react-calendar';
-import { useEffect, useRef, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import ClassContent from '../weekly/classList/_component/tabContent/ClassContent';
+
+import { ClassContentCard } from '@components';
+import { randomId } from '@utils';
 
 // type ValuePiece = Date | null;
 // type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -182,7 +186,7 @@ export default function Layout({
               {classList?.length > 0 ? (
                 <div className={styled.class_list}>
                   {classList?.map((item: any) => (
-                    <ClassContent key={item} item={item} />
+                    <ClassContentCard key={randomId()} item={item} />
                   ))}
                 </div>
               ) : (

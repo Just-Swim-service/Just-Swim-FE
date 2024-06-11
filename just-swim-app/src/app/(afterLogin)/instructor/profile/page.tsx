@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import styled from './profile.module.scss';
-import EditHeader from '@/app/_component/header/EditHeader';
 import Link from 'next/link';
-import LogoutModal from '@/app/_component/Modal/LogoutModal';
+
+import styled from './profile.module.scss';
+
+import { EditHeader, LogoutModal } from '@components';
 
 export default function Profile() {
   const [showModal, setShowModal] = useState(false);

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+
 import styled from './weekly.module.scss';
 
 export default function Weekly({

@@ -1,0 +1,26 @@
+@import '@/globals.scss';
+
+.start_footer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+
+  .button_wrapper {
+    width: inherit;
+    height: 52px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .select_button {
+    background-color: $--Primary-blue;
+    color: $--White;
+    width: inherit;
+    height: 100%;
+    border-radius: 8px;
+  }
+}

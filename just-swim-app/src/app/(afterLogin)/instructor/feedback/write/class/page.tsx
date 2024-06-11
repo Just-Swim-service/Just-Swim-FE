@@ -1,18 +1,18 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import Image from 'next/image';
-import Header from '../../../../../_component/Header';
-import addIcon from '/public/assets/add.png';
-import Datepicker from '../../../../../_component/DatePicker';
-import deleteButton from '/public/assets/delete_button.png';
 import Link from 'next/link';
+import Image from 'next/image';
+
 import styled from './feedbackWrite.module.scss';
+
+import addIcon from '@assets/add.png';
+import deleteButton from '@assets/delete_button.png';
 import Location from '@assets/location.svg';
 import Calendar_SM from '@assets/calendar_sm.svg';
 import Clock from '@assets/clock.svg';
 
-import Profile from '@/app/(afterLogin)/_component/Profile';
+import { Header, Datepicker, Profile } from '@components';
 
 export default function FeedbackWrite() {
   const fileRef = useRef<HTMLInputElement>(null);

@@ -1,0 +1,15 @@
+@import '@/globals.scss';
+
+.footer {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+
+  .footer_info {
+    @include Body4-R;
+
+    color: $--gray-500;
+  }
+}

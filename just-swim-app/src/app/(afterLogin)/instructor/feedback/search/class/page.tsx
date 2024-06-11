@@ -1,15 +1,18 @@
 'use client';
 
-import Header from '@_component/Header';
+import { useState } from 'react';
+
 import styled from './searchClass.module.scss';
 import Location from '@assets/location.svg';
 import Calendar_SM from '@assets/calendar_sm.svg';
 import Clock from '@assets/clock.svg';
 import Check from '@assets/check.svg';
 import Clear from '@assets/clear.svg';
-import { useState } from 'react';
 
-export default function searchClass() {
+import { Header } from '@components';
+import { randomId } from '@utils';
+
+export default function SearchClass() {
   const [selected, setSelected] = useState<string | null>(null);
 
   let classList = [
@@ -75,6 +78,7 @@ export default function searchClass() {
         <div className={styled.search_class}>
           {classList.map((item) => (
             <button
+              key={randomId()}
               className={`${styled.item} ${selected === item.id ? styled.active : ''}`}
               onClick={() => setSelected(item.id)}>
               <div>

@@ -1,0 +1,51 @@
+@import '@/globals.scss';
+
+.profile_setting_section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 65px;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+
+  .profile_img {
+    position: relative;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+
+    .gallery_button_wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 34px;
+      height: 34px;
+      border: $--gray-200 1px solid;
+      border-radius: 50%;
+      background-color: $--White;
+    }
+
+    .gallery_button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .nickname {
+    @include Title2-SB;
+
+    color: $--Black;
+    border: none;
+    border-bottom: 1px solid $--gray-100;
+    padding: 10px 0px;
+    outline: none;
+    text-align: center;
+    width: inherit;
+  }
+}

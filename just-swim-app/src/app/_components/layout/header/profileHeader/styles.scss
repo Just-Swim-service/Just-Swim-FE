@@ -1,0 +1,28 @@
+@import '@/globals.scss';
+
+.profile_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 16px;
+  height: 48px;
+  border-bottom: var(--gray-100) 1px solid;
+
+  .left_content {
+    @include Title3-M;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .link_to_profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    background-color: var(--gray-100);
+  }
+}

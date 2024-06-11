@@ -1,8 +1,8 @@
 'use client';
 
-import ProfileHeader from '@/app/_component/header/ProfileHeader';
-import FeedbackList from './_components/feedbackList/page';
-import FeedbackTypeButton from './_components/feedbackTypeButton/page';
+import { ProfileHeader } from '@components';
+
+import { FeedbackList, FeedbackTypeButton } from './_components';
 
 export default function FeedbackView() {
   const data = {
