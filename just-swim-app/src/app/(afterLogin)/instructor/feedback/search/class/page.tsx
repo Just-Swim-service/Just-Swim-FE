@@ -79,7 +79,11 @@ export default function searchClass() {
               onClick={() => setSelected(item.id)}>
               <div>
                 <span className={styled.check}>
-                  {selected === item.id ? <Check /> : <Clear />}
+                  {selected === item.id ? (
+                    <Check color={'#3689FF'} />
+                  ) : (
+                    <Check color={'#d7dbde'} />
+                  )}
                 </span>
                 <p className={styled.name}>{item.name}</p>
                 <p>
