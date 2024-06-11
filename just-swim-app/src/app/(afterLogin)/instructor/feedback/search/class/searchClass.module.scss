@@ -1,0 +1,64 @@
+@import '@/app/globals.scss';
+
+.container {
+  margin: 0 16px;
+
+  .title {
+    @include Title2-SB;
+    padding: 13px 0;
+  }
+
+  .search_class {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .item {
+      width: 48%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      box-shadow: 0 0 0 1px $--gray-300;
+      border-radius: 12px;
+      padding: 20px 12px;
+      margin-bottom: 10px;
+
+      div {
+        width: 100%;
+        position: relative;
+
+        .check {
+          position: absolute;
+          right: 0;
+        }
+
+        .name {
+          @include Title3-SB;
+          margin-bottom: 12px;
+        }
+
+        p {
+          @include Body2-R;
+          text-align: left;
+
+          span {
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  .active {
+    box-shadow: 0 0 0 2px $--Primary-blue !important;
+  }
+
+  .select_button {
+    @include Title3-SB;
+    width: 100%;
+    padding: 14px 0;
+    background-color: $--Primary-blue;
+    color: white;
+    border-radius: 13px;
+  }
+}
