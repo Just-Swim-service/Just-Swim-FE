@@ -19,11 +19,13 @@
       }
     ],
     "paths": {
+      "@apis": ["./src/app/_apis/index.ts"],
+      "@assets": ["./src/app/_assets/index.ts"],
       "@components": ["./src/app/_components/index.ts"],
       "@data": ["./src/app/_data/index.ts"],
       "@hooks": ["./src/app/_hooks/index.ts"],
-      "@services": ["./src/app/_services/index.ts"],
       "@store": ["./src/app/_store/index.ts"],
+      "@types": ["./src/app/_types/index.ts"],
       "@utils": ["./src/app/_utils/index.ts"],
       "@assets/*": ["./public/assets/*"],
       "@/*": ["./src/app/*"],
