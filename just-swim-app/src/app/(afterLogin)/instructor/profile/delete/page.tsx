@@ -1,9 +1,10 @@
 'use client';
 
 import { SetStateAction, useState } from 'react';
-import EditHeader from '@/app/_component/header/EditHeader';
+
 import styled from './delete.module.scss';
-import DeleteModal from '@/app/_component/Modal/DeleteModal';
+
+import { EditHeader, DeleteModal } from '@components';
 
 export default function Delete() {
   const [selectedRadio, setSelectedRadio] = useState('');

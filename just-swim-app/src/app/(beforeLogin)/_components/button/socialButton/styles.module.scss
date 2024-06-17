@@ -1,0 +1,48 @@
+@import '@/globals.scss';
+
+.button_wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 52px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+
+  .sns_image {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translate(-50%, -50%);
+  }
+
+  .google_button {
+    @include Title4-M;
+
+    background-color: #ffffff; /* 구글 버튼은 하얀색 */
+    color: $--Black;
+    border: #e1e4e6 1px solid;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .naver_button {
+    @include Title4-M;
+
+    background-color: #37c42a; /* 네이버 버튼은 녹색 */
+    color: $--White;
+    border: #e1e4e6 1px solid;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .kakao_button {
+    @include Title4-M;
+
+    background-color: #ffe812; /* 카카오 버튼은 노란색 */
+    color: $--Black;
+    border: #e1e4e6 1px solid;
+    width: 100%;
+    border-radius: 8px;
+  }
+}

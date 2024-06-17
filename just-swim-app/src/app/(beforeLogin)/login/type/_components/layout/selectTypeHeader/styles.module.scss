@@ -1,0 +1,24 @@
+@import '@/globals.scss';
+
+.select_type_header {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 51px;
+  width: 100%;
+
+  h3 {
+    @include Title2-SB;
+
+    // color: var(--Black);
+    color: $--Black;
+  }
+
+  p {
+    @include Body2-R;
+
+    // color: var(--gray-500);
+    color: $--gray-500;
+  }
+}

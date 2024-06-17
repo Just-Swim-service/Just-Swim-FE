@@ -2,13 +2,13 @@
 
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import Header from '@/app/_component/Header';
-import addIcon from '/public/assets/add.png';
+
+import addIcon from '@assets/add.png';
 import Link from '@assets/link.svg';
 
 import styled from './feedbackConfirm.module.scss';
 
-import Profile from '@/app/(afterLogin)/_component/Profile';
+import { Header, Profile } from '@components';
 
 export default function ClassFeedbackConfirm() {
   const fileRef = useRef<HTMLInputElement>(null);

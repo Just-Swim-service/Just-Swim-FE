@@ -1,0 +1,77 @@
+@import '@/globals.scss';
+
+.qr_section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: $--gray-50;
+  border: 1px solid $--gray-100;
+  padding: 26px 16px;
+
+  .class_name {
+    @include Title1-B;
+
+    margin-bottom: 2px;
+  }
+
+  .class_description {
+    @include Title5-M;
+
+    margin-bottom: 24px;
+    color: $--gray-600;
+  }
+
+  .instructor {
+    @include Title4-M;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 14px 8px;
+    margin: 0 auto 12px;
+    width: 169px;
+    height: 40px;
+    background-color: $--White;
+    border: 1px solid $--gray-200;
+    border-radius: 10px;
+  }
+
+  .qr_image {
+    width: 114px;
+    height: 114px;
+
+    display: block;
+    margin: 0 auto 8px;
+  }
+
+  .qr_save_share {
+    @include Body4-R;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 51px;
+    gap: 16px;
+    color: $--gray-700;
+
+    .qr_save,
+    .qr_share {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+
+      .circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 32px;
+        height: 32px;
+        border: 1px solid $--gray-200;
+        border-radius: 100%;
+        background-color: $--White;
+      }
+    }
+  }
+}

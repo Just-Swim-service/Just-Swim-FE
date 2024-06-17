@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+
 import styled from './schedule.module.scss';
 
-import Weekly from '/public/assets/weekly.svg';
-import Monthly from '/public/assets/monthly.svg';
-import Plus from '/public/assets/plus.svg';
-import BottomNavBar from '../_component/BottomNavBar';
-import ProfileHeader from '../../../_component/Header/ProfileHeader';
-import Link from 'next/link';
+import Weekly from '@assets/weekly.svg';
+import Monthly from '@assets/monthly.svg';
+import Plus from '@assets/plus.svg';
+
+import { ProfileHeader, InstructorBottomNavBar } from '@components';
 // import { usePathname } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -55,7 +56,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className={styled.schedule_section}>{children}</div>
       <div className={styled.schedule_footer}>
-        <BottomNavBar />
+        <InstructorBottomNavBar />
         <div className={styled.schedule_add}>
           <Link href="/instructor/register">
             <Plus />

@@ -1,11 +1,12 @@
 'use client';
 
-import styled from './classRegister.module.scss';
-import ClassInfo from '../../_component/ClassInfo';
-import TextField from '@/app/_component/TextField';
-import Warning from '@assets/warning_img.svg';
-import TipModal from '@/app/_component/Modal/TipModal';
 import { useState } from 'react';
+
+import styled from './classRegister.module.scss';
+
+import Warning from '@assets/warning_img.svg';
+
+import { ClassInfo, TextField, TipModal } from '@components';
 
 export default function ClassRegister() {
   // const [check, setCheck] = useState(false);

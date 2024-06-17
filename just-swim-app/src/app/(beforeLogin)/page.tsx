@@ -1,6 +1,8 @@
-import OnBoardingHeader from './_component/onBoarding/OnBoardingHeader';
-import OnBoardingSection from './_component/onBoarding/OnBoardingSection';
-import OnBoardingFooter from './_component/onBoarding/OnBoardingFooter';
+import { 
+  OnBoardingHeader,
+  OnBoardingSection,
+  OnBoardingFooter
+} from './_components';
 
 export default function Home() {
   return (

@@ -1,0 +1,33 @@
+@import '@/globals.scss';
+
+.edit_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 16px;
+  height: 48px;
+  border-bottom: var(--gray-100) 1px solid;
+
+  .left_content {
+    @include Title3-M;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .left_link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-right: 8px;
+    }
+  }
+
+  .link_to_edit {
+    @include Body1-R;
+
+    line-height: 1em;
+    color: var(--Primary-blue);
+    border-bottom: var(--Primary-blue) 1px solid;
+  }
+}

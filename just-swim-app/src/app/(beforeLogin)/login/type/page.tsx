@@ -1,9 +1,8 @@
 'use client';
 
-import SelectTypeHeader from './_component/selectType/SelectTypeHeader';
-import SelectTypeSection from './_component/selectType/SelectTypeSection';
-import SelectTypeFooter from './_component/selectType/SelectTypeFooter';
 import { useState } from 'react';
+
+import { SelectTypeHeader, SelectTypeSection, SelectTypeFooter } from './_components';
 
 export default function SelectType() {
   const [type, setType] = useState<string>('');

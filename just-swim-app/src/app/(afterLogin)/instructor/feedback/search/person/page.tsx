@@ -3,7 +3,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import Image from 'next/image';
-import Header from '@_component/Header';
 import searchIcon from '/public/assets/icon_search.png';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import iconArrowDown from '@assets/icon_arrow_down.png';
@@ -11,8 +10,11 @@ import Link from 'next/link';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { useCostomerStore } from '@/app/store/store';
+
 import styled from './searchPerson.module.scss';
+
+import { Header } from '@components';
+import { useCostomerStore } from '@store';
 
 export default function SearchPerson() {
   const { customerList, checkItem, removeItem } = useCostomerStore();

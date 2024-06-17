@@ -1,5 +1,9 @@
-import ClassContent from './_component/tabContent/ClassContent';
+"use client";
+
 import styled from './classList.module.scss';
+
+import { ClassContentCard } from '@components';
+import { randomId } from '@utils';
 
 export default function ClassList() {
   let classList = [
@@ -73,7 +77,7 @@ export default function ClassList() {
         {classList?.length > 0 ? (
           <div className={styled.class_list}>
             {classList?.map((item: any) => (
-              <ClassContent key={item.name} item={item} />
+              <ClassContentCard key={randomId()} item={item} />
             ))}
           </div>
         ) : (

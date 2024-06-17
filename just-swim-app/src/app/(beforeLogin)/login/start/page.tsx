@@ -1,9 +1,8 @@
 'use client';
 
-import StartHeader from './_component/start/startHeader';
-import StartSection from './_component/start/startSection';
-import StartFooter from './_component/start/startFooter';
 import { useRouter, useSearchParams } from 'next/navigation';
+
+import { StartHeader, StartSection, StartFooter } from './_components';
 
 export default function Start() {
   const param = useSearchParams();
