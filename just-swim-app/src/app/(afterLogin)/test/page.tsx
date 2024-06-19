@@ -1,6 +1,6 @@
 "use client";
 
-import { FormButton } from "@components"
+import { FormButton, TextInput } from "@components"
 
 import styled from './styles.module.scss';
 
@@ -12,6 +12,7 @@ export default function Test() {
       margin: "0 auto"
     }}>
       <form action="" className={styled.form}>
+        <TextInput name="test" placeholder="수업명을 입력해주세요" />
         <FormButton text="확인" active={true} />
       </form>
     </div>
