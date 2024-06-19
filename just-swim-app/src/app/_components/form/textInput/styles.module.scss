@@ -33,9 +33,11 @@
     border: 2px solid $--Cancel;
   }
 
-  svg {
-    display: none;
+  input:placeholder-shown.invalid{
+    border: 2px solid $--gray-100;
+  }
 
+  svg {
     position: absolute;
 
     top: 50%;
@@ -44,7 +46,7 @@
     right: 16px;
   }
 
-  input:valid + svg {
-    display: block;
+  input:placeholder-shown + svg {
+    display: none;
   }
 }
