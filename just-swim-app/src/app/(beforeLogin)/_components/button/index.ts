@@ -1,1 +1,1 @@
-export * from './socialButton';
+import { SNSLoginButton } from './socialButton';
