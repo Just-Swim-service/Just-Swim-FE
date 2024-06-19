@@ -1,10 +1,10 @@
-'use client';
-
 import { ForwardedRef, InputHTMLAttributes, forwardRef } from 'react';
 
+import { InputValidSVG } from '@components';
 import { TextInputProps } from '@types';
 
 import styled from './styles.module.scss';
+
 function _TextInput({
   name,
   valid = true,
@@ -16,10 +16,11 @@ ref: ForwardedRef<HTMLInputElement>) {
       <input
         {...props}
         name={name}
-        className={`${styled.text_input} ${valid ? '' : styled.invalid}`}
+        className={`${styled.text_input} ${!valid ? styled.invalid : ''}`}
         ref={ref}
         type='text'
       />
+      {valid && <InputValidSVG width={18} height={18} />}
     </div>
   );
 }

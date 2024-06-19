@@ -1,6 +1,8 @@
 @import '@/globals.scss';
 
 .input_wrapper {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -29,5 +31,20 @@
 
   .invalid {
     border: 2px solid $--Cancel;
+  }
+
+  svg {
+    display: none;
+
+    position: absolute;
+
+    top: 50%;
+    transform: translate(0, -50%);
+
+    right: 16px;
+  }
+
+  input:valid + svg {
+    display: block;
   }
 }
