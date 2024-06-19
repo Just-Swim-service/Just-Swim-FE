@@ -17,10 +17,10 @@
   
     background-color: $--gray-50;
   
-    border: 2px solid $--gray-100;
+    outline: 2px solid $--gray-100;
     border-radius: 6px;
   
-    outline: none;
+    border: none;
   }
   
   .text_input::placeholder {
@@ -28,19 +28,19 @@
   }
   
   .text_input:focus {
-    border: 2px solid $--Primary-blue;
+    outline: 2px solid $--Primary-blue;
   }
 
   .invalid {
-    border: 2px solid $--Cancel;
+    outline: 2px solid $--Cancel;
   }
 
   .text_input:placeholder-shown.invalid{
-    border: 2px solid $--gray-100;
+    outline: 2px solid $--gray-100;
   }
 
   .text_input:placeholder-shown:focus.invalid{
-    border: 2px solid $--Primary-blue;
+    outline: 2px solid $--Primary-blue;
   }
 
   svg {
