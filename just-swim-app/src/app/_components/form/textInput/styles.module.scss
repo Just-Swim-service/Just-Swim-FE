@@ -33,8 +33,12 @@
     border: 2px solid $--Cancel;
   }
 
-  input:placeholder-shown.invalid{
+  .text_input:placeholder-shown.invalid{
     border: 2px solid $--gray-100;
+  }
+
+  .text_input:placeholder-shown:focus.invalid{
+    border: 2px solid $--Primary-blue;
   }
 
   svg {
@@ -46,7 +50,7 @@
     right: 16px;
   }
 
-  input:placeholder-shown + svg {
+  .text_input:placeholder-shown + svg {
     display: none;
   }
 }
