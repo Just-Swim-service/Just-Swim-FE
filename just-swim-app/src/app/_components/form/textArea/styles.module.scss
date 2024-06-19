@@ -8,6 +8,8 @@
   gap: 2px;
 
   .textarea_input {
+    @include Title5-M;
+
     position: relative;
 
     width: 100%;

@@ -8,6 +8,8 @@
   gap: 2px;
 
   .text_input {
+    @include Title5-M;
+    
     width: 100%;
     height: 51px;
   
