@@ -1,0 +1,58 @@
+@import '@/globals.scss';
+
+.button {
+  @include Title3-SB;
+
+  width: 100%;
+  height: 52px;
+
+  border-radius: 13px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button:disabled {
+  background-color: $--gray-300;
+
+  cursor: not-allowed;
+}
+
+.confirm_button {
+  background-color: $--Primary-blue;
+
+  color: white;
+}
+
+.confirm_sub_button {
+  background-color: inherit;
+
+  color: $--Primary-blue;
+}
+
+.confirm_sub_button.border_button {
+  border: 2px solid $--Primary-blue;
+}
+
+.cancel_button {
+  background-color: $--Cancel;
+
+  color: white;
+}
+
+.cancel_sub_button {
+  background-color: inherit;
+
+  color: $--Cancel;
+}
+
+.cancel_sub_button.border_button {
+  border: 2px solid $--Cancel;
+}
+
+.normal_button {
+  color: $--gray-700;
+
+  border: 2px solid $--gray-200;
+}
