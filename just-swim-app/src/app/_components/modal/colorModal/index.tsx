@@ -1,44 +1,57 @@
-// import './colorModal.scss';
-import styled from './colorModal.module.scss';
+"use client";
 
-import { ColorPicker } from '@components';
+import { MouseEvent, useState } from 'react';
 
-export function ColorModal(props: any) {
-  const { showModal, setShowModal } = props;
+import { ColorPicker, ConfirmButton } from '@components';
+
+import styled from './styles.module.scss';
+
+export function ColorModal({
+  initialColor,
+  hideModal,
+  setColor
+}: {
+  initialColor: string,
+  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
+  setColor: (color: string) => void,
+}) {
+  // color 선택 관련
+  const [selectedColor, setSelectedColor] = useState<string>(initialColor);
+
+  const changeSelectedColor = (color: string) => {
+    setSelectedColor(color);
+  }
+
+  const confirmSelectedColor = (event: MouseEvent<HTMLButtonElement>) => {
+    setColor(selectedColor);
+    hideModal(event);
+  }
+
+  const preventDefault = (event: MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  }
 
   return (
-    <div className={styled.color_modal}>
-      <div className={styled.modal_background}>
-        <div className={styled.modal}>
-          <button
-            className={styled.modal_top_btn}
-            onClick={() => setShowModal(false)}>
-            <div></div>
-          </button>
-          <div className={styled.modal_title}>
-            <div className="">구분 색</div>
-            <div className="">스케쥴 정보 구분에 사용됩니다.</div>
-          </div>
-          <div className={styled.color_list}>
-            <ColorPicker />
-            {/* <ColorPicker color="red" />
-            <ColorPicker color="yellow" />
-            <ColorPicker color="green" />
-            <ColorPicker color="blue" />
-            <ColorPicker color="purple" />
-            <ColorPicker color="pink" />
-            <ColorPicker color="gray" /> */}
-          </div>
-          <div className={styled.modal_btn}>
-            <button
-              className={styled.cancel}
-              onClick={() => setShowModal(false)}>
-              취소
-            </button>
-            <button className={styled.save} onClick={() => setShowModal(false)}>
-              변경
-            </button>
-          </div>
+    <div className={styled.modal_wrapper} onClick={preventDefault}>
+      <div className={styled.modal}>
+        <button
+          className={styled.modal_top_btn}
+          onClick={hideModal}>
+          <div />
+        </button>
+        <div className={styled.modal_title}>
+          <p className="">구분 색</p>
+          <p className="">스케쥴 정보 구분에 사용됩니다.</p>
+        </div>
+        <div className={styled.color_list}>
+          <ColorPicker
+            selected={selectedColor}
+            change={changeSelectedColor}
+          />
+        </div>
+        <div className={styled.modal_btn}>
+          <ConfirmButton text='취소' kind='confirm-sub' onClick={hideModal} />
+          <ConfirmButton text='변경' kind='confirm' onClick={confirmSelectedColor} />
         </div>
       </div>
     </div>
