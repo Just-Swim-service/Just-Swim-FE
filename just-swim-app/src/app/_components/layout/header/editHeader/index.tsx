@@ -7,7 +7,8 @@ import './styles.scss';
 
 // Link href= 에 들어갈 url 을 받아온다고 생각했습니다.
 type Data = {
-  dataUrl: string;
+  dataUrl?: string;
+  name?: string;
 };
 
 interface Props {

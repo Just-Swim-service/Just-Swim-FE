@@ -1,4 +1,4 @@
-import Header from '@/app/_component/Header';
+import { Header } from '@components';
 import searchIcon from '/public/assets/icon_search.png';
 import Image from 'next/image';
 import styled from './locationSearch.module.scss';

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Header from '../../../../_component/Header';
+import { Header } from '@components';
 import searchIcon from '/public/assets/icon_search.png';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import Link from 'next/link';

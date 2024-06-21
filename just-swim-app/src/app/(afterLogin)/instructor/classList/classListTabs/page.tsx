@@ -1,6 +1,6 @@
 'use client';
 
-import ProfileHeader from '@/app/_component/header/ProfileHeader';
+import { ProfileHeader } from '@components';
 import SearchBox from './_components/searchBox/page';
 import TabContent from './_components/tabContent/page';
 

@@ -17,7 +17,7 @@ import { Header } from '@components';
 import { useCostomerStore } from '@store';
 
 export default function SearchPerson() {
-  const { customerList, checkItem, removeItem } = useCostomerStore();
+  const { customerList, checkItem, removeItem }: any = useCostomerStore();
   // const customerList = [
   //   { name: '김고독', profile: 'profile1' },
   //   { name: '김고독', profile: 'no_profile' },
@@ -56,7 +56,7 @@ export default function SearchPerson() {
   const [isChecked, setIsChecked] = useState(false);
   // const [checkItems, setCheckItems] = useState({})
 
-  const checkItemHandler = (e, id: number) => {
+  const checkItemHandler = (e: any, id: number) => {
     // e.preventDefault();  // Prevent the form from submitting on checkbox change
     // console.log(id)
 
@@ -67,9 +67,11 @@ export default function SearchPerson() {
   };
 
   const checkLength = () => {
-    const checkedCount = customerList.reduce((acc, group) => {
-      const customers = Object.values(group)[0];
-      const checkedCustomers = customers.filter((customer) => customer.check);
+    const checkedCount = customerList.reduce((acc: any, group: any) => {
+      const customers = Object.values(group)[0] as any;
+      const checkedCustomers = customers.filter(
+        (customer: any) => customer.check,
+      );
       return acc + checkedCustomers.length;
     }, 0);
     console.log('Checked items count:', checkedCount);
@@ -134,10 +136,10 @@ export default function SearchPerson() {
         {Object.entries(customerList).map((group, index: number) => (
           <div key={index} className={styled.group}>
             <div className={styled.group_name}>
-              {Object.keys(group) && Object.keys(group[1])}
+              {Object.keys(group) && Object.keys(group[1] as any)}
             </div>
-            {Object.values(group[1]).map((customer) =>
-              customer.map((item) => (
+            {Object.values(group[1] as any).map((customer) =>
+              (customer as any).map((item: any) => (
                 <li key={item.id} className={styled.customer}>
                   <input
                     type="checkbox"
