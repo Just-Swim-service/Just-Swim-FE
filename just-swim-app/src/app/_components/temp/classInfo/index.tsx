@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import styled from './classInfo.module.scss';
 
-import { Datepicker, Timepicker, ColorModal } from '@components';
+import { Datepicker, TimepickerPrev, ColorModal } from '@components';
 
 interface Props {
   islabel: boolean;
@@ -22,9 +22,9 @@ export function ClassInfo({ islabel, bgColor }: Props) {
     <div className={styled.classInfo}>
       {islabel ? <label>수업시간</label> : null}
       <div className={styled.classInfo_time}>
-        <Timepicker label="시작" bgColor={bgColor} />
+        <TimepickerPrev label="시작" bgColor={bgColor} />
         ~
-        <Timepicker label="끝" bgColor={bgColor} />
+        <TimepickerPrev label="끝" bgColor={bgColor} />
       </div>
       {/* hyebin 매주 요일 지정 구현하기 */}
 

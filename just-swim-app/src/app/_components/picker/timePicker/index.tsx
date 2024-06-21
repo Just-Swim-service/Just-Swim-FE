@@ -1,31 +1,83 @@
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+'use client';
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
+import { useEffect, useState } from 'react';
 
-interface TimepickerProps {
-  label: string;
-  bgColor?: 'gray' | 'white';
+import { numberFormat } from '@utils';
+
+import styled from './styles.module.scss';
+
+import { VerticalScroll } from './components';
+
+interface TimePickerPrope {
+  value: string,
+  setValue: (time: string) => void,
+  itemHeight?: number,
+  itemsToShow?: number,
+  paddingY?: number,
 }
 
-export function Timepicker({
-  label,
-  bgColor = 'white',
-}: TimepickerProps) {
-  let date = new Date();
+const generateHourItems = () => {
+  return new Array(24).fill(0).map((_, index) => {
+    return {
+      value: numberFormat(index + 1),
+      selected: false
+    }
+  })
+}
+
+const generateMinuteItems = () => {
+  return new Array(60).fill(0).map((_, index) => {
+    return {
+      value: numberFormat(index),
+      selected: false
+    }
+  })
+}
+
+export function TimePicker({
+  value,
+  setValue,
+  itemHeight = 60,
+  itemsToShow = 3,
+  paddingY = 50,
+}: TimePickerPrope) {
+  const [hour, setHour] = useState<string>('' + (parseInt(value.slice(0, 2)) - 1));
+  const [minute, setMinute] = useState<string>(value.slice(3, 6));
+
+  if (itemsToShow / 2 === 0) {
+    itemsToShow += 1;
+  }
+
+  useEffect(() => {
+    setValue(`${numberFormat(parseInt(hour) + 1)}:${minute}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hour, minute]);
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <TimePicker
-        label={label}
-        ampm
-        defaultValue={dayjs(date)}
-        sx={{
-          bgcolor: `${bgColor == 'gray' ? '#F8F9FA' : 'white'}`,
-          height: '51px',
-        }}
-      />
-    </LocalizationProvider>
-  );
+    <div className={styled.time_picker}>
+      <div className={styled.time_picker_container} style={{
+        height: itemHeight * itemsToShow + paddingY * 2,
+          padding: `${paddingY}px 0`
+      }}>
+        <div className={styled.selected_overlay} style={{
+          top: itemHeight * ((itemsToShow - 1) / 2) + paddingY,
+          height: itemHeight
+        }} />
+          <VerticalScroll
+            value={hour}
+            setValue={setHour}
+            items={generateHourItems()}
+            itemHeight={itemHeight}
+            itemsToShow={itemsToShow}
+          />
+          <VerticalScroll
+            value={minute}
+            setValue={setMinute}
+            items={generateMinuteItems()}
+            itemHeight={itemHeight}
+            itemsToShow={itemsToShow}
+          />
+      </div>
+    </div>
+  )
 }

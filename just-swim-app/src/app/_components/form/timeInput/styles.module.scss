@@ -1,0 +1,30 @@
+@import '@/globals.scss';
+
+.input_wrapper {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .time_input {
+    @include Title5-M;
+    
+    width: 100%;
+    height: 51px;
+  
+    padding: 15px 16px;
+  
+    background-color: $--gray-50;
+  
+    outline: 2px solid $--gray-100;
+    border: none;
+    border-radius: 6px;
+    
+    cursor: pointer;
+  }
+  
+  .time_input::placeholder {
+    color: $--gray-500;
+  }
+}

@@ -6,7 +6,8 @@ import {
   LocationInput,
   ColorInput,
   FormButton,
-  ConfirmButton
+  TimeInput,
+  ConfirmButton,
 } from "@components"
 
 import styled from './styles.module.scss';
@@ -23,8 +24,11 @@ export default function Test() {
         <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
         <LocationInput name="locationinput" placeholder="수업 위치를 선택해 주세요" valid={false} />
         <ColorInput name="colorinput" />
+        <TimeInput name="timeinput" />
         <FormButton text="확인" active={true} />
       </form>
+        
+      {/* <Datepicker /> */}
       {/* <ConfirmButton text="버튼 1" kind="confirm" active={true} />
       <ConfirmButton text="버튼 2" kind="confirm-sub" border={false} />
       <ConfirmButton text="버튼 3" kind="cancel" />
