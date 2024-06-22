@@ -28,13 +28,18 @@ const dayEngToKor: {[props: string]: any} = {
   "sunday": "일",
 }
 
-function _DayInput({
-  name,
-  ...props
-}: DayInputProps & InputHTMLAttributes<HTMLInputElement>,
-ref: ForwardedRef<HTMLInputElement>) {
-  // 현재 선택된 색 관련
-  const [days, setDays] = useState<DayProps>({
+const dayKorToEng: {[props: string]: any} = {
+  "월": "monday",
+  "화": "tuesday",
+  "수": "wednesday",
+  "목": "thursday",
+  "금":  "friday",
+  "토": "saturday",
+  "일": "sunday",
+}
+
+const checkDefaultValue = (defaultValue: string): DayProps => {
+  const result = {
     "monday": false,
     "tuesday": false,
     "wednesday": false,
@@ -42,7 +47,26 @@ ref: ForwardedRef<HTMLInputElement>) {
     "friday": false,
     "saturday": false,
     "sunday": false,
-  });
+  }
+
+  if (defaultValue) {
+    defaultValue.slice(0, -2).split(', ').forEach(day => {
+      // @ts-ignore
+      result[dayKorToEng[day]] = true;
+    });
+  }
+
+  return result;
+}
+
+function _DayInput({
+  name,
+  defaultValue = '',
+  ...props
+}: DayInputProps & InputHTMLAttributes<HTMLInputElement>,
+ref: ForwardedRef<HTMLInputElement>) {
+  // 현재 선택된 색 관련
+  const [days, setDays] = useState<DayProps>(checkDefaultValue(defaultValue));
 
   const changeSelectedDay = (days: DayProps) => {
     setDays({
@@ -111,6 +135,7 @@ ref: ForwardedRef<HTMLInputElement>) {
 /**
  * 상위 컴포넌트에서 DayInput 대한 className을 직접 설정하지 않도록 주의! (동작하지 않음)
  * @param {string} name input의 name
+ * @param {string} defaultValue input의 초기 값, 'x, x, x요일'의 형태
  * @param {import('react').MutableRefObject<HTMLInputElement>} ref input의 ref attribute에 연결할 target
  * @param {import('react').InputHTMLAttributes<HTMLInputElement>} attributes input에서 사용 가능한 모든 attributes
  */

@@ -9,12 +9,13 @@ import styled from './styles.module.scss';
 
 function _DateInput({
   name,
+  defaultValue = '',
   suffix = '',
   renderIcon = () => {},
   ...props
 }: DateInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
-  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<string>(defaultValue);
 
   const changeSelectedDate = (date: string) => {
     setSelectedDate(date);
@@ -63,6 +64,7 @@ ref: ForwardedRef<HTMLInputElement>) {
 /**
  * 상위 컴포넌트에서 DateInput 대한 className을 직접 설정하지 않도록 주의! (동작하지 않음)
  * @param {string} name input의 name
+ * @param {string} defaultValue input의 초기 값, 'xxxx년 xx월 xx일'의 형태
  * @param {import('react').MutableRefObject<HTMLInputElement>} ref input의 ref attribute에 연결할 target
  * @param {import('react').InputHTMLAttributes<HTMLInputElement>} attributes input에서 사용 가능한 모든 attributes
  */
