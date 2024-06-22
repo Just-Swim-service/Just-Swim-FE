@@ -13,19 +13,30 @@ export function DatePicker({
   changeSelectedDate: (date: string) => void,
 }) {
   const DateBlock = ({
-    children,
+    date,
+    isDisabled,
+    isToday,
+    isSelected,
+    clickCallback = () => {},
     ...props
   }: {
-    children: React.ReactNode
+    date: number,
+    isDisabled: boolean,
+    isToday: boolean,
+    isSelected: boolean,
+    clickCallback?: Function,
   } & HTMLAttributes<HTMLButtonElement>) => {
+    const onClickButton = () => {
+      clickCallback();
+    }
+
     return (
-      <button 
-        style={{
-          padding: 20
-        }}
+      <button
+        className={`${styled.days} ${isDisabled ? styled.disabled : ''} ${isToday ? styled.today : ''} ${isSelected ? styled.selected : ''}`}
         {...props}
+        onClick={onClickButton}
       >
-        {children}
+        {date}
       </button>
     )
   }

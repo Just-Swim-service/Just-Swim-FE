@@ -37,9 +37,12 @@ const RenderPrevMonth = ({ startDay, DateBlock }: { startDay: Date, DateBlock: J
         days.map(day => {
           return (
             <div key={randomId()} className={styled.days_wrapper}>
-              <div key={randomId()} className={`${styled.days} ${styled.disable_days}`}>
-                <DateBlock>{day}</DateBlock>
-              </div>
+              <DateBlock
+                date={day}
+                isDisabled={true}
+                isToday={false}
+                isSelected={false}
+              />
             </div>
            
           )
@@ -85,9 +88,13 @@ const RenderThisMonth = ({
         days.map(day => {
           return (
             <div key={randomId()} className={styled.days_wrapper}>
-              <div className={`${styled.days} ${styled.active_days} ${todayExists && today === day ? styled.today : ''} ${selectedDay === day ? styled.selected : ''}`}>
-                <DateBlock onClick={() => {setSelectedDay(day)}}>{day}</DateBlock>
-              </div>
+              <DateBlock
+                date={day}
+                isDisabled={false}
+                isToday={todayExists && today === day}
+                isSelected={selectedDay === day}
+                clickCallback={() => {setSelectedDay(day)}}
+              />
             </div>
           )
         })
@@ -110,9 +117,12 @@ const RenderNextMonth =  ({ endDay, DateBlock }: { endDay: Date, DateBlock: JSX.
         days.map(day => {
           return (
             <div key={randomId()} className={styled.days_wrapper}>
-              <div key={randomId()} className={`${styled.days} ${styled.disable_days}`}>
-                <DateBlock>{day}</DateBlock>
-              </div>
+              <DateBlock
+                date={day}
+                isDisabled={true}
+                isToday={false}
+                isSelected={false}
+              />
             </div>
           )
         })
