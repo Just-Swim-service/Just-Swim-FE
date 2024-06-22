@@ -2,7 +2,7 @@
 
 import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } from 'react';
 
-import { DayModal } from '@components';
+import { DayModal, CalendarSmallSVG } from '@components';
 import { DayInputProps } from '@types';
 
 import styled from './styles.module.scss';
@@ -83,6 +83,9 @@ ref: ForwardedRef<HTMLInputElement>) {
 
   return (
     <div className={styled.input_wrapper}>
+      <div className={styled.icon_wrapper} onClick={showModal}>
+        <CalendarSmallSVG width={14} height={14} />
+      </div>
       <input
         {...props}
         name={name}

@@ -7,6 +7,17 @@
   flex-direction: column;
   gap: 2px;
 
+  .icon_wrapper {
+    position: absolute;
+    
+    top: 50%;
+    transform: translate(0, -50%);
+
+    left: 16px;
+
+    cursor: pointer;
+  }
+
   .date_input {
     @include Title5-M;
     

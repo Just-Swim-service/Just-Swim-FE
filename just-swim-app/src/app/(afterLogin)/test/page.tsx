@@ -10,11 +10,15 @@ import {
   DayInput,
   DateInput,
   ConfirmButton,
+
+  RepeatTimeSVG
 } from "@components"
 
 import styled from './styles.module.scss';
 
 export default function Test() {
+  
+
   return (
     <div style={{
       width: '100%',
@@ -26,9 +30,9 @@ export default function Test() {
         <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
         <LocationInput name="locationinput" placeholder="수업 위치를 선택해 주세요" valid={false} />
         <ColorInput name="colorinput" />
-        <TimeInput name="timeinput" placeholder="시간 선택" />
+        <TimeInput name="timeinput" placeholder="시간 선택"/>
         <DayInput name="dayinput" placeholder="수업 요일을 선택해 주세요" />
-        <DateInput name="dateinput" placeholder="종료일 선택" />
+        <DateInput name="dateinput" renderIcon={() => <RepeatTimeSVG width={14} height={14} />} placeholder="종료일 없이 반복" suffix="종료" />
         <FormButton text="확인" active={true} />
       </form>
       {/* <ConfirmButton text="버튼 1" kind="confirm" active={true} />

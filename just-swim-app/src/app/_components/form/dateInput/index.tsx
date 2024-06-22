@@ -9,6 +9,8 @@ import styled from './styles.module.scss';
 
 function _DateInput({
   name,
+  suffix = '',
+  renderIcon = () => {},
   ...props
 }: DateInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
@@ -33,6 +35,9 @@ ref: ForwardedRef<HTMLInputElement>) {
   
   return (
     <div className={styled.input_wrapper}>
+      <div className={styled.icon_wrapper}>
+        {renderIcon()}
+      </div>
       <input
         {...props}
         name={name}
@@ -40,7 +45,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         ref={ref}
         type='text'
         readOnly
-        value={selectedDate}
+        value={selectedDate + (selectedDate && ` ${suffix}`)}
         onClick={showModal}
       />
     {
