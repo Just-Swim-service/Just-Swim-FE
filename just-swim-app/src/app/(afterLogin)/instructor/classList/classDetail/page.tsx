@@ -5,19 +5,19 @@ import profile from '/public/assets/profile1.png';
 import QRCode from '/public/assets/qr_code.png';
 import downloadIcon from '/public/assets/icon_download.png';
 import shareIcon from '/public/assets/icon_share.png';
-import Profile from '../../../_component/Profile';
+import { Profile } from '@components';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
-import ClassInfo from '../../../_component/ClassInfo';
+import { ClassInfo } from '@components';
 import deleteIcon from '/public/assets/icon_delete.png';
 import styled from './classDetail.module.scss';
-import Header from '@/app/_component/Header';
+import { Header } from '@components';
 import location_icon from '/public/assets/input_icon_location.png';
-import ColorModal from '@/app/_component/Modal/ColorModal';
-import Datepicker from '@/app/_component/DatePicker';
-import Timepicker from '@/app/_component/TimePicker';
+import { ColorModal } from '@components';
+import { Datepicker } from '@components';
+import { Timepicker } from '@components';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import RepeatDatepicker from '@/app/_component/RepeatDatePicker';
+import { RepeatDatepicker } from '@components';
 
 // 수업 참여자 리스트
 let peopleList = [

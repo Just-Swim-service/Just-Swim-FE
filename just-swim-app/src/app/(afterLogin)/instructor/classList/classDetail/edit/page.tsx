@@ -1,18 +1,16 @@
 'use client';
 
-import Timepicker from '@/app/_component/TimePicker';
-import Header from '../../../../../_component/Header';
-import Input from '../../../../../_component/Input';
-import ClassInfo from '../../../../_component/ClassInfo';
-import Datepicker from '@/app/_component/DatePicker';
+import { Timepicker } from '@components';
+import { Header } from '@components';
+import { Input } from '@components';
+import { Datepicker } from '@components';
 import { useState } from 'react';
-import Link from 'next/link';
-import ColorModal from '@/app/_component/Modal/ColorModal';
+import { ColorModal } from '@components';
 import location_icon from '/public/assets/input_icon_location.png';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styled from './classInfoEdit.module.scss';
-import RepeatDatepicker from '@/app/_component/RepeatDatePicker';
+import { RepeatDatepicker } from '@components';
 
 export default function ClassInfoEdit() {
   const router = useRouter();
