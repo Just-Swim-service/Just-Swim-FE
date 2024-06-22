@@ -7,6 +7,8 @@ import {
   ColorInput,
   FormButton,
   TimeInput,
+  DayInput,
+  DateInput,
   ConfirmButton,
 } from "@components"
 
@@ -24,7 +26,9 @@ export default function Test() {
         <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
         <LocationInput name="locationinput" placeholder="수업 위치를 선택해 주세요" valid={false} />
         <ColorInput name="colorinput" />
-        <TimeInput name="timeinput" />
+        <TimeInput name="timeinput" placeholder="시간 선택" />
+        <DayInput name="dayinput" placeholder="수업 요일을 선택해 주세요" />
+        <DateInput name="dateinput" placeholder="종료일 선택" />
         <FormButton text="확인" active={true} />
       </form>
       {/* <ConfirmButton text="버튼 1" kind="confirm" active={true} />

@@ -16,7 +16,7 @@ export function TimeModal({
   setTimeValue: (time: string) => void,
 }) {
   const [selectedTime, setSelectedTime] = useState<string>(timeValue);
-  
+
   const changeSelectedTime = (time: string) => {
     setSelectedTime(time);
   }

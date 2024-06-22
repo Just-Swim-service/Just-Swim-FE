@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import styled from './classInfo.module.scss';
 
-import { Datepicker, TimepickerPrev, ColorModal } from '@components';
+import { DatepickerPrev, TimepickerPrev, ColorModal } from '@components';
 
 interface Props {
   islabel: boolean;
@@ -29,7 +29,7 @@ export function ClassInfo({ islabel, bgColor }: Props) {
       {/* hyebin 매주 요일 지정 구현하기 */}
 
       {islabel ? <label>수업 요일</label> : null}
-      <Datepicker bgColor={bgColor} />
+      <DatepickerPrev bgColor={bgColor} />
 
       {islabel ? <label>수업 위치</label> : null}
       <input
@@ -39,16 +39,16 @@ export function ClassInfo({ islabel, bgColor }: Props) {
       />
 
       {islabel ? <label>종료 일자</label> : null}
-      <Datepicker bgColor={bgColor} />
+      <DatepickerPrev bgColor={bgColor} />
 
       {islabel ? <label>구분 색</label> : null}
       <input
         onClick={clickModal}
         className={`${styled.input} ${bgColor === 'gray' ? styled.gray : styled.white}`}
         placeholder={bgColor}></input>
-      {showModal && (
+      {/* {showModal && (
         <ColorModal showModal={showModal} setShowModal={setShowModal} />
-      )}
+      )} */}
     </div>
   );
 }

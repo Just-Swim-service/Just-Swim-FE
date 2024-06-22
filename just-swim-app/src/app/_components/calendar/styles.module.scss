@@ -1,0 +1,143 @@
+@import '@/globals.scss';
+
+.calendar_wrapper {
+  position: relative;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar {
+  width: 360px;
+
+  .title {
+    @include Title3-SB;
+
+    display: flex;
+    justify-content: space-between;
+
+    &_wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+      button {
+        display: flex;
+        align-content: center;
+      }
+    }
+
+    .button_wrapper {
+      display: flex;
+      gap: 10px;
+      
+      button {
+        font-size: 18px;
+        color: $--Primary-blue;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & svg {
+          fill: $--Primary-blue;
+        }
+      }
+    }
+  }
+
+  .sub_title {
+    @include Body4-R;
+
+    display: flex;
+
+    &_wrapper {
+      width: calc(360px / 7);
+      height: 54px;
+
+      text-align: center;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sunday {
+      color: $--Cancel;
+    }
+
+    .saturday {
+      color: $--Primary-blue;
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-flow: wrap;
+
+    border-top: 2px solid $--gray-200;
+
+    .days_wrapper {
+      width: calc(360px / 7);
+      height: 54px;
+
+      padding: 10px;
+    }
+
+    .days {
+      width: 100%;
+      height: 34px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+    }
+
+    .disable_days {
+      color: $--gray-300;
+    }
+
+    .disable_days button {
+      color: $--gray-300;
+    }
+
+    .disable_days a {
+      color: $--gray-300;
+    }
+
+    .active_days,
+    .active_days button,
+    .active_days a {
+      color: black;
+    }
+
+    .today,
+    .today button,
+    .today a {
+      color: $--Primary-blue;
+    }
+
+    .selected,
+    .selected button,
+    .selected a {
+      background-color: $--Primary-blue;
+      border-radius: 50%;
+      color: white;
+    }
+  }
+}
+
+.month_modal {
+  width: 360px;
+  height: 390px;
+
+  position: absolute;
+  bottom: 0;
+
+  background-color: wheat;
+}
