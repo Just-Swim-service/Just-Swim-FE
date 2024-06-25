@@ -30,9 +30,9 @@ export default function Test() {
         <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
         <LocationInput name="locationinput" placeholder="수업 위치를 선택해 주세요" valid={false} />
         <ColorInput name="colorinput" defaultValue='#8B41FF' />
-        <TimeInput name="timeinput" placeholder="시간 선택" defaultValue="15:22"/>
-        <DayInput name="dayinput" placeholder="수업 요일을 선택해 주세요" defaultValue="월, 수요일" />
-        <DateInput name="dateinput" renderIcon={() => <RepeatTimeSVG width={14} height={14} />} placeholder="종료일 없이 반복" suffix="종료" defaultValue="2024년 8월 3일" />
+        <TimeInput name="timeinput" placeholder="시간 선택" defaultValue="10:00~14:002"/>
+        <DayInput name="dayinput" placeholder="수업 요일을 선택해 주세요" defaultValue="월수" />
+        <DateInput name="dateinput" renderIcon={() => <RepeatTimeSVG width={14} height={14} />} placeholder="종료일 없이 반복" suffix="종료" defaultValue="2024.08.03" />
         <FormButton text="확인" active={true} />
       </form>
       {/* <ConfirmButton text="버튼 1" kind="confirm" active={true} />

@@ -16,12 +16,22 @@ interface TimePickerPrope {
   paddingY?: number,
 }
 
-const generateHourItems = () => {
-  return new Array(24).fill(0).map((_, index) => {
-    return {
-      value: numberFormat(index + 1),
-      selected: false
+const generateMeridiemItems = () => {
+  return [
+    {
+      value: "AM",
+    },
+    {
+      value: "PM"
     }
+  ];
+}
+
+const generateHourItems = () => {
+  return new Array(12).fill(0).map((_, index) => {
+    return {
+      value: numberFormat(index === 0 ? 12 : index),
+    };
   })
 }
 
@@ -29,8 +39,7 @@ const generateMinuteItems = () => {
   return new Array(60).fill(0).map((_, index) => {
     return {
       value: numberFormat(index),
-      selected: false
-    }
+    };
   })
 }
 
@@ -41,17 +50,23 @@ export function TimePicker({
   itemsToShow = 3,
   paddingY = 50,
 }: TimePickerPrope) {
-  const [hour, setHour] = useState<string>('' + (parseInt(value.slice(0, 2)) - 1));
-  const [minute, setMinute] = useState<string>(value.slice(3, 6));
+  const hourValue = parseInt(value.slice(0, 2));
+  const minuteValue = value.slice(3, 6);
+
+  const [meridiem, setMeridiem] = useState(hourValue >= 12 ? "01" : "00");
+  const [hour, setHour] = useState<string>(numberFormat(hourValue % 12));
+  const [minute, setMinute] = useState<string>(minuteValue);
 
   if (itemsToShow / 2 === 0) {
     itemsToShow += 1;
   }
-
+  
   useEffect(() => {
-    setValue(`${numberFormat(parseInt(hour) + 1)}:${minute}`);
+    const meridiemValue = meridiem === "01" ? 12 : 0;
+
+    setValue(`${numberFormat(meridiemValue + parseInt(hour))}:${minute}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hour, minute]);
+  }, [meridiem, hour, minute]);
 
   return (
     <div className={styled.time_picker}>
@@ -63,6 +78,13 @@ export function TimePicker({
           top: itemHeight * ((itemsToShow - 1) / 2) + paddingY,
           height: itemHeight
         }} />
+          <VerticalScroll
+            value={meridiem}
+            setValue={setMeridiem}
+            items={generateMeridiemItems()}
+            itemHeight={itemHeight}
+            itemsToShow={itemsToShow}
+          />
           <VerticalScroll
             value={hour}
             setValue={setHour}

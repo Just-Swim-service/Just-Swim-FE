@@ -2,8 +2,8 @@
 
 import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useState } from "react";
 
-import { ArrowLeftSVG, ArrowRightSVG, ArrowDownSVG } from "@components";
-import { randomId } from "@utils";
+import { ArrowLeftSVG, ArrowRightSVG } from "@components";
+import { numberFormat, randomId } from "@utils";
 
 import styled from './styles.module.scss';
 
@@ -172,7 +172,7 @@ const RenderCalendar = ({
     }
 
     if (selectedDate) {
-      let [inputYear, inputMonth, inputDate] = selectedDate.split(" ").slice(0, 3).map((el) => parseInt(el.slice(0, -1)));
+      let [inputYear, inputMonth, inputDate] = selectedDate.split(".").slice(0, 3).map(Number);
 
       if (inputYear === currentYear && inputMonth - 1 === currentMonth) {
         result.existsSelected = true;
@@ -207,7 +207,7 @@ const RenderCalendar = ({
   }
 
   const updateDate = (date: number) => {
-    const result = `${currentYear}년 ${currentMonth + 1}월 ${date}일`;
+    const result = `${currentYear}.${numberFormat(currentMonth + 1)}.${numberFormat(date)}`;
 
     changeSelectedDate(result);
   }
@@ -282,11 +282,10 @@ export function Calendar({
     currentYear: today.getFullYear(),
     currentMonth: today.getMonth(),
   });
-  const [showMonthModal, setShowMonthModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedDate) {
-      let [inputYear, inputMonth] = selectedDate.split(" ").slice(0, 2).map((el) => parseInt(el.slice(0, -1)));
+      let [inputYear, inputMonth] = selectedDate.split(".").slice(0, 2).map(Number);
 
       setCurrentValues({
         currentYear: inputYear,

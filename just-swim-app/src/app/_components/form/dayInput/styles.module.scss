@@ -35,7 +35,20 @@
     cursor: pointer;
   }
   
-  .day_input::placeholder {
+  .day_input.empty {
     color: $--gray-500;
+  }
+
+  .valid_warpper {
+    position: absolute;
+
+    top: 50%;
+    transform: translate(0, -50%);
+
+    right: 16px;
+  }
+
+  .day_input.empty + .valid_warpper {
+    display: none;
   }
 }

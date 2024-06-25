@@ -2,7 +2,7 @@
 
 import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } from 'react';
 
-import { DayModal, CalendarSmallSVG } from '@components';
+import { DayModal, CalendarSmallSVG, InputValidSVG } from '@components';
 import { DayInputProps } from '@types';
 
 import styled from './styles.module.scss';
@@ -38,7 +38,7 @@ const dayKorToEng: {[props: string]: any} = {
   "일": "sunday",
 }
 
-const checkDefaultValue = (defaultValue: string): DayProps => {
+const makeInitialValue = (defaultValue: string): DayProps => {
   const result = {
     "monday": false,
     "tuesday": false,
@@ -50,7 +50,7 @@ const checkDefaultValue = (defaultValue: string): DayProps => {
   }
 
   if (defaultValue) {
-    defaultValue.slice(0, -2).split(', ').forEach(day => {
+    defaultValue.split('').forEach(day => {
       // @ts-ignore
       result[dayKorToEng[day]] = true;
     });
@@ -59,38 +59,66 @@ const checkDefaultValue = (defaultValue: string): DayProps => {
   return result;
 }
 
+const makeInputValue = (days: DayProps) => {
+  let result = '';
+
+  for (const day of Object.keys(days)) {
+    if (days[day]) {
+      result += dayEngToKor[day];
+    }
+  }
+
+  return result;
+}
+
+const makePrintValue = (days: DayProps) => {
+  let result = '';
+
+  for (const day of Object.keys(days)) {
+    if (days[day]) {
+      result += `${dayEngToKor[day]}, `;
+    }
+  }
+
+  result = result.slice(0, -2);
+  result += '요일';
+
+  return result;
+}
+
+const checkDefaultValue = (defaultValue: string) => {
+  const regexp = /[월화수목금토일]{1,7}$/g;
+
+  return regexp.test(defaultValue);
+}
+
 function _DayInput({
   name,
+  valid = true,
   defaultValue = '',
+  placeholder = '',
   ...props
 }: DayInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
   // 현재 선택된 색 관련
-  const [days, setDays] = useState<DayProps>(checkDefaultValue(defaultValue));
+  const [days, setDays] = useState<DayProps>(
+    checkDefaultValue(defaultValue) 
+    ? makeInitialValue(defaultValue) 
+    : {
+    "monday": false,
+    "tuesday": false,
+    "wednesday": false,
+    "thursday": false,
+    "friday": false,
+    "saturday": false,
+    "sunday": false,
+  });
 
   const changeSelectedDay = (days: DayProps) => {
     setDays({
       ...days
     });
   };
-
-  const makeInputValue =  () => {
-    let result = '';
-
-    for (const day of Object.keys(days)) {
-      if (days[day]) {
-        result += `${dayEngToKor[day]}, `;
-      }
-    }
-
-    result = result.slice(0, -2);
-
-    if (result) {
-      result += '요일';
-    }
-
-    return result;
-  }
 
   // 모달 보여줄지 말지
   const [modal, setModal] = useState<boolean>(false);
@@ -105,20 +133,30 @@ ref: ForwardedRef<HTMLInputElement>) {
     setModal(false);
   }
 
+  const inputValue = makeInputValue(days);
+  
   return (
     <div className={styled.input_wrapper}>
       <div className={styled.icon_wrapper} onClick={showModal}>
         <CalendarSmallSVG width={14} height={14} />
       </div>
+      <div className={`${styled.day_input} ${inputValue ? '' : styled.empty}`} onClick={showModal}>
+        <span>{inputValue ? makePrintValue(days) : placeholder}</span>
+      </div>
+      {
+        valid && 
+        <div className={styled.valid_warpper}>
+          <InputValidSVG width={18} height={18} />
+        </div>
+      }
       <input
         {...props}
         name={name}
-        className={styled.day_input}
         ref={ref}
         type='text'
+        value={makeInputValue(days)}
         readOnly
-        value={makeInputValue()}
-        onClick={showModal}
+        hidden
       />
       {
         modal && 
@@ -135,7 +173,8 @@ ref: ForwardedRef<HTMLInputElement>) {
 /**
  * 상위 컴포넌트에서 DayInput 대한 className을 직접 설정하지 않도록 주의! (동작하지 않음)
  * @param {string} name input의 name
- * @param {string} defaultValue input의 초기 값, 'x, x, x요일'의 형태
+ * @param {boolean} valid input이 유효한지 여부
+ * @param {string} defaultValue input의 초기 값, '월화수'의 형태
  * @param {import('react').MutableRefObject<HTMLInputElement>} ref input의 ref attribute에 연결할 target
  * @param {import('react').InputHTMLAttributes<HTMLInputElement>} attributes input에서 사용 가능한 모든 attributes
  */

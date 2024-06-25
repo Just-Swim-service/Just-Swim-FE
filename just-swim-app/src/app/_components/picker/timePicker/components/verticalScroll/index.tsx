@@ -15,7 +15,7 @@ export function VerticalScroll({
 }: {
   value: string,
   setValue: Function,
-  items: { value: string, selected: boolean }[]
+  items: { value: string }[]
   itemHeight: number,
   itemsToShow: number,
 }) {
@@ -23,8 +23,9 @@ export function VerticalScroll({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [cursorPosition, setCursorPosition] = useState<number>(-(parseInt(value) - sideItemsToShow) * itemHeight);
+  const [cursorPosition, setCursorPosition] = useState<number>(-parseInt(value) * itemHeight);
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
+  
 
   const startCapture = useRef<boolean>(false);
   const startCursorPosition = useRef<number>(0);
@@ -76,13 +77,13 @@ export function VerticalScroll({
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
     if (!startCapture.current) {
       startCapture.current = true;
-      startCursorPosition.current = event.targetTouches[0].clientY;
+      startCursorPosition.current = event.targetTouches[0].pageY;
     }
   };
 
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     if (startCapture.current) {
-      setMovingCursorPosition(event.targetTouches[0].clientY * 1 - startCursorPosition.current);
+      setMovingCursorPosition(event.targetTouches[0].pageY * 1 - startCursorPosition.current);
     }
   };  
   
@@ -104,10 +105,10 @@ export function VerticalScroll({
 
   const handleWheelScroll = (event: WheelEvent<HTMLDivElement>) => {
     if (event.deltaY > 0) {
-      if (cursorPosition < itemHeight * ((itemsToShow - 1) / 2)) {
+      if (cursorPosition < 0) {
         setCursorPosition((prev) => prev + itemHeight);
       }
-    } else if (cursorPosition > itemHeight * -(items.length - (sideItemsToShow + 1))) {
+    } else if (cursorPosition > itemHeight * -(items.length - 1)) {
       setCursorPosition((prev) => prev - itemHeight);
     }
   };
@@ -116,15 +117,15 @@ export function VerticalScroll({
     const index = Math.round(cursorPosition / itemHeight);
     let finalValue = index * itemHeight;
 
-    if (finalValue < itemHeight * -(items.length - (sideItemsToShow + 1))) {
-      finalValue = itemHeight * -(items.length - (sideItemsToShow + 1));
+    if (finalValue < itemHeight * -(items.length - 1)) {
+      finalValue = itemHeight * -(items.length - 1);
     }
 
-    if (finalValue > itemHeight * sideItemsToShow) {
-      finalValue = itemHeight * sideItemsToShow;
+    if (finalValue > 0) {
+      finalValue = 0;
     }
-
-    const value = -(index - sideItemsToShow);
+    
+    const value = -(finalValue / itemHeight);
 
     setCursorPosition(finalValue);
     setValue(numberFormat(value));
@@ -146,19 +147,20 @@ export function VerticalScroll({
       onWheel={handleWheelScroll}
     >
       <div className={styled.upper_border} style={{
-        top: itemHeight
+        top: itemHeight * sideItemsToShow
       }} />
       <div className={styled.lower_border} style={{
-        bottom: itemHeight
+        bottom: itemHeight * sideItemsToShow
       }} />
       <div className={styled.upper_blur} style={{
-        height: itemHeight - 1,
+        height: itemHeight * sideItemsToShow - 1,
       }} />
       <div className={styled.lower_blur} style={{
-        height: itemHeight - 1,
+        height: itemHeight * sideItemsToShow - 1,
       }} />
       <div className={`${styled.item_list} ${dragType.current === 'fast' ? styled.picker_fast : styled.picker_slow}`} style={{
         height: itemHeight * items.length,
+        marginTop: itemHeight * sideItemsToShow,
         transform: `translateY(${cursorPosition + movingCursorPositon}px)`
       }}>
         {
