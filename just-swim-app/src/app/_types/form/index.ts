@@ -1,6 +1,7 @@
 export * from './ColorInputProps';
 export * from './DateInputProps';
 export * from './DayInputProps';
+export * from './FileInputProps';
 export * from './FormButtonProps';
 export * from './LocationInputPros';
 export * from './TextAreaProps';

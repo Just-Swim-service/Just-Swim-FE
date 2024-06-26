@@ -46,6 +46,9 @@
     color: $--gray-900;
 
     transition: all 100ms ease-in-out;
+
+    cursor: pointer;
+    user-select: none;
   }
 
   .item {
@@ -65,8 +68,7 @@
 
     transition: all 100ms linear;
 
-    cursor: pointer;
-    user-select: none;
+    pointer-events: none;
   }
     
   .upper_blur {

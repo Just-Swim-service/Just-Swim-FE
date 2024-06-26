@@ -29,7 +29,7 @@ export function VerticalScroll({
 
   const startCapture = useRef<boolean>(false);
   const startCursorPosition = useRef<number>(0);
-  const updateCursorPosition = useRef<boolean>(false);
+  // const updateCursorPosition = useRef<boolean>(false);
   const dragStartTime = useRef<number>(0);
   // const dragEndTime = useRef<number>(0);
   const dragType = useRef<string>('slow');
@@ -47,21 +47,21 @@ export function VerticalScroll({
         dragType.current = 'slow';
       }
 
-      updateCursorPosition.current = true;
+      // updateCursorPosition.current = true;
     }
   }
 
   const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     if (!startCapture.current) {
       startCapture.current = true;
-      startCursorPosition.current = event.clientY;
+      startCursorPosition.current = event.pageY;
       dragStartTime.current = performance.now();
     }
  };
 
   const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     if (startCapture.current) {
-      setMovingCursorPosition((event.clientY - startCursorPosition.current) * 3);
+      setMovingCursorPosition((event.pageY - startCursorPosition.current) * 2);
     }
   };
 
@@ -83,24 +83,16 @@ export function VerticalScroll({
 
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     if (startCapture.current) {
-      setMovingCursorPosition(event.targetTouches[0].pageY * 1 - startCursorPosition.current);
+      setMovingCursorPosition((event.targetTouches[0].pageY * 1 - startCursorPosition.current) * 3);
     }
   };  
   
   const handleTouchCancle = (event: TouchEvent<HTMLDivElement>) => {
-    if (startCapture.current) {
-      startCapture.current = false;
-      setCursorPosition(prev => prev + movingCursorPositon);
-      setMovingCursorPosition(0);
-    }
+    endDrag();
   };
   
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
-    if (startCapture.current) {
-      startCapture.current = false;
-      setCursorPosition(prev => prev + movingCursorPositon);
-      setMovingCursorPosition(0);
-    }
+    endDrag();
   };
 
   const handleWheelScroll = (event: WheelEvent<HTMLDivElement>) => {
@@ -141,7 +133,7 @@ export function VerticalScroll({
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
       onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
+      onTouchMove={throttle(handleTouchMove, 10)}
       onTouchCancel={handleTouchCancle}
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheelScroll}

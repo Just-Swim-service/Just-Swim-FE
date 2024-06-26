@@ -1,0 +1,118 @@
+@import '@/globals.scss';
+
+.carousel_wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 300;
+
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .close_button {
+    width: fit-content;
+
+    margin-right: 16px;
+    margin-bottom: 15px;
+
+    background: rgba(0, 0, 0, 0);
+
+    margin-left: auto;
+  }
+
+  .slider_wrapper {
+    width: 100%;
+
+    overflow: hidden;
+
+    cursor: pointer;
+    user-select: none;
+
+    .slider {
+      width: 100%;
+      display: flex;
+  
+      transition: all 0.3s;
+  
+      .slider_item {
+        width: 100%;
+  
+        flex-shrink: 0;
+
+        pointer-events: none;
+  
+        .image_wrapper {
+          position: relative;
+  
+          width: max(min(600px, 85%), 300px);
+          aspect-ratio: 1.7 / 1;
+  
+          margin: 0 auto;
+  
+          & > img {
+            object-fit: cover;
+            
+            z-index: -1;
+          }
+        }
+      }
+    }
+  }
+
+  .index_list {
+    margin-top: 10px;
+
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+
+    transform: all 0.3s;
+
+    .normal {
+      width: 5px;
+      height: 5px;
+
+      border-radius: 50%;
+
+      background-color: rgba(255, 255, 255, 0.4);
+
+      cursor: pointer;
+    }
+
+    .normal.selected {
+      width: 20px;
+      height: 5px;
+
+      border-radius: 5px;
+
+      background-color: white;
+
+      cursor: pointer;
+    }
+  }
+
+  .delete_button {
+    @include Body4-R;
+    
+    width: fit-content;
+
+    margin: 44px auto 0;
+    
+    background: rgba(0, 0, 0, 0);
+
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    gap: 6px;
+  }
+}
