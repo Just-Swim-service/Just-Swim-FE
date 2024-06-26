@@ -13,13 +13,13 @@ const kstGap = 9 * 60 * 60 * 1000;
 const today = new Date(utc + kstGap);
 
 const days = [
+  "일",
   "월",
   "화",
   "수",
   "목",
   "금",
   "토",
-  "일",
 ];
 
 const RenderPrevMonth = ({ startDay, DateBlock }: { startDay: Date, DateBlock: JSX.ElementType }) => {
