@@ -1,5 +1,5 @@
+import View from './view/page';
+
 export default function Feedback() {
-  return (
-    <h1>Feedback</h1>
-  );
+  return <View />;
 }

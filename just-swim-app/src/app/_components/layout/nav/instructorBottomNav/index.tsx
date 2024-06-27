@@ -25,7 +25,7 @@ export function InstructorBottomNavBar() {
         <button onClick={() => handleBottomNavClick('schedule')}>홈</button>
       </Link>
       <Link
-        href="/instructor/feedback/feedbackView"
+        href="/instructor/feedback"
         className={`${styled.bottom_nav_bar} ${styled[type === 'feedback' ? 'active' : '']}`}>
         <button onClick={() => handleBottomNavClick('feedback')}>피드백</button>
       </Link>

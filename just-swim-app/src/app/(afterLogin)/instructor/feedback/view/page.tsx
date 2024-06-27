@@ -4,7 +4,7 @@ import { ProfileHeader } from '@components';
 
 import { FeedbackList, FeedbackTypeButton } from './_components';
 
-export default function FeedbackView() {
+export default function view() {
   const data = {
     name: '강사',
     image: '',
