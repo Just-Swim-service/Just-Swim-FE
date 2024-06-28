@@ -5,19 +5,14 @@ import profile from '/public/assets/profile1.png';
 import QRCode from '/public/assets/qr_code.png';
 import downloadIcon from '/public/assets/icon_download.png';
 import shareIcon from '/public/assets/icon_share.png';
-import Profile from '../../../_component/Profile';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
-import ClassInfo from '../../../_component/ClassInfo';
 import deleteIcon from '/public/assets/icon_delete.png';
 import styled from './classDetail.module.scss';
-import Header from '@/app/_component/Header';
 import location_icon from '/public/assets/input_icon_location.png';
-import ColorModal from '@/app/_component/Modal/ColorModal';
-import Datepicker from '@/app/_component/DatePicker';
-import Timepicker from '@/app/_component/TimePicker';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import RepeatDatepicker from '@/app/_component/RepeatDatePicker';
+
+import { Profile, ClassInfo, Header, DatepickerPrev, TimepickerPrev, RepeatDatepicker } from '@components';
 
 // 수업 참여자 리스트
 let peopleList = [
@@ -135,13 +130,13 @@ export default function ClassDetail() {
 
         <div className={styled.classInfo}>
           <div className={styled.classInfo_time}>
-            <Timepicker label="시작" />
+            <TimepickerPrev label="시작" />
             ~
-            <Timepicker label="끝" />
+            <TimepickerPrev label="끝" />
           </div>
           {/* hyebin 매주 요일 지정 구현하기 */}
 
-          <Datepicker />
+          <DatepickerPrev />
 
           <div className={styled.location_input}>
             <input
@@ -168,9 +163,9 @@ export default function ClassDetail() {
               placeholder="구분색"></input>
             <div className={styled.pick_color} />
           </div>
-          {showModal && (
+          {/* {showModal && (
             <ColorModal showModal={showModal} setShowModal={setShowModal} />
-          )}
+          )} */}
         </div>
 
         <button className={styled.delete}>
