@@ -16,7 +16,7 @@ import {
 } from "@components"
 
 import styled from './styles.module.scss';
-import { uploadProduct } from "./action";
+import { kakaoLogin, uploadProduct } from "./action";
 
 export default function Test() {
   return (
@@ -41,6 +41,9 @@ export default function Test() {
       <ConfirmButton text="버튼 3" kind="cancel" />
       <ConfirmButton text="버튼 4" kind="cancel-sub" border={true} />
       <ConfirmButton text="버튼 5" kind="normal" /> */}
+      <form action={kakaoLogin}>
+        <button>로그인</button>
+      </form>
     </div>
   )
 }

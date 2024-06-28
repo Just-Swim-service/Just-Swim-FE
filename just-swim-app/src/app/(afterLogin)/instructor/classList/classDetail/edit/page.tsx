@@ -1,18 +1,13 @@
 'use client';
 
-import Timepicker from '@/app/_component/TimePicker';
-import Header from '../../../../../_component/Header';
-import Input from '../../../../../_component/Input';
-import ClassInfo from '../../../../_component/ClassInfo';
-import Datepicker from '@/app/_component/DatePicker';
+import { TimepickerPrev, Header, Input, ClassInfo, DatepickerPrev, RepeatDatepicker } from '@components';
+
 import { useState } from 'react';
 import Link from 'next/link';
-import ColorModal from '@/app/_component/Modal/ColorModal';
 import location_icon from '/public/assets/input_icon_location.png';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styled from './classInfoEdit.module.scss';
-import RepeatDatepicker from '@/app/_component/RepeatDatePicker';
 
 export default function ClassInfoEdit() {
   const router = useRouter();
@@ -60,9 +55,9 @@ export default function ClassInfoEdit() {
               <span>(필수)</span>
             </div>
             <div className={styled.classInfo_time}>
-              <Timepicker label="시작" bgColor="gray" />
+              <TimepickerPrev label="시작" bgColor="gray" />
               ~
-              <Timepicker label="끝" bgColor="gray" />
+              <TimepickerPrev label="끝" bgColor="gray" />
             </div>
             {/* hyebin 매주 요일 지정 구현하기 */}
 
@@ -70,7 +65,7 @@ export default function ClassInfoEdit() {
               <label>수업 요일</label>
               <span>(필수)</span>
             </div>
-            <Datepicker bgColor="gray" />
+            <DatepickerPrev bgColor="gray" />
 
             <label htmlFor="location">수업 위치</label>
 
@@ -101,9 +96,9 @@ export default function ClassInfoEdit() {
                 placeholder="구분색"></input>
               <div className={styled.pick_color} />
             </div>
-            {showModal && (
+            {/* {showModal && (
               <ColorModal showModal={showModal} setShowModal={setShowModal} />
-            )}
+            )} */}
           </div>
         </div>
         <button className={styled.edit_btn}>수정하기</button>
