@@ -4,6 +4,7 @@ import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } f
 
 import { DateInputProps } from "@types";
 import { DateModal, InputValidSVG } from '@components';
+import { useModal } from "@hooks";
 
 import styled from './styles.module.scss';
 
@@ -34,19 +35,8 @@ ref: ForwardedRef<HTMLInputElement>) {
   const changeSelectedDate = (date: string) => {
     setSelectedDate(date);
   }
-
-  // 모달 보여줄지 말지
-  const [modal, setModal] = useState<boolean>(false);
-
-  const showModal = () => {
-    setModal(true);
-  }
-
-  const hideModal = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    setModal(false);
-  }
+  
+  const { modal, showModal, hideModal } = useModal();
   
   return (
     <div className={styled.input_wrapper}>

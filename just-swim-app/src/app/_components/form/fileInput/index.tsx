@@ -7,6 +7,7 @@ import { mergeRefs, randomId } from '@utils';
 import { IconCancelWhiteSVG, ImageCarousel } from '@components';
 
 import styled from './styles.module.scss';
+import { useModal } from '@hooks';
 
 function _FileInput({
   name,
@@ -110,18 +111,7 @@ ref: ForwardedRef<HTMLInputElement>) {
 
   // 캐러셀 관련
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-
-  const [modal, setModal] = useState<boolean>(false);
-
-  const showModal = () => {
-    setModal(true);
-  }
-
-  const hideModal = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    setModal(false);
-  }
+  const { modal, setModal, showModal, hideModal } = useModal();
 
   useEffect(() => {
     if (selectedIndex >= previewImages.length && selectedIndex !== 0) {

@@ -4,9 +4,10 @@ import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } f
 
 import { InputValidSVG, TimeModal, TimeSVG } from '@components';
 import { TimeInputProps } from '@types';
+import { numberFormat } from '@utils';
+import { useModal } from '@hooks';
 
 import styled from './styles.module.scss';
-import { numberFormat } from '@utils';
 
 const checkDefaultValue = (defalutValue: string) => {
   const regexp = /\d{2}:\d{2}~\d{2}:\d{2}$/g;
@@ -25,18 +26,7 @@ const TimeBlock = ({
   defaultTimeValue?: string,
   placeholder?: string,
 }) => {
-  // 모달 보여줄지 말지
-  const [modal, setModal] = useState<boolean>(false);
-
-  const showModal = () => {
-    setModal(true);
-  }
-
-  const hideModal = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    setModal(false);
-  }
+  const { modal, showModal, hideModal } = useModal();
   
   const hourValue = parseInt(selectedTime.split(":")[0]);
   const minuteValue = selectedTime.split(":")[1];

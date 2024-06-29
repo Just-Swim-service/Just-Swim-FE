@@ -4,6 +4,7 @@ import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } f
 
 import { DayModal, CalendarSmallSVG, InputValidSVG } from '@components';
 import { DayInputProps } from '@types';
+import { useModal } from '@hooks';
 
 import styled from './styles.module.scss';
 
@@ -120,18 +121,8 @@ ref: ForwardedRef<HTMLInputElement>) {
     });
   };
 
-  // 모달 보여줄지 말지
-  const [modal, setModal] = useState<boolean>(false);
-
-  const showModal = () => {
-    setModal(true);
-  }
-
-  const hideModal = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    setModal(false);
-  }
+  
+  const { modal, showModal, hideModal } = useModal();
 
   const inputValue = makeInputValue(days);
   

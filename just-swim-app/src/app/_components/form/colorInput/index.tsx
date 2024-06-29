@@ -5,6 +5,7 @@ import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } f
 import { ColorModal } from '@components';
 import { ColorInputProps } from '@types';
 import { COLOR_LIST } from '@data';
+import { useModal } from '@hooks';
 
 import styled from './styles.module.scss';
 
@@ -21,18 +22,7 @@ ref: ForwardedRef<HTMLInputElement>) {
     setSelectedColor(color);
   }
 
-  // 모달 보여줄지 말지
-  const [modal, setModal] = useState<boolean>(false);
-
-  const showModal = () => {
-    setModal(true);
-  }
-
-  const hideModal = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    setModal(false);
-  }
+  const { modal, showModal, hideModal } = useModal();
 
   return (
     <div className={styled.input_wrapper}>
