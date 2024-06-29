@@ -1,30 +1,12 @@
 'use client';
 
-import { ChangeEvent, ForwardedRef, InputHTMLAttributes, MouseEvent, MutableRefObject, RefCallback, forwardRef, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useEffect, useRef, useState } from 'react';
 
 import { FileInputProps } from '@types';
-import { randomId } from '@utils';
+import { mergeRefs, randomId } from '@utils';
 import { IconCancelWhiteSVG, ImageCarousel } from '@components';
 
 import styled from './styles.module.scss';
-
-type MutableRefList<T> = Array<RefCallback<T> | MutableRefObject<T> | undefined | null>;
-
-function mergeRefs<T>(...refs: MutableRefList<T>): RefCallback<T> {
-  return (val: T) => {
-    setRef(val, ...refs);
-  };
-}
-
-function setRef<T>(val: T, ...refs: MutableRefList<T>): void {
-  refs.forEach((ref) => {
-    if (typeof ref === 'function') {
-      ref(val);
-    } else if (ref != null) {
-      ref.current = val;
-    }
-  });
-}
 
 function _FileInput({
   name,
