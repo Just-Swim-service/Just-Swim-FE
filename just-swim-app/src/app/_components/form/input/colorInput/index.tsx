@@ -1,6 +1,6 @@
 'use client';
 
-import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
 
 import { ColorModal } from '@components';
 import { ColorInputProps } from '@types';

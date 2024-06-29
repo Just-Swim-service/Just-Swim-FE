@@ -1,9 +1,10 @@
 'use client';
 
+import { HTMLAttributes } from 'react';
+
 import { Calendar } from '@components';
 
 import styled from './styles.module.scss';
-import { HTMLAttributes } from 'react';
 
 export function DatePicker({
   selectedDate,

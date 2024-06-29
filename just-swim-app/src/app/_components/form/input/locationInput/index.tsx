@@ -3,8 +3,8 @@
 import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
 import Link from 'next/link';
 
-import { LocationSVG, InputValidSVG } from '@components';
 import { LocationInputPros } from '@types';
+import { IconInputValid, IconLocation } from '@assets';
 
 import styled from './styles.module.scss';
 
@@ -19,7 +19,7 @@ ref: ForwardedRef<HTMLInputElement>) {
   return (
     <div className={styled.input_wrapper}>
       <div className={styled.icon_wrapper}>
-        <LocationSVG width={20} height={20} />
+        <IconLocation width={20} height={20} />
       </div>
       <input
         {...props}
@@ -30,7 +30,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         readOnly
         value={location}
       />
-      {valid && <InputValidSVG width={18} height={18} />}
+      {valid && <IconInputValid width={18} height={18} />}
     </div>
   );
 }

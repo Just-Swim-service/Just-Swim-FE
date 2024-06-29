@@ -4,7 +4,8 @@ import { ChangeEvent, ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef,
 
 import { FileInputProps } from '@types';
 import { mergeRefs, randomId } from '@utils';
-import { IconCancelWhiteSVG, ImageCarousel } from '@components';
+import { ImageCarousel } from '@components';
+import { IconCancelWhite } from '@assets';
 
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
@@ -145,7 +146,7 @@ ref: ForwardedRef<HTMLInputElement>) {
                   
                   deleteUploadedImage(index);
                 }}>
-                  <IconCancelWhiteSVG width={14} height={14} />
+                  <IconCancelWhite width={14} height={14} />
                 </button>
               </div>
             )

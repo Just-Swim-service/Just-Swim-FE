@@ -1,10 +1,11 @@
 'use client';
 
-import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
 
-import { DayModal, CalendarSmallSVG, InputValidSVG } from '@components';
+import { DayModal } from '@components';
 import { DayInputProps } from '@types';
 import { useModal } from '@hooks';
+import { IconInputValid, IconCalendar } from '@assets';
 
 import styled from './styles.module.scss';
 
@@ -129,7 +130,7 @@ ref: ForwardedRef<HTMLInputElement>) {
   return (
     <div className={styled.input_wrapper}>
       <div className={styled.icon_wrapper} onClick={showModal}>
-        <CalendarSmallSVG width={14} height={14} />
+        <IconCalendar width={14} height={14} />
       </div>
       <div className={`${styled.day_input} ${inputValue ? '' : styled.empty}`} onClick={showModal}>
         <span>{inputValue ? makePrintValue(days) : placeholder}</span>
@@ -137,7 +138,7 @@ ref: ForwardedRef<HTMLInputElement>) {
       {
         valid && 
         <div className={styled.valid_warpper}>
-          <InputValidSVG width={18} height={18} />
+          <IconInputValid width={18} height={18} />
         </div>
       }
       <input

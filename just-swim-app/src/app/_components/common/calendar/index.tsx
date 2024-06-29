@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useState } from "react";
 
-import { ArrowLeftSVG, ArrowRightSVG } from "@components";
+import { IconArrowLeft, IconArrowRight } from "@assets";
 import { numberFormat, randomId } from "@utils";
 
 import styled from './styles.module.scss';
@@ -220,10 +220,10 @@ const RenderCalendar = ({
         </div>
         <div className={styled.button_wrapper}>
           <button onClick={onClickPrev}>
-            <ArrowLeftSVG width={20} height={20} />
+            <IconArrowLeft width={20} height={20} />
           </button>
           <button onClick={onClickNext}>
-            <ArrowRightSVG width={20} height={20} />
+            <IconArrowRight width={20} height={20} />
           </button>
         </div>
       </div>

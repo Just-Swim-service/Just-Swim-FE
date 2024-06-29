@@ -1,31 +1,23 @@
-import ArrowRight from './arrow_right.svg';
-import ArrowLeft from './arrow_left.svg';
-import ArrowDown from './arrow_down.svg';
-import CalendarSmall from './calendar_small.svg';
-import Clock from './clock.svg';
+import IconArrowRight from './icon_arrow_right.svg';
+import IconArrowLeft from './icon_arrow_left.svg';
 import IconCancelWhite from './icon_cancel_white.svg';
-import IconCarouselDelete from './icon_carousel_delete.svg';
-import Plus from './plus.svg';
-import InputValid from './inputValid.svg';
-import Location from './location.svg';
-import RepeatTime from './repeat_time.svg';
-import Repeat from './repeat.svg';
-import Time from './time.svg';
-import ValidWhite from './valid_white.svg';
+import IconDelete from './icon_delete.svg';
+import IconInputValid from './icon_input_valid.svg';
+import IconCalendar from './icon_calendar.svg';
+import IconLocation from './icon_location.svg';
+import IconClock from './icon_clock.svg';
+import IconValidWhite from './icon_valid_white.svg';
+import IconRepeatTime from './icon_repeat_time.svg';
 
 export {
-  ArrowRight,
-  ArrowLeft,
-  ArrowDown,
-  CalendarSmall,
-  Clock,
+  IconArrowRight,
+  IconArrowLeft,
   IconCancelWhite,
-  IconCarouselDelete,
-  Plus,
-  InputValid,
-  Location,
-  RepeatTime,
-  Repeat,
-  Time,
-  ValidWhite
+  IconDelete,
+  IconInputValid,
+  IconCalendar,
+  IconLocation,
+  IconClock,
+  IconValidWhite,
+  IconRepeatTime,
 }

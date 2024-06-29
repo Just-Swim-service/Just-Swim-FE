@@ -1,10 +1,11 @@
 "use client";
 
-import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } from "react";
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from "react";
 
 import { DateInputProps } from "@types";
-import { DateModal, InputValidSVG } from '@components';
+import { DateModal } from '@components';
 import { useModal } from "@hooks";
+import { IconInputValid } from "@assets";
 
 import styled from './styles.module.scss';
 
@@ -49,7 +50,7 @@ ref: ForwardedRef<HTMLInputElement>) {
       {
         valid && 
         <div className={styled.valid_warpper}>
-          <InputValidSVG width={18} height={18} />
+          <IconInputValid width={18} height={18} />
         </div>
       }
       <input

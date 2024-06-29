@@ -1,11 +1,12 @@
 'use client';
 
-import { ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
 
-import { InputValidSVG, TimeModal, TimeSVG } from '@components';
+import { TimeModal } from '@components';
 import { TimeInputProps } from '@types';
 import { numberFormat } from '@utils';
 import { useModal } from '@hooks';
+import { IconInputValid, IconClock } from '@assets';
 
 import styled from './styles.module.scss';
 
@@ -91,12 +92,12 @@ ref: ForwardedRef<HTMLInputElement>) {
         placeholder='종료 시간'
       />
       <div className={styled.icon_wrapper}>
-        <TimeSVG width={20} height={20} />
+        <IconClock width={20} height={20} />
       </div>
       {
         valid && 
         <div className={`${styled.valid_warpper} ${startTime && endTime ? '' : styled.empty}`}>
-          <InputValidSVG width={18} height={18} />
+          <IconInputValid width={18} height={18} />
         </div>
       }
       <input

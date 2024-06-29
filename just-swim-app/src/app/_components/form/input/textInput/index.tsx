@@ -1,7 +1,7 @@
 import { ForwardedRef, InputHTMLAttributes, forwardRef } from 'react';
 
-import { InputValidSVG } from '@components';
 import { TextInputProps } from '@types';
+import { IconInputValid } from '@assets';
 
 import styled from './styles.module.scss';
 
@@ -20,7 +20,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         ref={ref}
         type='text'
       />
-      {valid && <InputValidSVG width={18} height={18} />}
+      {valid && <IconInputValid width={18} height={18} />}
     </div>
   );
 }

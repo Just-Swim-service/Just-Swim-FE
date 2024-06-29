@@ -3,7 +3,7 @@
 import { Dispatch, MouseEvent, SetStateAction, TouchEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 
-import { IconCancelWhiteSVG, IconCarouselDeleteSVG } from '@components';
+import { IconCancelWhite, IconDelete } from '@assets';
 import { randomId, throttle } from '@utils';
 
 import styled from './styles.module.scss';
@@ -94,7 +94,7 @@ export function ImageCarousel({
   return (
     <div className={styled.carousel_wrapper}>
       <button className={styled.close_button} onClick={hideModal}>
-        <IconCancelWhiteSVG width={14} height={14} />
+        <IconCancelWhite width={14} height={14} />
       </button>
       <div 
         className={styled.slider_wrapper}
@@ -143,7 +143,7 @@ export function ImageCarousel({
   
           deleteImage(index);
         }}>
-          <IconCarouselDeleteSVG width={40} height={40} />
+          <IconDelete width={40} height={40} />
           <span>삭제하기</span>
         </button>
       }
