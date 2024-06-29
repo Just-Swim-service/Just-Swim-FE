@@ -4,10 +4,9 @@ import { ChangeEvent, ForwardedRef, InputHTMLAttributes, MouseEvent, MutableRefO
 
 import { FileInputProps } from '@types';
 import { randomId } from '@utils';
-import { IconCancelWhiteSVG } from '@components';
+import { IconCancelWhiteSVG, ImageCarousel } from '@components';
 
 import styled from './styles.module.scss';
-import { ImageCarouse } from './carousel';
 
 type MutableRefList<T> = Array<RefCallback<T> | MutableRefObject<T> | undefined | null>;
 
@@ -197,10 +196,11 @@ ref: ForwardedRef<HTMLInputElement>) {
       />
       {
         modal &&
-        <ImageCarouse
+        <ImageCarousel
           images={previewImages}
           index={selectedIndex}
           setIndex={setSelectedIndex}
+          useDeleteButton={true}
           deleteImage={deleteUploadedImage}
           hideModal={hideModal}
         />

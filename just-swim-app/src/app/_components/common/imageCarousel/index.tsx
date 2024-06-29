@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, MouseEvent, SetStateAction, TouchEvent, useEffect, useRef, useState } from 'react';
+import { Dispatch, MouseEvent, SetStateAction, TouchEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import { IconCancelWhiteSVG, IconCarouselDeleteSVG } from '@components';
@@ -8,17 +8,19 @@ import { randomId, throttle } from '@utils';
 
 import styled from './styles.module.scss';
 
-export function ImageCarouse({
+export function ImageCarousel({
   images,
   index,
   setIndex,
-  deleteImage,
+  useDeleteButton = false,
+  deleteImage = (index: number) => {},
   hideModal,
 }: {
   images: string[],
   index: number,
   setIndex: Dispatch<SetStateAction<number>>,
-  deleteImage: (index: number) => void,
+  useDeleteButton?: boolean,
+  deleteImage?: (index: number) => void,
   hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,9 +31,6 @@ export function ImageCarouse({
   const startCursorPosition = useRef<number>(0);
 
   const endDrag = () => {
-    // console.log('end drag');
-    
-
     if (startCapture.current) {
       if (movingCursorPositon < -100 && index < images.length - 1) {
         setIndex(i => i + 1);
@@ -137,14 +136,17 @@ export function ImageCarouse({
           })
         }
       </div>
-      <button className={styled.delete_button} onClick={(event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-
-        deleteImage(index);
-      }}>
-        <IconCarouselDeleteSVG width={40} height={40} />
-        <span>삭제하기</span>
-      </button>
+      {
+        useDeleteButton &&
+        <button className={styled.delete_button} onClick={(event: MouseEvent<HTMLButtonElement>) => {
+          event.preventDefault();
+  
+          deleteImage(index);
+        }}>
+          <IconCarouselDeleteSVG width={40} height={40} />
+          <span>삭제하기</span>
+        </button>
+      }
     </div>
   )
 }
