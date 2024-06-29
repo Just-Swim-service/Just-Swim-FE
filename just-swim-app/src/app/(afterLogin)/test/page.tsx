@@ -14,6 +14,8 @@ import {
 } from "@components";
 import { IconRepeatTime } from "@assets";
 
+import { HistoryBackHeader } from "@components";
+
 import styled from './styles.module.scss';
 import { uploadProduct } from "./action";
 
@@ -24,6 +26,7 @@ export default function Test() {
       padding: '0 20px',
       position: 'relative'
     }}>
+      <HistoryBackHeader title="수업정보" additionalLink="/" additionalContent="메인 페이지" />
       <form action={uploadProduct} className={styled.form}>
         <TextInput name="textinput" placeholder="수업명을 입력해주세요" valid={true} />
         <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />

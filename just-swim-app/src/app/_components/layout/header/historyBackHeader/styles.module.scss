@@ -1,0 +1,37 @@
+@import '@/globals.scss';
+
+.header {
+  width: 100%;
+  height: 48px;
+
+  padding: 7px 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: $--gray-100 1px solid;
+
+  .title_wrapper {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    a {
+      display: flex;
+      align-items: center;
+    }
+
+    h1 {
+      @include Title3-M;
+    }
+  }
+
+  .additional {
+    @include Title3-M;
+
+    color: $--Primary-blue;
+    text-decoration: underline;
+  }
+}
