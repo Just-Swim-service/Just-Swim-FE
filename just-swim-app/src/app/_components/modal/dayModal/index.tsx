@@ -4,19 +4,9 @@ import { MouseEvent, useState } from 'react';
 
 import { ConfirmModal } from '@components';
 import { randomId } from '@utils';
+import { DayModalProps, DayProps } from '@types';
 
 import styled from './styles.module.scss';
-
-interface DayProps {
-  "monday": boolean,
-  "tuesday": boolean,
-  "wednesday": boolean,
-  "thursday": boolean,
-  "friday": boolean,
-  "saturday": boolean,
-  "sunday": boolean,
-  [props: string]: any,
-}
 
 const days = [
   "월",
@@ -42,11 +32,7 @@ export function DayModal ({
   initialDays,
   hideModal,
   setDays
-}: {
-  initialDays: DayProps,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-  setDays: (days: DayProps) => void,
-}) {
+}: DayModalProps) {
   const [selectedDays, setSelectedDays] = useState<DayProps>({
     ...initialDays
   });

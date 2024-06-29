@@ -3,6 +3,7 @@
 import { MouseEvent, useState } from 'react';
 
 import { TimePicker, ConfirmModal } from '@components';
+import { TimeModalProps } from '@types';
 
 import styled from './styles.module.scss';
 
@@ -10,11 +11,7 @@ export function TimeModal({
   timeValue,
   setTimeValue,
   hideModal,
-}: {
-  timeValue: string,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-  setTimeValue: (time: string) => void,
-}) {
+}: TimeModalProps) {
   const [selectedTime, setSelectedTime] = useState<string>(timeValue);
 
   const changeSelectedTime = (time: string) => {

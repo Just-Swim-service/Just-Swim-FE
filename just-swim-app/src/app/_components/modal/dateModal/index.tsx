@@ -3,6 +3,7 @@
 import { MouseEvent, useState } from 'react';
 
 import { DatePicker, ConfirmModal } from '@components';
+import { DateModalProps } from '@types';
 
 import styled from './styles.module.scss';
 
@@ -10,11 +11,7 @@ export function DateModal({
   initialDate,
   hideModal,
   setDate
-}: {
-  initialDate: string,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-  setDate: (color: string) => void,
-}) {
+}: DateModalProps) {
   // date 선택 관련
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
 

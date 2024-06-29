@@ -2,16 +2,14 @@
 
 import { COLOR_LIST } from '@data';
 import { IconValidWhite } from '@assets';
+import { ColorPickerProps } from '@types';
 
 import styled from './styles.module.scss';
 
 export function ColorPicker({
   selected,
   change,
-}: {
-  selected: string,
-  change: (color: string) => void
-}) {
+}: ColorPickerProps) {
   return COLOR_LIST.map((el, index) => {
     return (
       <button

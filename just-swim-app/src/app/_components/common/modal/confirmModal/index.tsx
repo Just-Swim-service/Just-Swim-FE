@@ -1,6 +1,5 @@
-import { MouseEvent } from "react";
-
 import { ConfirmButton, ModalBody } from "@components";
+import { ConfirmModalProps } from "@types";
 
 import styled from './styles.module.scss';
 
@@ -8,11 +7,7 @@ export function ConfirmModal({
   children,
   hideModal,
   confirmCallback
-}: {
-  children?: React.ReactNode,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-  confirmCallback: (event: MouseEvent<HTMLButtonElement>) => void,
-}) {
+}: ConfirmModalProps) {
   return (
     <ModalBody hideModal={hideModal}>
       {children}

@@ -1,10 +1,11 @@
 'use client';
 
-import { Dispatch, MouseEvent, SetStateAction, TouchEvent, useRef, useState } from 'react';
+import { MouseEvent, TouchEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import { IconCancelWhite, IconDelete } from '@assets';
 import { randomId, throttle } from '@utils';
+import { ImageCarouselProps } from '@types';
 
 import styled from './styles.module.scss';
 
@@ -15,14 +16,7 @@ export function ImageCarousel({
   useDeleteButton = false,
   deleteImage = (index: number) => {},
   hideModal,
-}: {
-  images: string[],
-  index: number,
-  setIndex: Dispatch<SetStateAction<number>>,
-  useDeleteButton?: boolean,
-  deleteImage?: (index: number) => void,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-}) {
+}: ImageCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);

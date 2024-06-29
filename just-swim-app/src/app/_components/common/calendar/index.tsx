@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useState } from "
 
 import { IconArrowLeft, IconArrowRight } from "@assets";
 import { numberFormat, randomId } from "@utils";
+import { CalendarProps } from "@types";
 
 import styled from './styles.module.scss';
 
@@ -269,11 +270,7 @@ export function Calendar({
   DateBlock = defaultDateBlock,
   selectedDate = '',
   changeSelectedDate = () => {},
-}: {
-  DateBlock?: JSX.ElementType,
-  selectedDate?: string,
-  changeSelectedDate?: (date: string) => void
-}) {
+}: CalendarProps) {
   const [thisMonth, setThisMonth] = useState<Date>(new Date());
   const [currentValues, setCurrentValues] = useState<{
     currentYear: number,

@@ -3,18 +3,11 @@
 import { useEffect, useState } from 'react';
 
 import { numberFormat } from '@utils';
+import { TimePickerProps } from '@types';
 
 import styled from './styles.module.scss';
 
 import { VerticalScroll } from './components';
-
-interface TimePickerPrope {
-  value: string,
-  setValue: (time: string) => void,
-  itemHeight?: number,
-  itemsToShow?: number,
-  paddingY?: number,
-}
 
 const generateMeridiemItems = () => {
   return [
@@ -49,7 +42,7 @@ export function TimePicker({
   itemHeight = 60,
   itemsToShow = 3,
   paddingY = 50,
-}: TimePickerPrope) {
+}: TimePickerProps) {
   const hourValue = parseInt(value.slice(0, 2));
   const minuteValue = value.slice(3, 6);
 

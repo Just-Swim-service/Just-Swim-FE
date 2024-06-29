@@ -1,14 +1,12 @@
 import { MouseEvent } from "react";
+import { ModalBodyProps } from "@types";
 
 import styled from './styles.module.scss';
 
 export function ModalBody({
   children,
   hideModal
-}: {
-  children?: React.ReactNode,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-}) {
+}: ModalBodyProps) {
   const preventDefault = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
   }

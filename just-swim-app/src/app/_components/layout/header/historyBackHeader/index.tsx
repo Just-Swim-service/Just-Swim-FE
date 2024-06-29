@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { ImageArrowBack } from "@assets";
+import { HistoryBackHeaerProps } from "@types";
 
 import styled from './styles.module.scss';
 
@@ -18,11 +19,7 @@ export function HistoryBackHeader({
   title,
   additionalLink = '',
   additionalContent = '',
-}: {
-  title: string,
-  additionalLink?: string,
-  additionalContent?: string,
-}) {
+}: HistoryBackHeaerProps) {
   const router = useRouter();
 
   const historyBack = () => {

@@ -3,6 +3,7 @@
 import { MouseEvent, useState } from 'react';
 
 import { ColorPicker, ConfirmModal } from '@components';
+import { ColorModalProps } from '@types';
 
 import styled from './styles.module.scss';
 
@@ -10,11 +11,7 @@ export function ColorModal({
   initialColor,
   hideModal,
   setColor
-}: {
-  initialColor: string,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-  setColor: (color: string) => void,
-}) {
+}: ColorModalProps) {
   // color 선택 관련
   const [selectedColor, setSelectedColor] = useState<string>(initialColor);
 
