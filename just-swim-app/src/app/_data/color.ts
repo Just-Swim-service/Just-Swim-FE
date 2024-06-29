@@ -7,4 +7,4 @@ export const COLOR_LIST = [
   { name: 'purple', color: '#8B41FF' },
   { name: 'pink', color: '#FF59C7' },
   { name: 'gray', color: '#D9D9D9' },
-]
+] as const;
