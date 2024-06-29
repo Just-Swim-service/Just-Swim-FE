@@ -2,7 +2,7 @@
 
 import { MouseEvent, useState } from 'react';
 
-import { ConfirmButton } from '@components';
+import { ConfirmModal } from '@components';
 import { randomId } from '@utils';
 
 import styled from './styles.module.scss';
@@ -57,10 +57,6 @@ export function DayModal ({
       [day]: !prev[day]
     }));
   };
-  
-  const preventDefault = (event: MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  }
 
   const confirmSelectedDays = (event: MouseEvent<HTMLButtonElement>) => {
     setDays({
@@ -70,13 +66,11 @@ export function DayModal ({
   }
 
   return (
-    <div className={styled.modal_wrapper} onClick={preventDefault}>
+    <ConfirmModal 
+      hideModal={hideModal} 
+      confirmCallback={confirmSelectedDays}
+    >
       <div className={styled.modal}>
-        <button
-          className={styled.modal_top_btn}
-          onClick={hideModal}>
-          <div />
-        </button>
         <div className={styled.day_list}>
           {
             days.map(day => {
@@ -94,11 +88,7 @@ export function DayModal ({
             })
           }
         </div>
-        <div className={styled.modal_btn}>
-          <ConfirmButton text='취소' kind='confirm-sub' onClick={hideModal} />
-          <ConfirmButton text='변경' kind='confirm' onClick={confirmSelectedDays} />
-        </div>
       </div>
-    </div>
+    </ConfirmModal>
   )
 }
