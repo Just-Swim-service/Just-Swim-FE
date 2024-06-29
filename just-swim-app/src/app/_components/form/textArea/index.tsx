@@ -12,7 +12,6 @@ function _TextArea({
 }: TextAreaProps & TextareaHTMLAttributes<HTMLTextAreaElement>,
 ref: ForwardedRef<HTMLTextAreaElement>) {
   const autoGrow = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    event.target.style.height = "6px";
     event.target.style.height = (event.target.scrollHeight) + "px";
   }
 
