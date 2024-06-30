@@ -1,0 +1,12 @@
+.modal {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 50px;
+
+  .date_select {
+    padding: 20px 0;
+  }
+}

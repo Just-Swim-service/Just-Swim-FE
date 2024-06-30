@@ -1,0 +1,58 @@
+@import '@/globals.scss';
+
+.input_wrapper {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .text_input {
+    @include Title5-M;
+    
+    width: 100%;
+    height: 51px;
+  
+    padding: 15px 16px;
+  
+    background-color: $--gray-50;
+  
+    outline: 2px solid $--gray-100;
+    border-radius: 6px;
+  
+    border: none;
+  }
+  
+  .text_input::placeholder {
+    color: $--gray-500;
+  }
+  
+  .text_input:focus {
+    outline: 2px solid $--Primary-blue;
+  }
+
+  .invalid {
+    outline: 2px solid $--Cancel;
+  }
+
+  .text_input:placeholder-shown.invalid{
+    outline: 2px solid $--gray-100;
+  }
+
+  .text_input:placeholder-shown:focus.invalid{
+    outline: 2px solid $--Primary-blue;
+  }
+
+  svg {
+    position: absolute;
+
+    top: 50%;
+    transform: translate(0, -50%);
+
+    right: 16px;
+  }
+
+  .text_input:placeholder-shown + svg {
+    display: none;
+  }
+}
