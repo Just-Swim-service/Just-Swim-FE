@@ -7,6 +7,7 @@ import IconCalendar from './icon_calendar.svg';
 import IconLocation from './icon_location.svg';
 import IconClock from './icon_clock.svg';
 import IconValidWhite from './icon_valid_white.svg';
+import IconTrash from './icon_trash.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
 
 export {
@@ -19,5 +20,6 @@ export {
   IconLocation,
   IconClock,
   IconValidWhite,
+  IconTrash,
   IconRepeatTime,
 }
