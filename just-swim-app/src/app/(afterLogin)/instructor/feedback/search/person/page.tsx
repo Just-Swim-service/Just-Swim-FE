@@ -14,14 +14,6 @@ import { randomId } from '@utils';
 import Link from 'next/link';
 import { searchUserStore } from '@store';
 
-// interface Member {
-//   "memberId": string;
-//   "userId": string;
-//   "memberNickname": string;
-//   "profileImage": string;
-// }
-
-
 export default function SearchPerson() {
   const { userList, checkedList, checkItemHandler } = searchUserStore();
 
@@ -30,41 +22,6 @@ export default function SearchPerson() {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-
-  // const [userList, setuserList] = useState([
-  //   {
-  //     "memberId": "1",
-  //     "userId": "1",
-  //     "memberNickname": "홍길동",
-  //     "profileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg"
-  //   },
-  //   {
-  //     "memberId": "2",
-  //     "userId": "10",
-  //     "memberNickname": "홍길순",
-  //     "profileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg"
-  //   }
-  // ])
-
-  // const checkItemHandler = (e: ChangeEvent<HTMLInputElement>, userId: string) => {
-  //   e.preventDefault();
-
-
-  //   const memberToToggle = userList.find(member => member.userId === userId);
-  //   if (!memberToToggle) {
-  //     return;
-  //   }
-
-  //   const isAlreadyChecked = checkedList?.some(item => item.userId === userId);
-
-  //   const newList = isAlreadyChecked
-  //     ? checkedList.filter(member => member.userId !== userId)
-  //     : [...checkedList, memberToToggle];
-
-  //   setCheckedList(newList);
-  //   // console.log(newList);
-  // };
-
 
   const checkLength = () => {
     const checkedCount = checkedList.length
@@ -152,10 +109,8 @@ export default function SearchPerson() {
       <div className={styled.main_btn}>
           <Link
             type="button"
-            // as="/instructor/feedback/write/person"
             href={{
               pathname: "/instructor/feedback/write/person",
-              // query: { name: JSON.stringify(checkedList) },
             }}
             className={` ${checkLength() == 0 ? styled.disabled : ''}`}
             >
