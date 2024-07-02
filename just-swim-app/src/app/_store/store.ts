@@ -1,109 +1,59 @@
+import { ChangeEvent } from 'react';
 import { create } from 'zustand';
 
-// const useStore = create((set) => ({
-//   bears: 0,
-//   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-//   removeAllBears: () => set({ bears: 0 }),
-//   updateBears: (newBears) => set({ bears: newBears }),
-// }))
+interface Member {
+  "memberId": string;
+  "userId": string;
+  "memberNickname": string;
+  "profileImage": string;
+}
 
-const useCostomerStore = create((set) => ({
-  customerList: [
+type State = {
+  userList : Member[]
+  checkedList: Member[]
+}
+
+type Prams = {
+  userId : string
+  checkedList: Member[]
+}
+
+type Action = {
+  checkItemHandler: (e : ChangeEvent<HTMLInputElement>, userId: Prams['userId']) => void
+  removeItemHandler: (userId: Prams['userId']) => void
+}
+
+const searchUserStore = create<State & Action>((set) => ({
+  userList: [
     {
-      '아침 5반': [
-        {
-          id: 1,
-          name: '김고독',
-          profile: 'profile1',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 2,
-          name: '김고독',
-          profile: 'no_profile',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 3,
-          name: '김고독',
-          profile: 'profile1',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 4,
-          name: '김고독',
-          profile: 'profile1',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 5,
-          name: '김고독',
-          profile: 'no_profile',
-          check: false,
-          class: '아침 5반',
-        },
-      ],
+      "memberId": "1",
+      "userId": "1",
+      "memberNickname": "홍길동",
+      "profileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg"
     },
     {
-      '아침 6반': [
-        {
-          id: 11,
-          name: '김해피',
-          profile: 'profile1',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 12,
-          name: '김감자',
-          profile: 'no_profile',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 13,
-          name: '김감자',
-          profile: 'profile1',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 14,
-          name: '김감자',
-          profile: 'profile1',
-          check: false,
-          class: '아침 5반',
-        },
-        {
-          id: 15,
-          name: '김감자',
-          profile: 'no_profile',
-          check: false,
-          class: '아침 5반',
-        },
-      ],
-    },
+      "memberId": "2",
+      "userId": "10",
+      "memberNickname": "홍길순",
+      "profileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg"
+    }
   ],
-  removeItem: (id:any) =>
-    set((state:any) => {
-      state.customerList.filter((item:any) => item.id !== id);
-    }),
-  checkItem: (id:any) =>
-    set((state:any) => ({
-      customerList: state.customerList.map((group:any) => {
-        const groupName = Object.keys(group)[0];
-        const updatedCustomers = group[groupName].map((customer:any) =>
-          customer.id === id
-            ? { ...customer, check: !customer.check }
-            : customer,
-        );
-        return { [groupName]: updatedCustomers };
-      }),
-    })),
-}));
+  checkedList: [],
+  checkItemHandler: (e: ChangeEvent<HTMLInputElement>, userId: string) => set((state: any) => {
+    const isChecked = e.target.checked;
+    console.log(isChecked)
+    const selectMember = state.userList.find((member:Member) => member.userId === userId);
+    if (!selectMember) return state;
 
-export { useCostomerStore };
+    return {
+      checkedList: isChecked
+        ? [...state.checkedList, selectMember]
+        : state.checkedList.filter((member: Member) => member.userId !== userId),
+    };
+  }),
+  removeItemHandler: (userId: string) => set((state: any) => ({
+    checkedList: state.checkedList.filter((member:Member) => member.userId !== userId),
+  }))
+}))
+
+export { searchUserStore};

@@ -8,6 +8,7 @@ import IconLocation from './icon_location.svg';
 import IconClock from './icon_clock.svg';
 import IconValidWhite from './icon_valid_white.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
+import IconSelectUser from './icon_select_user.svg';
 
 export {
   IconArrowRight,
@@ -20,4 +21,5 @@ export {
   IconClock,
   IconValidWhite,
   IconRepeatTime,
+  IconSelectUser
 }

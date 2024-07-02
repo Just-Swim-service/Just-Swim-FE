@@ -1,51 +1,29 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import Image from 'next/image';
 import searchIcon from '/public/assets/icon_search.png';
-import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import iconArrowDown from '@assets/icon_arrow_down.png';
-import Link from 'next/link';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-
-import styled from './searchPerson.module.scss';
-
 import { Header } from '@components';
-import { useCostomerStore } from '@store';
+import styled from './searchPerson.module.scss';
+import { randomId } from '@utils';
+import Link from 'next/link';
+import { searchUserStore } from '@store';
+
+// interface Member {
+//   "memberId": string;
+//   "userId": string;
+//   "memberNickname": string;
+//   "profileImage": string;
+// }
+
 
 export default function SearchPerson() {
-  const { customerList, checkItem, removeItem }: any = useCostomerStore();
-  // const customerList = [
-  //   { name: '김고독', profile: 'profile1' },
-  //   { name: '김고독', profile: 'no_profile' },
-  //   { name: '김고독', profile: 'profile1' },
-  //   { name: '김고독', profile: 'profile1' },
-  //   { name: '김고독', profile: 'no_profile' },
-  // ];
-
-  // const customerList2 = [
-  //   {
-  //     '아침 5반': [
-  //       { name: '김고독', profile: 'profile1' },
-  //       { name: '김고독', profile: 'no_profile' },
-  //       { name: '김고독', profile: 'profile1' },
-  //       { name: '김고독', profile: 'profile1' },
-  //       { name: '김고독', profile: 'no_profile' },
-  //     ],
-  //   },
-  //   {
-  //     '아침 6반': [
-  //       { name: '김해피', profile: 'profile1' },
-  //       { name: '김감자', profile: 'no_profile' },
-  //       { name: '김감자', profile: 'profile1' },
-  //       { name: '김감자', profile: 'profile1' },
-  //       { name: '김감자', profile: 'no_profile' },
-  //     ],
-  //   },
-  // ];
+  const { userList, checkedList, checkItemHandler } = searchUserStore();
 
   const [value, setValue] = useState('one');
 
@@ -53,40 +31,48 @@ export default function SearchPerson() {
     setValue(newValue);
   };
 
-  const [isChecked, setIsChecked] = useState(false);
-  // const [checkItems, setCheckItems] = useState({})
+  // const [userList, setuserList] = useState([
+  //   {
+  //     "memberId": "1",
+  //     "userId": "1",
+  //     "memberNickname": "홍길동",
+  //     "profileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg"
+  //   },
+  //   {
+  //     "memberId": "2",
+  //     "userId": "10",
+  //     "memberNickname": "홍길순",
+  //     "profileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg"
+  //   }
+  // ])
 
-  const checkItemHandler = (e: any, id: number) => {
-    // e.preventDefault();  // Prevent the form from submitting on checkbox change
-    // console.log(id)
+  // const checkItemHandler = (e: ChangeEvent<HTMLInputElement>, userId: string) => {
+  //   e.preventDefault();
 
-    checkItem(id);
-    // setCheckItems(prev => ({
-    //   ...prev, [id]: !prev[id]
-    // }));
-  };
+
+  //   const memberToToggle = userList.find(member => member.userId === userId);
+  //   if (!memberToToggle) {
+  //     return;
+  //   }
+
+  //   const isAlreadyChecked = checkedList?.some(item => item.userId === userId);
+
+  //   const newList = isAlreadyChecked
+  //     ? checkedList.filter(member => member.userId !== userId)
+  //     : [...checkedList, memberToToggle];
+
+  //   setCheckedList(newList);
+  //   // console.log(newList);
+  // };
+
 
   const checkLength = () => {
-    const checkedCount = customerList.reduce((acc: any, group: any) => {
-      const customers = Object.values(group)[0] as any;
-      const checkedCustomers = customers.filter(
-        (customer: any) => customer.check,
-      );
-      return acc + checkedCustomers.length;
-    }, 0);
-    console.log('Checked items count:', checkedCount);
+    const checkedCount = checkedList.length
     return checkedCount;
   };
 
-  // useEffect(() => {
-  //   // console.log(checkItems)
-  //   console.log(customerList)
-  //   console.log(checkLength())
-
-  // },[customerList,checkLength])
-
   return (
-    <div className={styled.search_person}>
+    <div className={styled.wrapper}>
       <Header title="회원 선택" />
 
       <div className={styled.pad}>
@@ -132,45 +118,50 @@ export default function SearchPerson() {
 
       <div className={styled.divider}></div>
 
+      
       <div className={styled.pad}>
-        {Object.entries(customerList).map((group, index: number) => (
-          <div key={index} className={styled.group}>
-            <div className={styled.group_name}>
-              {Object.keys(group) && Object.keys(group[1] as any)}
-            </div>
-            {Object.values(group[1] as any).map((customer) =>
-              (customer as any).map((item: any) => (
-                <li key={item.id} className={styled.customer}>
-                  <input
+        {userList.map((member, index) => {
+          return (
+            <div key={randomId()} className={styled.group}>
+              <div className={styled.group_name}>
+                아침 5반
+              </div>
+            {
+                <li key={member.userId} className={styled.customer}>
+                   <input
                     type="checkbox"
-                    id={`item.id`}
-                    onChange={(e) => checkItemHandler(e, item.id)}
-                  />
-                  <label className={styled.row} htmlFor={`checkbox ${item.id}`}>
-                    <Image
-                      src={`/assets/${item.profile}.png`}
-                      alt="profile"
-                      width={34}
-                      height={34}
+                    id={member.userId}
+                    onChange={(e) => checkItemHandler(e, member.userId)}
+                    checked={checkedList.some(item => item.userId === member.userId)}
                     />
-                    <div>{item.name}</div>
+                  <label className={styled.row} htmlFor={`checkbox ${member}`}>
+                    <div
+                      className={styled.profile_img}
+                      style={{backgroundImage: `url(${member.profileImage})`}}
+                    />
+                    <div>{member.memberNickname}</div>
                   </label>
                   <div className={styled.customer_class_name}>아침 5반</div>
                 </li>
-              )),
-            )}
+             }
           </div>
-        ))}
-
-        <div className={styled.main_btn}>
-          <button
-            type="button"
-            disabled={checkLength() == 0}
-            onClick={() => console.log('ff')}>
-            {checkLength()}명 선택하기
-          </button>
-        </div>
+          )
+        })}
       </div>
+
+      <div className={styled.main_btn}>
+          <Link
+            type="button"
+            // as="/instructor/feedback/write/person"
+            href={{
+              pathname: "/instructor/feedback/write/person",
+              // query: { name: JSON.stringify(checkedList) },
+            }}
+            className={` ${checkLength() == 0 ? styled.disabled : ''}`}
+            >
+            {checkLength()}명 선택하기
+          </Link>
+        </div>
     </div>
   );
 }

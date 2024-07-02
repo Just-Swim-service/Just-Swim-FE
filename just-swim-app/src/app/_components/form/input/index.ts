@@ -5,3 +5,4 @@ export * from './fileInput';
 export * from './locationInput';
 export * from './textInput';
 export * from './timeInput';
+export * from './selectPersonInput';

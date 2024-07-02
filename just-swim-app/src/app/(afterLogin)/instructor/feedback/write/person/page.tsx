@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -10,7 +10,7 @@ import deleteButton from '@assets/delete_button.png';
 
 import styled from './feedbackWrite.module.scss';
 
-import { Header, DatepickerPrev } from '@components';
+import { Header, DatepickerPrev, SelectPersonInput } from '@components';
 
 export default function FeedbackWrite() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -42,26 +42,7 @@ export default function FeedbackWrite() {
           <div className={styled.sub_title}>
             피드백을 남길 수강생의 정보를 확인해주세요
           </div>
-          <div className={styled.flex}>
-            <Link
-              href={'/instructor/feedback/search/person'}
-              className={`${styled.box} ${styled.add_btn}`}>
-              <Image src={addIcon} alt="add" />
-              <div className={styled.add_txt}>추가하기</div>
-            </Link>
-            <div>
-              <div className={styled.box}>
-                <button className={styled.box_delete}>
-                  <Image src={deleteButton} alt="delete" />
-                </button>
-                <div className={styled.profile}>
-                  <Image src={profile} alt="프로필 이미지" />
-                  <div className={styled.name}>김고독</div>
-                  <div className={styled.class}>아침5반</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SelectPersonInput name="fileinput"/>
         </div>
 
         <div className={styled.feedback_content}>

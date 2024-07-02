@@ -1,6 +1,6 @@
 @import '@/globals.scss';
 
-.search_person {
+.wrapper {
   // padding: 17px 16px 0;
   .pad {
     padding: 0 16px;
@@ -28,6 +28,18 @@
       display: flex;
       align-items: center;
     }
+  }
+
+  .profile_img {
+    width: 34px;
+    height: 34px;
+    margin-right: 8px;
+
+    border-radius: 50%;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .row {
@@ -95,23 +107,30 @@
 
   .main_btn {
     width: 100%;
-    // background-color: var(--White);
-    button {
-      background-color: $--Primary-blue;
+    padding: 20px 16px 0;
+    position: fixed;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%,0);
+    a {
+      width: 100%;
 
-      width: 90%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
       height: 52px;
-      color: $--White;
-      @include Title3-SB;
-      margin: 20px auto;
-      border-radius: 13px;
 
-      &:disabled {
+      background-color: $--Primary-blue;
+      color: $--White;
+
+      @include Title3-SB;
+
+      margin-bottom: 20px;
+      border-radius: 13px;
+      &.disabled {
         background-color: $--gray-300;
       }
     }
-
-    position: fixed;
-    bottom: 0;
   }
 }

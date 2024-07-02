@@ -11,6 +11,7 @@ import {
   DateInput,
   FileInput,
   ConfirmButton,
+  SelectPersonInput,
 } from "@components";
 import { IconRepeatTime } from "@assets";
 
@@ -27,6 +28,7 @@ export default function Test() {
       position: 'relative'
     }}>
       <HistoryBackHeader title="수업정보" additionalLink="/" additionalContent="메인 페이지" />
+      <SelectPersonInput name="fileinput"/>
       <form action={uploadProduct} className={styled.form}>
         <TextInput name="textinput" placeholder="수업명을 입력해주세요" valid={true} />
         <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
