@@ -7,10 +7,12 @@ interface Member {
   userId: string;
   memberNickname: string;
   profileImage: string;
+  lectureId: string;
+  lectureTitle: string;
 }
 
 type State = {
-  userList: Member[];
+  userList: Member[] | [];
   checkedList: Member[];
   selectedList: Member[];
 };
@@ -27,27 +29,32 @@ type Action = {
   ) => void;
   setSelectedListHandler: () => void;
   removeItemHandler: (userId: Prams['userId']) => void;
+  loadUserList: () => Promise<void>;
 };
+
+const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/member`;
+console.log(URL);
+
+async function getMemberList() {
+  const response = await fetch(URL, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+    },
+  });
+  const json = await response.json();
+  console.log(json);
+  return json;
+}
 
 const searchUserStore = create<State & Action>()(
   persist(
     (set) => ({
-      userList: [
-        {
-          memberId: '1',
-          userId: '1',
-          memberNickname: '홍길동',
-          profileImage:
-            'http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg',
-        },
-        {
-          memberId: '2',
-          userId: '10',
-          memberNickname: '홍길순',
-          profileImage:
-            'http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg',
-        },
-      ],
+      userList: [],
+      loadUserList: async () => {
+        const userList = await getMemberList();
+        set({ userList: userList || [] });
+      },
       checkedList: [],
       selectedList: [],
       checkItemHandler: (e: ChangeEvent<HTMLInputElement>, userId: string) =>

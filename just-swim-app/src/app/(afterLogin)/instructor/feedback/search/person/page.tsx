@@ -1,9 +1,8 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import Image from 'next/image';
-import searchIcon from '/public/assets/icon_search.png';
 import iconArrowDown from '@assets/icon_arrow_down.png';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -11,7 +10,6 @@ import Box from '@mui/material/Box';
 import { HistoryBackHeader } from '@components';
 import styled from './searchPerson.module.scss';
 import { randomId } from '@utils';
-import Link from 'next/link';
 import { searchUserStore } from '@store';
 import { useRouter } from 'next/navigation';
 import { IconSearch } from '@assets';
@@ -23,11 +21,41 @@ export default function SearchPerson() {
     selectedList,
     checkItemHandler,
     setSelectedListHandler,
+    loadUserList,
   } = searchUserStore();
 
   const router = useRouter();
-
   const [value, setValue] = useState('one');
+  const [stateObj, setStateObj] = useState({});
+
+  useEffect(() => {
+    loadUserList();
+    console.log(userList);
+  }, [loadUserList]);
+
+  useEffect(() => {
+    if (userList.length > 0) {
+      setStateObj(consvertUserListToLectureIdObj());
+    }
+    console.log('stateObj', stateObj);
+  }, [userList]);
+
+  // userList를 lecturId에 따라서 리스트를 그려주기 위해 lecturId가 key인 object로 변경
+  const consvertUserListToLectureIdObj = () => {
+    const map = new Map();
+
+    userList.forEach((user) => {
+      if (map.has(user.lectureTitle)) {
+        map.get(user.lectureTitle).push(user);
+      } else {
+        map.set(user.lectureTitle, [user]);
+      }
+    });
+
+    const obj = Object.fromEntries(map);
+
+    return obj;
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -86,33 +114,60 @@ export default function SearchPerson() {
       <div className={styled.divider}></div>
 
       <div className={styled.pad}>
-        {userList.map((member, index) => {
+        {Object.entries(stateObj).map(([group, members]) => (
+          <div key={randomId()} className={styled.group}>
+            <div className={styled.group_name}>{group}</div>
+            {members.map((user) => (
+              <li key={user.userId} className={styled.customer}>
+                <input
+                  type="checkbox"
+                  id={user.userId}
+                  onChange={(e) => checkItemHandler(e, user.userId)}
+                  checked={checkedList.some(
+                    (item) => item.userId === user.userId,
+                  )}
+                />
+                <label className={styled.row} htmlFor={`checkbox ${user}`}>
+                  <div
+                    className={styled.profile_img}
+                    style={{
+                      backgroundImage: `url(${user.profileImage})`,
+                    }}
+                  />
+                  <div>{user.memberNickname}</div>
+                </label>
+                <div className={styled.customer_class_name}>{group}</div>
+              </li>
+            ))}
+          </div>
+        ))}
+        {/* {userList?.map((member, index) => {
           return (
             <div key={randomId()} className={styled.group}>
               <div className={styled.group_name}>아침 5반</div>
-              {
-                <li key={member.userId} className={styled.customer}>
-                  <input
-                    type="checkbox"
-                    id={member.userId}
-                    onChange={(e) => checkItemHandler(e, member.userId)}
-                    checked={checkedList.some(
-                      (item) => item.userId === member.userId,
-                    )}
+              <li key={member.userId} className={styled.customer}>
+                <input
+                  type="checkbox"
+                  id={member.userId}
+                  onChange={(e) => checkItemHandler(e, member.userId)}
+                  checked={checkedList.some(
+                    (item) => item.userId === member.userId,
+                  )}
+                />
+                <label className={styled.row} htmlFor={`checkbox ${member}`}>
+                  <div
+                    className={styled.profile_img}
+                    style={{
+                      backgroundImage: `url(${member.profileImage})`,
+                    }}
                   />
-                  <label className={styled.row} htmlFor={`checkbox ${member}`}>
-                    <div
-                      className={styled.profile_img}
-                      style={{ backgroundImage: `url(${member.profileImage})` }}
-                    />
-                    <div>{member.memberNickname}</div>
-                  </label>
-                  <div className={styled.customer_class_name}>아침 5반</div>
-                </li>
-              }
+                  <div>{member.memberNickname}</div>
+                </label>
+                <div className={styled.customer_class_name}>아침 5반</div>
+              </li>
             </div>
           );
-        })}
+        })} */}
       </div>
 
       <div className={styled.main_btn}>
