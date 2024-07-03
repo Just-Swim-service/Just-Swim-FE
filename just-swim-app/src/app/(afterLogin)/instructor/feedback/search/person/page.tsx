@@ -8,7 +8,7 @@ import iconArrowDown from '@assets/icon_arrow_down.png';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { Header } from '@components';
+import { HistoryBackHeader } from '@components';
 import styled from './searchPerson.module.scss';
 import { randomId } from '@utils';
 import Link from 'next/link';
@@ -40,7 +40,7 @@ export default function SearchPerson() {
 
   return (
     <div className={styled.wrapper}>
-      <Header title="수강생 선택" />
+      <HistoryBackHeader title="수강생 선택" />
 
       <div className={styled.pad}>
         <div className={styled.title}>
