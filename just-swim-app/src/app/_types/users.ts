@@ -1,5 +1,7 @@
-type UserType = 'customer' | 'instructor';
-type Provider = 'kakao' | 'naver' | 'google';
+import { SNS, USER_TYPE } from '@data';
+
+export type Provider = (typeof SNS)[keyof typeof SNS];
+export type UserType = (typeof USER_TYPE)[keyof typeof USER_TYPE];
 
 export interface UserEntity {
   userId: string;

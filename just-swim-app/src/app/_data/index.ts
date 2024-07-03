@@ -1,2 +1,3 @@
-export { TEXT, SNSLOGIN } from './users';
+export * from './text';
 export * from './color';
+export * from './common';

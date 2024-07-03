@@ -1,1 +1,1 @@
-export { getUserSignUp } from './users.ts';
+export { getSignUp } from './users.ts/index';

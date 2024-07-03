@@ -9,6 +9,9 @@ import IconClock from './icon_clock.svg';
 import IconValidWhite from './icon_valid_white.svg';
 import IconTrash from './icon_trash.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
+import IconKakao from './icon_kakao.svg';
+import IconNaver from './icon_naver.svg';
+import IconGoogle from './icon_google.svg';
 
 export {
   IconArrowRight,
@@ -22,4 +25,7 @@ export {
   IconValidWhite,
   IconTrash,
   IconRepeatTime,
-}
+  IconKakao,
+  IconNaver,
+  IconGoogle,
+};
