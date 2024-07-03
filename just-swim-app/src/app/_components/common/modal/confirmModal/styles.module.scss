@@ -1,0 +1,18 @@
+@import '@/globals.scss';
+
+.modal_btn {
+  width: 100%;
+
+  margin: auto 0 20px;
+  padding: 0 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+
+  & button:first-child {
+    background-color: $--Chips;
+  }
+}

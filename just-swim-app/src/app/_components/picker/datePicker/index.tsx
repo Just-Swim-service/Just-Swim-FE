@@ -1,37 +1,19 @@
-import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Calendar, CalendarItem } from '@components';
+import { DatePickerProps } from '@types';
 
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import calendar_icon from '/public/assets/input_icon_calendar.png';
-// import Image from 'next/image';
+import styled from './styles.module.scss';
 
-import Calendar from '@assets/calendar.svg';
-
-interface Props {
-  bgColor?: 'gray' | 'white';
-}
-
-function calendarIcon() {
-  return <Calendar width={20} height={20} />;
-}
-
-export function Datepicker({ bgColor = 'white' }: Props) {
+export function DatePicker({
+  selectedDate,
+  changeSelectedDate
+}: DatePickerProps) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DesktopDatePicker
-        slots={{ openPickerIcon: calendarIcon }}
-        slotProps={{
-          textField: { fullWidth: true },
-          inputAdornment: {
-            position: 'start',
-          },
-        }}
-        sx={{
-          bgcolor: `${bgColor == 'gray' ? '#F8F9FA' : 'white'}`,
-          height: '51px !important',
-          borderRadius: '6px',
-        }}
+    <div className={styled.date_picker}>
+      <Calendar
+        DateBlock={CalendarItem}
+        selectedDate={selectedDate}
+        changeSelectedDate={changeSelectedDate}
       />
-    </LocalizationProvider>
-  );
+    </div>
+  )
 }

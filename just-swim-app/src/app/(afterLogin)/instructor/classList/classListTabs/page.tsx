@@ -1,6 +1,8 @@
 'use client';
 
+
 import { ProfileHeader } from '@components';
+
 import SearchBox from './_components/searchBox/page';
 import TabContent from './_components/tabContent/page';
 

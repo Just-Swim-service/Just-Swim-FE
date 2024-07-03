@@ -1,0 +1,64 @@
+@import '@/globals.scss';
+
+.input_wrapper {
+  position: relative;
+  
+  width: 100%;
+
+  display: flex;
+  gap: 7px;
+
+  .preview_wrapper {
+    display: flex;
+    gap: 7px;
+
+    .preview_item {
+      width: 78px;
+      height: 78px;
+
+      position: relative;
+
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      cursor: pointer;
+
+      .delete_button {
+        width: 20px;
+        height: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        top: 4px;
+        right: 4px;
+
+        background-image: none;
+        background-color: $--Cancel;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .add_label {
+    width: 78px;
+    height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: $--gray-50;
+    border: 2px solid $--gray-100;
+
+    cursor: pointer;
+
+    & > span {
+      font-size: 25px;
+      color: $--gray-400;
+    }
+  }
+}

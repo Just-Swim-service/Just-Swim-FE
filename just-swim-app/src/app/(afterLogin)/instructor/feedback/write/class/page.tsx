@@ -12,7 +12,7 @@ import Location from '@assets/location.svg';
 import Calendar_SM from '@assets/calendar_sm.svg';
 import Clock from '@assets/clock.svg';
 
-import { Header, Datepicker, Profile } from '@components';
+import { Header, DatepickerPrev, Profile } from '@components';
 
 export default function FeedbackWrite() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -117,7 +117,7 @@ export default function FeedbackWrite() {
             <div className={styled.title}>
               피드백 기준일 <span>(필수)</span>
             </div>
-            <Datepicker bgColor="gray" />
+            <DatepickerPrev bgColor="gray" />
           </div>
           <div className={styled.title}>첨부 파일</div>
           <div className={styled.sub_title}>

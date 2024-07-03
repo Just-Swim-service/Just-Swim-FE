@@ -1,0 +1,34 @@
+@import '@/globals.scss';
+
+.modal {
+  width: 100%;
+
+  padding-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  .modal_title {
+    padding: 0 16px;
+  
+    p:nth-child(1) {
+      @include Title2-SB;
+    }
+  
+    p:nth-child(2) {
+      @include Title5-M;
+      color: $--gray-600;
+    }
+  }
+  
+  .color_list {
+    margin: 50px auto;
+    padding: 0 20px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 22px;
+  }
+}
+

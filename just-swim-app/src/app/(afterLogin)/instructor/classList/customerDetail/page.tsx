@@ -13,7 +13,7 @@ export default function customerDetail() {
 
   return (
     <>
-      <EditHeader leftContent="수업 정보" data={data} />
+      <EditHeader leftContent="수업 정보" />
       <CustomerInfo />
       <CustomerClass />
       <FeedbackRecord />

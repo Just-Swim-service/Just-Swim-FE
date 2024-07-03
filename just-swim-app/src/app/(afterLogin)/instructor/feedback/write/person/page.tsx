@@ -10,7 +10,7 @@ import deleteButton from '@assets/delete_button.png';
 
 import styled from './feedbackWrite.module.scss';
 
-import { Header, Datepicker } from '@components';
+import { Header, DatepickerPrev } from '@components';
 
 export default function FeedbackWrite() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -69,7 +69,7 @@ export default function FeedbackWrite() {
             <div className={styled.title}>
               피드백 기준 수업일 <span>(필수)</span>
             </div>
-            <Datepicker bgColor="gray" />
+            <DatepickerPrev bgColor="gray" />
           </div>
           <div className={styled.title}>첨부 파일</div>
           <div className={styled.sub_title}>

@@ -1,4 +1,4 @@
-export const SNS = {
+export const SNSLOGIN = {
   google: '구글',
   kakao: '카카오',
   naver: '네이버',

@@ -1,9 +1,10 @@
 import Image from 'next/image';
-import { Header } from '@components';
 import searchIcon from '/public/assets/icon_search.png';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import Link from 'next/link';
 import styled from './customerList.module.scss';
+
+import { Header } from '@components';
 
 export default function CustomerList() {
   const customerList = [

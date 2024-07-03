@@ -1,0 +1,49 @@
+@import '@/globals.scss';
+
+.area_wrapper {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .textarea_input {
+    @include Title5-M;
+
+    position: relative;
+
+    width: 100%;
+  
+    padding: 18px 16px;
+  
+    background-color: $--gray-50;
+  
+    border: 2px solid $--gray-100;
+    border-radius: 8px;
+  
+    outline: none;
+    resize: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  .textarea_input::placeholder {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: $--gray-500;
+  }
+  
+  .textarea_input:focus {
+    border: 2px solid $--Primary-blue;
+  }
+
+  .textarea_input:focus::placeholder {
+    opacity: 0;
+  }
+}

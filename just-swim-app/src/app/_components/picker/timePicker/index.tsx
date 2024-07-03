@@ -1,31 +1,98 @@
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+'use client';
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
+import { useEffect, useState } from 'react';
 
-interface TimepickerProps {
-  label: string;
-  bgColor?: 'gray' | 'white';
+import { numberFormat } from '@utils';
+import { TimePickerProps } from '@types';
+
+import styled from './styles.module.scss';
+
+import { VerticalScroll } from './components';
+
+const generateMeridiemItems = () => {
+  return [
+    {
+      value: "AM",
+    },
+    {
+      value: "PM"
+    }
+  ];
 }
 
-export function Timepicker({
-  label,
-  bgColor = 'white',
-}: TimepickerProps) {
-  let date = new Date();
+const generateHourItems = () => {
+  return new Array(12).fill(0).map((_, index) => {
+    return {
+      value: numberFormat(index === 0 ? 12 : index),
+    };
+  })
+}
+
+const generateMinuteItems = () => {
+  return new Array(60).fill(0).map((_, index) => {
+    return {
+      value: numberFormat(index),
+    };
+  })
+}
+
+export function TimePicker({
+  value,
+  setValue,
+  itemHeight = 60,
+  itemsToShow = 3,
+  paddingY = 50,
+}: TimePickerProps) {
+  const hourValue = parseInt(value.slice(0, 2));
+  const minuteValue = value.slice(3, 6);
+
+  const [meridiem, setMeridiem] = useState(hourValue >= 12 ? "01" : "00");
+  const [hour, setHour] = useState<string>(numberFormat(hourValue % 12));
+  const [minute, setMinute] = useState<string>(minuteValue);
+
+  if (itemsToShow / 2 === 0) {
+    itemsToShow += 1;
+  }
+  
+  useEffect(() => {
+    const meridiemValue = meridiem === "01" ? 12 : 0;
+
+    setValue(`${numberFormat(meridiemValue + parseInt(hour))}:${minute}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meridiem, hour, minute]);
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <TimePicker
-        label={label}
-        ampm
-        defaultValue={dayjs(date)}
-        sx={{
-          bgcolor: `${bgColor == 'gray' ? '#F8F9FA' : 'white'}`,
-          height: '51px',
-        }}
-      />
-    </LocalizationProvider>
-  );
+    <div className={styled.time_picker}>
+      <div className={styled.time_picker_container} style={{
+        height: itemHeight * itemsToShow + paddingY * 2,
+          padding: `${paddingY}px 0`
+      }}>
+        <div className={styled.selected_overlay} style={{
+          top: itemHeight * ((itemsToShow - 1) / 2) + paddingY,
+          height: itemHeight
+        }} />
+          <VerticalScroll
+            value={meridiem}
+            setValue={setMeridiem}
+            items={generateMeridiemItems()}
+            itemHeight={itemHeight}
+            itemsToShow={itemsToShow}
+          />
+          <VerticalScroll
+            value={hour}
+            setValue={setHour}
+            items={generateHourItems()}
+            itemHeight={itemHeight}
+            itemsToShow={itemsToShow}
+          />
+          <VerticalScroll
+            value={minute}
+            setValue={setMinute}
+            items={generateMinuteItems()}
+            itemHeight={itemHeight}
+            itemsToShow={itemsToShow}
+          />
+      </div>
+    </div>
+  )
 }
