@@ -14,6 +14,7 @@ import { randomId } from '@utils';
 import Link from 'next/link';
 import { searchUserStore } from '@store';
 import { useRouter } from 'next/navigation';
+import { IconSearch } from '@assets';
 
 export default function SearchPerson() {
   const {
@@ -68,7 +69,7 @@ export default function SearchPerson() {
           <div className={styled.search}>
             <input type="text" placeholder="수강생 이름으로 검색" />
             <button>
-              <Image src={searchIcon} alt="검색" />
+              <IconSearch />
             </button>
           </div>
 
