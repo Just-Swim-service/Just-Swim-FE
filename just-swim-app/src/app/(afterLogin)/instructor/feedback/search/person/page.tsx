@@ -39,7 +39,7 @@ export default function SearchPerson() {
 
   return (
     <div className={styled.wrapper}>
-      <Header title="회원 선택" />
+      <Header title="수강생 선택" />
 
       <div className={styled.pad}>
         <div className={styled.title}>
