@@ -26,7 +26,7 @@ export default function SearchPerson() {
 
   const router = useRouter();
   const [value, setValue] = useState('one');
-  const [stateObj, setStateObj] = useState({});
+  const [stateObj, setStateObj] = useState<Object>({});
 
   useEffect(() => {
     loadUserList();
@@ -114,10 +114,14 @@ export default function SearchPerson() {
       <div className={styled.divider}></div>
 
       <div className={styled.pad}>
-        {Object.entries(stateObj).map(([group, members]) => (
+        {stateObj && Object.entries(stateObj).map(([group, members]) => (
           <div key={randomId()} className={styled.group}>
             <div className={styled.group_name}>{group}</div>
-            {members.map((user) => (
+            {members.map((user: {
+              userId: string,
+              profileImage: string,
+              memberNickname: string,
+            }) => (
               <li key={user.userId} className={styled.customer}>
                 <input
                   type="checkbox"
