@@ -27,8 +27,12 @@ type Action = {
   removeItemHandler: (userId: Prams['userId']) => void;
 };
 
+type PartialState = {
+  checkedList: () => void;
+};
+
 const searchUserStore = create(
-  persist<State & Action>(
+  persist<(State & Action) | Partial<PartialState>>(
     (set) => ({
       userList: [
         {
@@ -71,12 +75,12 @@ const searchUserStore = create(
             (member: Member) => member.userId !== userId,
           ),
         })),
-
-      setCheckedList: (state: any) => set({ checkedList: state.checkedList }),
     }),
     {
       name: 'checked_list',
-      partialize: (state: any) => ({ checkedList: state.checkedList }),
+      partialize: (state: any) => ({
+        checkedList: state.checkedList,
+      }),
     },
   ),
 );
