@@ -1,6 +1,12 @@
 'use client';
 
-import { MouseEvent, forwardRef, useState, ForwardedRef, useEffect } from 'react';
+import {
+  MouseEvent,
+  forwardRef,
+  useState,
+  ForwardedRef,
+  useEffect,
+} from 'react';
 
 import { SelectPersonInputProps } from '@types';
 import { randomId } from '@utils';
@@ -12,20 +18,11 @@ import Link from 'next/link';
 import { IconSelectUser } from '@assets';
 import { searchUserStore } from '@store';
 
-function _SelectPersonInput({
-  name,
-  ...props
-}: SelectPersonInputProps, 
-ref: ForwardedRef<HTMLInputElement>) {
-  
-  const { checkedList,removeItemHandler } = searchUserStore();
-
-  const [selectUser, setSelectUser] = useState(checkedList)
-  
-  useEffect(() => {
-    setSelectUser(checkedList)
-  }, [checkedList])
-
+function _SelectPersonInput(
+  { name, ...props }: SelectPersonInputProps,
+  ref: ForwardedRef<HTMLInputElement>,
+) {
+  const { selectedList, removeItemHandler } = searchUserStore();
 
   return (
     <div className={styled.input_wrapper}>
@@ -38,28 +35,31 @@ ref: ForwardedRef<HTMLInputElement>) {
         </div>
       </Link>
       <div className={styled.preview_wrapper}>
-        {
-          checkedList.map((preview, index) => {
-            return (
-              <div key={randomId()} className={styled.preview_item} >
-                <div className={styled.profileImg} style={{backgroundImage: `url(${preview.profileImage})`}}></div>
-                <div className={styled.name}>{preview.memberNickname}</div>
-                <div className={styled.class}>아침5반</div>
+        {selectedList.map((preview, index) => {
+          return (
+            <div key={randomId()} className={styled.preview_item}>
+              <div
+                className={styled.profileImg}
+                style={{
+                  backgroundImage: `url(${preview.profileImage})`,
+                }}></div>
+              <div className={styled.name}>{preview.memberNickname}</div>
+              <div className={styled.class}>아침5반</div>
 
-                <button className={styled.delete_button} onClick={(event: MouseEvent<HTMLButtonElement>) => {
+              <button
+                className={styled.delete_button}
+                onClick={(event: MouseEvent<HTMLButtonElement>) => {
                   event.stopPropagation();
                   event.preventDefault();
-                  
+
                   removeItemHandler(preview.userId);
                 }}>
-                  <IconCancelWhite width={14} height={14} />
-                </button>
-              </div>
-            )
-          })
-        }
+                <IconCancelWhite width={14} height={14} />
+              </button>
+            </div>
+          );
+        })}
       </div>
-      
     </div>
   );
 }

@@ -12,6 +12,7 @@ interface Member {
 type State = {
   userList: Member[];
   checkedList: Member[];
+  selectedList: Member[];
 };
 
 type Prams = {
@@ -24,6 +25,7 @@ type Action = {
     e: ChangeEvent<HTMLInputElement>,
     userId: Prams['userId'],
   ) => void;
+  setSelectedListHandler: () => void;
   removeItemHandler: (userId: Prams['userId']) => void;
 };
 
@@ -47,11 +49,10 @@ const searchUserStore = create<State & Action>()(
         },
       ],
       checkedList: [],
+      selectedList: [],
       checkItemHandler: (e: ChangeEvent<HTMLInputElement>, userId: string) =>
         set((state: any) => {
           const isChecked = e.target.checked;
-          console.log(isChecked);
-          console.log(state.checkedList);
 
           const selectMember = state.userList.find(
             (member: Member) => member.userId === userId,
@@ -65,8 +66,17 @@ const searchUserStore = create<State & Action>()(
                 ),
           };
         }),
+      setSelectedListHandler: () =>
+        set((state: any) => {
+          return {
+            selectedList: state.checkedList,
+          };
+        }),
       removeItemHandler: (userId: string) =>
         set((state: any) => ({
+          selectedList: state.selectedList.filter(
+            (member: Member) => member.userId !== userId,
+          ),
           checkedList: state.checkedList.filter(
             (member: Member) => member.userId !== userId,
           ),
@@ -75,7 +85,7 @@ const searchUserStore = create<State & Action>()(
     {
       name: 'checked_list',
       partialize: (state: any) => ({
-        checkedList: state.checkedList,
+        selectedList: state.selectedList,
       }),
     },
   ),

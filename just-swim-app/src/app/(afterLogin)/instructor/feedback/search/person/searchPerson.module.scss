@@ -111,14 +111,14 @@
     position: fixed;
     bottom: 2%;
     left: 50%;
-    transform: translate(-50%,0);
-    a {
+    transform: translate(-50%, 0);
+    button {
       width: 100%;
 
       display: flex;
       justify-content: center;
       align-items: center;
-      
+
       height: 52px;
 
       background-color: $--Primary-blue;

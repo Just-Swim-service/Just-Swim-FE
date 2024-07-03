@@ -13,9 +13,18 @@ import styled from './searchPerson.module.scss';
 import { randomId } from '@utils';
 import Link from 'next/link';
 import { searchUserStore } from '@store';
+import { useRouter } from 'next/navigation';
 
 export default function SearchPerson() {
-  const { userList, checkedList, checkItemHandler } = searchUserStore();
+  const {
+    userList,
+    checkedList,
+    selectedList,
+    checkItemHandler,
+    setSelectedListHandler,
+  } = searchUserStore();
+
+  const router = useRouter();
 
   const [value, setValue] = useState('one');
 
@@ -24,7 +33,7 @@ export default function SearchPerson() {
   };
 
   const checkLength = () => {
-    const checkedCount = checkedList.length
+    const checkedCount = checkedList.length;
     return checkedCount;
   };
 
@@ -75,48 +84,47 @@ export default function SearchPerson() {
 
       <div className={styled.divider}></div>
 
-      
       <div className={styled.pad}>
         {userList.map((member, index) => {
           return (
             <div key={randomId()} className={styled.group}>
-              <div className={styled.group_name}>
-                아침 5반
-              </div>
-            {
+              <div className={styled.group_name}>아침 5반</div>
+              {
                 <li key={member.userId} className={styled.customer}>
-                   <input
+                  <input
                     type="checkbox"
                     id={member.userId}
                     onChange={(e) => checkItemHandler(e, member.userId)}
-                    checked={checkedList.some(item => item.userId === member.userId)}
-                    />
+                    checked={checkedList.some(
+                      (item) => item.userId === member.userId,
+                    )}
+                  />
                   <label className={styled.row} htmlFor={`checkbox ${member}`}>
                     <div
                       className={styled.profile_img}
-                      style={{backgroundImage: `url(${member.profileImage})`}}
+                      style={{ backgroundImage: `url(${member.profileImage})` }}
                     />
                     <div>{member.memberNickname}</div>
                   </label>
                   <div className={styled.customer_class_name}>아침 5반</div>
                 </li>
-             }
-          </div>
-          )
+              }
+            </div>
+          );
         })}
       </div>
 
       <div className={styled.main_btn}>
-          <Link
-            type="button"
-            href={{
-              pathname: "/instructor/feedback/write/person",
-            }}
-            className={` ${checkLength() == 0 ? styled.disabled : ''}`}
-            >
-            {checkLength()}명 선택하기
-          </Link>
-        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedListHandler();
+            router.push('/instructor/feedback/write/person');
+          }}
+          className={` ${checkLength() == 0 ? styled.disabled : ''}`}>
+          {checkLength()}명 선택하기
+        </button>
+      </div>
     </div>
   );
 }
