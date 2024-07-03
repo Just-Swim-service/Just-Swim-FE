@@ -1,2 +1,2 @@
 // export * from './location';
-export * from './store';
+export * from './member';

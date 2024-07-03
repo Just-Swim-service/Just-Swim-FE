@@ -27,12 +27,8 @@ type Action = {
   removeItemHandler: (userId: Prams['userId']) => void;
 };
 
-type PartialState = {
-  checkedList: () => void;
-};
-
-const searchUserStore = create(
-  persist<(State & Action) | Partial<PartialState>>(
+const searchUserStore = create<State & Action>()(
+  persist(
     (set) => ({
       userList: [
         {
