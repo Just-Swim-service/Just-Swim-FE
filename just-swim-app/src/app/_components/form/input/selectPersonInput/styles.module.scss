@@ -2,31 +2,41 @@
 
 .input_wrapper {
   position: relative;
-  
+
   width: 100%;
 
   display: flex;
   gap: 12px;
 
+  .input_inner_wrapper {
+    padding: 16px 0;
+  }
+
   .preview_wrapper {
     display: flex;
     gap: 12px;
+    width: 100%;
 
     background-color: white;
     border-radius: 10px;
     border: 1px solid var(--gray-200);
 
+    padding: 16px 0;
+
+    overflow-x: auto;
+    white-space: nowrap; /* Prevent line breaks */
 
     .preview_item {
+      z-index: 100;
       background-color: $--gray-50;
 
-      width: 83px;
+      min-width: 83px;
       height: 125px;
 
       border-radius: 10px;
 
       position: relative;
-      
+
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -56,7 +66,7 @@
         border-radius: 11px;
         color: $--Primary-blue;
 
-        @include Body5-R
+        @include Body5-R;
       }
 
       .delete_button {
@@ -68,27 +78,29 @@
         justify-content: center;
 
         position: absolute;
-       
+
         top: -9px;
         right: -9px;
 
         background-image: none;
         background-color: $--Cancel;
         border-radius: 50%;
+
+        z-index: 100;
       }
     }
   }
 
   .select_user {
+    display: block;
     position: relative;
 
-    width: 83px;
+    min-width: 83px;
     height: 125px;
 
     background-color: $--gray-50;
 
     border-radius: 10px;
-    
   }
 
   .icon_wrapper {

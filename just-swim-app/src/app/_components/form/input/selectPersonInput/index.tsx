@@ -26,14 +26,16 @@ function _SelectPersonInput(
 
   return (
     <div className={styled.input_wrapper}>
-      <Link
-        href={'/instructor/feedback/search/person'}
-        className={styled.select_user}>
-        <div className={styled.icon_wrapper}>
-          <IconSelectUser width={30} height={30} />
-          <div className={styled.add_txt}>추가하기</div>
-        </div>
-      </Link>
+      <div className={styled.input_inner_wrapper}>
+        <Link
+          href={'/instructor/feedback/search/person'}
+          className={styled.select_user}>
+          <div className={styled.icon_wrapper}>
+            <IconSelectUser width={30} height={30} />
+            <div className={styled.add_txt}>추가하기</div>
+          </div>
+        </Link>
+      </div>
       <div className={styled.preview_wrapper}>
         {selectedList.map((preview, index) => {
           return (
