@@ -93,6 +93,7 @@ const searchUserStore = create<State & Action>()(
       name: 'checked_list',
       partialize: (state: any) => ({
         selectedList: state.selectedList,
+        checkedList: state.checkedList,
       }),
     },
   ),
