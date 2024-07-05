@@ -1,6 +1,6 @@
 @import '@/globals.scss';
 
-label {
+.label {
   @include Title5-M;
   display: block;
   color: var(--gray-700);
