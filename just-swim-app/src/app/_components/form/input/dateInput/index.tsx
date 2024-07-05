@@ -1,11 +1,12 @@
 "use client";
 
-import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from "react";
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from "react";
 
 import { DateInputProps } from "@types";
 import { DateModal } from '@components';
 import { useModal } from "@hooks";
 import { IconInputValid } from "@assets";
+import { mergeRefs } from "@utils";
 
 import styled from './styles.module.scss';
 
@@ -31,6 +32,8 @@ function _DateInput({
   ...props
 }: DateInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [selectedDate, setSelectedDate] = useState<string>(checkDefaultValue(defaultValue) ? defaultValue : '');
 
   const changeSelectedDate = (date: string) => {
@@ -38,6 +41,13 @@ ref: ForwardedRef<HTMLInputElement>) {
   }
   
   const { modal, showModal, hideModal } = useModal();
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('value', selectedDate);
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, [selectedDate]);
   
   return (
     <div className={styled.input_wrapper}>
@@ -56,9 +66,8 @@ ref: ForwardedRef<HTMLInputElement>) {
       <input
         {...props}
         name={name}
-        ref={ref}
+        ref={mergeRefs(inputRef, ref)}
         type='text'
-        value={selectedDate}
         readOnly
         hidden
       />
