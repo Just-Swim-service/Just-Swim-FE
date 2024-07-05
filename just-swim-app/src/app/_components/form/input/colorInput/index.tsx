@@ -6,9 +6,9 @@ import { ColorModal } from '@components';
 import { ColorInputProps } from '@types';
 import { COLOR_LIST } from '@data';
 import { useModal } from '@hooks';
+import { mergeRefs } from '@utils';
 
 import styled from './styles.module.scss';
-import { mergeRefs } from '@utils';
 
 function _ColorInput({
   name,
