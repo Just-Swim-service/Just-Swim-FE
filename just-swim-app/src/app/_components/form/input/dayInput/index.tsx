@@ -1,11 +1,12 @@
 'use client';
 
-import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from 'react';
 
 import { DayModal } from '@components';
 import { DayInputProps } from '@types';
 import { useModal } from '@hooks';
 import { IconInputValid, IconCalendar } from '@assets';
+import { mergeRefs } from '@utils';
 
 import styled from './styles.module.scss';
 
@@ -102,6 +103,8 @@ function _DayInput({
   ...props
 }: DayInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   // 현재 선택된 색 관련
   const [days, setDays] = useState<DayProps>(
     checkDefaultValue(defaultValue) 
@@ -121,11 +124,17 @@ ref: ForwardedRef<HTMLInputElement>) {
       ...days
     });
   };
-
   
   const { modal, showModal, hideModal } = useModal();
 
   const inputValue = makeInputValue(days);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('value', makeInputValue(days));
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, [days]);
   
   return (
     <div className={styled.input_wrapper}>
@@ -144,9 +153,8 @@ ref: ForwardedRef<HTMLInputElement>) {
       <input
         {...props}
         name={name}
-        ref={ref}
+        ref={mergeRefs(inputRef, ref)}
         type='text'
-        value={makeInputValue(days)}
         readOnly
         hidden
       />

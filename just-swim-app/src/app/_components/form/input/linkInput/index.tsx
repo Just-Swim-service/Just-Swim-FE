@@ -10,8 +10,11 @@ import styled from './styles.module.scss';
 
 function _LinkInput({
   name,
+  onChange = (event: ChangeEvent<HTMLInputElement>) => {},
   ...props
-}: LinkInputProps & InputHTMLAttributes<HTMLInputElement>,
+}: LinkInputProps & InputHTMLAttributes<HTMLInputElement> & {
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+},
 ref: ForwardedRef<HTMLInputElement>) {
   const [link, setLink] = useState<string>('');
   const [focus, setFocus] = useState<boolean>(false);
@@ -33,6 +36,11 @@ ref: ForwardedRef<HTMLInputElement>) {
 
     setLink('');
   }
+
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChangeInput(event);
+    onChange(event);
+  }
   
   return (
     <div className={styled.input_wrapper}>
@@ -43,7 +51,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         ref={ref}
         type='text'
         value={link}
-        onChange={onChangeInput}
+        onChange={handleOnChange}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
       />

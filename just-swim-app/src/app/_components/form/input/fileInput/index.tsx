@@ -15,15 +15,23 @@ function _FileInput({
   length = 4,
   size = 20,
   id = 'fileInput',
+  onChange = (event: ChangeEvent<HTMLInputElement>) => {},
   ...props
-}: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
+}: FileInputProps & InputHTMLAttributes<HTMLInputElement> & {
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+},
 ref: ForwardedRef<HTMLInputElement>) {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const onDelete = useRef<boolean>(false);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
+    if (onDelete.current) {
+      return;
+    }
+
     const { target: { files } } = event;
   
     if (!files) {
@@ -87,6 +95,8 @@ ref: ForwardedRef<HTMLInputElement>) {
   }
 
   const deleteUploadedImage = (index: number) => {
+    onDelete.current = true;
+    
     const newFiles = [...uploadedImages.slice(0, index), ...uploadedImages.slice(index + 1)];
 
     const store = new DataTransfer();
@@ -95,8 +105,10 @@ ref: ForwardedRef<HTMLInputElement>) {
 
     if (inputRef.current) {
       inputRef.current.files = store.files;
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
+    onDelete.current = false;
     setUploadedImages(newFiles);
   }
   
@@ -125,6 +137,11 @@ ref: ForwardedRef<HTMLInputElement>) {
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewImages]);
+
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChangeImages(event);
+    onChange(event);
+  }
 
   return (
     <div className={styled.input_wrapper}>
@@ -160,12 +177,12 @@ ref: ForwardedRef<HTMLInputElement>) {
         {...props}
         name={name}
         id={id}
-        ref={mergeRefs(ref, inputRef)}
+        ref={mergeRefs(inputRef, ref)}
         type='file'
         multiple
         hidden
         readOnly
-        onChange={onChangeImages}
+        onChange={handleOnChange}
       />
       {
         modal &&
