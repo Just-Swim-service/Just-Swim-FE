@@ -1,10 +1,10 @@
 'use client';
 
-import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from 'react';
 
 import { TimeModal } from '@components';
 import { TimeInputProps } from '@types';
-import { numberFormat } from '@utils';
+import { mergeRefs, numberFormat } from '@utils';
 import { useModal } from '@hooks';
 import { IconInputValid, IconClock } from '@assets';
 
@@ -61,6 +61,8 @@ function _TimeInput({
   ...props
 }: TimeInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const flag = checkDefaultValue(defaultValue);
 
   const [startTime, setStartTime] = useState<string>(flag ? defaultValue.slice(0, 5) : '');
@@ -73,6 +75,13 @@ ref: ForwardedRef<HTMLInputElement>) {
   const changeEndTime = (time: string) => {
     setEndTime(time);
   }
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('value', `${startTime}~${endTime}`);
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, [startTime, endTime]);
 
   return (
     <div className={styled.wrapper}>
@@ -103,11 +112,10 @@ ref: ForwardedRef<HTMLInputElement>) {
       <input
         {...props}
         name={name}
-        ref={ref}
+        ref={mergeRefs(inputRef, ref)}
         type='text'
         readOnly
         hidden
-        value={`${startTime}~${endTime}`}
       />
     </div>
   );
