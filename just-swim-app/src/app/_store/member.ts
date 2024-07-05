@@ -1,3 +1,4 @@
+import { getMemberList } from '@/_apis/member';
 import { ChangeEvent } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -31,21 +32,6 @@ type Action = {
   removeItemHandler: (userId: Prams['userId']) => void;
   loadUserList: () => Promise<void>;
 };
-
-const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/member`;
-console.log(URL);
-
-async function getMemberList() {
-  const response = await fetch(URL, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-    },
-  });
-  const json = await response.json();
-  console.log(json);
-  return json;
-}
 
 const searchUserStore = create<State & Action>()(
   persist(
