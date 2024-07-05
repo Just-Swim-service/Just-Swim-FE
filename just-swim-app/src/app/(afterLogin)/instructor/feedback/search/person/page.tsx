@@ -30,7 +30,6 @@ export default function SearchPerson() {
 
   useEffect(() => {
     loadUserList();
-    console.log(userList);
   }, [loadUserList]);
 
   useEffect(() => {
@@ -114,64 +113,40 @@ export default function SearchPerson() {
       <div className={styled.divider}></div>
 
       <div className={styled.pad}>
-        {stateObj && Object.entries(stateObj).map(([group, members]) => (
-          <div key={randomId()} className={styled.group}>
-            <div className={styled.group_name}>{group}</div>
-            {members.map((user: {
-              userId: string,
-              profileImage: string,
-              memberNickname: string,
-            }) => (
-              <li key={user.userId} className={styled.customer}>
-                <input
-                  type="checkbox"
-                  id={user.userId}
-                  onChange={(e) => checkItemHandler(e, user.userId)}
-                  checked={checkedList.some(
-                    (item) => item.userId === user.userId,
-                  )}
-                />
-                <label className={styled.row} htmlFor={`checkbox ${user}`}>
-                  <div
-                    className={styled.profile_img}
-                    style={{
-                      backgroundImage: `url(${user.profileImage})`,
-                    }}
-                  />
-                  <div>{user.memberNickname}</div>
-                </label>
-                <div className={styled.customer_class_name}>{group}</div>
-              </li>
-            ))}
-          </div>
-        ))}
-        {/* {userList?.map((member, index) => {
-          return (
+        {stateObj &&
+          Object.entries(stateObj).map(([group, members]) => (
             <div key={randomId()} className={styled.group}>
-              <div className={styled.group_name}>아침 5반</div>
-              <li key={member.userId} className={styled.customer}>
-                <input
-                  type="checkbox"
-                  id={member.userId}
-                  onChange={(e) => checkItemHandler(e, member.userId)}
-                  checked={checkedList.some(
-                    (item) => item.userId === member.userId,
-                  )}
-                />
-                <label className={styled.row} htmlFor={`checkbox ${member}`}>
-                  <div
-                    className={styled.profile_img}
-                    style={{
-                      backgroundImage: `url(${member.profileImage})`,
-                    }}
-                  />
-                  <div>{member.memberNickname}</div>
-                </label>
-                <div className={styled.customer_class_name}>아침 5반</div>
-              </li>
+              <div className={styled.group_name}>{group}</div>
+              {members.map(
+                (user: {
+                  userId: string;
+                  profileImage: string;
+                  memberNickname: string;
+                }) => (
+                  <li key={user.userId} className={styled.customer}>
+                    <input
+                      type="checkbox"
+                      id={user.userId}
+                      onChange={(e) => checkItemHandler(e, user.userId)}
+                      checked={checkedList.some(
+                        (item) => item.userId === user.userId,
+                      )}
+                    />
+                    <label className={styled.row} htmlFor={`checkbox ${user}`}>
+                      <div
+                        className={styled.profile_img}
+                        style={{
+                          backgroundImage: `url(${user.profileImage})`,
+                        }}
+                      />
+                      <div>{user.memberNickname}</div>
+                    </label>
+                    <div className={styled.customer_class_name}>{group}</div>
+                  </li>
+                ),
+              )}
             </div>
-          );
-        })} */}
+          ))}
       </div>
 
       <div className={styled.main_btn}>
