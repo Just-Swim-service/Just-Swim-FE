@@ -3,7 +3,26 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 
 import { checkCookie } from '@utils';
 
-export const snsLoginEventHandler = (router: AppRouterInstance) => {
+export async function login() {
+  const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/login`;
+  const res = await fetch(URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+    },
+    body: JSON.stringify({
+      email: 'khv2644511@nate.com',
+      provider: 'kakao',
+    }),
+  });
+
+  const data = await res.json();
+
+  return Response.json(data);
+}
+
+export const snsLoginEventHandler = async (router: AppRouterInstance) => {
   const type = '';
 
   const routeChooseType = () => {
@@ -28,7 +47,10 @@ export const snsLoginEventHandler = (router: AppRouterInstance) => {
     }
   };
 
-  const onClickKakao = () => {
+  const onClickKakao = async () => {
+    const data = await login();
+    console.log(data);
+
     if (checkCookie(type)) {
       router.replace(`/${type}`);
     } else {
