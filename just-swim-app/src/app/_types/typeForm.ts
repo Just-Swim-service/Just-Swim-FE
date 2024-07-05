@@ -42,6 +42,10 @@ export interface TimeInputProps {
   defaultTimeValue?: string;
 }
 
+export interface LinkInputProps {
+  name: string;
+}
+
 export interface FormButtonProps {
   text: string;
   loading?: string;
