@@ -7,9 +7,11 @@ import IconCalendar from './icon_calendar.svg';
 import IconLocation from './icon_location.svg';
 import IconClock from './icon_clock.svg';
 import IconValidWhite from './icon_valid_white.svg';
+import IconTrash from './icon_trash.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
 import IconLink from './icon_link.svg';
-
+import IconSelectUser from './icon_select_user.svg';
+import IconSearch from './icon_search.svg';
 
 export {
   IconArrowRight,
@@ -21,6 +23,9 @@ export {
   IconLocation,
   IconClock,
   IconValidWhite,
+  IconTrash,
   IconRepeatTime,
-  IconLink
-}
+  IconLink,
+  IconSelectUser,
+  IconSearch,
+};

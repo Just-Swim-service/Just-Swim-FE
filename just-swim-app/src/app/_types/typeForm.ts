@@ -43,6 +43,10 @@ export interface TimeInputProps {
   defaultTimeValue?: string;
 }
 
+export interface LinkInputProps {
+  name: string;
+}
+
 export interface FormButtonProps {
   text: string;
   loading?: string;
@@ -53,4 +57,8 @@ export interface TextAreaProps {
   name: string;
   height?: number;
   onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+}
+
+export interface SelectPersonInputProps {
+  name: string;
 }

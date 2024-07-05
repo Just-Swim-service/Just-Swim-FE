@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -9,19 +9,25 @@ import profile from '@assets/profile1.png';
 import deleteButton from '@assets/delete_button.png';
 
 import styled from './feedbackWrite.module.scss';
-import { Header, DateInput, FileInput, TextInput, TextArea } from '@components';
+import {
+  Header,
+  DateInput,
+  FileInput,
+  TextInput,
+  TextArea,
+  SelectPersonInput,
+} from '@components';
 
-import { IconCalendar } from "@assets";
-
+import { IconCalendar } from '@assets';
 
 export default function FeedbackWrite() {
-  let now = new Date()
+  let now = new Date();
 
-  let yaer = now.getFullYear()
-  let month = (now.getMonth() + 1).toString().padStart(2, "0")
-  let day = now.getDate().toString().padStart(2, "0")
+  let yaer = now.getFullYear();
+  let month = (now.getMonth() + 1).toString().padStart(2, '0');
+  let day = now.getDate().toString().padStart(2, '0');
 
-  let date =  `${yaer}.${month}.${day}`
+  let date = `${yaer}.${month}.${day}`;
   // console.log(date)
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -53,26 +59,7 @@ export default function FeedbackWrite() {
           <div className={styled.sub_title}>
             피드백을 남길 수강생의 정보를 확인해주세요
           </div>
-          <div className={styled.flex}>
-            <Link
-              href={'/instructor/feedback/search/person'}
-              className={`${styled.box} ${styled.add_btn}`}>
-              <Image src={addIcon} alt="add" />
-              <div className={styled.add_txt}>추가하기</div>
-            </Link>
-            <div>
-              <div className={styled.box}>
-                <button className={styled.box_delete}>
-                  <Image src={deleteButton} alt="delete" />
-                </button>
-                <div className={styled.profile}>
-                  <Image src={profile} alt="프로필 이미지" />
-                  <div className={styled.name}>김고독</div>
-                  <div className={styled.class}>아침5반</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SelectPersonInput name="fileinput" />
         </div>
 
         <div className={styled.feedback_content}>
@@ -80,8 +67,13 @@ export default function FeedbackWrite() {
             <div className={styled.title}>
               피드백 기준 수업일 <span>(필수)</span>
             </div>
-            <DateInput name="dateinput" renderIcon={() => <IconCalendar width={14} height={14} />} placeholder="수업 일자를 선택해주세요" suffix="종료" defaultValue={date} />
-
+            <DateInput
+              name="dateinput"
+              renderIcon={() => <IconCalendar width={14} height={14} />}
+              placeholder="수업 일자를 선택해주세요"
+              suffix="종료"
+              defaultValue={date}
+            />
           </div>
           <div className={styled.title}>첨부 파일</div>
           <div className={styled.sub_title}>
@@ -89,9 +81,13 @@ export default function FeedbackWrite() {
           </div>
           <FileInput name="fileinput" />
 
-        
           <div className={styled.title}>첨부 링크</div>
-          <TextInput name="textinput" placeholder="첨부하고자 하는 URL을 입력해주세요" valid={true} link={true}/>
+          <TextInput
+            name="textinput"
+            placeholder="첨부하고자 하는 URL을 입력해주세요"
+            valid={true}
+            link={true}
+          />
           {/* <div className={styled.link}>
             <input type="text" />
             <button>
@@ -119,7 +115,11 @@ export default function FeedbackWrite() {
             placeholder="피드백을 입력해주세요"
             className={styled.feedback_area}>
           </textarea> */}
-          <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
+          <TextArea
+            name="textarea"
+            placeholder="피드백을 입력해주세요"
+            height={100}
+          />
         </div>
       </div>
       <button className={styled.submit_btn}>전송하기</button>

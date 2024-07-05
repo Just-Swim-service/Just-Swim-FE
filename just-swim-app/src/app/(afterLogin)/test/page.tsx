@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { 
   TextInput, 
@@ -11,6 +11,8 @@ import {
   DateInput,
   FileInput,
   ConfirmButton,
+  SelectPersonInput,
+  LinkInput,
 } from "@components";
 import { IconRepeatTime } from "@assets";
 
@@ -27,6 +29,7 @@ export default function Test() {
       position: 'relative'
     }}>
       <HistoryBackHeader title="수업정보" additionalLink="/" additionalContent="메인 페이지" />
+      <SelectPersonInput name="fileinput"/>
       <form action={uploadProduct} className={styled.form}>
         <TextInput name="textinput" placeholder="수업명을 입력해주세요" valid={true} />
         <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
@@ -36,6 +39,7 @@ export default function Test() {
         <DayInput name="dayinput" placeholder="수업 요일을 선택해 주세요" defaultValue="월수" />
         <DateInput name="dateinput" renderIcon={() => <IconRepeatTime width={14} height={14} />} placeholder="종료일 없이 반복" suffix="종료" defaultValue="2024.08.03" />
         <FileInput name="fileinput" />
+        <LinkInput name="linkinput" placeholder="add link" />
         <FormButton text="확인" active={true} />
       </form>
       {/* <ConfirmButton text="버튼 1" kind="confirm" active={true} />
