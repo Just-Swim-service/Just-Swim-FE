@@ -7,9 +7,9 @@ import { snsLoginEventHandler } from '../../../_utils';
 
 import styles from './styles.module.scss';
 
-export function OnBoardingSection() {
+export async function OnBoardingSection() {
   const router = useRouter();
-  const { onClickGoogle, onClickNaver, onClickKakao } =
+  const { onClickGoogle, onClickNaver, onClickKakao } =await 
     snsLoginEventHandler(router);
   return (
     <>

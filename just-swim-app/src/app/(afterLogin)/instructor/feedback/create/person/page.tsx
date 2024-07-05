@@ -9,10 +9,21 @@ import profile from '@assets/profile1.png';
 import deleteButton from '@assets/delete_button.png';
 
 import styled from './feedbackWrite.module.scss';
+import { Header, DateInput, FileInput, TextInput, TextArea } from '@components';
 
-import { Header, DatepickerPrev } from '@components';
+import { IconCalendar } from "@assets";
+
 
 export default function FeedbackWrite() {
+  let now = new Date()
+
+  let yaer = now.getFullYear()
+  let month = (now.getMonth() + 1).toString().padStart(2, "0")
+  let day = now.getDate().toString().padStart(2, "0")
+
+  let date =  `${yaer}.${month}.${day}`
+  // console.log(date)
+
   const fileRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
     console.log('fileRef', fileRef);
@@ -69,37 +80,19 @@ export default function FeedbackWrite() {
             <div className={styled.title}>
               피드백 기준 수업일 <span>(필수)</span>
             </div>
-            <DatepickerPrev bgColor="gray" />
+            <DateInput name="dateinput" renderIcon={() => <IconCalendar width={14} height={14} />} placeholder="수업 일자를 선택해주세요" suffix="종료" defaultValue={date} />
+
           </div>
           <div className={styled.title}>첨부 파일</div>
           <div className={styled.sub_title}>
             최대 4개의 20MB 이하 파일만 첨부 가능합니다
           </div>
-          <div className={styled.flex}>
-            {images.map((url, i) => (
-              <div key={url} className={styled.added_file}>
-                <Image src={url} width="78" height="78" alt={`image${i}`} />
-              </div>
-            ))}
-            <div className={styled.box} onClick={handleClick}>
-              <label htmlFor="chooseFile2">
-                <div className={styled.add}>
-                  <Image src={addIcon} alt="add" />
-                </div>
-              </label>
-              <input
-                type="file"
-                id="chooseFile2"
-                name="chooseFile2"
-                accept="image/*"
-                multiple
-                ref={fileRef}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
+          <FileInput name="fileinput" />
+
+        
           <div className={styled.title}>첨부 링크</div>
-          <div className={styled.link}>
+          <TextInput name="textinput" placeholder="첨부하고자 하는 URL을 입력해주세요" valid={true} link={true}/>
+          {/* <div className={styled.link}>
             <input type="text" />
             <button>
               <svg
@@ -118,13 +111,15 @@ export default function FeedbackWrite() {
                 />
               </svg>
             </button>
-          </div>
+          </div> */}
           <div className={styled.title}>
             피드백 남기기 <span>(필수)</span>
           </div>
-          <textarea
+          {/* <textarea
             placeholder="피드백을 입력해주세요"
-            className={styled.feedback_area}></textarea>
+            className={styled.feedback_area}>
+          </textarea> */}
+          <TextArea name="textarea" placeholder="피드백을 입력해주세요" height={100} />
         </div>
       </div>
       <button className={styled.submit_btn}>전송하기</button>
