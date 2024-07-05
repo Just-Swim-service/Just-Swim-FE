@@ -1,6 +1,6 @@
 'use client';
 
-import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from 'react';
 
 import { ColorModal } from '@components';
 import { ColorInputProps } from '@types';
@@ -8,6 +8,7 @@ import { COLOR_LIST } from '@data';
 import { useModal } from '@hooks';
 
 import styled from './styles.module.scss';
+import { mergeRefs } from '@utils';
 
 function _ColorInput({
   name,
@@ -15,6 +16,8 @@ function _ColorInput({
   ...props
 }: ColorInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   // 현재 선택된 색 관련
   const [selectedColor, setSelectedColor] = useState<string>(defaultValue ? defaultValue : COLOR_LIST[0].color);
 
@@ -23,6 +26,13 @@ ref: ForwardedRef<HTMLInputElement>) {
   }
 
   const { modal, showModal, hideModal } = useModal();
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('value', selectedColor);
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, [selectedColor]);
 
   return (
     <div className={styled.input_wrapper}>
@@ -33,10 +43,9 @@ ref: ForwardedRef<HTMLInputElement>) {
         {...props}
         name={name}
         className={styled.color_input}
-        ref={ref}
+        ref={mergeRefs(inputRef, ref)}
         type='text'
         readOnly
-        value={selectedColor}
         onClick={showModal}
       />
       {
