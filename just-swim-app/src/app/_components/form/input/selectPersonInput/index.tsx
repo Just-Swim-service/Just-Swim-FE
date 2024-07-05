@@ -46,7 +46,7 @@ function _SelectPersonInput(
                   backgroundImage: `url(${preview.profileImage})`,
                 }}></div>
               <div className={styled.name}>{preview.memberNickname}</div>
-              <div className={styled.class}>아침5반</div>
+              <div className={styled.class}>{preview.lectureTitle}</div>
 
               <button
                 className={styled.delete_button}
