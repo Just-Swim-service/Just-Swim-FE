@@ -12,6 +12,9 @@ import IconRepeatTime from './icon_repeat_time.svg';
 import IconLink from './icon_link.svg';
 import IconSelectUser from './icon_select_user.svg';
 import IconSearch from './icon_search.svg';
+import IconHome from './icon_home.svg';
+import IconSendFeedback from './icon_send_feedback.svg';
+import IconNavCalendar from './icon_nav_calendar.svg';
 
 export {
   IconArrowRight,
@@ -28,4 +31,7 @@ export {
   IconLink,
   IconSelectUser,
   IconSearch,
+  IconHome,
+  IconSendFeedback,
+  IconNavCalendar,
 };
