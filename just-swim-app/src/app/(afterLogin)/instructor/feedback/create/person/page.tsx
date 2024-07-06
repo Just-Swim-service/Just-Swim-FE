@@ -77,7 +77,6 @@ export default function FeedbackWrite() {
               renderIcon={() => <IconCalendar width={14} height={14} />}
               placeholder="수업 일자를 선택해주세요"
               suffix="종료"
-              defaultValue={date}
             />
           </div>
           <div className={styled.wrap}>
