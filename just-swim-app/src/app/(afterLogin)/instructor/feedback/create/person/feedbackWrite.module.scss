@@ -161,3 +161,7 @@
   color: $--White;
   padding: 14px 0 34px;
 }
+
+.submit_btn:disabled {
+  background-color: $--gray-300;
+}

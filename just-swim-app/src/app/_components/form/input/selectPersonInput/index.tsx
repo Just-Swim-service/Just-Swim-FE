@@ -6,10 +6,11 @@ import {
   useState,
   ForwardedRef,
   useEffect,
+  useRef,
 } from 'react';
 
 import { SelectPersonInputProps } from '@types';
-import { randomId } from '@utils';
+import { randomId, mergeRefs } from '@utils';
 import { IconCancelWhite } from '@assets';
 
 import styled from './styles.module.scss';
@@ -19,13 +20,32 @@ import { IconSelectUser } from '@assets';
 import { searchUserStore } from '@store';
 
 function _SelectPersonInput(
-  { name, ...props }: SelectPersonInputProps,
+  { name, setValue, ...props }: SelectPersonInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const { selectedList, removeItemHandler } = searchUserStore();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const value = selectedList.length > 0 ? JSON.stringify(selectedList) : '';
+    if (inputRef.current) {
+      inputRef.current.value = value;
+    }
+    setValue(name, value);
+  }, [selectedList, name, setValue]);
 
   return (
     <div className={styled.input_wrapper}>
+      <input
+        type="text"
+        hidden
+        {...props}
+        name={name}
+        // id={id}
+        ref={mergeRefs(inputRef, ref)}
+        multiple
+        readOnly
+      />
       <div className={styled.input_inner_wrapper}>
         <Link
           href={'/instructor/feedback/search/person'}

@@ -62,3 +62,8 @@
     }
   }
 }
+
+.error {
+  color: $--Cancel;
+  @include Body5-R;
+}

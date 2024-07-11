@@ -4,7 +4,7 @@ import { ChangeEvent, ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef,
 
 import { FileInputProps } from '@types';
 import { mergeRefs, randomId } from '@utils';
-import { ImageCarousel } from '@components';
+import { ConfirmModal, ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
 
 import styled from './styles.module.scss';
@@ -16,6 +16,8 @@ function _FileInput({
   size = 20,
   id = 'fileInput',
   onChange = (event: ChangeEvent<HTMLInputElement>) => {},
+  setValue,
+  errors=[],
   ...props
 }: FileInputProps & InputHTMLAttributes<HTMLInputElement> & {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
@@ -61,7 +63,8 @@ ref: ForwardedRef<HTMLInputElement>) {
     }
   
     for (const file of step1) {
-      if (file.size > size * 1000000) {
+      // if (file.size > size * 1000000) {
+        if (file.size > size * 1024 * 1024 ) {
         flag = true;
   
         continue;
@@ -120,6 +123,9 @@ ref: ForwardedRef<HTMLInputElement>) {
     }
 
     setPreviewImages([...result]);
+    ConfirmModal
+    
+    setValue(name, uploadedImages)
   }, [uploadedImages]);
 
   // 캐러셀 관련
@@ -144,58 +150,65 @@ ref: ForwardedRef<HTMLInputElement>) {
   }
 
   return (
-    <div className={styled.input_wrapper}>
-      <div className={styled.preview_wrapper}>
-        {
-          previewImages.map((preview, index) => {
-            return (
-              <div key={randomId()} className={styled.preview_item} style={{
-                backgroundImage: `url(${preview})`,
-              }} onClick={(event: MouseEvent<HTMLDivElement>) => {
-                event.preventDefault();
-
-                setSelectedIndex(index);
-                showModal();
-              }}>
-                <button className={styled.delete_button} onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                  event.stopPropagation();
+    <>
+      <div className={styled.input_wrapper}>
+        <div className={styled.preview_wrapper}>
+          {
+            previewImages.map((preview, index) => {
+              return (
+                <div key={randomId()} className={styled.preview_item} style={{
+                  backgroundImage: `url(${preview})`,
+                }} onClick={(event: MouseEvent<HTMLDivElement>) => {
                   event.preventDefault();
-                  
-                  deleteUploadedImage(index);
+  
+                  setSelectedIndex(index);
+                  showModal();
                 }}>
-                  <IconCancelWhite width={14} height={14} />
-                </button>
-              </div>
-            )
-          })
-        }
-      </div>
-      <label htmlFor={id} className={styled.add_label}>
-        <span>+</span>
-      </label>
-      <input
-        {...props}
-        name={name}
-        id={id}
-        ref={mergeRefs(inputRef, ref)}
-        type='file'
-        multiple
-        hidden
-        readOnly
-        onChange={handleOnChange}
-      />
-      {
-        modal &&
-        <ImageCarousel
-          images={previewImages}
-          index={selectedIndex}
-          setIndex={setSelectedIndex}
-          useDeleteButton={true}
-          deleteImage={deleteUploadedImage}
-          hideModal={hideModal}
+                  <button className={styled.delete_button} onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    
+                    deleteUploadedImage(index);
+                  }}>
+                    <IconCancelWhite width={14} height={14} />
+                  </button>
+                </div>
+              )
+            })
+          }
+        </div>
+        <label htmlFor={id} className={styled.add_label}>
+          <span>+</span>
+        </label>
+     
+        <input
+          {...props}
+          name={name}
+          id={id}
+          ref={mergeRefs(inputRef, ref)}
+          type='file'
+          multiple
+          hidden
+          readOnly
+          onChange={handleOnChange}
         />
-      }
-    </div>
+        {/* <span className={styled.error}>
+          {errors.map((error,index) => <li key={index}>{error}</li>) }
+        </span> */}
+        {
+          modal &&
+          <ImageCarousel
+            images={previewImages}
+            index={selectedIndex}
+            setIndex={setSelectedIndex}
+            useDeleteButton={true}
+            deleteImage={deleteUploadedImage}
+            hideModal={hideModal}
+          />
+        }
+          
+      </div>
+    </>
   );
 }
 

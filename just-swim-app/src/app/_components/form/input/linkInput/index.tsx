@@ -10,6 +10,7 @@ import styled from './styles.module.scss';
 
 function _LinkInput({
   name,
+  errors=[],
   onChange = (event: ChangeEvent<HTMLInputElement>) => {},
   ...props
 }: LinkInputProps & InputHTMLAttributes<HTMLInputElement> & {
@@ -55,6 +56,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         onFocus={onFocusInput}
         onBlur={onBlurInput}
       />
+      {/* <span>{errors.map((error, index) => <li key={index}>{ error}</li>)}</span> */}
       {
         !focus && 
         <Link href={link} target='_blank' className={styled.link}>{link}</Link>

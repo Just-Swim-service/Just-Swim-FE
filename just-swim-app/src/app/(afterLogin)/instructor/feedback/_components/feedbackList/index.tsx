@@ -7,7 +7,6 @@ import { getFeedback } from '@apis';
 
 export async function FeedbackList() {
   let feedbackList = await getFeedback();
-  console.log(feedbackList);
 
   return (
     <div className={styled.feedbackList_box}>

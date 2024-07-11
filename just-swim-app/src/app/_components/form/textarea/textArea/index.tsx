@@ -8,6 +8,7 @@ function _TextArea({
   name,
   height = 183,
   onChange,
+  errors=[],
   ...props
 }: TextAreaProps & TextareaHTMLAttributes<HTMLTextAreaElement>,
 ref: ForwardedRef<HTMLTextAreaElement>) {
@@ -35,6 +36,7 @@ ref: ForwardedRef<HTMLTextAreaElement>) {
         }}
         onChange={onChangeHandler}
       />
+      <span className={styled.error}>{errors.map((error, index) => <li key={index}>{error}</li>)}</span>
     </div>
   );
 }

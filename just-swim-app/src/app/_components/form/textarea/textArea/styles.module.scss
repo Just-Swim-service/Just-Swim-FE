@@ -46,4 +46,10 @@
   .textarea_input:focus::placeholder {
     opacity: 0;
   }
+
+  .error {
+    color: $--Cancel;
+    @include Body5-R;
+    margin: 4px 2px;
+  }
 }
