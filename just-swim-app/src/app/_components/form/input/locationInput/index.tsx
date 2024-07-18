@@ -1,10 +1,13 @@
 "use client";
 
-import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import { LocationInputPros } from '@types';
 import { IconInputValid, IconLocation } from '@assets';
+import { mergeRefs } from '@utils';
+import { prevPathStore } from '@store';
 
 import styled from './styles.module.scss';
 
@@ -14,18 +17,37 @@ function _LocationInput({
   ...props
 }: LocationInputPros & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
+  const pathname = usePathname();
+  const { setPrevPath } = prevPathStore();
+
+  const inputRef = useRef<HTMLInputElement>(null);
   const [location, setLocation] = useState<string>("");
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('value', location);
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, [location]);
+
+  useEffect(() => {
+    setPrevPath(pathname);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styled.input_wrapper}>
-      <div className={styled.icon_wrapper}>
+      <Link
+        href='/search/location'
+        className={styled.icon_wrapper}
+      >
         <IconLocation width={20} height={20} />
-      </div>
+      </Link>
       <input
         {...props}
         name={name}
         className={`${styled.location_input} ${!valid ? styled.invalid : ''}`}
-        ref={ref}
+        ref={mergeRefs(inputRef, ref)}
         type='text'
         readOnly
         value={location}

@@ -1,0 +1,123 @@
+@import '@/globals.scss';
+
+.search_wrapper {
+  position: relative;
+
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-bottom: 8px solid $--gray-50;
+
+  .icon_wrapper {
+    position: absolute;
+
+    top: 50%;
+    left: 29px;
+
+    transform: translate(0, -50%);
+  }
+
+  .search_input {
+    @include Title5-M;
+
+    width: 100%;
+    height: 48px;
+
+    padding: 0 42px;
+
+    display: flex;
+    align-items: center;
+
+    border: none;
+    background-color: $--gray-50;
+    border-radius: 6px;
+
+    &:focus {
+      outline: 2px solid $--Primary-blue;
+    }
+  }
+}
+
+.location_list {
+  width: 100%;
+
+  padding: 14px 16px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.button_wrapper {
+  position: fixed;
+  
+  bottom: 0;
+
+  width: 100%;
+  min-width: 320px;
+  max-width: 640px;
+
+  padding: 20px 16px;
+
+  margin-top: auto;
+}
+
+.list_item {
+  width: 100%;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px solid $--gray-100;
+
+  cursor: pointer;
+
+  .check_box {
+    position: relative;
+
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid $--gray-300;
+    border-radius: 4px;
+
+    margin-right: 10px;
+
+    & > svg {
+      display: none;
+    }
+  }
+
+  .check_box.selected {
+    border: none;
+
+    background-color: $--Primary-blue;
+
+    & > svg {
+      display: block;
+
+      position: absolute;
+      top: 6px;
+      left: 50%;
+
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .text_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .name {
+      @include Title5-M;
+    }
+
+    .location {
+      @include Body4-R;
+
+      color: $--gray-600;
+    }
+  }
+}
