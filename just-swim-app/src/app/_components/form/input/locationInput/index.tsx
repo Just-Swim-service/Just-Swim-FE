@@ -28,6 +28,7 @@ ref: ForwardedRef<HTMLInputElement>) {
     }
 
     return () => {
+      // 하드코딩된 부분, 추후 보다 적절한 방향으로 수정 필요
       if (history.state.__PRIVATE_NEXTJS_INTERNALS_TREE[1].children[1].children[0] === 'search' && history.state.__PRIVATE_NEXTJS_INTERNALS_TREE[1].children[1].children[1].children[0] === 'location') {
         setLocation(nowLocation);
 
