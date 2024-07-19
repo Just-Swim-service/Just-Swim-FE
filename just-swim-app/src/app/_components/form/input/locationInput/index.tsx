@@ -1,39 +1,50 @@
 "use client";
 
 import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import { LocationInputPros } from '@types';
 import { IconInputValid, IconLocation } from '@assets';
 import { mergeRefs } from '@utils';
-import { prevPathStore } from '@store';
 
 import styled from './styles.module.scss';
+import { locationStore } from '@store';
 
 function _LocationInput({
   name,
   valid = true,
+  defalutValue = '',
   ...props
 }: LocationInputPros & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
-  const pathname = usePathname();
-  const { setPrevPath } = prevPathStore();
-
   const inputRef = useRef<HTMLInputElement>(null);
-  const [location, setLocation] = useState<string>("");
+  const [nowLocation, setNowLocation] = useState<string>(defalutValue);
+
+  const { location, setLocation } = locationStore();
+
+  useEffect(() => {
+    if (location) {
+      setNowLocation(location);
+    }
+
+    return () => {
+      if (history.state.__PRIVATE_NEXTJS_INTERNALS_TREE[1].children[1].children[0] === 'search' && history.state.__PRIVATE_NEXTJS_INTERNALS_TREE[1].children[1].children[1].children[0] === 'location') {
+        setLocation(nowLocation);
+
+        return;
+      }
+
+      setLocation("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nowLocation]);
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.setAttribute('value', location);
+      inputRef.current.setAttribute('value', nowLocation);
       inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
     }
-  }, [location]);
-
-  useEffect(() => {
-    setPrevPath(pathname);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [nowLocation]);
 
   return (
     <div className={styled.input_wrapper}>
@@ -50,7 +61,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         ref={mergeRefs(inputRef, ref)}
         type='text'
         readOnly
-        value={location}
+        value={nowLocation}
       />
       {valid && <IconInputValid width={18} height={18} />}
     </div>

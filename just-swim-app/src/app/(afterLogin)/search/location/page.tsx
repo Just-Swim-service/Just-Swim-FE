@@ -1,13 +1,13 @@
 'use client';
 
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ConfirmButton, HistoryBackHeader } from "@components";
 import { IconCheck, IconSearch } from "@assets";
 import { LOCATION_LIST } from "@data";
 import { randomId } from "@utils";
-import { prevPathStore } from "@store";
+import { locationStore } from "@store";
 
 import styled from './styles.module.scss';
 
@@ -39,12 +39,12 @@ function LocationListItem({
   selected: string,
   setSelected: Dispatch<SetStateAction<string>>,
 }) {
-  const onClickItme = () => {
+  const onClickItem = () => {
     setSelected(location.name);
   }
 
   return (
-    <div className={styled.list_item} onClick={onClickItme}>
+    <div className={styled.list_item} onClick={onClickItem}>
       <div className={`${styled.check_box} ${selected === location.name && styled.selected}`}>
         <IconCheck />
       </div>
@@ -57,10 +57,10 @@ function LocationListItem({
 }
 
 export default function SearchLocation() {
-  const router = useRouter();
-  const { prevPath } = prevPathStore();
+  const { location, setLocation } = locationStore();
 
-  const [selected, setSelected] = useState("");
+  const router = useRouter();
+  const [selected, setSelected] = useState('');
   const [input, setInput] = useState("");
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,20 +68,25 @@ export default function SearchLocation() {
   }
 
   const onClickButton = () => {
-    // router.push({
-    //   pathname: prevPath
-    // })
+    setLocation(selected);
 
-    console.log(router);
-    
+    router.back();
   }
 
   const locationList = getLocationList(input);
+
+  useLayoutEffect(() => {
+    if (location) {
+      setSelected(location);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
+  
   
   return (
     <div>
       <HistoryBackHeader title="수업 위치 변경" />
-      <main>
+      <div>
         <div className={styled.search_wrapper}>
           <div className={styled.icon_wrapper}>
             <IconSearch width={22} height={22} />
@@ -116,7 +121,7 @@ export default function SearchLocation() {
             onClick={onClickButton}
           />
         </div>
-      </main>
+      </div>
     </div>
   )
 }

@@ -33,6 +33,7 @@ export interface FileInputProps {
 export interface LocationInputPros {
   name: string;
   valid?: boolean;
+  defalutValue?: string;
 }
 
 export interface TimeInputProps {
