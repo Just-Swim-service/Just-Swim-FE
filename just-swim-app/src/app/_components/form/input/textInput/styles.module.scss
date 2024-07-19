@@ -55,4 +55,25 @@
   .text_input:placeholder-shown + svg {
     display: none;
   }
+
+  .text_length {
+    @include Body4-R;
+
+    color: $--gray-500;
+
+    width: fit-content;
+    height: 18px;
+
+    position: absolute;
+    right: 0;
+    bottom: -22px;
+
+    .count_valid {
+      color: $--Primary-blue;
+    }
+
+    .count_invalid {
+      color: $--Cancel;
+    }
+  }
 }
