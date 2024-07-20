@@ -13,7 +13,7 @@ export function Profile({
   customers,
   width,
   height,
-  xMargin = -5,
+  xMargin = -3,
   count = false,
 }: Props) {
   return (
@@ -21,16 +21,26 @@ export function Profile({
       <div className={styled.img_list}>
         {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
         {customers.map((el, index) => {
-          return el.profile ? (
-            <Image
+          return el.profileImage ? (
+            <div
               key={index}
-              src={`/assets/${el.profile}.png`}
-              alt="프로필"
-              width={width}
-              height={height}
-              style={{ margin: `0px ${xMargin}px` }}
+              className={styled.profile_img}
+              style={{
+                backgroundImage: `url(${el.profileImage})`,
+                width: width,
+                height: height,
+                margin: `0px ${xMargin}px`,
+              }}
             />
           ) : (
+            // <Image
+            //   key={index}
+            //   src={el.profileImage}
+            //   alt="프로필"
+            //   width={width}
+            //   height={height}
+            //   style={{ margin: `0px ${xMargin}px` }}
+            // />
             <Image
               key={index}
               src={`/assets/no_profile.png`}
