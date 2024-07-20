@@ -22,7 +22,7 @@ export const locationStore = create<State & Action>()(
     }),
     {
       name: 'location_store',
-      partialize: (state: any) => ({
+      partialize: (state: State & Action & { location: string | undefined | null; }) => ({
         location: state.location,
       })
     }
