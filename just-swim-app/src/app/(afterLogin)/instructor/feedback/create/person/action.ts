@@ -1,11 +1,8 @@
 'use server';
 
 import { formSchema } from '@/_schema/index';
-import { redirect } from 'next/navigation';
 
 export async function submitForm(formData: FormData) {
-  await new Promise((r) => setTimeout(r, 2000));
-
   const data = {
     target: formData.get('target'),
     date: formData.get('date'),
@@ -15,11 +12,12 @@ export async function submitForm(formData: FormData) {
   };
 
   const result = formSchema.safeParse(data);
-  
+  console.log('data', data);
+
   if (!result.success) {
     return result.error.flatten();
   } else {
-    redirect('confirm');
+    // redirect('confirm');
   }
   // 관련 작업 수행
 

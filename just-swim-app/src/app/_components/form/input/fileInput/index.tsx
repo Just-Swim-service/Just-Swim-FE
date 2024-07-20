@@ -126,7 +126,7 @@ ref: ForwardedRef<HTMLInputElement>) {
     ConfirmModal
     
     setValue(name, uploadedImages)
-  }, [uploadedImages]);
+  }, [uploadedImages, setValue]);
 
   // 캐러셀 관련
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
