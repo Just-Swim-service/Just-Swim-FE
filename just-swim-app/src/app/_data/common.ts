@@ -8,3 +8,8 @@ export const SNS = {
   KAKAO: 'kakao',
   NAVER: 'naver',
 } as const;
+
+export const OnBoardingType = {
+  SIGNIN: 'Sign In',
+  SIGNUP: 'Sign Up',
+} as const;

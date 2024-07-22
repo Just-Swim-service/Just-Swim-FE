@@ -1,7 +1,7 @@
 import styles from './page.module.scss';
 import JustSwimSVG from '@assets/logo.svg';
 
-import { SNSSignUpButton } from '../_components/button/socialButton';
+import { SNSSignInButton } from '../_components/button/snsSignUpButton';
 import { SNS, TEXT } from '@data';
 import { Provider } from '@types';
 
@@ -31,7 +31,7 @@ export default function SignIn() {
 
       <div className={styles.section}>
         {Object.values(SNS).map((sns) => {
-          return <SNSSignUpButton key={sns} sns={sns as Provider} />;
+          return <SNSSignInButton key={sns} sns={sns as Provider} />;
         })}
       </div>
 

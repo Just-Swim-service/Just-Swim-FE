@@ -1,1 +1,1 @@
-import { SNSSignUpButton } from './socialButton';
+import { SNSSignInButton } from './snsSignUpButton';

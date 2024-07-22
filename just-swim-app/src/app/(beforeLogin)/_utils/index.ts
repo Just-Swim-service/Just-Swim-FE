@@ -1,2 +1,2 @@
-export { userSignUp } from './server/userSignUp';
-export { createToken } from './createToken';
+export { handleSignIn } from './handleSignIn';
+export { setTokenInCookies, getTokenInCookies } from './handleTokenInCookies';
