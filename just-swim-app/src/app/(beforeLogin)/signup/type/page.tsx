@@ -6,10 +6,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { setTokenInCookies, getTokenInCookies } from '@/(beforeLogin)/_utils';
 import { TEXT, USER_TYPE } from '@data';
-import { UserType } from '@types';
+import { PostSetUserTypeReq, UserType } from '@types';
 
 import { StateCreator, create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { usePostSetUserType } from '@/(beforeLogin)/_utils/server/usePostSetUserType';
 
 export type User = {
   token: string;
@@ -23,7 +24,7 @@ type UserStoreType = {
   setAddUserType: ({ token, type }: User) => void;
 };
 
-const useUserStore = create(
+export const useUserStore = create(
   persist<UserStoreType>(
     (set, get) => ({
       users: {},
@@ -63,6 +64,7 @@ export default function Type() {
   const [type, setType] = useState<UserType>();
   const [token, setToken] = useState<string>();
   const { users, setAddUserToken, setAddUserType } = useUserStore();
+  const { setUserType } = usePostSetUserType();
   console.log('users: ', users);
 
   useEffect(() => {
@@ -99,12 +101,16 @@ export default function Type() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSetType = (type: UserType) => {
+  const handleSetType = async () => {
     if (!token) {
       router.replace('/signin');
     } else {
-      setAddUserType({ token, type });
-      setType(type);
+      const response = await setUserType({ userType: type as UserType });
+    //   console.log('response: ', response);
+      //   await postSetUserType({ userType: type as UserType });
+      // TODO: API 먼저 요청 보내고 성공하면 아래 진행
+      //   setAddUserType({ token, type });
+      //   setType(type);
     }
   };
 
@@ -129,7 +135,7 @@ export default function Type() {
             <div className={styles.type_button_wrapper} key={data}>
               <button
                 className={`${styles.type_button} ${styles[`${data === type ? 'active' : ''}`]}`}
-                onClick={() => handleSetType(data)}>
+                onClick={() => setType(data)}>
                 <div className={styles.type_button_img}>
                   <div></div>
                 </div>
@@ -158,9 +164,10 @@ export default function Type() {
               pathname: `/signup/profile`,
             }}> */}
           <button
+            type="button"
             className={styles.select_button}
             // onClick={() => setAddUserType({ token, type })}
-          >
+            onClick={handleSetType}>
             {TEXT.COMMON_PAGE.select}
           </button>
           {/* </Link> */}

@@ -1,5 +1,6 @@
 'use server';
 
+import { HTTP_METHODS_TYPE } from '@types';
 import { cookies } from 'next/headers';
 
 /*  
@@ -10,23 +11,27 @@ import { cookies } from 'next/headers';
 */
 const api = async (
   url: string,
-  options: RequestInit = {},
+  //  상수화
+  method: HTTP_METHODS_TYPE,
+  options?: RequestInit,
 ): Promise<Response> => {
   const base = `${process.env.API_PATH}/api`;
   const authorizationToken = cookies().get('token')?.value;
 
   const fullUrl = `${base}${url}`;
   const defaultOptions: RequestInit = {
+    method: method,
     headers: {
       'Content-Type': 'application/json',
       Authorization: authorizationToken ? `Bearer ${authorizationToken}` : '',
-      ...options.headers,
+      ...options?.headers,
     },
     credentials: 'include',
   };
   const finalOptions = { ...defaultOptions, ...options };
+  const response = await fetch(fullUrl, finalOptions);
 
-  return await fetch(fullUrl, finalOptions);
+  return await response.json();
 };
 
 export default api;
