@@ -14,6 +14,7 @@ export interface DateInputProps {
   name: string;
   valid?: boolean;
   defaultValue?: string;
+  use?: boolean;
   renderIcon?: Function;
   suffix?: string;
 }

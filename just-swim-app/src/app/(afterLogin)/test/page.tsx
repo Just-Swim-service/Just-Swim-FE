@@ -37,7 +37,7 @@ export default function Test() {
         <ColorInput name="colorinput" defaultValue='#8B41FF' />
         <TimeInput name="timeinput" placeholder="시간 선택" defaultValue="10:00~14:002"/>
         <DayInput name="dayinput" placeholder="수업 요일을 선택해 주세요" defaultValue="월수" />
-        <DateInput name="dateinput" renderIcon={() => <IconRepeatTime width={14} height={14} />} placeholder="종료일 없이 반복" suffix="종료" defaultValue="2024.08.03" />
+        <DateInput name="dateinput" renderIcon={() => <IconRepeatTime width={14} height={14} />} placeholder="종료일 없이 반복" suffix="종료" defaultValue="2024.08.03" use={true} />
         <FileInput name="fileinput" />
         <LinkInput name="linkinput" placeholder="add link" />
         <FormButton text="확인" active={true} />

@@ -27,6 +27,7 @@ function _DateInput({
   valid = true,
   defaultValue = '',
   suffix = '',
+  use = true,
   renderIcon = () => {},
   placeholder = '',
   ...props
@@ -34,13 +35,19 @@ function _DateInput({
 ref: ForwardedRef<HTMLInputElement>) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [selectedDate, setSelectedDate] = useState<string>(checkDefaultValue(defaultValue) ? defaultValue : '');
+  const [selectedDate, setSelectedDate] = useState<string>(use && checkDefaultValue(defaultValue) ? defaultValue : '');
 
   const changeSelectedDate = (date: string) => {
     setSelectedDate(date);
   }
   
   const { modal, showModal, hideModal } = useModal();
+
+  const onClickInput = () => {
+    if (use) {
+      showModal();
+    }
+  }
 
   useEffect(() => {
     if (inputRef.current) {
@@ -54,7 +61,7 @@ ref: ForwardedRef<HTMLInputElement>) {
       <div className={styled.icon_wrapper}>
         {renderIcon()}
       </div>
-      <div className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`} onClick={showModal}>
+      <div className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`} onClick={onClickInput}>
         <span>{selectedDate ? formatDate(selectedDate, suffix) : placeholder}</span>
       </div>
       {
