@@ -9,16 +9,19 @@ import { cookies } from 'next/headers';
 //   ? process.env.NEXT_PUBLIC_PROD_API_URL
 //   : process.env.NEXT_PUBLIC_DEV_API_URL;
 */
-const api = async (
+export type ApiResponse<T> = {
+  status: number;
+  data: T;
+};
+
+const api = async <T>(
   url: string,
-  //  상수화
   method: HTTP_METHODS_TYPE,
   options?: RequestInit,
-): Promise<Response> => {
+): Promise<ApiResponse<T>> => {
   const base = `${process.env.API_PATH}/api`;
   const authorizationToken = cookies().get('token')?.value;
-
-  const fullUrl = `${base}${url}`;
+  const URL = `${base}${url}`;
   const defaultOptions: RequestInit = {
     method: method,
     headers: {
@@ -29,9 +32,11 @@ const api = async (
     credentials: 'include',
   };
   const finalOptions = { ...defaultOptions, ...options };
-  const response = await fetch(fullUrl, finalOptions);
 
-  return await response.json();
+  const response = await fetch(URL, finalOptions);
+  const data = await response.json();
+
+  return { status: response.status, data };
 };
 
 export default api;
