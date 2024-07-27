@@ -1,5 +1,8 @@
 const COMMON_TEXT = {
   select: '선택',
+  next: '다음',
+  skip: '건너뛰기',
+  start: '시작하기',
 } as const;
 
 const SIGNUP_TEXT = {
@@ -41,8 +44,25 @@ const SELECT_TEXT = {
   },
 } as const;
 
+const SET_PROFILE_TEXT = {
+  notification: {
+    instructor: '강사 분들이 알아볼 수 있도록',
+    customer: '수강생 분들이 알아볼 수 있도록',
+    common: {
+      first: '프로필 이미지와 이름을 설정해주세요.',
+      second: '이후 언제든 변경 가능합니다.',
+    },
+  },
+} as const;
+
+const SIGNUP_COMPLETE_TEXT = {
+  notification: '환영합니다!',
+};
+
 export const TEXT = {
-  COMMON_PAGE: { ...COMMON_TEXT },
+  COMMON: { ...COMMON_TEXT },
   SIGNUP_PAGE: { ...SIGNUP_TEXT },
-  SELECT_PAGE: { ...SELECT_TEXT },
+  TYPE_SELECT_PAGE: { ...SELECT_TEXT },
+  SET_PROFILE_PAGE: { ...SET_PROFILE_TEXT },
+  SIGNUP_COMPLETE_PAGE: { ...SIGNUP_COMPLETE_TEXT },
 };
