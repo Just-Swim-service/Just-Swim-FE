@@ -3,7 +3,7 @@
 import styles from './pages.module.scss';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { setTokenInCookies, getTokenInCookies } from '@/(beforeLogin)/_utils';
 import { TEXT, USER_TYPE } from '@data';
 import { PostSetUserTypeReq, UserType } from '@types';
@@ -56,6 +56,9 @@ export const useUserStore = create(
   ),
 );
 
+// TODO: useLayoutEffect 로 변경
+// TODO: fetch 캐싱 도입
+// TODO: 상수화 필요
 // TODO: signup 페이지 접근하면 signup/type 페이지로 이동
 export default function Type() {
   const router = useRouter();
@@ -67,22 +70,23 @@ export default function Type() {
   const { setUserType } = usePostSetUserType();
   console.log('users: ', users);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const checkToken = async () => {
       const token = await getTokenInCookies();
+      console.log('token: ', token);
 
       if (!token && !params) {
         return router.replace('/signin');
       }
       if (token) {
         const checkType = users[token]?.type;
+        console.log('checkType: ', checkType);
 
         if (
           checkType === USER_TYPE.INSTRUCTOR ||
           checkType === USER_TYPE.CUSTOMER
         ) {
           setAddUserToken(token);
-          //   상수화 필요
           router.replace('/schedule');
         } else {
           // console.log('타입 없음 - 타입 선택 페이지로 이동');
@@ -105,12 +109,15 @@ export default function Type() {
     if (!token) {
       router.replace('/signin');
     } else {
-      const response = await setUserType({ userType: type as UserType });
-    //   console.log('response: ', response);
-      //   await postSetUserType({ userType: type as UserType });
       // TODO: API 먼저 요청 보내고 성공하면 아래 진행
-      //   setAddUserType({ token, type });
-      //   setType(type);
+      const { status, data } = await setUserType({ userType: type as UserType });
+      if (status === 200) {
+        setAddUserType({ token, type });
+        setType(type);
+        router.push('/signup/profile');
+      } else if (status === 406) {
+        router.push('/signup/schedule');
+      }
     }
   };
 
@@ -119,13 +126,13 @@ export default function Type() {
       <div className={styles.select_type_header}>
         <div>
           <h3>
-            {TEXT.SELECT_PAGE.notification.first}
+            {TEXT.TYPE_SELECT_PAGE.notification.first}
             <br />
-            {TEXT.SELECT_PAGE.notification.second}
+            {TEXT.TYPE_SELECT_PAGE.notification.second}
           </h3>
         </div>
         <div>
-          <p>{TEXT.SELECT_PAGE.helper.first}</p>
+          <p>{TEXT.TYPE_SELECT_PAGE.helper.first}</p>
         </div>
       </div>
 
@@ -141,13 +148,13 @@ export default function Type() {
                 </div>
                 <div className={styles.type_button_info}>
                   <div>
-                    <h3>{TEXT.SELECT_PAGE.type[data]}</h3>
+                    <h3>{TEXT.TYPE_SELECT_PAGE.type[data]}</h3>
                   </div>
                   <div>
                     <p>
-                      {TEXT.SELECT_PAGE.helper[data].first}
+                      {TEXT.TYPE_SELECT_PAGE.helper[data].first}
                       <br />
-                      {TEXT.SELECT_PAGE.helper[data].second}
+                      {TEXT.TYPE_SELECT_PAGE.helper[data].second}
                     </p>
                   </div>
                 </div>
@@ -168,7 +175,7 @@ export default function Type() {
             className={styles.select_button}
             // onClick={() => setAddUserType({ token, type })}
             onClick={handleSetType}>
-            {TEXT.COMMON_PAGE.select}
+            {TEXT.COMMON.select}
           </button>
           {/* </Link> */}
         </div>
