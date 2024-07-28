@@ -5,23 +5,29 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { setTokenInCookies, getTokenInCookies } from '@/(beforeLogin)/_utils';
-import { TEXT, USER_TYPE } from '@data';
-import { PostSetUserTypeReq, UserType } from '@types';
+import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
+import {
+  GetUserProfileRes,
+  PostSetUserTypeReq,
+  UserEntity,
+  UserType,
+} from '@types';
 
 import { StateCreator, create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { usePostSetUserType } from '@/(beforeLogin)/_utils/server/usePostSetUserType';
+import { getMyProfile } from '@/_apis/users.ts';
 
 export type User = {
   token: string;
-  type: UserType | null | undefined;
+  profile: Partial<UserEntity>;
 };
 
 // TODO: store 로 따로 만들어야 한다.
 type UserStoreType = {
-  users: Record<string, Omit<User, 'token'>>;
+  users: Record<string, Partial<Omit<User, 'token'>>>;
   setAddUserToken: (token: string) => void;
-  setAddUserType: ({ token, type }: User) => void;
+  setAddUserProfile: ({ token, profile }: User) => void;
 };
 
 export const useUserStore = create(
@@ -30,21 +36,31 @@ export const useUserStore = create(
       users: {},
       setAddUserToken: (token: string) => {
         set((state: UserStoreType) => {
-          const newUsers = { ...state.users, [token]: { type: null } };
+          const overWriteUsers = {
+            ...state.users,
+            [token]: { ...state.users[token], profile: {} },
+          };
 
           return {
             ...state,
-            users: newUsers,
+            users: overWriteUsers,
           };
         });
       },
-      setAddUserType: ({ token, type }: User) => {
+      setAddUserProfile: ({ token, profile }: User) => {
         set((state: UserStoreType) => {
-          const newUsers = { ...state.users, [token]: { type } };
+          const prevUsers = state.users[token] || { profile: {} };
+          const overWriteUsers = {
+            ...state.users,
+            [token]: {
+              ...prevUsers,
+              profile: { ...prevUsers.profile, ...profile },
+            },
+          };
 
           return {
             ...state,
-            users: newUsers,
+            users: overWriteUsers,
           };
         });
       },
@@ -66,39 +82,20 @@ export default function Type() {
 
   const [type, setType] = useState<UserType>();
   const [token, setToken] = useState<string>();
-  const { users, setAddUserToken, setAddUserType } = useUserStore();
+
+  const { setAddUserToken, setAddUserProfile } = useUserStore();
   const { setUserType } = usePostSetUserType();
-  console.log('users: ', users);
 
   useLayoutEffect(() => {
     const checkToken = async () => {
-      const token = await getTokenInCookies();
-      console.log('token: ', token);
+      // TODO: URL 로 접근했을 때 처리 필요
+      if (params) {
+        const newToken = await setTokenInCookies(params);
+        setAddUserToken(newToken);
 
-      if (!token && !params) {
-        return router.replace('/signin');
-      }
-      if (token) {
-        const checkType = users[token]?.type;
-        console.log('checkType: ', checkType);
-
-        if (
-          checkType === USER_TYPE.INSTRUCTOR ||
-          checkType === USER_TYPE.CUSTOMER
-        ) {
-          setAddUserToken(token);
-          router.replace('/schedule');
-        } else {
-          // console.log('타입 없음 - 타입 선택 페이지로 이동');
-          setAddUserToken(token);
-          setToken(token);
-        }
-      } else if (params) {
-        // console.log('토큰 없음 - params 있음');
-        const token = setTokenInCookies(params);
-
-        setAddUserToken(token);
-        setToken(token);
+        const { data } = await getMyProfile();
+        setAddUserProfile({ token: newToken, profile: data });
+        setToken(newToken);
       }
     };
     checkToken();
@@ -109,14 +106,17 @@ export default function Type() {
     if (!token) {
       router.replace('/signin');
     } else {
-      // TODO: API 먼저 요청 보내고 성공하면 아래 진행
-      const { status, data } = await setUserType({ userType: type as UserType });
-      if (status === 200) {
-        setAddUserType({ token, type });
-        setType(type);
-        router.push('/signup/profile');
-      } else if (status === 406) {
-        router.push('/signup/schedule');
+      const { status } = await setUserType({ userType: type as UserType });
+
+      if (status === HTTP_STATUS.OK) {
+        setAddUserProfile({
+          token: token,
+          profile: { userType: type },
+        });
+        return router.push('/signup/profile');
+      } else if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
+        // TODO: URL 접근 시 이미 가입한 유저에 대한 처리 필요
+        console.log('이미 가입한 유저에 대한 처리 필요');
       }
     }
   };

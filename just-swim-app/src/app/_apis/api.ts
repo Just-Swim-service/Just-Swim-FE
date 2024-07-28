@@ -9,7 +9,7 @@ import { cookies } from 'next/headers';
 //   ? process.env.NEXT_PUBLIC_PROD_API_URL
 //   : process.env.NEXT_PUBLIC_DEV_API_URL;
 */
-export type ApiResponse<T> = {
+export type Response<T> = {
   status: number;
   data: T;
 };
@@ -18,7 +18,7 @@ const api = async <T>(
   url: string,
   method: HTTP_METHODS_TYPE,
   options?: RequestInit,
-): Promise<ApiResponse<T>> => {
+): Promise<Response<T>> => {
   const base = `${process.env.API_PATH}/api`;
   const authorizationToken = cookies().get('token')?.value;
   const URL = `${base}${url}`;

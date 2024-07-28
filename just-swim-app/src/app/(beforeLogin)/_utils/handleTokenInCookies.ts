@@ -9,5 +9,5 @@ export const setTokenInCookies = (token: string) => {
 
 export const getTokenInCookies = () => {
   const token = cookies().get('token')?.value;
-  return token;
+  return token || '';
 };

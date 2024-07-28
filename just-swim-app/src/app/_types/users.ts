@@ -25,7 +25,10 @@ export interface PostUserTypeReq extends Pick<UserEntity, 'userType'> {}
 export interface PatchUserProfileReq
   extends Pick<UserEntity, 'name' | 'profileImage' | 'birth' | 'phoneNumber'> {}
 
-export interface GetUserProfileRes extends UserEntity {}
+export interface GetUserProfileRes {
+  status: number;
+  data: UserEntity;
+}
 
 export interface PostSetUserTypeReq {
   userType: UserType;
