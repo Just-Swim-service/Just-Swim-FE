@@ -12,6 +12,7 @@ import IconRepeatTime from './icon_repeat_time.svg';
 import IconKakao from './icon_kakao.svg';
 import IconNaver from './icon_naver.svg';
 import IconGoogle from './icon_google.svg';
+import IconGallery from './icon_gallery.svg';
 
 export {
   IconArrowRight,
@@ -28,4 +29,5 @@ export {
   IconKakao,
   IconNaver,
   IconGoogle,
+  IconGallery,
 };

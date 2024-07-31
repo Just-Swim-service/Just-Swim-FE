@@ -33,3 +33,10 @@ export interface GetUserProfileRes {
 export interface PostSetUserTypeReq {
   userType: UserType;
 }
+
+export interface PatchUserEditReq {
+  profileImage: string;
+  name: string;
+  birth: string;
+  phoneNumber: string;
+}

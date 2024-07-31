@@ -1,22 +1,16 @@
 'use client';
 
 import styles from './pages.module.scss';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { setTokenInCookies, getTokenInCookies } from '@/(beforeLogin)/_utils';
+import { useLayoutEffect, useState } from 'react';
+import { getTokenInCookies, setTokenInCookies } from '@/(beforeLogin)/_utils';
 import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
-import {
-  GetUserProfileRes,
-  PostSetUserTypeReq,
-  UserEntity,
-  UserType,
-} from '@types';
+import { Provider, UserEntity, UserType } from '@types';
 
-import { StateCreator, create } from 'zustand';
+import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { usePostSetUserType } from '@/(beforeLogin)/_utils/server/usePostSetUserType';
-import { getMyProfile } from '@/_apis/users.ts';
+import { getMyProfile, postUserLogin } from '@/_apis/users.ts';
 
 export type User = {
   token: string;
@@ -25,7 +19,14 @@ export type User = {
 
 // TODO: store 로 따로 만들어야 한다.
 type UserStoreType = {
-  users: Record<string, Partial<Omit<User, 'token'>>>;
+  user: Record<string, Partial<Omit<User, 'token'>>>;
+  getToken: () => string;
+  getUser: () => Record<string, Partial<Omit<User, 'token'>>>;
+  getProvider: (token: Provider) => string;
+  getUserEmail: (token: string) => string;
+  getUserName: (token: string) => string;
+  getUserType: (token: string) => UserType;
+  getUserImage: (token: string) => string;
   setAddUserToken: (token: string) => void;
   setAddUserProfile: ({ token, profile }: User) => void;
 };
@@ -33,34 +34,53 @@ type UserStoreType = {
 export const useUserStore = create(
   persist<UserStoreType>(
     (set, get) => ({
-      users: {},
+      user: {},
+      getToken: () => {
+        return Object.keys(get().user)[0];
+      },
+      getUser: () => get().user,
+      getProvider: (token: Provider) => {
+        return get().user[token]?.profile?.provider || '';
+      },
+      getUserEmail: (token: string) => {
+        return get().user[token]?.profile?.email || '';
+      },
+      getUserName: (token: string) => {
+        return get().user[token]?.profile?.name || '';
+      },
+      getUserType: (token: string) => {
+        return (get().user[token]?.profile?.userType || '') as UserType;
+      },
+      getUserImage: (token: string) => {
+        return get().user[token]?.profile?.profileImage || '';
+      },
       setAddUserToken: (token: string) => {
         set((state: UserStoreType) => {
           const overWriteUsers = {
-            ...state.users,
-            [token]: { ...state.users[token], profile: {} },
+            ...state.user,
+            [token]: { ...state.user[token], profile: {} },
           };
 
           return {
             ...state,
-            users: overWriteUsers,
+            user: overWriteUsers,
           };
         });
       },
       setAddUserProfile: ({ token, profile }: User) => {
         set((state: UserStoreType) => {
-          const prevUsers = state.users[token] || { profile: {} };
-          const overWriteUsers = {
-            ...state.users,
+          const prevUser = state.user[token] || { profile: {} };
+          const overWriteUser = {
+            ...state.user,
             [token]: {
-              ...prevUsers,
-              profile: { ...prevUsers.profile, ...profile },
+              ...prevUser,
+              profile: { ...prevUser.profile, ...profile },
             },
           };
 
           return {
             ...state,
-            users: overWriteUsers,
+            user: overWriteUser,
           };
         });
       },
@@ -83,11 +103,19 @@ export default function Type() {
   const [type, setType] = useState<UserType>();
   const [token, setToken] = useState<string>();
 
-  const { setAddUserToken, setAddUserProfile } = useUserStore();
+  const { setAddUserToken, setAddUserProfile, getUserEmail, getProvider } =
+    useUserStore();
   const { setUserType } = usePostSetUserType();
 
   useLayoutEffect(() => {
     const checkToken = async () => {
+      //   // 로그인?
+      //   const { status, data } = await postUserLogin({
+      //     email: getUserEmail(token! || params!),
+      //     provider: sns,
+      //   });
+      //   console.log('login status: ', status);
+      //   console.log('data: ', data);
       // TODO: URL 로 접근했을 때 처리 필요
       if (params) {
         const newToken = await setTokenInCookies(params);
@@ -97,6 +125,8 @@ export default function Type() {
         setAddUserProfile({ token: newToken, profile: data });
         setToken(newToken);
       }
+      const authorizationToken = await getTokenInCookies();
+      setToken(authorizationToken);
     };
     checkToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -166,18 +196,12 @@ export default function Type() {
       <div className={styles.select_type_footer}>
         <div
           className={`${styles.button_wrapper} ${styles[type ? 'active' : '']}`}>
-          {/* <Link
-            href={{
-              pathname: `/signup/profile`,
-            }}> */}
           <button
             type="button"
             className={styles.select_button}
-            // onClick={() => setAddUserType({ token, type })}
             onClick={handleSetType}>
             {TEXT.COMMON.select}
           </button>
-          {/* </Link> */}
         </div>
       </div>
     </>

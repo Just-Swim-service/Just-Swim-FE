@@ -1,32 +1,38 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { notFound, useRouter, useSearchParams } from 'next/navigation';
-import Gallery from '@assets/gallery.svg';
+import { useRouter } from 'next/navigation';
+import { IconGallery } from '@assets';
 
-import Link from 'next/link';
-import { TEXT } from '@data';
+import { TEXT, USER_TYPE } from '@data';
 import { useUserStore } from '../type/page';
-import { useLayoutEffect, useState } from 'react';
-import { getTokenInCookies } from '@/(beforeLogin)/_utils';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { UserType } from '@types';
+import Image, { ImageLoaderProps } from 'next/image';
+import { patchUserEdit } from '@/_apis/users.ts';
+
+// 쿠키로 접근해서 타입 찾기 - 없을 때 타입 설정 페이지로 이동
+//   const type = useSearchParams().get('type')?.toString();
+//   const name = type === 'instructor' ? '수강생' : '강사';
+//   const type = 'instructor';
+const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
+  return `${src}?w=${width}&q=${quality}`;
+};
 
 export default function Profile() {
   const router = useRouter();
 
-  const { users, setAddUserToken, setAddUserType } = useUserStore();
-  const [userToken, setUserToken] = useState<string>('');
+  const { getUserName, getUserType, getToken, getUserImage, setAddUserProfile } =
+    useUserStore();
+  const userToken = getToken();
+  const [userType, setUserType] = useState<UserType>();
+  const [inputName, setInputName] = useState<string>('');
+  const [inputImage, setInputImage] = useState<string>('');
 
-  // 쿠키로 접근해서 타입 찾기 - 없을 때 타입 설정 페이지로 이동
-  //   const type = useSearchParams().get('type')?.toString();
-  //   const name = type === 'instructor' ? '수강생' : '강사';
-  const type = 'instructor';
-
-  useLayoutEffect(() => {
-    const setToken = async () => {
-      const token = await getTokenInCookies();
-      setUserToken(token || '');
-    };
-    setToken();
+  useEffect(() => {
+    setUserType(getUserType(userToken));
+    setInputName(getUserName(userToken));
+    setInputImage(getUserImage(userToken));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -34,12 +40,50 @@ export default function Profile() {
     router.push(`/signup/complete`);
   };
 
+  const handleNextPage = async () => {
+    // DB 에 적용 후 성공하면 zustand 에 저장
+
+    const { status, data } = await patchUserEdit({
+      profileImage: inputImage,
+      name: inputName,
+    });
+
+    if (status === 200) {
+      setAddUserProfile({
+        token: userToken,
+        profile: {
+          name: inputName,
+          profileImage: inputImage,
+        },
+      });
+      router.push(`/signup/complete`);
+    }
+  };
+
+  const handleInputName = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setInputName(evt.target.value);
+  };
+
+  const handleInputImage = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    const file = evt.target.files?.[0];
+
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setInputImage(reader.result as string);
+      };
+    }
+  };
+
   return (
     <>
       <div className={styles.profile_setting_header}>
         <div>
           <h3>
-            {TEXT.SET_PROFILE_PAGE.notification[type]}
+            {userType === USER_TYPE.INSTRUCTOR
+              ? TEXT.SET_PROFILE_PAGE.notification.instructor
+              : TEXT.SET_PROFILE_PAGE.notification.customer}
             <br />
             {TEXT.SET_PROFILE_PAGE.notification.common.first}
           </h3>
@@ -48,48 +92,47 @@ export default function Profile() {
           <p>{TEXT.SET_PROFILE_PAGE.notification.common.second}</p>
         </div>
       </div>
-      {/*  */}
       <div className={styles.profile_setting_section}>
+        <div className={styles.profile_img}>
+          <Image
+            loader={myLoader}
+            src={inputImage}
+            alt="profile image"
+            width={125}
+            height={125}
+            priority
+          />
+        </div>
         <div>
-          <div className={styles.profile_img}>
-            <div className={styles.gallery_button_wrapper}>
-              <button
-                // onClick={handleButtonClick}
-                className={styles.gallery_button}>
-                <Gallery />
-                {/* <Image
-                  src={Gallery}
-                  alt="gallery"
-                  // onClick={() =>
-                  //   inputFileRef.current && inputFileRef.current.click()
-                  // } // 이미지 클릭 시 파일 입력 클릭
-                /> */}
-              </button>
+          <label
+            htmlFor="select_image"
+            className={styles.gallery_button_wrapper}>
+            <IconGallery />
+            <div>
               <input
                 type="file"
-                // accept="image/*"
-                // ref={inputFileRef}
-                style={{ display: 'none' }}
-                // onChange={handleImageSelect} // 파일 입력 변경 시 handleImageSelect 함수 호출
+                id="select_image"
+                accept="image/*"
+                onChange={handleInputImage}
+                className={styles.input_file}
               />
             </div>
-          </div>
+          </label>
         </div>
-        {/* <input type="text" value={nickname} onChange={handleChange} /> */}
-        <input type="text" className={styles.nickname} />
+        <input
+          type="text"
+          value={inputName}
+          onChange={handleInputName}
+          className={styles.nickname}
+        />
       </div>
-      {/*  */}
       <div className={styles.profile_setting_footer}>
         <div className={styles.button_wrapper}>
-          <Link
-            href={{
-              pathname: `/login/start`,
-              query: { type: type },
-            }}>
-            <button className={`${styles.select_button} ${styles.active}`}>
-              {TEXT.COMMON.next}
-            </button>
-          </Link>
+          <button
+            className={`${styles.select_button} ${styles.active}`}
+            onClick={handleNextPage}>
+            {TEXT.COMMON.next}
+          </button>
         </div>
         <div className={styles.button_wrapper}>
           <button

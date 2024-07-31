@@ -3,6 +3,7 @@ export const HTTP_METHODS = {
   POST: 'POST',
   PUT: 'PUT',
   DELETE: 'DELETE',
+  PATCH: 'PATCH',
 } as const;
 
 export const HTTP_STATUS = {
@@ -12,3 +13,8 @@ export const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
+//   CREATED: 201,
+//   NO_CONTENT: 204,
+//   UNAUTHORIZED: 401,
+//   FORBIDDEN: 403,
+//   NOT_FOUND: 404,

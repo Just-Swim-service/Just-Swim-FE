@@ -23,7 +23,7 @@ export default function SignIn() {
         </div>
         <div className={styles.header_info}>
           <p>
-            {TEXT.SIGNUP_PAGE.notification.first} <br />{' '}
+            {TEXT.SIGNUP_PAGE.notification.first} <br />
             {TEXT.SIGNUP_PAGE.notification.second}
           </p>
         </div>
