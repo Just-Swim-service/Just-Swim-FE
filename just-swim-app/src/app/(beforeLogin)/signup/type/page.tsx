@@ -101,7 +101,7 @@ export default function Type() {
   const [type, setType] = useState<UserType>();
   const [token, setToken] = useState<string>();
 
-  const { setAddUserToken, setAddUserProfile } = useUserStore();
+  const { setAddUserToken, setAddUserProfile, getUserType } = useUserStore();
   const { setUserType } = usePostSetUserType();
 
   useLayoutEffect(() => {
@@ -119,6 +119,11 @@ export default function Type() {
         setToken(newToken);
       } else {
         const authorizationToken = await getTokenInCookies();
+        const userType = getUserType(authorizationToken);
+
+        if (userType) {
+          return router.replace(ROUTES.SCHEDULE.root);
+        }
         setToken(authorizationToken);
       }
     };
@@ -138,9 +143,11 @@ export default function Type() {
           profile: { userType: type },
         });
         return router.push(ROUTES.ONBOARDING.profile);
-      } else if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
-        console.log('이미 가입한 유저에 대한 처리 필요');
       }
+      //    else if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
+      //     console.log('이미 가입한 유저에 대한 처리 필요');
+      //     router.push(ROUTES.SCHEDULE.root);
+      //   }
     }
   };
 

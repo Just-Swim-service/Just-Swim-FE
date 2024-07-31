@@ -9,6 +9,7 @@ export interface SNSLoginButtonProps {
   sns: Provider;
 }
 
+// TODO: 전반적인 UI 수정하기
 export default function SignIn() {
   return (
     <>
