@@ -93,10 +93,7 @@ export const useUserStore = create(
   ),
 );
 
-// TODO: useLayoutEffect 로 변경
 // TODO: fetch 캐싱 도입
-// TODO: 상수화 필요
-// TODO: signup 페이지 접근하면 signup/type 페이지로 이동
 export default function Type() {
   const router = useRouter();
   const params = useSearchParams().get('token');
@@ -109,7 +106,6 @@ export default function Type() {
 
   useLayoutEffect(() => {
     const checkToken = async () => {
-      // TODO: URL 로 접근했을 때 처리 필요
       if (params) {
         const newToken = await setTokenInCookies(params);
         setAddUserToken(newToken);
@@ -143,7 +139,6 @@ export default function Type() {
         });
         return router.push(ROUTES.ONBOARDING.profile);
       } else if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
-        // TODO: URL 접근 시 이미 가입한 유저에 대한 처리 필요
         console.log('이미 가입한 유저에 대한 처리 필요');
       }
     }

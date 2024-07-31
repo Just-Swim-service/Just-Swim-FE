@@ -29,7 +29,6 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
     if (authorizationToken) {
       const { status, data } = await getMyProfile();
 
-      // 브라우저 쿠키에는 있는데, 디비에 데이터가 없는 경우임 -> 재가입 필요 / 토큰 설정도 다시 해야함.
       if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
         setAddUserToken('');
         return router.replace(ROUTES.ONBOARDING.signin);
@@ -43,7 +42,6 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
       ) {
         return router.replace(ROUTES.SCHEDULE.root);
       }
-      // 소셜 로그인 후, 타입 입력을 안한 경우
       return router.replace(ROUTES.ONBOARDING.type);
     }
 

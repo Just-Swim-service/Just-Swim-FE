@@ -8,6 +8,7 @@ import { useUserStore } from '../type/page';
 import { useLayoutEffect, useState } from 'react';
 import { ROUTES } from '@/_data/routes';
 
+// TODO: myLoader 를 공통으로 빼서 사용하도록 수정
 const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
   return `${src}?w=${width}&q=${quality}`;
 };

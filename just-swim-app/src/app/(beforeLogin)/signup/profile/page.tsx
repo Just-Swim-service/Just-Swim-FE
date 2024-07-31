@@ -4,7 +4,7 @@ import styles from './pages.module.scss';
 import { useRouter } from 'next/navigation';
 import { IconGallery } from '@assets';
 
-import { TEXT, USER_TYPE } from '@data';
+import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
 import { useUserStore } from '../type/page';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { UserType } from '@types';
@@ -12,10 +12,7 @@ import Image, { ImageLoaderProps } from 'next/image';
 import { patchUserEdit } from '@/_apis/users.ts';
 import { ROUTES } from '@/_data/routes';
 
-// 쿠키로 접근해서 타입 찾기 - 없을 때 타입 설정 페이지로 이동
-//   const type = useSearchParams().get('type')?.toString();
-//   const name = type === 'instructor' ? '수강생' : '강사';
-//   const type = 'instructor';
+// TODO: myLoader 를 공통으로 빼서 사용하도록 수정
 const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
   return `${src}?w=${width}&q=${quality}`;
 };
@@ -46,14 +43,12 @@ export default function Profile() {
   };
 
   const handleNextPage = async () => {
-    // DB 에 적용 후 성공하면 zustand 에 저장
-
-    const { status, data } = await patchUserEdit({
+    const { status } = await patchUserEdit({
       profileImage: inputImage,
       name: inputName,
     });
 
-    if (status === 200) {
+    if (status === HTTP_STATUS.OK) {
       setAddUserProfile({
         token: userToken,
         profile: {
