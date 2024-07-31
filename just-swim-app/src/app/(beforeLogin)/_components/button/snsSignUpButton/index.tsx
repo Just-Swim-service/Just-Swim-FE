@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { IconKakao } from '@assets';
 import { IconNaver } from '@assets';
 import { IconGoogle } from '@assets';
-import { HTTP_STATUS, OnBoardingType, TEXT, USER_TYPE } from '@data';
+import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
 import { Provider } from '@types';
 import { getTokenInCookies, handleSignUp } from '@/(beforeLogin)/_utils';
-import { getMyProfile, postUserLogin } from '@/_apis/users.ts';
+import { getMyProfile } from '@/_apis/users.ts';
 import { useUserStore } from '@/(beforeLogin)/signup/type/page';
-import { stat } from 'fs';
+import { ROUTES } from '@/_data/routes';
 
 const SNS_ICONS = {
   google: IconGoogle,
@@ -20,7 +20,7 @@ const SNS_ICONS = {
 
 export function SNSSignInButton({ sns }: { sns: Provider }) {
   const router = useRouter();
-  const { setAddUserProfile, setAddUserToken } = useUserStore();
+  const { setAddUserProfile, setAddUserToken, getUserType } = useUserStore();
   const Icon = SNS_ICONS[sns];
 
   const handleOnboarding = async () => {
@@ -32,18 +32,19 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
       // 브라우저 쿠키에는 있는데, 디비에 데이터가 없는 경우임 -> 재가입 필요 / 토큰 설정도 다시 해야함.
       if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
         setAddUserToken('');
-        return router.replace('/signin');
+        return router.replace(ROUTES.ONBOARDING.signin);
       }
 
       setAddUserProfile({ token: authorizationToken, profile: data });
-      const checkType = data?.userType;
+      const checkType = getUserType(authorizationToken);
       if (
         checkType === USER_TYPE.INSTRUCTOR ||
         checkType === USER_TYPE.CUSTOMER
       ) {
-        return router.replace('/schedule');
+        return router.replace(ROUTES.SCHEDULE.root);
       }
-      return router.replace('/signup/type');
+      // 소셜 로그인 후, 타입 입력을 안한 경우
+      return router.replace(ROUTES.ONBOARDING.type);
     }
 
     const redirectURL = await handleSignUp(sns);

@@ -11,6 +11,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { usePostSetUserType } from '@/(beforeLogin)/_utils/server/usePostSetUserType';
 import { getMyProfile } from '@/_apis/users.ts';
+import { ROUTES } from '@/_data/routes';
 
 export type User = {
   token: string;
@@ -108,13 +109,6 @@ export default function Type() {
 
   useLayoutEffect(() => {
     const checkToken = async () => {
-      //   // 로그인?
-      //   const { status, data } = await postUserLogin({
-      //     email: getUserEmail(token! || params!),
-      //     provider: sns,
-      //   });
-      //   console.log('login status: ', status);
-      //   console.log('data: ', data);
       // TODO: URL 로 접근했을 때 처리 필요
       if (params) {
         const newToken = await setTokenInCookies(params);
@@ -122,10 +116,15 @@ export default function Type() {
 
         const { data } = await getMyProfile();
         setAddUserProfile({ token: newToken, profile: data });
+
+        if (data.userType) {
+          return router.push(ROUTES.SCHEDULE.root);
+        }
         setToken(newToken);
+      } else {
+        const authorizationToken = await getTokenInCookies();
+        setToken(authorizationToken);
       }
-      const authorizationToken = await getTokenInCookies();
-      setToken(authorizationToken);
     };
     checkToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,7 +132,7 @@ export default function Type() {
 
   const handleSetType = async () => {
     if (!token) {
-      router.replace('/signin');
+      router.replace(ROUTES.ONBOARDING.signin);
     } else {
       const { status } = await setUserType({ userType: type as UserType });
 
@@ -142,7 +141,7 @@ export default function Type() {
           token: token,
           profile: { userType: type },
         });
-        return router.push('/signup/profile');
+        return router.push(ROUTES.ONBOARDING.profile);
       } else if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
         // TODO: URL 접근 시 이미 가입한 유저에 대한 처리 필요
         console.log('이미 가입한 유저에 대한 처리 필요');

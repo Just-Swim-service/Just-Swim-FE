@@ -10,6 +10,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { UserType } from '@types';
 import Image, { ImageLoaderProps } from 'next/image';
 import { patchUserEdit } from '@/_apis/users.ts';
+import { ROUTES } from '@/_data/routes';
 
 // 쿠키로 접근해서 타입 찾기 - 없을 때 타입 설정 페이지로 이동
 //   const type = useSearchParams().get('type')?.toString();
@@ -30,14 +31,18 @@ export default function Profile() {
   const [inputImage, setInputImage] = useState<string>('');
 
   useEffect(() => {
-    setUserType(getUserType(userToken));
-    setInputName(getUserName(userToken));
-    setInputImage(getUserImage(userToken));
+    if (!userToken) {
+      router.push(ROUTES.ONBOARDING.signin);
+    } else {
+      setUserType(getUserType(userToken));
+      setInputName(getUserName(userToken));
+      setInputImage(getUserImage(userToken));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSkipPage = () => {
-    router.push(`/signup/complete`);
+    router.push(ROUTES.ONBOARDING.complete);
   };
 
   const handleNextPage = async () => {
@@ -56,7 +61,7 @@ export default function Profile() {
           profileImage: inputImage,
         },
       });
-      router.push(`/signup/complete`);
+      router.push(ROUTES.ONBOARDING.complete);
     }
   };
 

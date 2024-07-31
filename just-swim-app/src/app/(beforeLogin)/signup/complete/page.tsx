@@ -6,6 +6,7 @@ import Image, { ImageLoaderProps } from 'next/image';
 import { TEXT } from '@data';
 import { useUserStore } from '../type/page';
 import { useLayoutEffect, useState } from 'react';
+import { ROUTES } from '@/_data/routes';
 
 const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
   return `${src}?w=${width}&q=${quality}`;
@@ -16,12 +17,15 @@ export default function Complete() {
 
   const { getUserImage, getToken, getUserType } = useUserStore();
   const userToken = getToken();
-
   const [userImage, setUserImage] = useState<string>();
 
   useLayoutEffect(() => {
-    const image = getUserImage(userToken);
-    setUserImage(image);
+    if (!userToken) {
+      router.push(ROUTES.ONBOARDING.signin);
+    } else {
+      const image = getUserImage(userToken);
+      setUserImage(image);
+    }
   }, []);
 
   const handleRoute = () => {
@@ -29,7 +33,7 @@ export default function Complete() {
     if (!userType) {
       return;
     }
-    router.push('/schedule');
+    router.push(ROUTES.SCHEDULE.root);
   };
 
   return (

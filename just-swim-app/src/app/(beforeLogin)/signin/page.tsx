@@ -2,7 +2,7 @@ import styles from './page.module.scss';
 import JustSwimSVG from '@assets/logo.svg';
 
 import { SNSSignInButton } from '../_components/button/snsSignUpButton';
-import { SNS, TEXT } from '@data';
+import { JUST_SWIM, SNS, TEXT } from '@data';
 import { Provider } from '@types';
 
 export interface SNSLoginButtonProps {
@@ -14,11 +14,7 @@ export default function SignIn() {
     <>
       <div className={styles.header}>
         <div className={styles.header_logo}>
-          <JustSwimSVG
-            className={styles.logo}
-            role="img"
-            aria-label={'just-swim'}
-          />
+          <JustSwimSVG className={styles.logo} aria-label={JUST_SWIM} />
           <h3>{TEXT.SIGNUP_PAGE.welcome}</h3>
         </div>
         <div className={styles.header_info}>

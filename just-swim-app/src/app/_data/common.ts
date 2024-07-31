@@ -1,3 +1,5 @@
+export const JUST_SWIM = 'Just Swim' as const;
+
 export const USER_TYPE = {
   INSTRUCTOR: 'instructor',
   CUSTOMER: 'customer',

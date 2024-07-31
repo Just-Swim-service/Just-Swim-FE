@@ -22,8 +22,6 @@ const api = async <T>(
   const base = `${process.env.API_PATH}/api`;
   const authorizationToken = cookies().get('token')?.value;
   const URL = `${base}${url}`;
-  console.log('options: ', options);
-  console.log('authorizationToken: ', authorizationToken);
   const defaultOptions: RequestInit = {
     method: method,
     headers: {
