@@ -10,7 +10,7 @@ import { Provider, UserEntity, UserType } from '@types';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { usePostSetUserType } from '@/(beforeLogin)/_utils/server/usePostSetUserType';
-import { getMyProfile, postUserLogin } from '@/_apis/users.ts';
+import { getMyProfile } from '@/_apis/users.ts';
 
 export type User = {
   token: string;
@@ -103,8 +103,7 @@ export default function Type() {
   const [type, setType] = useState<UserType>();
   const [token, setToken] = useState<string>();
 
-  const { setAddUserToken, setAddUserProfile, getUserEmail, getProvider } =
-    useUserStore();
+  const { setAddUserToken, setAddUserProfile } = useUserStore();
   const { setUserType } = usePostSetUserType();
 
   useLayoutEffect(() => {

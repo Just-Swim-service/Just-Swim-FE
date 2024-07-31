@@ -1,42 +1,57 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import styles from './pages.module.scss';
+import Image, { ImageLoaderProps } from 'next/image';
 import { TEXT } from '@data';
+import { useUserStore } from '../type/page';
+import { useLayoutEffect, useState } from 'react';
 
-export default function Start() {
-  const param = useSearchParams();
+const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
+  return `${src}?w=${width}&q=${quality}`;
+};
+
+export default function Complete() {
   const router = useRouter();
+
+  const { getUserImage, getToken, getUserType } = useUserStore();
+  const userToken = getToken();
+
+  const [userImage, setUserImage] = useState<string>();
+
+  useLayoutEffect(() => {
+    const image = getUserImage(userToken);
+    setUserImage(image);
+  }, []);
+
   const handleRoute = () => {
-    const userType = param.get('type');
+    const userType = getUserType(userToken);
     if (!userType) {
       return;
     }
-    if (userType === 'instructor') {
-      router.push(`/instructor`);
-    } else {
-      router.push(`/customer`);
-    }
+    router.push('/schedule');
   };
 
   return (
     <>
-      <div className={styles.start_header}>
+      <div className={styles.complete_header}>
         <div>
           <h3>{TEXT.SIGNUP_COMPLETE_PAGE.notification}</h3>
         </div>
       </div>
-      {/* TODO: 이미지 넣기 */}
-      <div className={styles.start_section}>
-        <div>
-          <div className={styles.type_button_img}>
-            <div>
-              <h3>{param.get('type')}</h3>
-            </div>
-          </div>
+      <div className={styles.complete_section}>
+        <div className={styles.profile_img}>
+          <Image
+            loader={myLoader}
+            src={userImage as string}
+            alt="profile image"
+            width={125}
+            height={125}
+            priority
+          />
         </div>
       </div>
-      <div className={styles.start_footer}>
+      <div className={styles.complete_footer}>
         <div className={styles.button_wrapper}>
           <button className={styles.select_button} onClick={handleRoute}>
             {TEXT.COMMON.start}
