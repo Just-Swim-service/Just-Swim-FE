@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import styled from './tabContent.module.scss';
+import styled from './listContent.module.scss';
 import RepeatTime from '@assets/repeat_time.svg';
 import Location from '@assets/location.svg';
 import Day from '@assets/day.svg';
 
-export default function TabContent() {
+export default function ListContent() {
   let classList = [
     {
       name: '아침 5 반',

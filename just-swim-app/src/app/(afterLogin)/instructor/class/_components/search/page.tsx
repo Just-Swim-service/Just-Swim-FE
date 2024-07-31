@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import searchIcon from '/public/assets/icon_search.png';
-import styled from './searchBox.module.scss';
+import styled from './search.module.scss';
 
-export default function SearchBox() {
+export default function Search() {
   return (
     <>
       <div className={styled.search}>
