@@ -1,6 +1,15 @@
 'use client';
 
-import { ChangeEvent, ForwardedRef, InputHTMLAttributes, MouseEvent, forwardRef, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  ForwardedRef,
+  InputHTMLAttributes,
+  MouseEvent,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { FileInputProps } from '@types';
 import { mergeRefs, randomId } from '@utils';
@@ -10,19 +19,22 @@ import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 
-function _FileInput({
-  name,
-  length = 4,
-  size = 20,
-  id = 'fileInput',
-  onChange = (event: ChangeEvent<HTMLInputElement>) => {},
-  setValue,
-  errors=[],
-  ...props
-}: FileInputProps & InputHTMLAttributes<HTMLInputElement> & {
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-},
-ref: ForwardedRef<HTMLInputElement>) {
+function _FileInput(
+  {
+    name,
+    length = 4,
+    size = 20,
+    id = 'fileInput',
+    onChange = (event: ChangeEvent<HTMLInputElement>) => {},
+    setValue,
+    errors = [],
+    ...props
+  }: FileInputProps &
+    InputHTMLAttributes<HTMLInputElement> & {
+      onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+    },
+  ref: ForwardedRef<HTMLInputElement>,
+) {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -34,48 +46,50 @@ ref: ForwardedRef<HTMLInputElement>) {
       return;
     }
 
-    const { target: { files } } = event;
-  
+    const {
+      target: { files },
+    } = event;
+
     if (!files) {
-      alert("파일을 추가해주세요.");
-  
+      alert('파일을 추가해주세요.');
+
       return;
     }
-    
+
     const step1 = [];
     let step2 = [];
     let flag = false;
-  
+
     for (const file of Array.from(files)) {
-      if (!file.type.startsWith("image")) {
+      if (!file.type.startsWith('image')) {
         flag = true;
-  
+
         continue;
       }
-  
+
       step1.push(file);
     }
-  
+
     if (flag) {
-      alert("이미지 파일만 추가할 수 있습니다.");
-      
+      alert('이미지 파일만 추가할 수 있습니다.');
+
       flag = false;
     }
-  
+
     for (const file of step1) {
       // if (file.size > size * 1000000) {
-        if (file.size > size * 1024 * 1024 ) {
+      if (file.size > size * 1024 * 1024) {
         flag = true;
-  
+
         continue;
       }
-  
+
       step2.push(file);
     }
-  
+
     if (flag) {
       alert(`${size}MB 이하의 파일만 업로드할 수 있습니다.`);
-      
+
       flag = false;
     }
 
@@ -88,23 +102,26 @@ ref: ForwardedRef<HTMLInputElement>) {
     const result = [...uploadedImages, ...step2];
     const store = new DataTransfer();
 
-    result.forEach(file => store.items.add(file));
+    result.forEach((file) => store.items.add(file));
 
     if (inputRef.current) {
       inputRef.current.files = store.files;
     }
 
     setUploadedImages(result);
-  }
+  };
 
   const deleteUploadedImage = (index: number) => {
     onDelete.current = true;
-    
-    const newFiles = [...uploadedImages.slice(0, index), ...uploadedImages.slice(index + 1)];
+
+    const newFiles = [
+      ...uploadedImages.slice(0, index),
+      ...uploadedImages.slice(index + 1),
+    ];
 
     const store = new DataTransfer();
 
-    newFiles.forEach(file => store.items.add(file));
+    newFiles.forEach((file) => store.items.add(file));
 
     if (inputRef.current) {
       inputRef.current.files = store.files;
@@ -113,19 +130,20 @@ ref: ForwardedRef<HTMLInputElement>) {
 
     onDelete.current = false;
     setUploadedImages(newFiles);
-  }
-  
+  };
+
   useEffect(() => {
     const result = [];
 
     for (const image of uploadedImages) {
+      // console.log(URL.createObjectURL(image));
       result.push(URL.createObjectURL(image));
     }
 
     setPreviewImages([...result]);
-    ConfirmModal
-    
-    setValue(name, uploadedImages)
+    ConfirmModal;
+
+    setValue(name, uploadedImages);
   }, [uploadedImages, setValue]);
 
   // 캐러셀 관련
@@ -140,53 +158,58 @@ ref: ForwardedRef<HTMLInputElement>) {
     if (previewImages.length === 0) {
       setModal(false);
     }
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewImages]);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChangeImages(event);
     onChange(event);
-  }
+  };
 
   return (
     <>
       <div className={styled.input_wrapper}>
         <div className={styled.preview_wrapper}>
-          {
-            previewImages.map((preview, index) => {
-              return (
-                <div key={randomId()} className={styled.preview_item} style={{
+          {previewImages.map((preview, index) => {
+            // console.log('preview',preview);
+            return (
+              <div
+                key={randomId()}
+                className={styled.preview_item}
+                style={{
                   backgroundImage: `url(${preview})`,
-                }} onClick={(event: MouseEvent<HTMLDivElement>) => {
+                }}
+                onClick={(event: MouseEvent<HTMLDivElement>) => {
                   event.preventDefault();
-  
+
                   setSelectedIndex(index);
                   showModal();
                 }}>
-                  <button className={styled.delete_button} onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                <button
+                  className={styled.delete_button}
+                  onClick={(event: MouseEvent<HTMLButtonElement>) => {
                     event.stopPropagation();
                     event.preventDefault();
-                    
+
                     deleteUploadedImage(index);
                   }}>
-                    <IconCancelWhite width={14} height={14} />
-                  </button>
-                </div>
-              )
-            })
-          }
+                  <IconCancelWhite width={14} height={14} />
+                </button>
+              </div>
+            );
+          })}
         </div>
         <label htmlFor={id} className={styled.add_label}>
           <span>+</span>
         </label>
-     
+
         <input
           {...props}
           name={name}
           id={id}
           ref={mergeRefs(inputRef, ref)}
-          type='file'
+          type="file"
           multiple
           hidden
           readOnly
@@ -195,8 +218,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         {/* <span className={styled.error}>
           {errors.map((error,index) => <li key={index}>{error}</li>) }
         </span> */}
-        {
-          modal &&
+        {modal && (
           <ImageCarousel
             images={previewImages}
             index={selectedIndex}
@@ -205,8 +227,7 @@ ref: ForwardedRef<HTMLInputElement>) {
             deleteImage={deleteUploadedImage}
             hideModal={hideModal}
           />
-        }
-          
+        )}
       </div>
     </>
   );

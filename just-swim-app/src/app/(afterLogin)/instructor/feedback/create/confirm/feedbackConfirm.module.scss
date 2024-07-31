@@ -1,5 +1,60 @@
 @import '@/globals.scss';
 
+.preview_wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.confirm_check {
+  margin: 53px 0 22px;
+  display: flex;
+  gap: 6px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include Body4-R;
+  label {
+    line-height: 1;
+  }
+}
+
+.btn_wrap {
+  display: flex;
+  gap: 20px;
+
+  position: fixed;
+  bottom: 0;
+
+  width: 100%;
+  padding: 20px 16px;
+
+  background-color: $--White;
+
+  .back_btn,
+  .submit_btn {
+    padding: 14px 10px;
+    border-radius: 13px;
+    flex: 0.5;
+
+    @include Title3-SB;
+  }
+
+  .back_btn {
+    background-color: $--White;
+    border: 1px solid $--gray-200;
+  }
+  .submit_btn {
+    background-color: $--Primary-blue;
+    color: $--White;
+  }
+
+  .submit_btn:disabled {
+    background-color: $--gray-300;
+  }
+}
+
 .confirm_msg {
   @include Title2-SB;
   padding: 20px 16px;
@@ -86,19 +141,6 @@
           display: none;
         }
       }
-
-      .added_file {
-        width: 78px;
-        height: 78px;
-        background-color: $--gray-50;
-
-        flex-shrink: 0;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
     }
 
     .link {
@@ -140,16 +182,6 @@
         padding: 65px 0;
       }
     }
-  }
-
-  .confirm_check {
-    margin: 53px 0 22px;
-    display: flex;
-    gap: 6px;
-
-    justify-content: center;
-
-    @include Body4-R;
   }
 
   .sub_title {
@@ -205,36 +237,5 @@
         z-index: 50;
       }
     }
-  }
-}
-
-.btn_wrap {
-  display: flex;
-  gap: 20px;
-
-  position: fixed;
-  bottom: 0;
-
-  width: 100%;
-  padding: 20px 16px;
-
-  background-color: $--White;
-
-  .back_btn,
-  .submit_btn {
-    padding: 14px 10px;
-    border-radius: 13px;
-    flex: 0.5;
-
-    @include Title3-SB;
-  }
-
-  .back_btn {
-    background-color: $--White;
-    border: 1px solid $--gray-200;
-  }
-  .submit_btn {
-    background-color: $--Primary-blue;
-    color: $--White;
   }
 }

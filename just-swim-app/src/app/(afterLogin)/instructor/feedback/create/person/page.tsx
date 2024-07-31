@@ -30,6 +30,7 @@ import { submitForm } from './action';
 import { FormType, formSchema } from '@/_schema/index';
 
 import { useRouter } from 'next/navigation';
+import { feedbackStore } from '@/_store/feedback';
 
 interface CustomFormData {
   date: string;
@@ -41,7 +42,9 @@ interface CustomFormData {
 
 ///////////////////////////
 export default function FeedbackWrite() {
+  const { setFeedbackHandler } = feedbackStore();
   const router = useRouter();
+
   // test
   const {
     register,
@@ -55,19 +58,21 @@ export default function FeedbackWrite() {
   });
 
   const [feedbackFormData, setFeedbackFormData] = useState('');
+  const [images, setImages] = useState<string[]>([]);
+
   // handleSubmit에는 RHF에서 validate된 데이터가 들어간다
   const onSubmit = handleSubmit(async (data: FormType) => {
+    // console.log('images', images);
     const formData = new FormData();
 
     formData.append('target', data.target);
     formData.append('date', data.date);
     formData.append('link', data.link);
     formData.append('content', data.content);
-    if (data.file && data.file.length > 0) {
-      Array.from(data.file).forEach((file, i) => {
-        formData.append(`file`, file);
-      });
-    }
+    // https://stackoverflow.com/questions/35940290/how-to-convert-base64-string-to-javascript-file-object-like-as-from-file-input-f
+    Array.from(images).forEach((el, i) => {
+      formData.append('file', el.dataUrl);
+    });
 
     const formDataObject: CustomFormData = {};
     // formData.forEach((value, key) => {
@@ -75,6 +80,7 @@ export default function FeedbackWrite() {
     // });
 
     formData.forEach((value, key) => {
+      // console.log(value, key);
       // File 다중선택시 배열이 아닌, 1개만 들어가는 문제 해결방법,,
       if (key === 'file') {
         if (Object.hasOwn(formDataObject, key)) {
@@ -86,12 +92,13 @@ export default function FeedbackWrite() {
         formDataObject[key] = value;
       }
     });
-    setFeedbackFormData(formDataObject);
+
+    setFeedbackHandler(formDataObject);
+
     const errors = await submitForm(formData);
 
     console.log('errors', errors);
-
-    router.push(`confirm?content=${JSON.stringify(formDataObject)}`);
+    router.push(`confirm`);
   });
 
   const onValid = async (data: CreateState) => {
@@ -107,8 +114,6 @@ export default function FeedbackWrite() {
     console.log('fileRef', fileRef);
     fileRef?.current?.click();
   };
-
-  const [images, setImages] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
@@ -131,7 +136,6 @@ export default function FeedbackWrite() {
           dataUrl: result,
           file: file,
         };
-
         setImages((prev) => [...prev, obj]);
       };
     });

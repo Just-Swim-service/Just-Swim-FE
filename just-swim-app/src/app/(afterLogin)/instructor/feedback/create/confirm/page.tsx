@@ -1,49 +1,31 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import Image from 'next/image';
-
-import addIcon from '@assets/add.png';
 import Link from '@assets/link.svg';
-
 import styled from './feedbackConfirm.module.scss';
-
 import { Header, Profile } from '@components';
+import { feedbackStore } from '@/_store/feedback';
+import { searchUserStore } from '@store';
+import { postFeedback } from '@apis';
 
 export default function ClassFeedbackConfirm() {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const handleClick = () => {
-    console.log('fileRef', fileRef);
-    fileRef?.current?.click();
+  const { selectedList } = searchUserStore();
+  const { formDataState } = feedbackStore();
+  const [checked, setChecked] = useState(false);
+
+  const handleSubmit = () => {
+    // console.log('formDataState', formDataState);
+    const userIds = selectedList.map((el) => Number(el.userId));
+    const lectureId = Number(selectedList[0].lectureId);
+    const target = [
+      {
+        userIds,
+        lectureId,
+      },
+    ];
+
+    postFeedback(formDataState, 'group', target);
   };
-
-  const [images, setImages] = useState<string[]>([]);
-
-  const handleChange = (e: React.ChangeEvent) => {
-    const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    const targetFilesArray = Array.from(targetFiles);
-    const selectedFiles: string[] = targetFilesArray.map((file) => {
-      return URL.createObjectURL(file);
-    });
-    // 합체!
-    setImages((prev) => prev.concat(selectedFiles));
-  };
-
-  // 수업 참여자 리스트
-  let peopleList = [
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-    {
-      name: 'hyebin',
-      profile: '',
-    },
-    {
-      name: 'hyebin',
-      profile: 'profile1',
-    },
-  ];
 
   return (
     <>
@@ -58,50 +40,46 @@ export default function ClassFeedbackConfirm() {
         <div className={styled.feedback_content}>
           <div className={`${styled.wrap} ${styled.row}`}>
             <div className={styled.title}>
-              선택 수강생: <span>15명</span>
+              선택 수강생: <span>{selectedList.length}</span>
             </div>
             <div className={styled.tag}>
-              <div>아침 5반 전체</div>
+              {selectedList?.length > 0 ? (
+                <div>{selectedList[0]?.lectureTitle} 전체</div>
+              ) : (
+                <div>{selectedList[0]?.lectureTitle}</div>
+              )}
               <Profile
-                customers={peopleList}
+                customers={selectedList}
                 width={20}
                 height={20}
                 count={false}
               />
             </div>
           </div>
-          {/* <Profile /> */}
           <div className={styled.wrap}>
             <div className={styled.title}>
-              피드백 기준 수업일: <span>3월 28, 2024</span>
+              피드백 기준 수업일: <span>{formDataState.date}</span>
             </div>
           </div>
           <div className={`${styled.wrap} ${styled.col}`}>
             <div className={styled.title}>
               첨부 파일: <span>2개</span>
             </div>
-            <div className={styled.flex}>
-              {images.map((url, i) => (
-                <div key={url} className={styled.added_file}>
-                  <Image src={url} width="78" height="78" alt={`image${i}`} />
-                </div>
-              ))}
-              <div className={styled.box} onClick={handleClick}>
-                <label htmlFor="chooseFile2">
-                  <div className={styled.add}>
-                    <Image src={addIcon} alt="add" />
-                  </div>
-                </label>
-                <input
-                  type="file"
-                  id="chooseFile2"
-                  name="chooseFile2"
-                  accept="image/*"
-                  multiple
-                  ref={fileRef}
-                  onChange={handleChange}
-                />
-              </div>
+            <div className={styled.preview_wrapper}>
+              {formDataState.file?.map((preview, index) => {
+                // console.log(Object.keys(preview));
+                return (
+                  <div
+                    key={index}
+                    className={styled.preview_item}
+                    style={{
+                      backgroundImage: `url(${preview})`,
+                      width: '100px',
+                      height: '100px',
+                      backgroundSize: 'cover',
+                    }}></div>
+                );
+              })}
             </div>
           </div>
 
@@ -111,7 +89,8 @@ export default function ClassFeedbackConfirm() {
             </div>
             <div className={`${styled.link}`}>
               <Link className={styled.svg} />
-              <input type="text" />
+              <input type="text" defaultValue={formDataState.link} />
+              {/* <LinkInput name='confirm_link' link={ formDataState.link} /> */}
             </div>
           </div>
 
@@ -119,18 +98,29 @@ export default function ClassFeedbackConfirm() {
             <div className={styled.title}>피드백 내용:</div>
             <textarea
               placeholder="피드백을 입력해주세요"
-              className={styled.feedback_area}></textarea>
+              className={styled.feedback_area}
+              defaultValue={formDataState.content}></textarea>
           </div>
         </div>
         <div className={styled.confirm_check}>
-          <input type="checkbox" name="confirm" id="confirm" />
+          <input
+            id="confirm"
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => (checked ? setChecked(false) : setChecked(true))}
+          />
           <label htmlFor="confirm">작성 내용을 확인했습니다.</label>
         </div>
       </div>
 
       <div className={styled.btn_wrap}>
         <button className={styled.back_btn}>돌아가기</button>
-        <button className={styled.submit_btn}>전송하기</button>
+        <button
+          className={styled.submit_btn}
+          disabled={!checked}
+          onClick={handleSubmit}>
+          전송
+        </button>
       </div>
     </>
   );
