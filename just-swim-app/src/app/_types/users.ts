@@ -27,7 +27,11 @@ export interface PatchUserProfileReq
 
 export interface GetUserProfileRes {
   status: number;
-  data: UserEntity;
+  data: {
+    success: boolean;
+    message: string;
+    uesrData: UserEntity;
+  };
 }
 
 export interface PostSetUserTypeReq {

@@ -6,7 +6,7 @@ import { IconGallery } from '@assets';
 
 import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
 import { useUserStore } from '../type/page';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { UserType } from '@types';
 import Image, { ImageLoaderProps } from 'next/image';
 import { patchUserEdit } from '@/_apis/users.ts';
@@ -23,15 +23,15 @@ export default function Profile() {
   const { getUserName, getUserType, getToken, getUserImage, setAddUserProfile } =
     useUserStore();
   const userToken = getToken();
-  const [userType, setUserType] = useState<UserType>();
+  const [type, setType] = useState<UserType>();
   const [inputName, setInputName] = useState<string>('');
   const [inputImage, setInputImage] = useState<string>('');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!userToken) {
       router.push(ROUTES.ONBOARDING.signin);
     } else {
-      setUserType(getUserType(userToken));
+      setType(getUserType(userToken));
       setInputName(getUserName(userToken));
       setInputImage(getUserImage(userToken));
     }
@@ -81,7 +81,7 @@ export default function Profile() {
       <div className={styles.profile_setting_header}>
         <div>
           <h3>
-            {userType === USER_TYPE.INSTRUCTOR
+            {type === USER_TYPE.INSTRUCTOR
               ? TEXT.SET_PROFILE_PAGE.notification.customer
               : TEXT.SET_PROFILE_PAGE.notification.instructor}
             <br />

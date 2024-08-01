@@ -93,7 +93,7 @@ export const useUserStore = create(
   ),
 );
 
-// TODO: fetch 캐싱 도입
+// TODO: fetch 캐싱 알아보기
 export default function Type() {
   const router = useRouter();
   const params = useSearchParams().get('token');
@@ -111,9 +111,9 @@ export default function Type() {
         setAddUserToken(newToken);
 
         const { data } = await getMyProfile();
-        setAddUserProfile({ token: newToken, profile: data });
+        setAddUserProfile({ token: newToken, profile: data.uesrData });
 
-        if (data.userType) {
+        if (data.uesrData.userType) {
           return router.push(ROUTES.SCHEDULE.root);
         }
         setToken(newToken);
