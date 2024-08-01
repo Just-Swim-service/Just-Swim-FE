@@ -23,53 +23,59 @@
 }
 
 .profile_setting_section {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 65px;
-  justify-content: flex-start;
   align-items: center;
   width: 100%;
 
-  .profile_img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .profile_image_wrapper {
+    position: relative;
     width: 125px;
     height: 125px;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-  }
+    margin-bottom: 34px;
 
-  .gallery_button_wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 34px;
-    height: 34px;
-    border: $--gray-200 1px solid;
-    border-radius: 50%;
-    // background-color: $--White;
+    .profile_img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: $--gray-100;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
 
-    .input_file {
-      display: none;
+    .image_button {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 34px;
+      height: 34px;
+      border: $--gray-200 1px solid;
+      border-radius: 50%;
+      background-color: $--White;
+
+      .input_file {
+        display: none;
+      }
     }
   }
-}
 
-.nickname {
-  @include Title2-SB;
+  .nickname {
+    @include Title2-SB;
 
-  color: $--Black;
-  border: none;
-  border-bottom: 1px solid $--gray-100;
-  padding: 10px 0px;
-  outline: none;
-  text-align: center;
-  width: inherit;
+    color: $--Black;
+    border: none;
+    border-bottom: 1px solid $--gray-100;
+    padding: 10px 0px;
+    outline: none;
+    text-align: center;
+    width: inherit;
+  }
 }
 
 .profile_setting_footer {
@@ -83,7 +89,6 @@
   .button_wrapper {
     width: inherit;
     height: 52px;
-    border-radius: 20px;
     border: none;
     cursor: pointer;
     font-size: 16px;

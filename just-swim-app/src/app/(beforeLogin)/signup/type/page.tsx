@@ -144,10 +144,6 @@ export default function Type() {
         });
         return router.push(ROUTES.ONBOARDING.profile);
       }
-      //    else if (status === HTTP_STATUS.NOT_ACCEPTABLE) {
-      //     console.log('이미 가입한 유저에 대한 처리 필요');
-      //     router.push(ROUTES.SCHEDULE.root);
-      //   }
     }
   };
 
@@ -165,7 +161,6 @@ export default function Type() {
           <p>{TEXT.TYPE_SELECT_PAGE.helper.first}</p>
         </div>
       </div>
-
       <div className={styles.select_type_section}>
         {Object.values(USER_TYPE).map((data) => {
           return (

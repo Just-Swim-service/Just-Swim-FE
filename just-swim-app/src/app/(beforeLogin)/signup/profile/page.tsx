@@ -82,8 +82,8 @@ export default function Profile() {
         <div>
           <h3>
             {userType === USER_TYPE.INSTRUCTOR
-              ? TEXT.SET_PROFILE_PAGE.notification.instructor
-              : TEXT.SET_PROFILE_PAGE.notification.customer}
+              ? TEXT.SET_PROFILE_PAGE.notification.customer
+              : TEXT.SET_PROFILE_PAGE.notification.instructor}
             <br />
             {TEXT.SET_PROFILE_PAGE.notification.common.first}
           </h3>
@@ -93,20 +93,18 @@ export default function Profile() {
         </div>
       </div>
       <div className={styles.profile_setting_section}>
-        <div className={styles.profile_img}>
-          <Image
-            loader={myLoader}
-            src={inputImage}
-            alt="profile image"
-            width={125}
-            height={125}
-            priority
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="select_image"
-            className={styles.gallery_button_wrapper}>
+        <div className={styles.profile_image_wrapper}>
+          <div className={styles.profile_img}>
+            <Image
+              loader={myLoader}
+              src={inputImage}
+              alt="profile image"
+              width={125}
+              height={125}
+              priority
+            />
+          </div>
+          <label htmlFor="select_image" className={styles.image_button}>
             <IconGallery />
             <div>
               <input
