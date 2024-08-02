@@ -11,6 +11,10 @@ import IconTrash from './icon_trash.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
 import IconSelectUser from './icon_select_user.svg';
 import IconSearch from './icon_search.svg';
+import IconRepeat from './icon_repeat.svg';
+import IconShare from './icon_share.svg';
+import IconDownload from './icon_download.svg';
+import IconTrashcan from './icon_trashcan.svg';
 
 export {
   IconArrowRight,
@@ -26,4 +30,8 @@ export {
   IconRepeatTime,
   IconSelectUser,
   IconSearch,
+  IconRepeat,
+  IconShare,
+  IconDownload,
+  IconTrashcan,
 };
