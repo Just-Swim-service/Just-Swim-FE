@@ -1,26 +1,22 @@
 @import '@/globals.scss';
 
 .qr {
-  background-color: white;
   padding: 26px 16px;
+
   h2 {
-    font-size: 23px;
-    font-weight: 500;
-    margin-bottom: 2px;
+    @include Title1-B;
   }
 
   .desc {
-    color: $--gray-600;
-    font-size: 14px;
+    @include Title5-M;
   }
 
   .instructor {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 169px;
-    height: 40px;
+    width: fit-content;
+    padding: 8px 14px;
     margin: 24px auto 0;
     background-color: $--gray-50;
     border: 1px solid $--gray-200;
@@ -39,6 +35,7 @@
     display: flex;
     justify-content: center;
     gap: 16px;
+
     .col {
       display: flex;
       flex-direction: column;
@@ -56,137 +53,136 @@
         height: 32px;
         border: 1px solid $--gray-200;
         border-radius: 100%;
+        margin-bottom: 6px;
       }
     }
   }
 }
 
 .invite {
-  padding: 23px 16px 22px;
+  padding-top: 23px;
   background-color: $--gray-50;
 
   h3 {
+    @include Title5-M;
     margin-bottom: 10px;
   }
+
   .student {
     display: flex;
     gap: 10px;
-  }
-  .box {
-    background-color: white;
-    border-radius: 8px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .count {
-    padding: 14px 13px;
-    width: 64px;
-    height: 64px;
-    flex-direction: column;
+    .count_box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+      background-color: $--White;
+      border: 1px solid $--gray-100;
+      border-radius: 8px;
 
-    div:nth-child(1) {
-      font-size: 10px;
-      color: $--gray-700;
+      .personnel {
+        @include Body5-R;
+      }
+
+      .count {
+        @include Title5-SB;
+      }
     }
-  }
-  .profile {
-    padding: 16px 13px;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-between;
-    &_no {
-      color: $--gray-600;
+
+    .profile {
+      padding: 16px 13px;
+      flex: 1;
+      flex-direction: row;
+      justify-content: space-between;
+      &_no {
+        color: $--gray-600;
+      }
+    }
+
+    .box {
+      background-color: white;
+      border-radius: 8px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .profile_no {
+      @include Title5-M;
     }
   }
 }
 
 .class {
   background-color: $--gray-50;
-  padding: 0 16px 50px;
+  padding-top: 23px;
 
   h3 {
+    @include Title5-M;
     margin-bottom: 27px;
   }
 
-  .classInfo {
+  .class_info {
+    @include Title5-M;
     display: flex;
     flex-direction: column;
     gap: 10px;
 
-    .require {
-      display: flex;
-      font-size: 14px;
-      align-items: center;
-
-      span {
-        color: $--Primary-blue;
-        @include Body5-R;
-        margin-left: 2px;
-      }
-    }
-
-    &_time {
+    .class_time {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
       div {
-        width: 135px;
-        height: 51px;
-        border-style: none;
-      }
-    }
-
-    .location_input,
-    .color_input {
-      position: relative;
-      width: inherit;
-      input {
-        padding-left: 50px;
-      }
-      .pick_color {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 10px;
-        width: 30px;
-        height: 30px;
-        background-color: red;
+        width: 35%;
+        padding: 15px 16px;
+        background-color: $--White;
         border-radius: 6px;
+        border: 1px solid $--gray-100;
       }
-      .input#location {
-        padding-left: 45px;
-      }
-      .locatin_icon {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 10px;
+
+      .twelve {
+        color: $--gray-400;
       }
     }
-    .input {
-      width: 100%;
-      background-color: white;
 
-      border: 1px solid transparent;
-      border-radius: 3px;
-      height: 51px;
-      padding: 14px;
+    .lecture_info {
+      padding: 16px;
+      background-color: $--White;
+      border-radius: 6px;
+      border: 1px solid $--gray-100;
+    }
 
-      &.gray {
-        background-color: $--gray-50;
-      }
+    .icon {
+      margin-right: 10px;
+      vertical-align: middle;
+      width: 20px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .color_box {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-right: 10px;
+      vertical-align: middle;
     }
   }
 
   .delete {
-    margin: 23px auto 110px;
+    @include Title5-M;
+
+    margin: 40px auto;
 
     width: 103px;
-    height: 79px;
+    padding: 14px 0;
     background-color: white;
+    border: 1px solid $--gray-200;
     border-radius: 13px;
     color: $--Cancel;
 
@@ -199,10 +195,13 @@
 
   .feedback_btn {
     position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
     bottom: 20px;
-    width: calc(100% - 32px);
 
-    height: 52px;
+    width: 90%;
+    padding: 14px 0;
+
     border-radius: 13px;
 
     background-color: $--Primary-blue;
