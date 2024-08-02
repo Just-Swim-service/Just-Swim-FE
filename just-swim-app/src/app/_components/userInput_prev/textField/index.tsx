@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import './textField.scss';
+import styled from './textField.module.scss';
 
 interface Props {
   label: string;
@@ -19,16 +19,16 @@ export function TextField({ label, placeholder, type }: Props) {
 
   return (
     <>
-      <label>
+      <label className={styled.label}>
         {label}
         <span>(필수)</span>
       </label>
-      <div className="input_box">
+      <div className={styled.input_box}>
         <input
           type={type}
           placeholder={placeholder}
           onChange={handleChange}
-          className={hasValue ? 'filled' : ''}
+          className={hasValue ? `${styled.filled}` : ''}
         />
         {hasValue && (
           <span>

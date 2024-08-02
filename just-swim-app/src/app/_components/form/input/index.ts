@@ -6,3 +6,4 @@ export * from './linkInput';
 export * from './locationInput';
 export * from './textInput';
 export * from './timeInput';
+export * from './selectPersonInput';

@@ -3,91 +3,71 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import Image from 'next/image';
-import searchIcon from '/public/assets/icon_search.png';
-import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import iconArrowDown from '@assets/icon_arrow_down.png';
-import Link from 'next/link';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-
+import { HistoryBackHeader } from '@components';
 import styled from './searchPerson.module.scss';
-
-import { Header } from '@components';
-import { useCostomerStore } from '@store';
+import { randomId } from '@utils';
+import { searchUserStore } from '@store';
+import { useRouter } from 'next/navigation';
+import { IconSearch } from '@assets';
 
 export default function SearchPerson() {
-  const { customerList, checkItem, removeItem }: any = useCostomerStore();
-  // const customerList = [
-  //   { name: '김고독', profile: 'profile1' },
-  //   { name: '김고독', profile: 'no_profile' },
-  //   { name: '김고독', profile: 'profile1' },
-  //   { name: '김고독', profile: 'profile1' },
-  //   { name: '김고독', profile: 'no_profile' },
-  // ];
+  const {
+    userList,
+    checkedList,
+    selectedList,
+    checkItemHandler,
+    setSelectedListHandler,
+    loadUserList,
+  } = searchUserStore();
 
-  // const customerList2 = [
-  //   {
-  //     '아침 5반': [
-  //       { name: '김고독', profile: 'profile1' },
-  //       { name: '김고독', profile: 'no_profile' },
-  //       { name: '김고독', profile: 'profile1' },
-  //       { name: '김고독', profile: 'profile1' },
-  //       { name: '김고독', profile: 'no_profile' },
-  //     ],
-  //   },
-  //   {
-  //     '아침 6반': [
-  //       { name: '김해피', profile: 'profile1' },
-  //       { name: '김감자', profile: 'no_profile' },
-  //       { name: '김감자', profile: 'profile1' },
-  //       { name: '김감자', profile: 'profile1' },
-  //       { name: '김감자', profile: 'no_profile' },
-  //     ],
-  //   },
-  // ];
-
+  const router = useRouter();
   const [value, setValue] = useState('one');
+  const [stateObj, setStateObj] = useState<Object>({});
+
+  useEffect(() => {
+    loadUserList();
+  }, [loadUserList]);
+
+  useEffect(() => {
+    if (userList.length > 0) {
+      setStateObj(consvertUserListToLectureIdObj());
+    }
+    console.log('stateObj', stateObj);
+  }, [userList]);
+
+  // userList를 lecturId에 따라서 리스트를 그려주기 위해 lecturId가 key인 object로 변경
+  const consvertUserListToLectureIdObj = () => {
+    const map = new Map();
+
+    userList.forEach((user) => {
+      if (map.has(user.lectureTitle)) {
+        map.get(user.lectureTitle).push(user);
+      } else {
+        map.set(user.lectureTitle, [user]);
+      }
+    });
+
+    const obj = Object.fromEntries(map);
+
+    return obj;
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
-  const [isChecked, setIsChecked] = useState(false);
-  // const [checkItems, setCheckItems] = useState({})
-
-  const checkItemHandler = (e: any, id: number) => {
-    // e.preventDefault();  // Prevent the form from submitting on checkbox change
-    // console.log(id)
-
-    checkItem(id);
-    // setCheckItems(prev => ({
-    //   ...prev, [id]: !prev[id]
-    // }));
-  };
-
   const checkLength = () => {
-    const checkedCount = customerList.reduce((acc: any, group: any) => {
-      const customers = Object.values(group)[0] as any;
-      const checkedCustomers = customers.filter(
-        (customer: any) => customer.check,
-      );
-      return acc + checkedCustomers.length;
-    }, 0);
-    console.log('Checked items count:', checkedCount);
+    const checkedCount = checkedList.length;
     return checkedCount;
   };
 
-  // useEffect(() => {
-  //   // console.log(checkItems)
-  //   console.log(customerList)
-  //   console.log(checkLength())
-
-  // },[customerList,checkLength])
-
   return (
-    <div className={styled.search_person}>
-      <Header title="회원 선택" />
+    <div className={styled.wrapper}>
+      <HistoryBackHeader title="수강생 선택" />
 
       <div className={styled.pad}>
         <div className={styled.title}>
@@ -116,7 +96,7 @@ export default function SearchPerson() {
           <div className={styled.search}>
             <input type="text" placeholder="수강생 이름으로 검색" />
             <button>
-              <Image src={searchIcon} alt="검색" />
+              <IconSearch />
             </button>
           </div>
 
@@ -133,43 +113,52 @@ export default function SearchPerson() {
       <div className={styled.divider}></div>
 
       <div className={styled.pad}>
-        {Object.entries(customerList).map((group, index: number) => (
-          <div key={index} className={styled.group}>
-            <div className={styled.group_name}>
-              {Object.keys(group) && Object.keys(group[1] as any)}
-            </div>
-            {Object.values(group[1] as any).map((customer) =>
-              (customer as any).map((item: any) => (
-                <li key={item.id} className={styled.customer}>
-                  <input
-                    type="checkbox"
-                    id={`item.id`}
-                    onChange={(e) => checkItemHandler(e, item.id)}
-                  />
-                  <label className={styled.row} htmlFor={`checkbox ${item.id}`}>
-                    <Image
-                      src={`/assets/${item.profile}.png`}
-                      alt="profile"
-                      width={34}
-                      height={34}
+        {stateObj &&
+          Object.entries(stateObj).map(([group, members]) => (
+            <div key={randomId()} className={styled.group}>
+              <div className={styled.group_name}>{group}</div>
+              {members.map(
+                (user: {
+                  userId: string;
+                  profileImage: string;
+                  memberNickname: string;
+                }) => (
+                  <li key={user.userId} className={styled.customer}>
+                    <input
+                      type="checkbox"
+                      id={user.userId}
+                      onChange={(e) => checkItemHandler(e, user.userId)}
+                      checked={checkedList.some(
+                        (item) => item.userId === user.userId,
+                      )}
                     />
-                    <div>{item.name}</div>
-                  </label>
-                  <div className={styled.customer_class_name}>아침 5반</div>
-                </li>
-              )),
-            )}
-          </div>
-        ))}
+                    <label className={styled.row} htmlFor={`checkbox ${user}`}>
+                      <div
+                        className={styled.profile_img}
+                        style={{
+                          backgroundImage: `url(${user.profileImage})`,
+                        }}
+                      />
+                      <div>{user.memberNickname}</div>
+                    </label>
+                    <div className={styled.customer_class_name}>{group}</div>
+                  </li>
+                ),
+              )}
+            </div>
+          ))}
+      </div>
 
-        <div className={styled.main_btn}>
-          <button
-            type="button"
-            disabled={checkLength() == 0}
-            onClick={() => console.log('ff')}>
-            {checkLength()}명 선택하기
-          </button>
-        </div>
+      <div className={styled.main_btn}>
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedListHandler();
+            router.push('/instructor/feedback/write/person');
+          }}
+          className={` ${checkLength() == 0 ? styled.disabled : ''}`}>
+          {checkLength()}명 선택하기
+        </button>
       </div>
     </div>
   );

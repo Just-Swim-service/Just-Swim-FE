@@ -57,3 +57,7 @@ export interface TextAreaProps {
   height?: number;
   onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 }
+
+export interface SelectPersonInputProps {
+  name: string;
+}
