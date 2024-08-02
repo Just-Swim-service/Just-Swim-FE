@@ -5,21 +5,17 @@ import { useRouter } from 'next/navigation';
 import { IconGallery } from '@assets';
 
 import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
-import { useUserStore } from '../type/page';
-import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { UserType } from '@types';
-import Image, { ImageLoaderProps } from 'next/image';
 import { patchUserEdit } from '@/_apis/users.ts';
 import { ROUTES } from '@/_data/routes';
-
-// TODO: myLoader 를 공통으로 빼서 사용하도록 수정
-const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
-  return `${src}?w=${width}&q=${quality}`;
-};
+import { useUserStore } from '@store';
+import { useURLImage } from '@utils';
 
 export default function Profile() {
   const router = useRouter();
 
+  const { URLImage } = useURLImage();
   const { getUserName, getUserType, getToken, getUserImage, setAddUserProfile } =
     useUserStore();
   const userToken = getToken();
@@ -95,13 +91,11 @@ export default function Profile() {
       <div className={styles.profile_setting_section}>
         <div className={styles.profile_image_wrapper}>
           <div className={styles.profile_img}>
-            <Image
-              loader={myLoader}
-              src={inputImage}
+            <URLImage
+              imageURL={inputImage}
               alt="profile image"
               width={125}
               height={125}
-              priority
             />
           </div>
           <label htmlFor="select_image" className={styles.image_button}>

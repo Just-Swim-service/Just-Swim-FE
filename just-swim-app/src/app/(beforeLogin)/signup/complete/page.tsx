@@ -2,20 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 import styles from './pages.module.scss';
-import Image, { ImageLoaderProps } from 'next/image';
+import Image from 'next/image';
 import { TEXT } from '@data';
-import { useUserStore } from '../type/page';
 import { useLayoutEffect, useState } from 'react';
 import { ROUTES } from '@/_data/routes';
-
-// TODO: myLoader 를 공통으로 빼서 사용하도록 수정
-const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
-  return `${src}?w=${width}&q=${quality}`;
-};
+import { useUserStore } from '@/_store/user';
+import { useURLImage } from '@utils';
 
 export default function Complete() {
   const router = useRouter();
 
+  const { URLImage } = useURLImage();
   const { getUserImage, getToken, getUserType } = useUserStore();
   const userToken = getToken();
   const [userImage, setUserImage] = useState<string>();
@@ -46,13 +43,11 @@ export default function Complete() {
       </div>
       <div className={styles.complete_section}>
         <div className={styles.profile_img}>
-          <Image
-            loader={myLoader}
-            src={userImage as string}
+          <URLImage
+            imageURL={userImage as string}
             alt="profile image"
             width={125}
             height={125}
-            priority
           />
         </div>
       </div>
