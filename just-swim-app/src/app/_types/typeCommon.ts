@@ -25,7 +25,7 @@ export interface ImageCarouselProps {
 
 export interface ModalBodyProps {
   children?: React.ReactNode,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
+  hideModal: (event: MouseEvent<HTMLElement>) => void,
 }
 
 export interface ConfirmModalProps {
