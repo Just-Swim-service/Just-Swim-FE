@@ -1,0 +1,40 @@
+@import '@/globals.scss';
+
+.button {
+  position: relative;
+}
+
+.switch_body {
+  width: 35px;
+  height: 14px;
+
+  transition: all 200ms;
+
+  border-radius: 7px;
+
+  background-color: $--gray-300;
+}
+
+.switch_body.on {
+  background-color: $--Primary-blue;
+}
+
+.switch_circle {
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+  border: 1px solid $--gray-200;
+  background-color: $--White;
+
+  transition: all 200ms;
+
+  position: absolute;
+
+  top: -2px;
+  left: -2px;
+}
+
+.switch_circle.on {
+  transform: translate(21px);
+}

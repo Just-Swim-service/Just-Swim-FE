@@ -2,7 +2,7 @@
 
 import { MouseEvent, useState } from 'react';
 
-import { DatePicker, ConfirmModal } from '@components';
+import { DatePicker, LightConfirmModal } from '@components';
 import { DateModalProps } from '@types';
 
 import styled from './styles.module.scss';
@@ -25,8 +25,9 @@ export function DateModal({
   }
 
   return (
-    <ConfirmModal 
-      hideModal={hideModal} 
+    <LightConfirmModal 
+      title='피드백 기준일'
+      hideModal={hideModal}
       confirmCallback={confirmSelectedDate}
     >
       <div className={styled.modal}>
@@ -35,6 +36,6 @@ export function DateModal({
           changeSelectedDate={changeSelectedDate}
         />
       </div>
-    </ConfirmModal>
+    </LightConfirmModal>
   );
 }

@@ -33,3 +33,10 @@ export interface ConfirmModalProps {
   hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
   confirmCallback: (event: MouseEvent<HTMLButtonElement>) => void,
 }
+
+export interface LightConfirmModalProps {
+  title?: string,
+  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
+  confirmCallback: (event: MouseEvent<HTMLButtonElement>) => void,
+  children?: React.ReactNode,
+}
