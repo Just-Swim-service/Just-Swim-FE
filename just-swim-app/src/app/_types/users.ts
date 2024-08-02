@@ -30,7 +30,7 @@ export interface GetUserProfileRes {
   data: {
     success: boolean;
     message: string;
-    uesrData: UserEntity;
+    data: UserEntity;
   };
 }
 

@@ -9,8 +9,8 @@ import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
 import { Provider } from '@types';
 import { getTokenInCookies, handleSignUp } from '@/(beforeLogin)/_utils';
 import { getMyProfile } from '@/_apis/users.ts';
-import { useUserStore } from '@/(beforeLogin)/signup/type/page';
 import { ROUTES } from '@/_data/routes';
+import { useUserStore } from '@store';
 
 const SNS_ICONS = {
   google: IconGoogle,
@@ -34,7 +34,7 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
         return router.replace(ROUTES.ONBOARDING.signin);
       }
 
-      setAddUserProfile({ token: authorizationToken, profile: data });
+      setAddUserProfile({ token: authorizationToken, profile: data.data });
       const checkType = getUserType(authorizationToken);
       if (
         checkType === USER_TYPE.INSTRUCTOR ||
