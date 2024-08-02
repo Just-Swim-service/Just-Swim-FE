@@ -1,107 +1,169 @@
 'use client';
 
-import { TimepickerPrev, Header, Input, ClassInfo, DatepickerPrev, RepeatDatepicker } from '@components';
+import {
+  TimepickerPrev,
+  Header,
+  DatepickerPrev,
+  RepeatDatepicker,
+  TextInput,
+} from '@components';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import {
+  IconArrowRight,
+  IconTrashcan,
+  IconClock,
+  IconCalendar,
+  IconLocation,
+  IconRepeat,
+  IconShare,
+  IconDownload,
+} from '@assets';
+
+import { useEffect, useState } from 'react';
 import location_icon from '/public/assets/input_icon_location.png';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styled from './classInfoEdit.module.scss';
 
 export default function ClassInfoEdit() {
-  const router = useRouter();
+  const params = useParams();
 
-  const [showModal, setShowModal] = useState(false);
-  // const clickModal = () => setShowModal(!showModal);
-  const clickModal = () => {
-    setShowModal((prev) => !prev);
-  };
+  const lectureId = params.id;
+  const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`;
+  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_DB_TOKEN}`;
+
+  const [lecture, setLecture] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch(API_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: AUTHORIZATION_HEADER,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setLecture(data.data);
+      })
+      .catch((error) => {
+        console.error('API error:', error);
+        setError(error);
+      });
+  }, []);
+
+  const lectureData = lecture.map((item) => ({
+    lectureId: item.lectureId,
+    lectureTitle: item.lectureTitle,
+    lectureContent: item.lectureContent,
+    lectureTime: item.lectureTime ? item.lectureTime.split('-') : [],
+    lectureDays: item.lectureDays.replace(/./g, '$& ').trim(),
+    lectureLocation: item.lectureLocation,
+    lectureColor: item.lectureColor,
+    lectureQRCode: item.lectureQRCode,
+    lectureEndDate: item.lectureEndDate,
+    instructorName: item.instructorName,
+    instructorProfileImage: item.instructorProfileImage,
+    memberUserId: item.memberUserId,
+    memberProfileImage: item.memberProfileImage,
+  }));
+
+  if (error) {
+    console.error('API error:', error);
+    return <p>API 오류 발생</p>;
+  }
+
+  if (!lecture || lecture.length === 0) {
+    return <p>데이터 로딩 중...</p>;
+  }
+
+  const router = useRouter();
 
   return (
     <div>
       <Header title="수업 정보 수정" />
 
       <div className={styled.edit}>
-        <div className={styled.inner}>
-          <h3>
-            수정된 정보는 수강생 분들에게도 <br /> 적용되니 유의해주세요.
-          </h3>
+        {lectureData.map((item) => (
+          <>
+            <form>
+              <div className={styled.inner}>
+                <h3>
+                  수정된 정보는 수강생 분들에게도
+                  <br />
+                  적용되니 유의해주세요.
+                </h3>
+                <div className={styled.class_info1}>
+                  <label htmlFor="lectureTitle">
+                    수업명<span>(필수)</span>
+                  </label>
+                  <TextInput
+                    id="lectureTitle"
+                    name="lectureTitle"
+                    value={item.lectureTitle}
+                  />
 
-          <div className={styled.class_info1}>
-            <Input
-              label="수업명"
-              defaultValue="아침 5반"
-              type="text"
-              require={true}
-            />
-            <Input
-              label="수업 설명"
-              defaultValue="초보 반으로, 배영 위주로 수업"
-              type="text"
-              require={true}
-            />
-            {/* <div className="input_text">수업명</div> */}
-            {/* <input type="text" defaultValue={'아침 5반'} /> */}
-          </div>
-        </div>
-        <div className={styled.line}></div>
-        <div className={styled.inner}>
-          {/* <ClassInfo islabel={true} bgColor={'gray'} /> */}
+                  <label htmlFor="lectureContent">
+                    수업 설명<span>(필수)</span>
+                  </label>
+                  <TextInput
+                    id="lectureContent"
+                    name="lectureContent"
+                    value={item.lectureContent}
+                  />
+                </div>
+              </div>
 
-          <div className={styled.classInfo}>
-            <div className={styled.require}>
-              <label>수업시간</label>
-              <span>(필수)</span>
-            </div>
-            <div className={styled.classInfo_time}>
-              <TimepickerPrev label="시작" bgColor="gray" />
-              ~
-              <TimepickerPrev label="끝" bgColor="gray" />
-            </div>
-            {/* hyebin 매주 요일 지정 구현하기 */}
+              <div className={styled.line}></div>
 
-            <div className={styled.require}>
-              <label>수업 요일</label>
-              <span>(필수)</span>
-            </div>
-            <DatepickerPrev bgColor="gray" />
+              <div className={styled.inner}>
+                <div className={styled.classInfo}>
+                  <label htmlFor="">
+                    수업 시간
+                    <span>(필수)</span>
+                  </label>
+                  <div className={styled.classInfo_time}>
+                    <TimepickerPrev label="시작" bgColor="gray" />
+                    ~
+                    <TimepickerPrev label="끝" bgColor="gray" />
+                  </div>
 
-            <label htmlFor="location">수업 위치</label>
+                  <label>
+                    수업 요일
+                    <span>(필수)</span>
+                  </label>
+                  <DatepickerPrev bgColor="gray" />
 
-            <div className={styled.location_input}>
-              <input
-                id="location"
-                className={`${styled.input} ${styled.gray}`}
-                placeholder="강동구 실내 수영장"
-                onClick={() => router.push('edit/search')}
-              />
-              <Image
-                src={location_icon}
-                alt="location icon"
-                width={20}
-                height={20}
-                className={styled.locatin_icon}
-              />
-            </div>
+                  <div className={styled.location_input}>
+                    <label htmlFor="location">수업 위치</label>
+                    <input
+                      id="location"
+                      className={`${styled.input} ${styled.gray}`}
+                      placeholder="강동구 실내 수영장"
+                      onClick={() => router.push('edit/search')}
+                    />
+                  </div>
 
-            <label>종료 일자</label>
-            <RepeatDatepicker bgColor="gray" />
-
-            <label>구분 색</label>
-            <div className={styled.color_input}>
-              <input
-                className={`${styled.input} ${styled.gray}`}
-                onClick={clickModal}
-                placeholder="구분색"></input>
-              <div className={styled.pick_color} />
-            </div>
-            {/* {showModal && (
-              <ColorModal showModal={showModal} setShowModal={setShowModal} />
-            )} */}
-          </div>
-        </div>
-        <button className={styled.edit_btn}>수정하기</button>
+                  <label>종료 일자</label>
+                  <label>구분 색</label>
+                  <div className={styled.color_input}>
+                    <input
+                      className={`${styled.input} ${styled.gray}`}
+                      placeholder="구분색"></input>
+                    <div className={styled.pick_color} />
+                  </div>
+                </div>
+              </div>
+              <button className={styled.edit_btn}>수정하기</button>
+            </form>
+          </>
+        ))}
       </div>
     </div>
   );
