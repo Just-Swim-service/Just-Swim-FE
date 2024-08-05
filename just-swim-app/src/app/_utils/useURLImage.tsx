@@ -7,6 +7,7 @@ type URLImageProps = {
   height: number;
 };
 
+// TODO: URLImage 를 컴포넌트로 빼기
 export const useURLImage = () => {
   const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
     return `${src}?w=${width}&q=${quality}`;

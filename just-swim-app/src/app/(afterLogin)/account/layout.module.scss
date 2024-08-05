@@ -1,0 +1,11 @@
+@import '@/globals.scss';
+
+.account {
+  display: flex;
+  flex-direction: column;
+  min-width: 360px;
+  min-height: 640px;
+  height: 100vh;
+  align-items: center;
+  padding: 19px 16px 19px 16px;
+}
