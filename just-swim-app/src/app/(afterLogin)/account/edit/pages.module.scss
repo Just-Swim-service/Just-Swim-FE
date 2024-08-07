@@ -35,11 +35,22 @@
       @include Body1-R;
 
       line-height: 1em;
-      color: $--Primary-blue;
-      border-bottom: $--Primary-blue 1px solid;
       :hover {
         cursor: pointer;
       }
+    }
+
+    .abled {
+      pointer-events: auto;
+      color: $--Primary-blue;
+      border-bottom: $--Primary-blue 1px solid;
+    }
+
+    .disabled {
+      cursor: not-allowed;
+      pointer-events: none;
+      color: $--gray-400;
+      border-bottom: $--gray-400 1px solid;
     }
   }
 }
@@ -86,6 +97,7 @@
       }
     }
   }
+
   .name_input_wrapper {
     width: 100%;
     display: flex;
@@ -98,39 +110,37 @@
       color: $--gray-600;
     }
 
-    .name_input {
-      @include Title3-M;
+    .input_wrapper {
+      position: relative;
 
-      width: 100%;
-      height: 51px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
 
-      padding: 15px 16px;
+      .name_input {
+        @include Title3-M;
 
-      background-color: $--gray-50;
+        width: 100%;
+        height: 51px;
 
-      outline: 2px solid $--gray-100;
-      border-radius: 6px;
+        padding: 15px 16px;
 
-      border: none;
-      cursor: not-allowed;
-      pointer-events: none;
+        background-color: $--gray-50;
+
+        outline: 2px solid $--gray-100;
+        border-radius: 6px;
+
+        border: none;
+      }
+
+      svg {
+        position: absolute;
+
+        top: 50%;
+        transform: translate(0, -50%);
+
+        right: 16px;
+      }
     }
-  }
-}
-
-.account_footer {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 10px;
-  width: 100%;
-
-  .button_wrapper {
-    width: inherit;
-    height: 52px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
   }
 }
