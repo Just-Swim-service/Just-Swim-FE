@@ -7,7 +7,7 @@ import { TimePickerProps } from '@types';
 
 import styled from './styles.module.scss';
 
-import { VerticalScroll } from './components';
+import { VerticalSlider } from '@components';
 
 const generateMeridiemItems = () => {
   return [
@@ -71,21 +71,21 @@ export function TimePicker({
           top: itemHeight * ((itemsToShow - 1) / 2) + paddingY,
           height: itemHeight
         }} />
-          <VerticalScroll
+          <VerticalSlider
             value={meridiem}
             setValue={setMeridiem}
             items={generateMeridiemItems()}
             itemHeight={itemHeight}
             itemsToShow={itemsToShow}
           />
-          <VerticalScroll
+          <VerticalSlider
             value={hour}
             setValue={setHour}
             items={generateHourItems()}
             itemHeight={itemHeight}
             itemsToShow={itemsToShow}
           />
-          <VerticalScroll
+          <VerticalSlider
             value={minute}
             setValue={setMinute}
             items={generateMinuteItems()}

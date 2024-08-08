@@ -6,7 +6,7 @@ import { numberFormat, randomId, throttle } from '@utils';
 
 import styled from './styles.module.scss';
 
-export function VerticalScroll({
+export function VerticalSlider({
   value,
   setValue,
   items,
