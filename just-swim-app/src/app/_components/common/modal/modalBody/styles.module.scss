@@ -37,10 +37,13 @@
       div {
         width: 30px;
         height: 4px;
-
+        
         margin: 0 auto;
-
+        
         background-color: $--gray-300;
+
+        user-select: none;
+        pointer-events: none;
       }
     }
   }

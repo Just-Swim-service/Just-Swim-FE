@@ -2,6 +2,7 @@
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
 
+import { usePreventScroll } from "@hooks";
 import { ModalBodyProps } from "@types";
 
 import styled from './styles.module.scss';
@@ -13,15 +14,20 @@ export function ModalBody({
   const containerRef = useRef<HTMLDivElement>(null);
   const startCursorPosition = useRef<number>(0);
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
+  
+  usePreventScroll();
 
   const handleTouchStart = (event: TouchEvent<HTMLButtonElement>) => {
     startCursorPosition.current = event.targetTouches[0].pageY;
   };
 
   const handleTouchMove = (event: TouchEvent<HTMLButtonElement>) => {
+    if (event.targetTouches[0].pageY - startCursorPosition.current <= 0) {
+      return;
+    }
+
     setMovingCursorPosition(event.targetTouches[0].pageY - startCursorPosition.current);
-    
-  };  
+  };
   
   const handleTouchEnd = () => {
     if (movingCursorPositon > 150 && containerRef.current) {
