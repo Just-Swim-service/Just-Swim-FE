@@ -12,9 +12,9 @@ export function LightConfirmModal({
   return (
     <ModalBody hideModal={hideModal}>
       <div className={styled.header_wrapper}>
-        <button>취소</button>
+        <button onClick={hideModal}>취소</button>
         <p>{title}</p>
-        <button>완료</button>
+        <button onClick={confirmCallback}>완료</button>
       </div>
       {children}
     </ModalBody>
