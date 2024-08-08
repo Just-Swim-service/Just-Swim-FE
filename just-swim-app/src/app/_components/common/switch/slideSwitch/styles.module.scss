@@ -2,6 +2,10 @@
 
 .button {
   position: relative;
+
+  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-focus-ring-color: transparent;
 }
 
 .switch_body {
@@ -10,9 +14,8 @@
 
   transition: all 200ms;
 
-  border-radius: 7px;
-
   background-color: $--gray-300;
+  border-radius: 7px;
 }
 
 .switch_body.on {
