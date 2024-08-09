@@ -1,28 +1,17 @@
 'use client';
 
 import {
-  TimepickerPrev,
+  TimeInput,
   Header,
-  DatepickerPrev,
-  RepeatDatepicker,
   TextInput,
+  DayInput,
+  LocationInput,
+  DateInput,
+  ColorInput,
 } from '@components';
 
-import {
-  IconArrowRight,
-  IconTrashcan,
-  IconClock,
-  IconCalendar,
-  IconLocation,
-  IconRepeat,
-  IconShare,
-  IconDownload,
-} from '@assets';
-
 import { useEffect, useState } from 'react';
-import location_icon from '/public/assets/input_icon_location.png';
-import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { useParams } from 'next/navigation';
 import styled from './classInfoEdit.module.scss';
 
 export default function ClassInfoEdit() {
@@ -34,6 +23,46 @@ export default function ClassInfoEdit() {
 
   const [lecture, setLecture] = useState([]);
   const [error, setError] = useState(null);
+
+  const [formData, setFormData] = useState({});
+
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleEdit = async (lectureId: any) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: AUTHORIZATION_HEADER,
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `API error: ${response.status} - ${await response.text()}`,
+        );
+      }
+
+      // 성공 시 서버에서 반환받은 데이터로 업데이트
+      const updatedLectureData = await response.json();
+      console.log(updatedLectureData);
+      setLecture(updatedLectureData); // 수정된 데이터로 업데이트
+      alert('수정되었습니다.');
+    } catch (error) {
+      console.error('API error:', error);
+      alert('수정 중 오류가 발생했습니다.');
+    }
+  };
 
   useEffect(() => {
     fetch(API_URL, {
@@ -49,7 +78,7 @@ export default function ClassInfoEdit() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log(data.data);
         setLecture(data.data);
       })
       .catch((error) => {
@@ -57,22 +86,6 @@ export default function ClassInfoEdit() {
         setError(error);
       });
   }, []);
-
-  const lectureData = lecture.map((item) => ({
-    lectureId: item.lectureId,
-    lectureTitle: item.lectureTitle,
-    lectureContent: item.lectureContent,
-    lectureTime: item.lectureTime ? item.lectureTime.split('-') : [],
-    lectureDays: item.lectureDays.replace(/./g, '$& ').trim(),
-    lectureLocation: item.lectureLocation,
-    lectureColor: item.lectureColor,
-    lectureQRCode: item.lectureQRCode,
-    lectureEndDate: item.lectureEndDate,
-    instructorName: item.instructorName,
-    instructorProfileImage: item.instructorProfileImage,
-    memberUserId: item.memberUserId,
-    memberProfileImage: item.memberProfileImage,
-  }));
 
   if (error) {
     console.error('API error:', error);
@@ -83,88 +96,125 @@ export default function ClassInfoEdit() {
     return <p>데이터 로딩 중...</p>;
   }
 
-  const router = useRouter();
+  const isFormDataChanged = (lectureData: any, formData: any) => {
+    for (const key in formData) {
+      if (lectureData[key] !== formData[key]) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   return (
     <div>
-      <Header title="수업 정보 수정" />
+      {lecture && lecture.length > 0 ? (
+        lecture.map((item) => (
+          <div key={item.id}>
+            <Header title="수업 정보 수정" />
 
-      <div className={styled.edit}>
-        {lectureData.map((item) => (
-          <>
-            <form>
-              <div className={styled.inner}>
-                <h3>
-                  수정된 정보는 수강생 분들에게도
-                  <br />
-                  적용되니 유의해주세요.
-                </h3>
-                <div className={styled.class_info1}>
-                  <label htmlFor="lectureTitle">
-                    수업명<span>(필수)</span>
-                  </label>
-                  <TextInput
-                    id="lectureTitle"
-                    name="lectureTitle"
-                    value={item.lectureTitle}
-                  />
+            <div className={styled.edit}>
+              {lecture.map((item) => (
+                <>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleEdit(item.lectureId);
+                    }}>
+                    <div className={styled.inner}>
+                      <h3>
+                        수정된 정보는 수강생 분들에게도
+                        <br />
+                        적용되니 유의해주세요.
+                      </h3>
 
-                  <label htmlFor="lectureContent">
-                    수업 설명<span>(필수)</span>
-                  </label>
-                  <TextInput
-                    id="lectureContent"
-                    name="lectureContent"
-                    value={item.lectureContent}
-                  />
-                </div>
-              </div>
+                      <label htmlFor="lectureTitle">
+                        수업명
+                        <span>(필수)</span>
+                      </label>
+                      <TextInput
+                        name="lectureTitle"
+                        value={formData.lectureTitle || item.lectureTitle}
+                        onChange={handleChange}
+                      />
 
-              <div className={styled.line}></div>
+                      <label htmlFor="lectureContent">
+                        수업 설명
+                        <span>(필수)</span>
+                      </label>
+                      <TextInput
+                        name="lectureContent"
+                        value={formData.lectureContent || item.lectureContent}
+                        onChange={handleChange}
+                      />
+                    </div>
 
-              <div className={styled.inner}>
-                <div className={styled.classInfo}>
-                  <label htmlFor="">
-                    수업 시간
-                    <span>(필수)</span>
-                  </label>
-                  <div className={styled.classInfo_time}>
-                    <TimepickerPrev label="시작" bgColor="gray" />
-                    ~
-                    <TimepickerPrev label="끝" bgColor="gray" />
-                  </div>
+                    <div className={styled.line}></div>
 
-                  <label>
-                    수업 요일
-                    <span>(필수)</span>
-                  </label>
-                  <DatepickerPrev bgColor="gray" />
+                    <div className={styled.inner}>
+                      <label htmlFor="lectureTime">
+                        수업 시간
+                        <span>(필수)</span>
+                      </label>
+                      <TimeInput
+                        name="lectureTime"
+                        defaultValue={formData.lectureTime || item.lectureTime}
+                        defaultTimeValue={item.lectureTime}
+                        onChange={handleChange}
+                      />
 
-                  <div className={styled.location_input}>
-                    <label htmlFor="location">수업 위치</label>
-                    <input
-                      id="location"
-                      className={`${styled.input} ${styled.gray}`}
-                      placeholder="강동구 실내 수영장"
-                      onClick={() => router.push('edit/search')}
-                    />
-                  </div>
+                      <label htmlFor="lectureDays">
+                        수업 요일
+                        <span>(필수)</span>
+                      </label>
+                      <DayInput
+                        name="lectureDays"
+                        defaultValue={formData.lectureDays || item.lectureDays}
+                      />
 
-                  <label>종료 일자</label>
-                  <label>구분 색</label>
-                  <div className={styled.color_input}>
-                    <input
-                      className={`${styled.input} ${styled.gray}`}
-                      placeholder="구분색"></input>
-                    <div className={styled.pick_color} />
-                  </div>
-                </div>
-              </div>
-              <button className={styled.edit_btn}>수정하기</button>
-            </form>
-          </>
-        ))}
-      </div>
+                      <label htmlFor="lectureLocation">수업 위치</label>
+                      <TextInput
+                        name="lectureLocation"
+                        value={formData.lectureLocation || item.lectureLocation}
+                        onChange={handleChange}
+                      />
+                      {/* 수정 완료되면 추가 */}
+                      {/* <LocationInput
+                  name="lectureLocation"
+                  defaultValue={item.lectureLocation}
+                /> */}
+
+                      <label htmlFor="lectureEndDate">종료 일자</label>
+                      <DateInput
+                        name="lectureEndDate"
+                        defaultValue={
+                          formData.lectureEndDate || item.lectureEndDate
+                        }
+                        onChange={handleChange}
+                      />
+
+                      <label htmlFor="lectureColor">구분 색</label>
+                      <ColorInput
+                        name="lectureColor"
+                        defaultValue={formData.lectureColor || item.lectureColor}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <button
+                      className={styled.edit_btn}
+                      type="submit"
+                      disabled={!isFormDataChanged(item, formData)}>
+                      수정하기
+                    </button>
+                  </form>
+                </>
+              ))}
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>데이터를 불러오는 중입니다...</p>
+      )}
     </div>
   );
 }

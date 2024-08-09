@@ -2,115 +2,55 @@
 
 .edit {
   width: 100%;
-  // height: 640px;
-  // background-color: $--gray-50;
 
-  .inner {
-    padding: 19px 16px 0;
+  form {
+    margin-bottom: 100px;
 
-    .classInfo {
+    .inner {
+      width: 90%;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 10px;
 
-      .require {
-        display: flex;
-        font-size: 14px;
-        align-items: center;
+      h3 {
+        @include Title2-SB;
+        margin: 16px 0 22px 0;
+      }
+
+      label {
+        @include Title5-M;
 
         span {
-          color: $--Primary-blue;
           @include Body5-R;
+          color: $--Primary-blue;
           margin-left: 2px;
         }
       }
-
-      &_time {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        div {
-          width: 135px;
-          height: 51px;
-          border-style: none;
-        }
-      }
-
-      .location_input,
-      .color_input {
-        position: relative;
-        width: inherit;
-        input {
-          padding-left: 50px;
-        }
-        .pick_color {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          left: 10px;
-          width: 30px;
-          height: 30px;
-          background-color: red;
-          border-radius: 6px;
-        }
-        .input#location {
-          padding-left: 45px;
-        }
-        .locatin_icon {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          left: 10px;
-        }
-      }
-      .input {
-        width: 100%;
-        background-color: white;
-
-        border: 1px solid transparent;
-        border-radius: 3px;
-        height: 51px;
-        padding: 14px;
-
-        &.gray {
-          background-color: $--gray-50;
-        }
-      }
-    }
-  }
-
-  h3 {
-    line-height: 150%;
-    margin-bottom: 26px;
-  }
-
-  .class_info1 {
-    input:first-of-type {
-      margin-bottom: 22px;
     }
 
-    input:last-of-type {
-      margin-bottom: 28px;
+    .line {
+      width: 100vw;
+      height: 8px;
+      background-color: $--gray-50;
+      display: block;
+      margin: 8px 0 22px 0;
     }
-  }
 
-  .line {
-    width: 100%;
-    height: 8px;
-    background-color: $--gray-50;
-  }
+    .edit_btn {
+      @include Title3-SB;
+      position: fixed;
+      bottom: 0;
+      width: 100vw;
+      padding: 14px 0 34px 0;
+      text-align: center;
+      color: $--White;
+      background-color: $--Primary-blue;
 
-  .classInfo {
-    gap: 0;
-  }
-
-  .edit_btn {
-    background-color: $--Primary-blue;
-    width: 100%;
-    height: 72px;
-    color: white;
-
-    margin-top: 42px;
+      &:disabled {
+        background-color: $--gray-300;
+        cursor: not-allowed;
+      }
+    }
   }
 }
