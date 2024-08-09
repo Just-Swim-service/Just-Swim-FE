@@ -1,12 +1,27 @@
+'use client';
+
 import styled from './feedbackList.module.scss';
 import MaskGroup from '@assets/mask_group.svg';
 import Calendar from '@assets/calendar.svg';
 import UserTypeIndividual from '@assets/user_type_individual.svg';
 import { randomId } from '@utils';
 import { getFeedback } from '@apis';
+import { useEffect, useState } from 'react';
 
 export async function FeedbackList() {
-  let feedbackList = await getFeedback();
+  const [feedbackList, setFeedbackList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getFeedback();
+        setFeedbackList(data);
+      } catch (error) {
+        console.error('Error fetching feedback:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className={styled.feedbackList_box}>
@@ -17,8 +32,8 @@ export async function FeedbackList() {
         </p>
       </div>
       <div>
-        {feedbackList.map((item) => (
-          <div key={randomId()} className={styled.feedbackList_Card}>
+        {feedbackList.map((item, index) => (
+          <div key={index} className={styled.feedbackList_Card}>
             <div>
               <p className={styled.target}>
                 <span>

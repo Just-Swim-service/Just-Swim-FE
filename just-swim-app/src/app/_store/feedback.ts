@@ -1,4 +1,3 @@
-import { getMemberList } from '@/_apis/member';
 import { ChangeEvent } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -22,19 +21,21 @@ const feedbackStore = create<any>()(
     (set) => ({
       formDataState: {
         date: '',
-        files: '',
         link: '',
         content: '',
+        file: '',
+        fileURL: '',
       },
       setFeedbackHandler: (form) =>
         set((state: any) => {
-          // console.log(form);
+          console.log(form);
           return {
             formDataState: {
               date: form.date,
               link: form.link,
               content: form.content,
               file: form.file,
+              fileURL: form.fileURL,
             },
           };
         }),

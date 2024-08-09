@@ -9,7 +9,7 @@ async function getMemberList() {
     },
   });
   const json = await response.json();
-  return json;
+  return json.data;
 }
 
 export { getMemberList };

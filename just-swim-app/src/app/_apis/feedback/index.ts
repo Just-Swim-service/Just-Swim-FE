@@ -7,7 +7,7 @@ async function getFeedback() {
     },
   });
   const json = await response.json();
-  return json;
+  return json.data;
 }
 
 async function postFeedback(data, type, target) {
@@ -19,15 +19,19 @@ async function postFeedback(data, type, target) {
     feedbackTarget: target,
   };
 
-  console.log('val', value);
+  // console.log('val', value);
   let formData = new FormData();
   formData.append('feedbackDto', JSON.stringify(value));
-  formData.append('files', data.file);
 
-  console.log('formData', formData);
+  Array.from(data.file).forEach((el, i) => {
+    console.log(el);
+    formData.append('files', el);
+  });
+
   formData.forEach((value, key) => {
     console.log(value, key);
   });
+
   const response = await fetch(URL, {
     method: 'POST',
     headers: {

@@ -71,7 +71,8 @@ export default function FeedbackWrite() {
     formData.append('content', data.content);
     // https://stackoverflow.com/questions/35940290/how-to-convert-base64-string-to-javascript-file-object-like-as-from-file-input-f
     Array.from(images).forEach((el, i) => {
-      formData.append('file', el.dataUrl);
+      formData.append('file', el.file);
+      formData.append('fileURL', el.dataUrl);
     });
 
     const formDataObject: CustomFormData = {};
@@ -82,7 +83,7 @@ export default function FeedbackWrite() {
     formData.forEach((value, key) => {
       // console.log(value, key);
       // File 다중선택시 배열이 아닌, 1개만 들어가는 문제 해결방법,,
-      if (key === 'file') {
+      if (key === 'fileURL' || key === 'file') {
         if (Object.hasOwn(formDataObject, key)) {
           formDataObject[key].push(value);
         } else {

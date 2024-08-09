@@ -7,11 +7,13 @@ import { Header, Profile } from '@components';
 import { feedbackStore } from '@/_store/feedback';
 import { searchUserStore } from '@store';
 import { postFeedback } from '@apis';
+import { useRouter } from 'next/navigation';
 
 export default function ClassFeedbackConfirm() {
   const { selectedList } = searchUserStore();
   const { formDataState } = feedbackStore();
   const [checked, setChecked] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = () => {
     // console.log('formDataState', formDataState);
@@ -25,6 +27,8 @@ export default function ClassFeedbackConfirm() {
     ];
 
     postFeedback(formDataState, 'group', target);
+
+    router.push('/instructor/feedback');
   };
 
   return (
@@ -66,7 +70,7 @@ export default function ClassFeedbackConfirm() {
               첨부 파일: <span>2개</span>
             </div>
             <div className={styled.preview_wrapper}>
-              {formDataState.file?.map((preview, index) => {
+              {formDataState.fileURL?.map((preview, index) => {
                 // console.log(Object.keys(preview));
                 return (
                   <div
