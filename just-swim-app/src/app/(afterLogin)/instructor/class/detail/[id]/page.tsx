@@ -5,7 +5,6 @@ import styled from './classDetail.module.scss';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
-  IconArrowRight,
   IconTrashcan,
   IconClock,
   IconCalendar,
@@ -14,7 +13,7 @@ import {
   IconShare,
   IconDownload,
 } from '@assets';
-import { Header } from '@components';
+import { DeleteModal, Header } from '@components';
 import QRCode from '/public/assets/qr_code.png';
 
 export default function ClassDetail() {
@@ -26,6 +25,7 @@ export default function ClassDetail() {
 
   const [lecture, setLecture] = useState([]);
   const [error, setError] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     fetch(API_URL, {
@@ -55,7 +55,7 @@ export default function ClassDetail() {
     lectureTitle: item.lectureTitle,
     lectureContent: item.lectureContent,
     lectureTime: item.lectureTime ? item.lectureTime.split('-') : [],
-    lectureDays: item.lectureDays.replace(/./g, '$& ').trim(),
+    lectureDays: item.lectureDays.replace(/(.)(?=.)/g, '$1, '),
     lectureLocation: item.lectureLocation,
     lectureColor: item.lectureColor,
     lectureQRCode: item.lectureQRCode,
@@ -74,6 +74,39 @@ export default function ClassDetail() {
   if (!lecture || lecture.length === 0) {
     return <p>데이터 로딩 중...</p>;
   }
+
+  const handleDeleteClass = async () => {
+    try {
+      const response = await fetch(`${API_URL}/${lectureId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: AUTHORIZATION_HEADER,
+          'Content-Type': 'application/json', // 선택적 (데이터가 JSON일 경우)
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('수업 삭제 실패');
+      }
+
+      // 삭제 성공 처리 (예: state 업데이트, 모달 닫기)
+      setLecture(lecture.filter((item) => item.lectureId !== lectureId));
+      setShowConfirmModal(false);
+    } catch (error) {
+      console.error('수업 삭제 오류:', error);
+      // 에러 처리 (예: 사용자에게 오류 메시지 표시)
+    }
+  };
+
+  const handleDeleteButtonClick = () => {
+    return (
+      <DeleteModal
+        showModal={true}
+        setShowModal={setShowConfirmModal}
+        onDelete={handleDeleteClass}
+      />
+    );
+  };
 
   return (
     <div>
@@ -203,7 +236,7 @@ export default function ClassDetail() {
 
             <button className={styled.delete}>
               <IconTrashcan />
-              <div>수업 삭제</div>
+              수업 삭제
             </button>
 
             {item.memberUserId == 0 ? (
