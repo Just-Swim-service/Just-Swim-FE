@@ -14,6 +14,13 @@ export interface CalendarProps {
   changeSelectedDate?: (date: string) => void
 }
 
+export interface CalendarItemProps {
+  date: number,
+  isDisabled: boolean,
+  isToday: boolean,
+  isSelected: boolean,
+}
+
 export interface ImageCarouselProps {
   images: string[],
   index: number,

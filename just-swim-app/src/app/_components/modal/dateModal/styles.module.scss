@@ -1,12 +1,73 @@
+@import '@/globals.scss';
+
 .modal {
+  min-width: 320px;
+  max-width: 640px;
   width: 100%;
 
   display: flex;
   flex-direction: column;
 
-  padding-top: 50px;
+  padding: 50px 0;
+  margin: 0 auto;
 
-  .date_select {
-    padding: 20px 0;
+  .month_info {
+    width: 100%;
+
+    padding: 0px 16px;
+    margin-bottom: 8px;
+
+    & > p {
+      @include Title3-SB;
+
+      color: $--Black;
+    }
+  }
+
+  .week_days {
+    width: 100%;
+
+    display: flex;
+
+    padding: 6px 16px;
+
+    border-bottom: 1px solid $--gray-200;
+
+    .weeek_item {
+      width: calc(100% / 7);
+
+      color: $--Black;
+      text-align: center;
+
+      & > span {
+        @include Body2-R;
+      }
+    }
+
+    .weeek_item.sunday {
+      color: $--Cancel;
+    }
+
+    .weeek_item.saturday {
+      color: $--Primary-blue;
+    }
+  }
+
+  .calendar {
+    width: 100%;
+
+    padding: 0 16px;
+
+    display: flex;
+    flex-flow: wrap;
+
+    .calendar_item {
+      width: calc(100% / 7);
+      height: 54px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
