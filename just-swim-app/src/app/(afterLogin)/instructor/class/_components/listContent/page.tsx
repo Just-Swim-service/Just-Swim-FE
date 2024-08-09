@@ -9,7 +9,7 @@ export default function ListContent() {
   const [lectures, setLectures] = useState([]);
   const [error, setError] = useState(null);
 
-  const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/myLectures`;
+  const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/schedule`;
   const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_DB_TOKEN}`;
 
   useEffect(() => {
@@ -26,24 +26,26 @@ export default function ListContent() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        setLectures(data.data);
+        const processedLectures = data.data.map(
+          (lecture: { lectureEndDate: string }) => {
+            const lectureEndDate = new Date(
+              lecture.lectureEndDate.replace(/\./g, '-'),
+            ); // Replace dots with dashes for Date object parsing
+            const isPastLecture = lectureEndDate < new Date(); // Compare with current date
+
+            return {
+              ...lecture,
+              isPastLecture,
+            };
+          },
+        );
+        setLectures(processedLectures);
       })
       .catch((error) => {
         setError(error);
         console.error('API error:', error);
       });
   }, []);
-
-  const classList = lectures.map((item) => ({
-    lectureId: item.lectureId,
-    title: item.lectureTitle,
-    content: item.lectureContent,
-    location: item.lectureLocation,
-    days: item.lectureDays,
-    time: item.lectureTime,
-    color: item.lectureColor,
-  }));
 
   if (error) {
     console.error('API error:', error);
@@ -54,50 +56,102 @@ export default function ListContent() {
     return <p>데이터 로딩 중...</p>;
   }
 
+  const ongoingLectures = lectures.filter((lecture) => !lecture.isPastLecture);
+  const pastLectures = lectures.filter((lecture) => lecture.isPastLecture);
+
   return (
     <>
-      <p className={styled.title}>진행 중인 수업</p>
-      <div className={styled.tab_list}>
-        {classList.map((item) => (
-          <div
-            key={item.title}
-            className={styled.tab_content}
-            style={{ boxShadow: `0px -3px 0 0 ${item.color}` }}>
-            <Link href={`/instructor/class/detail/${item.lectureId}`}>
-              <div className={styled.text_content}>
-                <p className={styled.name}>{item.title}</p>
-                <p className={styled.target}>{item.content}</p>
-                <div className={styled.info}>
-                  <p>
-                    <span className={styled.icon}>
-                      <IconLocation />
-                    </span>
-                    {item.location}
-                  </p>
-                  <p>
-                    <span className={styled.icon}>
-                      <IconClock />
-                    </span>
-                    {item.days}
-                  </p>
-                  <p>
-                    <span className={styled.icon}>
-                      <IconRepeatTime />
-                    </span>
-                    {item.time}
-                  </p>
-                </div>
-                <div className={styled.profile_box}>
-                  <p>15명</p>
+      <p>
+        <p className={styled.title}>진행 중인 수업</p>
+        <div className={styled.tab_list}>
+          {ongoingLectures.map((item, index) => (
+            <div
+              key={item.lectureId}
+              className={index % 2 === 0 ? styled.tab_left : styled.tab_right}>
+              <div
+                className={styled.tab_content}
+                style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
+                <div className={styled.lectureItem}>
+                  <Link href={`/instructor/class/detail/${item.lectureId}`}>
+                    <div className={styled.text_content}>
+                      <p className={styled.name}>{item.lectureTitle}</p>
+                      <p className={styled.target}>{item.lectureContent}</p>
+                      <div className={styled.info}>
+                        <p>
+                          <span className={styled.icon}>
+                            <IconLocation />
+                          </span>
+                          {item.lectureLocation}
+                        </p>
+                        <p>
+                          <span className={styled.icon}>
+                            <IconClock />
+                          </span>
+                          {item.lectureDays}
+                        </p>
+                        <p>
+                          <span className={styled.icon}>
+                            <IconRepeatTime />
+                          </span>
+                          {item.lectureTime}
+                        </p>
+                      </div>
+                      <div className={styled.profile_box}>
+                        <p>15명</p>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
+          ))}
+        </div>
+      </p>
+      <div className={styled.bar}></div>
+      <p className={styled.title}>지난 수업</p>
+      <div className={styled.tab_list}>
+        {pastLectures.map((item, index) => (
+          <div
+            key={item.lectureId}
+            className={index % 2 === 0 ? styled.tab_left : styled.tab_right}>
+            <div
+              className={styled.tab_content}
+              style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
+              <div className={styled.lectureItem}>
+                <Link href={`/instructor/class/detail/${item.lectureId}`}>
+                  <div className={styled.text_content}>
+                    <p className={styled.name}>{item.lectureTitle}</p>
+                    <p className={styled.target}>{item.lectureContent}</p>
+                    <div className={styled.info}>
+                      <p>
+                        <span className={styled.icon}>
+                          <IconLocation />
+                        </span>
+                        {item.lectureLocation}
+                      </p>
+                      <p>
+                        <span className={styled.icon}>
+                          <IconClock />
+                        </span>
+                        {item.lectureDays}
+                      </p>
+                      <p>
+                        <span className={styled.icon}>
+                          <IconRepeatTime />
+                        </span>
+                        {item.lectureTime}
+                      </p>
+                    </div>
+                    <div className={styled.profile_box}>
+                      <p>15명</p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-      <div className={styled.bar}></div>
-      <p className={styled.title}>지난 수업</p>
-      <div className={styled.tab_list}></div>
     </>
   );
 }
