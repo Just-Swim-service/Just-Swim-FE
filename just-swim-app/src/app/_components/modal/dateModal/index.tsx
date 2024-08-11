@@ -46,7 +46,7 @@ export function DateModal({
 
   return (
     <LightConfirmModal 
-      title='피드백 기준일'
+      title={selectMonth ? '' : '피드백 기준일'}
       hideModal={hideModal}
       confirmCallback={confirmSelectedDate}
     >
