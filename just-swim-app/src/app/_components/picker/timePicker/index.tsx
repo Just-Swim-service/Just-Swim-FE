@@ -17,7 +17,7 @@ const generateMeridiemItems = () => {
 
 const generateHourItems = () => {
   return new Array(12).fill(0).map((_, index) => {
-    return numberFormat(index === 0 ? 12 : index);
+    return numberFormat(index);
   })
 }
 

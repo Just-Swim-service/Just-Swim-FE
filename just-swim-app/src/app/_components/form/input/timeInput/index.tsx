@@ -39,7 +39,7 @@ const TimeBlock = ({
         onClick={showModal}
       >
         <span className={styled.meridiem}>{selectedTime ? hourValue >= 12 ? "PM" : "AM" : ''}</span>
-        <span>{selectedTime ? `${numberFormat(hourValue % 12 === 0 ? 12 : hourValue % 12)}:${minuteValue}` : placeholder}</span>
+        <span>{selectedTime ? `${numberFormat(hourValue % 12)}:${minuteValue}` : placeholder}</span>
       </div>
       {
         modal && 
