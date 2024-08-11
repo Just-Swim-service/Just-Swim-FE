@@ -25,3 +25,10 @@ export interface TimeModalProps {
   hideModal: (event: MouseEvent<HTMLElement>) => void,
   setTimeValue: (time: string) => void,
 }
+
+export interface MonthModalProps {
+  yearValue: number,
+  monthValue: number,
+  updateValue: ({ year, month }: { year: number, month: number }) => void,
+  hideModal: (event: MouseEvent<HTMLElement>) => void,
+}
