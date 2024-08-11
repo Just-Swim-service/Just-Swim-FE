@@ -10,8 +10,11 @@ export interface DatePickerProps {
 
 export interface TimePickerProps {
   value: string,
-  setValue: (time: string) => void,
-  itemHeight?: number,
-  itemsToShow?: number,
-  paddingY?: number,
+  updateValue: (time: string) => void,
+}
+
+export interface MonthPickerProps {
+  yearValue: number,
+  monthValue: number,
+  updateValue: ({ year, month }: { year: number, month: number }) => void,
 }

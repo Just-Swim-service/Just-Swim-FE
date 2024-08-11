@@ -2,52 +2,44 @@
 
 import { MouseEvent, TouchEvent, WheelEvent, useEffect, useRef, useState } from 'react';
 
-import { numberFormat, randomId, throttle } from '@utils';
+import { randomId, throttle } from '@utils';
 
 import styled from './styles.module.scss';
 
 export function VerticalSlider({
-  value,
-  setValue,
-  items,
-  itemHeight,
-  itemsToShow,
+  itemList,
+  initialItem,
+  updateItem,
+  itemHeight = 60,
+  itemsToShow = 3,
+  xAxisPadding = 20,
+  useBorder = false,
 }: {
-  value: string,
-  setValue: Function,
-  items: { value: string }[]
-  itemHeight: number,
-  itemsToShow: number,
+  itemList: string[],
+  initialItem: string,
+  updateItem: (item: string) => void,
+  itemHeight?: number,
+  itemsToShow?: number,
+  xAxisPadding?: number
+  useBorder?: boolean,
 }) {
   const sideItemsToShow = ((itemsToShow - 1) / 2);
+  const initialItemIndex = itemList.indexOf(initialItem);
 
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const [cursorPosition, setCursorPosition] = useState<number>(-parseInt(value) * itemHeight);
-  const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
-  
-
   const startCapture = useRef<boolean>(false);
   const startCursorPosition = useRef<number>(0);
-  // const updateCursorPosition = useRef<boolean>(false);
-  const dragStartTime = useRef<number>(0);
-  // const dragEndTime = useRef<number>(0);
-  const dragType = useRef<string>('slow');
-  
+
+  const [cursorPosition, setCursorPosition] = useState<number>(-(initialItemIndex !== -1 ? initialItemIndex : 0) * itemHeight);
+  const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);  
+
   // mouse drag
   const endDrag = () => {
     if (startCapture.current) {
       startCapture.current = false;
+
       setCursorPosition(prev => prev + movingCursorPositon);
       setMovingCursorPosition(0);
-
-      if (performance.now() - dragStartTime.current <= 100) {
-        dragType.current = 'fast';
-      } else {
-        dragType.current = 'slow';
-      }
-
-      // updateCursorPosition.current = true;
     }
   }
 
@@ -55,13 +47,12 @@ export function VerticalSlider({
     if (!startCapture.current) {
       startCapture.current = true;
       startCursorPosition.current = event.pageY;
-      dragStartTime.current = performance.now();
     }
  };
 
   const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     if (startCapture.current) {
-      setMovingCursorPosition((event.pageY - startCursorPosition.current) * 2);
+      setMovingCursorPosition(event.pageY - startCursorPosition.current);
     }
   };
 
@@ -83,7 +74,7 @@ export function VerticalSlider({
 
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     if (startCapture.current) {
-      setMovingCursorPosition((event.targetTouches[0].pageY * 1 - startCursorPosition.current) * 3);
+      setMovingCursorPosition(event.targetTouches[0].pageY - startCursorPosition.current);
     }
   };  
   
@@ -95,12 +86,13 @@ export function VerticalSlider({
     endDrag();
   };
 
+  // mouse wheel
   const handleWheelScroll = (event: WheelEvent<HTMLDivElement>) => {
-    if (event.deltaY > 0) {
+    if (event.deltaY < 0) {
       if (cursorPosition < 0) {
         setCursorPosition((prev) => prev + itemHeight);
       }
-    } else if (cursorPosition > itemHeight * -(items.length - 1)) {
+    } else if (cursorPosition > itemHeight * -(itemList.length - 1)) {
       setCursorPosition((prev) => prev - itemHeight);
     }
   };
@@ -109,8 +101,8 @@ export function VerticalSlider({
     const index = Math.round(cursorPosition / itemHeight);
     let finalValue = index * itemHeight;
 
-    if (finalValue < itemHeight * -(items.length - 1)) {
-      finalValue = itemHeight * -(items.length - 1);
+    if (finalValue < itemHeight * -(itemList.length - 1)) {
+      finalValue = itemHeight * -(itemList.length - 1);
     }
 
     if (finalValue > 0) {
@@ -120,7 +112,7 @@ export function VerticalSlider({
     const value = -(finalValue / itemHeight);
 
     setCursorPosition(finalValue);
-    setValue(numberFormat(value));
+    updateItem(itemList[value]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cursorPosition]);
 
@@ -128,6 +120,9 @@ export function VerticalSlider({
     <div
       ref={containerRef}
       className={styled.container}
+      style={{
+        height: itemHeight * itemsToShow,
+      }}
       onMouseDown={handleMouseDown}
       onMouseMove={throttle(handleMouseMove, 10)}
       onMouseLeave={handleMouseLeave}
@@ -138,30 +133,63 @@ export function VerticalSlider({
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheelScroll}
     >
-      <div className={styled.upper_border} style={{
-        top: itemHeight * sideItemsToShow
-      }} />
-      <div className={styled.lower_border} style={{
-        bottom: itemHeight * sideItemsToShow
-      }} />
-      <div className={styled.upper_blur} style={{
-        height: itemHeight * sideItemsToShow - 1,
-      }} />
-      <div className={styled.lower_blur} style={{
-        height: itemHeight * sideItemsToShow - 1,
-      }} />
-      <div className={`${styled.item_list} ${dragType.current === 'fast' ? styled.picker_fast : styled.picker_slow}`} style={{
-        height: itemHeight * items.length,
-        marginTop: itemHeight * sideItemsToShow,
-        transform: `translateY(${cursorPosition + movingCursorPositon}px)`
-      }}>
+      {
+        useBorder &&
+        <>
+          <div className={styled.border} style={{
+            top: itemHeight * sideItemsToShow
+          }} />
+          <div className={styled.border} style={{
+            bottom: itemHeight * sideItemsToShow
+          }} />
+        </>
+      }
+      {
+        new Array(sideItemsToShow).fill(0).map((_, idx) => {
+          return (
+            <>
+              <div
+                key={randomId()}
+                className={styled.blur} 
+                style={{
+                  height: itemHeight,
+                  top: itemHeight * (sideItemsToShow - 1 - idx),
+                  opacity: 0.5 + (idx * 0.2)
+                }}
+              />
+              <div
+                key={randomId()}
+                className={styled.blur} 
+                style={{
+                  height: itemHeight,
+                  bottom: itemHeight * (sideItemsToShow - 1 - idx),
+                  opacity: 0.5 + (idx * 0.2)
+                }}
+              />
+            </>
+          )
+        })
+      }
+      <div
+        className={styled.item_list} 
+        style={{
+          height: itemHeight * itemList.length,
+          marginTop: itemHeight * sideItemsToShow,
+          transform: `translateY(${cursorPosition + movingCursorPositon}px)`
+        }}
+      >
         {
-          items.map(item => {
+          itemList.map(item => {
             return (
-              <div key={randomId()} className={styled.item} style={{
-                height: itemHeight
-              }}>
-                <div>{item.value}</div>
+              <div 
+                key={randomId()} 
+                className={styled.item}
+                style={{
+                  height: itemHeight,
+                  padding: `0 ${xAxisPadding}px`
+                }}
+              >
+                <div>{item}</div>
               </div>
             );
           })

@@ -17,6 +17,9 @@
     padding: 0px 16px;
     margin-bottom: 8px;
 
+    display: flex;
+    gap: 8px;
+
     & > p {
       @include Title3-SB;
 

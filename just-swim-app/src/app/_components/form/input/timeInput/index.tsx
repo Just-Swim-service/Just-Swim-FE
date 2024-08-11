@@ -57,7 +57,7 @@ function _TimeInput({
   name,
   valid = true,
   defaultValue = "",
-  defaultTimeValue = "10:10",
+  defaultTimeValue = "10:30",
   ...props
 }: TimeInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {

@@ -1,0 +1,21 @@
+@import '@/globals.scss';
+
+.container {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  .overlay {
+    width: calc(100% - 32px);
+
+    position: absolute;
+    left: 16px;
+
+    background-color: $--gray-100;
+
+    border-radius: 6px;
+  }
+}
