@@ -5,7 +5,7 @@ import { MouseEvent, useState } from 'react';
 import { ModalCalendarItem, LightConfirmModal, MonthPicker } from '@components';
 import { useCalendar } from '@hooks';
 import { randomId } from '@utils';
-import { weekDays } from '@data';
+import { WEEK_DAYS } from '@data';
 import { DateModalProps } from '@types';
 import { IconArrowRightSmall } from '@assets';
 
@@ -73,7 +73,7 @@ export function DateModal({
             <>
               <div className={styled.week_days}>
                 {
-                  weekDays.map((d, idx) => {
+                  WEEK_DAYS.map((d, idx) => {
                     return (
                       <div 
                         key={randomId()} 
