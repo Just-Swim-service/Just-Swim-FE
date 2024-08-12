@@ -61,96 +61,193 @@ export default function ListContent() {
 
   return (
     <>
-      <p>
-        <p className={styled.title}>진행 중인 수업</p>
-        <div className={styled.tab_list}>
+      <p className={styled.title}>진행 중인 수업</p>
+      <div className={styled.tab_list}>
+        <div className="left_content">
           {ongoingLectures.map((item, index) => (
-            <div
-              key={item.lectureId}
-              className={index % 2 === 0 ? styled.tab_left : styled.tab_right}>
-              <div
-                className={styled.tab_content}
-                style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
-                <div className={styled.lectureItem}>
-                  <Link href={`/instructor/class/detail/${item.lectureId}`}>
-                    <div className={styled.text_content}>
-                      <p className={styled.name}>{item.lectureTitle}</p>
-                      <p className={styled.target}>{item.lectureContent}</p>
-                      <div className={styled.info}>
-                        <p>
-                          <span className={styled.icon}>
-                            <IconLocation />
-                          </span>
-                          {item.lectureLocation}
-                        </p>
-                        <p>
-                          <span className={styled.icon}>
-                            <IconClock />
-                          </span>
-                          {item.lectureDays}
-                        </p>
-                        <p>
-                          <span className={styled.icon}>
-                            <IconRepeatTime />
-                          </span>
-                          {item.lectureTime}
-                        </p>
+            <>
+              {index % 2 === 0 && (
+                <div
+                  key={item.lectureId}
+                  className={styled.tab_content}
+                  style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
+                  <div className={styled.lectureItem}>
+                    <Link href={`/instructor/class/detail/${item.lectureId}`}>
+                      <div className={styled.text_content}>
+                        <p className={styled.name}>{item.lectureTitle}</p>
+                        <p className={styled.target}>{item.lectureContent}</p>
+                        <div className={styled.info}>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconLocation />
+                            </span>
+                            {item.lectureLocation}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconClock />
+                            </span>
+                            {item.lectureDays}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconRepeatTime />
+                            </span>
+                            {item.lectureTime}
+                          </p>
+                        </div>
+                        <div className={styled.profile_box}>
+                          <p>15명</p>
+                        </div>
                       </div>
-                      <div className={styled.profile_box}>
-                        <p>15명</p>
-                      </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </div>
+              )}
+            </>
           ))}
         </div>
-      </p>
-      <div className={styled.bar}></div>
-      <p className={styled.title}>지난 수업</p>
-      <div className={styled.tab_list}>
-        {pastLectures.map((item, index) => (
-          <div
-            key={item.lectureId}
-            className={index % 2 === 0 ? styled.tab_left : styled.tab_right}>
-            <div
-              className={styled.tab_content}
-              style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
-              <div className={styled.lectureItem}>
-                <Link href={`/instructor/class/detail/${item.lectureId}`}>
-                  <div className={styled.text_content}>
-                    <p className={styled.name}>{item.lectureTitle}</p>
-                    <p className={styled.target}>{item.lectureContent}</p>
-                    <div className={styled.info}>
-                      <p>
-                        <span className={styled.icon}>
-                          <IconLocation />
-                        </span>
-                        {item.lectureLocation}
-                      </p>
-                      <p>
-                        <span className={styled.icon}>
-                          <IconClock />
-                        </span>
-                        {item.lectureDays}
-                      </p>
-                      <p>
-                        <span className={styled.icon}>
-                          <IconRepeatTime />
-                        </span>
-                        {item.lectureTime}
-                      </p>
-                    </div>
-                    <div className={styled.profile_box}>
-                      <p>15명</p>
-                    </div>
+
+        <div className="right_content">
+          {ongoingLectures.map((item, index) => (
+            <>
+              {index % 2 !== 0 && (
+                <div
+                  key={item.lectureId}
+                  className={styled.tab_content}
+                  style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
+                  <div className={styled.lectureItem}>
+                    <Link href={`/instructor/class/detail/${item.lectureId}`}>
+                      <div className={styled.text_content}>
+                        <p className={styled.name}>{item.lectureTitle}</p>
+                        <p className={styled.target}>{item.lectureContent}</p>
+                        <div className={styled.info}>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconLocation />
+                            </span>
+                            {item.lectureLocation}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconClock />
+                            </span>
+                            {item.lectureDays}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconRepeatTime />
+                            </span>
+                            {item.lectureTime}
+                          </p>
+                        </div>
+                        <div className={styled.profile_box}>
+                          <p>15명</p>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        ))}
+                </div>
+              )}
+            </>
+          ))}
+        </div>
+      </div>
+
+      <div className={styled.bar}></div>
+
+      <p className={styled.title}>지난 수업</p>
+
+      <div className={styled.tab_list}>
+        <div className="left_content">
+          {pastLectures.map((item, index) => (
+            <>
+              {index % 2 === 0 && (
+                <div
+                  key={item.lectureId}
+                  className={styled.tab_content}
+                  style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
+                  <div className={styled.lectureItem}>
+                    <Link href={`/instructor/class/detail/${item.lectureId}`}>
+                      <div className={styled.text_content}>
+                        <p className={styled.name}>{item.lectureTitle}</p>
+                        <p className={styled.target}>{item.lectureContent}</p>
+                        <div className={styled.info}>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconLocation />
+                            </span>
+                            {item.lectureLocation}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconClock />
+                            </span>
+                            {item.lectureDays}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconRepeatTime />
+                            </span>
+                            {item.lectureTime}
+                          </p>
+                        </div>
+                        <div className={styled.profile_box}>
+                          <p>15명</p>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </>
+          ))}
+        </div>
+
+        <div className="right_content">
+          {pastLectures.map((item, index) => (
+            <>
+              {index % 2 !== 0 && (
+                <div
+                  key={item.lectureId}
+                  className={styled.tab_content}
+                  style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
+                  <div className={styled.lectureItem}>
+                    <Link href={`/instructor/class/detail/${item.lectureId}`}>
+                      <div className={styled.text_content}>
+                        <p className={styled.name}>{item.lectureTitle}</p>
+                        <p className={styled.target}>{item.lectureContent}</p>
+                        <div className={styled.info}>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconLocation />
+                            </span>
+                            {item.lectureLocation}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconClock />
+                            </span>
+                            {item.lectureDays}
+                          </p>
+                          <p>
+                            <span className={styled.icon}>
+                              <IconRepeatTime />
+                            </span>
+                            {item.lectureTime}
+                          </p>
+                        </div>
+                        <div className={styled.profile_box}>
+                          <p>15명</p>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </>
+          ))}
+        </div>
       </div>
     </>
   );

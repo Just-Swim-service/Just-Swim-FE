@@ -8,71 +8,64 @@
 .tab_list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-}
+  justify-content: space-around;
+  flex: 1;
 
-.tab_left {
-  float: left;
-}
+  .tab_content {
+    width: 146px;
+    height: fit-content;
+    min-height: 0;
+    background-color: $--gray-50;
+    border-radius: 13px;
+    padding: 6px;
+    margin-bottom: 12px;
 
-.tab_right {
-  float: right;
-}
+    .text_content {
+      margin: 16px 12px 20px 12px;
 
-.tab_content {
-  width: 146px;
-  height: fit-content;
-  min-height: 0;
-  background-color: $--gray-50;
-  border-radius: 13px;
-  padding: 6px;
-  margin-bottom: 12px;
-
-  .text_content {
-    margin: 16px 12px 20px 12px;
-
-    .name {
-      @include Title3-SB;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .target {
-      @include Body2-R;
-    }
-
-    .icon {
-      margin-right: 6px;
-      vertical-align: middle;
-      color: $--gray-700;
-    }
-
-    .info {
-      @include Body3-R;
-      margin: 18px 0;
-      color: $--gray-900;
-
-      p {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .name {
+        @include Title3-SB;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
       }
-    }
 
-    .profile_box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      .target {
+        @include Body2-R;
+      }
 
-      .photo_list {
-        img:nth-child(n + 2) {
-          margin-left: -8px;
+      .icon {
+        margin-right: 6px;
+        vertical-align: middle;
+        color: $--gray-700;
+      }
+
+      .info {
+        @include Body3-R;
+        margin: 18px 0;
+        color: $--gray-900;
+
+        p {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
 
-      p {
-        @include Title5-SB;
+      .profile_box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .photo_list {
+          img:nth-child(n + 2) {
+            margin-left: -8px;
+          }
+        }
+
+        p {
+          @include Title5-SB;
+        }
       }
     }
   }
