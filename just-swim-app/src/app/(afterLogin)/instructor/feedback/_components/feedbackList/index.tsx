@@ -15,7 +15,23 @@ export async function FeedbackList() {
     const fetchData = async () => {
       try {
         const data = await getFeedback();
-        setFeedbackList(data);
+        let map = new Map();
+
+        // console.log(data);
+        // feedbackId가 같다면 피드백 정보가 담긴 obj를 배열로 담아준다.
+        data.forEach((el) => {
+          if (!map.has(el.feedbackId)) {
+            map.set(el.feedbackId, [el]);
+          } else {
+            let existingArray = map.get(el.feedbackId);
+            // existingArray.push(el);
+            map.set(el.feedbackId, existingArray);
+          }
+        });
+        // console.log(map.values());
+        // setFeedbackList(data);
+        let arrayFromMap = Array.from(map.values());
+        setFeedbackList(arrayFromMap);
       } catch (error) {
         console.error('Error fetching feedback:', error);
       }
@@ -33,28 +49,29 @@ export async function FeedbackList() {
       </div>
       <div>
         {feedbackList.map((item, index) => (
-          <div key={index} className={styled.feedbackList_Card}>
+          <div key={item[0].feedbackId} className={styled.feedbackList_Card}>
             <div>
               <p className={styled.target}>
                 <span>
                   <MaskGroup />
+                  {/* {console.log(item)} */}
                 </span>
-                {item.target}
+                {`${item[0].memberNickname} 님외 ${item.length}명에게`}
               </p>
             </div>
-            <p className={styled.content}>{item.feedbackContent}</p>
+            <p className={styled.content}>{item[0].feedbackContent}</p>
             <div>
               <p>
                 <span className={styled.icon}>
                   <Calendar />
                 </span>
-                {item.feedbackDate}
+                {item[0].feedbackDate}
               </p>
               <p>
                 <span className={styled.icon}>
                   <UserTypeIndividual />
                 </span>
-                {item.feedbackType}
+                {item[0].feedbackType}
               </p>
             </div>
           </div>
