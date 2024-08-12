@@ -23,10 +23,12 @@ async function postFeedback(data, type, target) {
   let formData = new FormData();
   formData.append('feedbackDto', JSON.stringify(value));
 
-  Array.from(data.file).forEach((el, i) => {
-    console.log(el);
-    formData.append('files', el);
-  });
+  if (data.file) {
+    Array.from(data.file).forEach((el, i) => {
+      // console.log(el);
+      formData.append('files', el);
+    });
+  }
 
   formData.forEach((value, key) => {
     console.log(value, key);
