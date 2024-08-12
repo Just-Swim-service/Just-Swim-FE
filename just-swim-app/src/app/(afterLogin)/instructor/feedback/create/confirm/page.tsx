@@ -10,7 +10,7 @@ import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
 
 export default function ClassFeedbackConfirm() {
-  const { selectedList } = searchUserStore();
+  const { selectedList, reset } = searchUserStore();
   const { formDataState } = feedbackStore();
   const [checked, setChecked] = useState(false);
   const router = useRouter();
@@ -26,7 +26,9 @@ export default function ClassFeedbackConfirm() {
       },
     ];
 
-    postFeedback(formDataState, 'group', target);
+    postFeedback(formDataState, 'personal', target);
+
+    reset();
 
     router.push('/instructor/feedback');
   };

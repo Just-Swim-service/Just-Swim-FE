@@ -33,9 +33,17 @@ type Action = {
   loadUserList: () => Promise<void>;
 };
 
+const initialState: State = {
+  selectedList: [],
+  checkedList: [],
+};
+
 const searchUserStore = create<State & Action>()(
   persist(
     (set) => ({
+      reset: () => {
+        set(initialState);
+      },
       userList: [],
       loadUserList: async () => {
         const userList = await getMemberList();
