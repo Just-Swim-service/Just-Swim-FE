@@ -13,11 +13,53 @@ import {
   IconShare,
   IconDownload,
 } from '@assets';
-import { DeleteModal, Header } from '@components';
+import { Header } from '@components';
 import QRCode from '/public/assets/qr_code.png';
+import { useRouter } from 'next/navigation';
+
+interface ConfirmModalProps {
+  isOpen: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
+  if (!isOpen) return null;
+
+  return (
+    <>
+      <div className={styled.delete_modal}>
+        <h3>수업을 삭제하시겠습니까?</h3>
+        <p>
+          삭제된 수업은 복구되지 않으며,
+          <br />
+          해당 수강생의 화면에서도 삭제됩니다.
+        </p>
+        <form action="#">
+          <input
+            type="checkbox"
+            id="confirmation-checkbox"
+            style={{ marginRight: '8px' }}
+          />
+          <label htmlFor="confirmation-checkbox">유의사항을 확인했습니다.</label>
+        </form>
+        <div className={styled.modal_button}>
+          <button className={styled.button_cancel} onClick={onCancel}>
+            취소
+          </button>
+          <button className={styled.button_ok} onClick={onConfirm}>
+            수업 삭제
+          </button>
+        </div>
+      </div>
+      <div className={styled.overlay}></div>
+    </>
+  );
+};
 
 export default function ClassDetail() {
   const params = useParams();
+  const router = useRouter();
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`;
@@ -68,20 +110,20 @@ export default function ClassDetail() {
 
   if (error) {
     console.error('API error:', error);
-    return <p>API 오류 발생</p>;
+    return <p>API 오류가 발생하였습니다.</p>;
   }
 
   if (!lecture || lecture.length === 0) {
-    return <p>데이터 로딩 중...</p>;
+    return <p>데이터를 로딩 중입니다...</p>;
   }
 
-  const handleDeleteClass = async () => {
+  const DeleteHandler = async () => {
     try {
-      const response = await fetch(`${API_URL}/${lectureId}`, {
+      const response = await fetch(`${API_URL}`, {
         method: 'DELETE',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: AUTHORIZATION_HEADER,
-          'Content-Type': 'application/json', // 선택적 (데이터가 JSON일 경우)
         },
       });
 
@@ -89,23 +131,13 @@ export default function ClassDetail() {
         throw new Error('수업 삭제 실패');
       }
 
-      // 삭제 성공 처리 (예: state 업데이트, 모달 닫기)
-      setLecture(lecture.filter((item) => item.lectureId !== lectureId));
+      alert('수업 삭제 성공');
       setShowConfirmModal(false);
+      router.push('/instructor/class');
     } catch (error) {
-      console.error('수업 삭제 오류:', error);
-      // 에러 처리 (예: 사용자에게 오류 메시지 표시)
+      console.error('수업 삭제 오류 발생', error);
+      alert('수업 삭제에 실패하였습니다. 관리자에게 문의하세요.');
     }
-  };
-
-  const handleDeleteButtonClick = () => {
-    return (
-      <DeleteModal
-        showModal={true}
-        setShowModal={setShowConfirmModal}
-        onDelete={handleDeleteClass}
-      />
-    );
   };
 
   return (
@@ -233,13 +265,27 @@ export default function ClassDetail() {
 
               <div className={styled.color_input}></div>
             </div>
-
-            <button className={styled.delete}>
+          </div>
+          <div className={styled.button_box}>
+            <button
+              className={styled.delete}
+              onClick={() => setShowConfirmModal(true)}>
               <IconTrashcan />
               수업 삭제
             </button>
 
-            {item.memberUserId == 0 ? (
+            {showConfirmModal && (
+              <ConfirmModal
+                isOpen={showConfirmModal}
+                onConfirm={async () => {
+                  await DeleteHandler();
+                  setShowConfirmModal(false);
+                }}
+                onCancel={() => setShowConfirmModal(false)}
+              />
+            )}
+
+            {item.memberUserId === 0 ? (
               <></>
             ) : (
               <button className={styled.feedback_btn}>
@@ -249,6 +295,7 @@ export default function ClassDetail() {
           </div>
         </>
       ))}
+      <div className={styled.bottom_gap}></div>
     </div>
   );
 }

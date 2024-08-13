@@ -173,13 +173,16 @@
       vertical-align: middle;
     }
   }
+}
+
+.button_box {
+  background-color: $--gray-50;
 
   .delete {
     @include Title5-M;
 
-    margin: 40px auto;
-
     width: 103px;
+    margin: 0 auto;
     padding: 14px 0;
     background-color: white;
     border: 1px solid $--gray-200;
@@ -207,4 +210,86 @@
     background-color: $--Primary-blue;
     color: white;
   }
+}
+
+.delete_modal {
+  h3 {
+    @include Title3-SB;
+  }
+
+  p {
+    @include Body4-R;
+    color: $--gray-600;
+  }
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  width: 328px;
+  height: 216px;
+  padding: 20px;
+  background-color: $--White;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-radius: 8px;
+
+  .modal_button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    form {
+      @include Body3-R;
+    }
+
+    .button_cancel {
+      @include Title3-SB;
+      width: 143px;
+      height: 52px;
+      padding: 14px 0;
+      background-color: $--White;
+      border: 1px solid $--gray-200;
+      border-radius: 13px;
+    }
+
+    .button_ok {
+      @include Title3-SB;
+      width: 143px;
+      height: 52px;
+      padding: 14px 0;
+      background-color: $--Cancel;
+      border: 1px solid $--Cancel;
+      border-radius: 13px;
+      color: $--White;
+    }
+
+    p {
+      color: #795548;
+      font-weight: bold;
+      text-align: center;
+      font-size: large;
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 998;
+}
+
+.bottom_gap {
+  height: 100px;
+  background-color: $--gray-50;
 }
