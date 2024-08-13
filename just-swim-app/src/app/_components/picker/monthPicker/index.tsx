@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { VerticalSlider } from "@components";
+import { VerticalSlider, VerticalSliderLoop } from "@components";
 import { MonthPickerProps } from "@types";
 
 import styled from './styles.module.scss';
@@ -64,7 +64,7 @@ export function MonthPicker({
         itemHeight={itemHeight}
         itemsToShow={itemsToShow}
       />
-      <VerticalSlider
+      <VerticalSliderLoop
         itemList={monthList}
         initialItem={(month + 1) + '월'}
         updateItem={updateMonth}

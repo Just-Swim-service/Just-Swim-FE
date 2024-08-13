@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { numberFormat } from '@utils';
 import { TimePickerProps } from '@types';
-import { VerticalSlider } from '@components';
+import { VerticalSlider, VerticalSliderLoop } from '@components';
 
 import styled from './styles.module.scss';
 
@@ -73,7 +73,7 @@ export function TimePicker({
         itemsToShow={itemsToShow}
         useBorder={true}
       />
-      <VerticalSlider
+      <VerticalSliderLoop
         itemList={hourList}
         initialItem={hour}
         updateItem={updateHour}
@@ -81,7 +81,7 @@ export function TimePicker({
         itemsToShow={itemsToShow}
         useBorder={true}
       />
-      <VerticalSlider
+      <VerticalSliderLoop
         itemList={minuteList}
         initialItem={minute}
         updateItem={updateMinute}
