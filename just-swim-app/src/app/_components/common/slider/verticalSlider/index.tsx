@@ -211,7 +211,7 @@ export function VerticalSlider({
 
 const checkIndexInRange = (list: string[], index: number) => {
   if (index < 0) {
-    index = list.length + index;
+    index = list.length + (index % list.length);
   }
 
   if (index >= list.length) {
@@ -270,10 +270,11 @@ export function VerticalSliderLoop({
 }) {
   const sideItemsToShow = ((itemsToShow - 1) / 2);
   const initialItemIndex = itemList.indexOf(initialItem) !== -1 ? itemList.indexOf(initialItem) : 0;
-
+  
   const listLength = itemsToShow * 2 + 1;
   const middleIndex = itemsToShow;
   const middleY = (middleIndex - sideItemsToShow) * itemHeight;
+  const moveNext = itemHeight / 2;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -307,29 +308,21 @@ export function VerticalSliderLoop({
     if (startCapture.current) {
       setMovingCursorPosition(position - startCursorPosition.current);
 
-      if (position > updatePosition.current) {
-        if (position - updatePosition.current > itemHeight / 2) {
-          currentIndex.current = currentIndex.current - 1;
-          updatePosition.current = updatePosition.current + itemHeight;
-          marginTop.current = marginTop.current - itemHeight;
+      const direction = position > updatePosition.current ? 1 : -1;
+      const moved = direction * position - direction * updatePosition.current;
 
-          currentIndex.current = checkIndexInRange(itemList, currentIndex.current);
+      if (moved > moveNext) {
+        const itemsPassed = Math.floor(moved / itemHeight);
+        const itemsToMove = itemsPassed + (Math.abs(moved % itemHeight) > moveNext ? 1 : 0);
 
-          setList(updateList(itemList, currentIndex.current, listLength));
-        } 
-      } else {
-        if (updatePosition.current - position > itemHeight / 2) {
-          currentIndex.current = currentIndex.current + 1;
-          updatePosition.current = updatePosition.current - itemHeight;
-          marginTop.current = marginTop.current + itemHeight;
+        currentIndex.current = checkIndexInRange(itemList, currentIndex.current - direction * itemsToMove);
+        updatePosition.current = updatePosition.current + (direction * itemHeight * itemsToMove);
+        marginTop.current = marginTop.current - (direction * itemHeight * itemsToMove);
 
-          currentIndex.current = checkIndexInRange(itemList, currentIndex.current);
-
-          setList(updateList(itemList, currentIndex.current, listLength));
-        } 
+        setList(updateList(itemList, currentIndex.current, listLength));
       }
     }
-  }, [itemHeight, itemList, listLength]);
+  }, [itemHeight, itemList, listLength, moveNext]);
 
   const endDrag = useCallback(() => {
     if (startCapture.current) {
@@ -381,7 +374,7 @@ export function VerticalSliderLoop({
     const count = Math.floor(Math.abs(movingCursorPositon) / itemHeight);
     const rest = Math.abs(movingCursorPositon % itemHeight);
 
-    if (rest <= itemHeight / 2) {
+    if (rest <= moveNext) {
       setMovingCursorPosition(count * itemHeight * (movingCursorPositon > 0 ? 1 : -1));
     } else {
       setMovingCursorPosition((count + 1) * itemHeight * (movingCursorPositon > 0 ? 1 : -1));
