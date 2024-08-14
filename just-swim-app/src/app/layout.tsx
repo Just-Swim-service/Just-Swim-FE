@@ -17,6 +17,7 @@ export default function RootLayout({ children }: Readonly<Props>) {
     <html>
       <body>
         <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        <div id='modal-portal' />
       </body>
     </html>
   );

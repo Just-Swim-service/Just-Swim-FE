@@ -6,6 +6,7 @@ import { usePreventScroll } from "@hooks";
 import { ModalBodyProps } from "@types";
 
 import styled from './styles.module.scss';
+import Portal from "@/_components/layout/portal";
 
 export function ModalBody({
   children,
@@ -43,25 +44,27 @@ export function ModalBody({
   }
 
   return (
-    <div className={styled.modal_wrapper} ref={containerRef} onClick={hideModal}>
-      <div 
-        className={styled.modal}
-        style={{
-          transform: `translateY(${movingCursorPositon}px)`
-        }}
-        onClick={prevent}
-      >
-        <button
-          className={styled.modal_top_btn}
-          onClick={hideModal}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+    <Portal>
+      <div className={styled.modal_wrapper} ref={containerRef} onClick={hideModal}>
+        <div 
+          className={styled.modal}
+          style={{
+            transform: `translateY(${movingCursorPositon}px)`
+          }}
+          onClick={prevent}
         >
-          <div />
-        </button>
-        {children}
+          <button
+            className={styled.modal_top_btn}
+            onClick={hideModal}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div />
+          </button>
+          {children}
+        </div>
       </div>
-    </div>
+    </Portal>
   )
 }
