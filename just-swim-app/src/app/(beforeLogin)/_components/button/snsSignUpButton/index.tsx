@@ -4,11 +4,10 @@ import styles from './button.module.scss';
 import { useRouter } from 'next/navigation';
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
 import { IconKakao, IconNaver, IconGoogle } from '@assets';
+import { getMyProfile, getSignUp } from '@apis';
 import { getTokenInCookies } from '@utils';
-import { getMyProfile } from '@apis';
 import { useUserStore } from '@store';
 import { Provider } from '@types';
-import { handleSignUp } from '@/(beforeLogin)/_utils';
 
 const SNS_ICONS = {
   google: IconGoogle,
@@ -43,7 +42,7 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
       return router.replace(ROUTES.ONBOARDING.type);
     }
 
-    const redirectURL = await handleSignUp(sns);
+    const redirectURL = await getSignUp(sns);
     return router.push(redirectURL!);
   };
 

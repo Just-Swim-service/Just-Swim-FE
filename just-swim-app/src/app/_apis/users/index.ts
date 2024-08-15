@@ -1,10 +1,24 @@
 'use server';
 
-import { HTTP_METHODS as HTTP_METHODS } from '@data';
+import { HTTP_METHODS, HTTP_STATUS } from '@data';
 import api from '../api';
 import { GetUserProfileRes, PatchUserEditReq, PostUserLoginReq } from '@types';
 
 const USER_API_PATH = '/user';
+const OAUTH_API_PATH = 'api/Oauth';
+
+export const getSignUp = async (param: string) => {
+  const response = await fetch(
+    `${process.env.API_PATH}/${OAUTH_API_PATH}/${param}`,
+    {
+      method: HTTP_METHODS.GET,
+    },
+  );
+
+  if (response.status === HTTP_STATUS.OK) {
+    return response.url as string;
+  }
+};
 
 // 타입 수정 필요
 export const postUserLogin = async (data: PostUserLoginReq) => {
