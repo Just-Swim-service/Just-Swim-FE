@@ -25,6 +25,7 @@ export function VerticalSlider({
 }) {
   const sideItemsToShow = ((itemsToShow - 1) / 2);
   const initialItemIndex = itemList.indexOf(initialItem) !== -1 ? itemList.indexOf(initialItem) : 0;
+  const middleY = itemHeight * sideItemsToShow;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -183,9 +184,7 @@ export function VerticalSlider({
         ref={listRef}
         className={`${styled.item_list} ${styled.use_transition}`} 
         style={{
-          height: itemHeight * itemList.length,
-          marginTop: itemHeight * sideItemsToShow,
-          transform: `translateY(${cursorPosition + movingCursorPositon}px)`
+          transform: `translateY(${cursorPosition + movingCursorPositon + middleY}px)`
         }}
       >
         {
@@ -271,8 +270,8 @@ export function VerticalSliderLoop({
   const sideItemsToShow = ((itemsToShow - 1) / 2);
   const initialItemIndex = itemList.indexOf(initialItem) !== -1 ? itemList.indexOf(initialItem) : 0;
   
-  const listLength = itemsToShow * 2 + 1;
-  const middleIndex = itemsToShow;
+  const listLength = itemsToShow * 4 + 1;
+  const middleIndex = itemsToShow * 2;
   const middleY = (middleIndex - sideItemsToShow) * itemHeight;
   const moveNext = itemHeight / 2;
 
@@ -455,7 +454,6 @@ export function VerticalSliderLoop({
         ref={listRef}
         className={styled.item_list} 
         style={{
-          height: itemHeight * itemList.length,
           marginTop: marginTop.current,
           transform: `translateY(${movingCursorPositon - middleY}px)`
         }}
