@@ -1,18 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import styles from './pages.module.scss';
-import Image from 'next/image';
-import { TEXT } from '@data';
 import { useLayoutEffect, useState } from 'react';
-import { ROUTES } from '@/_data/routes';
-import { useUserStore } from '@/_store/user';
-import { useURLImage } from '@utils';
+import { useRouter } from 'next/navigation';
+import { URLImage } from '@components';
+import { useUserStore } from '@store';
+import { TEXT, ROUTES } from '@data';
 
 export default function Complete() {
   const router = useRouter();
 
-  const { URLImage } = useURLImage();
   const { getUserImage, getToken, getUserType } = useUserStore();
   const userToken = getToken();
   const [userImage, setUserImage] = useState<string>();

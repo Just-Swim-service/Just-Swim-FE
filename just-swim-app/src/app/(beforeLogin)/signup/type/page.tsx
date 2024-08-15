@@ -3,12 +3,12 @@
 import styles from './pages.module.scss';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
-import { getTokenInCookies, setTokenInCookies } from '@/(beforeLogin)/_utils';
+import { getTokenInCookies, setTokenInCookies } from '@utils';
 import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
 import { UserType } from '@types';
 
 import { usePostSetUserType } from '@/(beforeLogin)/_utils/server/usePostSetUserType';
-import { getMyProfile } from '@/_apis/users.ts';
+import { getMyProfile } from '@/_apis/users';
 import { ROUTES } from '@/_data/routes';
 import { useUserStore } from '@/_store/user';
 

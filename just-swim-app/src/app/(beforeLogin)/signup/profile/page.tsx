@@ -1,21 +1,19 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { useRouter } from 'next/navigation';
-import { IconGallery } from '@assets';
-
-import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
 import { useLayoutEffect, useState } from 'react';
-import { UserType } from '@types';
-import { patchUserEdit } from '@/_apis/users.ts';
-import { ROUTES } from '@/_data/routes';
+import { useRouter } from 'next/navigation';
+
+import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
+import { URLImage } from '@components';
+import { IconGallery } from '@assets';
+import { patchUserEdit } from '@apis';
 import { useUserStore } from '@store';
-import { useURLImage } from '@utils';
+import { UserType } from '@types';
 
 export default function Profile() {
   const router = useRouter();
 
-  const { URLImage } = useURLImage();
   const { getUserName, getUserType, getToken, getUserImage, setAddUserProfile } =
     useUserStore();
   const userToken = getToken();

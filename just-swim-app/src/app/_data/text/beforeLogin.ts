@@ -1,11 +1,4 @@
-const COMMON_TEXT = {
-  select: '선택',
-  next: '다음',
-  skip: '건너뛰기',
-  start: '시작하기',
-} as const;
-
-const SIGNUP_TEXT = {
+export const SIGNUP_TEXT = {
   welcome: '수영인들을 위한 소통 창구',
   notification: {
     first: '원활한 서비스 이용을 위해',
@@ -22,7 +15,7 @@ const SIGNUP_TEXT = {
   },
 } as const;
 
-const SELECT_TEXT = {
+export const SELECT_TEXT = {
   notification: {
     first: '원활한 서비스 이용을 위해',
     second: '회원 타입을 선택해주세요.',
@@ -44,7 +37,7 @@ const SELECT_TEXT = {
   },
 } as const;
 
-const SET_PROFILE_TEXT = {
+export const SET_PROFILE_TEXT = {
   notification: {
     instructor: '강사 분들이 알아볼 수 있도록',
     customer: '수강생 분들이 알아볼 수 있도록',
@@ -55,14 +48,6 @@ const SET_PROFILE_TEXT = {
   },
 } as const;
 
-const SIGNUP_COMPLETE_TEXT = {
+export const SIGNUP_COMPLETE_TEXT = {
   notification: '환영합니다!',
-};
-
-export const TEXT = {
-  COMMON: { ...COMMON_TEXT },
-  SIGNUP_PAGE: { ...SIGNUP_TEXT },
-  TYPE_SELECT_PAGE: { ...SELECT_TEXT },
-  SET_PROFILE_PAGE: { ...SET_PROFILE_TEXT },
-  SIGNUP_COMPLETE_PAGE: { ...SIGNUP_COMPLETE_TEXT },
-};
+} as const;

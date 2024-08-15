@@ -1,6 +1,6 @@
 'use client';
 
-import { postSetUserType } from '@/_apis/users.ts';
+import { postSetUserType } from '@/_apis/users';
 import { PostSetUserTypeReq } from '@types';
 
 export const usePostSetUserType = () => {

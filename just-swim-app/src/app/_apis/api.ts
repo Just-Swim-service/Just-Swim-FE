@@ -2,6 +2,7 @@
 
 import { HTTP_METHODS_TYPE } from '@types';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 /*  
 추후 프로덕션인지 dev 인지에 따라 다른 ENV 사용하도록 수정 - 배포 전에 해결해야함 
@@ -9,7 +10,7 @@ import { cookies } from 'next/headers';
 //   ? process.env.NEXT_PUBLIC_PROD_API_URL
 //   : process.env.NEXT_PUBLIC_DEV_API_URL;
 */
-export type Response<T> = {
+type Response<T> = {
   status: number;
   data: T;
 };
@@ -32,10 +33,15 @@ const api = async <T>(
   };
   const finalOptions = { ...defaultOptions, ...options };
 
-  const response = await fetch(URL, finalOptions);
-  const data = await response.json();
+  try {
+    const response = await fetch(URL, finalOptions);
+    const data = await response.json();
 
-  return { status: response.status, data };
+    return { status: response.status, data };
+  } catch (error) {
+    // redirect('/not-found');
+    throw new Error("Redirect to not-found pages")
+  }
 };
 
 export default api;

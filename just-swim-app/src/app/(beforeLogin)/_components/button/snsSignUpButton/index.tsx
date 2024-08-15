@@ -2,15 +2,13 @@
 
 import styles from './button.module.scss';
 import { useRouter } from 'next/navigation';
-import { IconKakao } from '@assets';
-import { IconNaver } from '@assets';
-import { IconGoogle } from '@assets';
-import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
-import { Provider } from '@types';
-import { getTokenInCookies, handleSignUp } from '@/(beforeLogin)/_utils';
-import { getMyProfile } from '@/_apis/users.ts';
-import { ROUTES } from '@/_data/routes';
+import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
+import { IconKakao, IconNaver, IconGoogle } from '@assets';
+import { getTokenInCookies } from '@utils';
+import { getMyProfile } from '@apis';
 import { useUserStore } from '@store';
+import { Provider } from '@types';
+import { handleSignUp } from '@/(beforeLogin)/_utils';
 
 const SNS_ICONS = {
   google: IconGoogle,
@@ -34,7 +32,7 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
         return router.replace(ROUTES.ONBOARDING.signin);
       }
 
-      setAddUserProfile({ token: authorizationToken, profile: data.data });
+      setAddUserProfile({ token: authorizationToken, profile: data?.data });
       const checkType = getUserType(authorizationToken);
       if (
         checkType === USER_TYPE.INSTRUCTOR ||
