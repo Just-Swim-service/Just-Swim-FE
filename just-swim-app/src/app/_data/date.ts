@@ -8,7 +8,7 @@ export const WEEK_DAYS = [
   "토",
 ] as const;
 
-export const DAY_KOR_TO_ENG: {[props: string]: any} = {
+export const DAY_KOR_TO_ENG = {
   "월": "monday",
   "화": "tuesday",
   "수": "wednesday",
