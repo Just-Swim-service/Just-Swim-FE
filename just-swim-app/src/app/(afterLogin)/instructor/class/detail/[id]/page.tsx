@@ -188,11 +188,13 @@ export default function ClassDetail() {
               <div className={styled.count_box}>
                 <p className={styled.personnel}>현재 인원</p>
                 <p className={styled.count}>
-                  {item.memberUserId == 0 ? `0명` : `1명`}
+                  {item.memberUserId && typeof item.memberUserId === 'number'
+                    ? `${item.memberUserId}명`
+                    : '0명'}
                 </p>
               </div>
               <div className={`${styled.profile} ${styled.box}`}>
-                {item.memberUserId == 0 ? (
+                {item.memberUserId === null ? (
                   <div className={styled.profile_no}>
                     QR(수업 정보)을 공유해주세요!
                   </div>

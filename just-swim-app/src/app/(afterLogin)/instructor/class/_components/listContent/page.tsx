@@ -97,7 +97,12 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
-                          <p>15명</p>
+                          <p className={styled.count}>
+                            {item.memberUserId &&
+                            typeof item.memberUserId === 'number'
+                              ? `${item.memberUserId}명`
+                              : '0명'}
+                          </p>
                         </div>
                       </div>
                     </Link>
@@ -142,7 +147,12 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
-                          <p>15명</p>
+                          <p className={styled.count}>
+                            {item.memberUserId &&
+                            typeof item.memberUserId === 'number'
+                              ? `${item.memberUserId}명`
+                              : '0명'}
+                          </p>
                         </div>
                       </div>
                     </Link>
@@ -193,7 +203,12 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
-                          <p>15명</p>
+                          <p className={styled.count}>
+                            {item.memberUserId &&
+                            typeof item.memberUserId === 'number'
+                              ? `${item.memberUserId}명`
+                              : '0명'}
+                          </p>
                         </div>
                       </div>
                     </Link>
@@ -238,7 +253,12 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
-                          <p>15명</p>
+                          <p className={styled.count}>
+                            {item.memberUserId &&
+                            typeof item.memberUserId === 'number'
+                              ? `${item.memberUserId}명`
+                              : '0명'}
+                          </p>
                         </div>
                       </div>
                     </Link>

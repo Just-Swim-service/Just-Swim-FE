@@ -62,6 +62,7 @@
 .invite {
   padding-top: 23px;
   background-color: $--gray-50;
+  margin: 0 16px;
 
   h3 {
     @include Title5-M;
@@ -119,6 +120,7 @@
 .class {
   background-color: $--gray-50;
   padding-top: 23px;
+  margin: 0 16px;
 
   h3 {
     @include Title5-M;
