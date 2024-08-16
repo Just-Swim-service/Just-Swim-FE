@@ -2,15 +2,28 @@ import { MouseEvent } from "react";
 
 import { DayProps } from "@types";
 
-export interface ColorModalProps {
-  initialColor: string,
+
+
+export interface ModalBodyProps {
+  children?: React.ReactNode,
   hideModal: (event: MouseEvent<HTMLElement>) => void,
+}
+
+export interface ConfirmModalProps extends ModalBodyProps {
+  confirmCallback: (event: MouseEvent<HTMLButtonElement>) => void,
+}
+
+export interface LightConfirmModalProps extends ConfirmModalProps {
+  title?: string,
+}
+
+export interface ColorModalProps extends ModalBodyProps {
+  initialColor: string,
   setColor: (color: string) => void,
 }
 
-export interface DateModalProps {
+export interface DateModalProps extends ModalBodyProps {
   initialDate: string,
-  hideModal: (event: MouseEvent<HTMLElement>) => void,
   setDate: (color: string) => void,
 }
 
@@ -20,15 +33,13 @@ export interface DayModalProps {
   setDays: (days: DayProps) => void,
 }
 
-export interface TimeModalProps {
+export interface TimeModalProps extends ModalBodyProps {
   timeValue: string,
-  hideModal: (event: MouseEvent<HTMLElement>) => void,
   setTimeValue: (time: string) => void,
 }
 
-export interface MonthModalProps {
+export interface MonthModalProps extends ModalBodyProps {
   yearValue: number,
   monthValue: number,
   updateValue: ({ year, month }: { year: number, month: number }) => void,
-  hideModal: (event: MouseEvent<HTMLElement>) => void,
 }

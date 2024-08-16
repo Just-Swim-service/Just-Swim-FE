@@ -29,21 +29,3 @@ export interface ImageCarouselProps {
   deleteImage?: (index: number) => void,
   hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
 }
-
-export interface ModalBodyProps {
-  children?: React.ReactNode,
-  hideModal: (event: MouseEvent<HTMLElement>) => void,
-}
-
-export interface ConfirmModalProps {
-  children?: React.ReactNode,
-  hideModal: (event: MouseEvent<HTMLElement>) => void,
-  confirmCallback: (event: MouseEvent<HTMLButtonElement>) => void,
-}
-
-export interface LightConfirmModalProps {
-  title?: string,
-  hideModal: (event: MouseEvent<HTMLElement>) => void,
-  confirmCallback: (event: MouseEvent<HTMLButtonElement>) => void,
-  children?: React.ReactNode,
-}
