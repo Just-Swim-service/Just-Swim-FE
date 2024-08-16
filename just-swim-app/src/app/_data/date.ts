@@ -8,6 +8,16 @@ export const WEEK_DAYS = [
   "토",
 ] as const;
 
+export const WEEK_DAYS_TO_ENG = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+] as const;
+
 export const DAY_KOR_TO_ENG = {
   "월": "monday",
   "화": "tuesday",

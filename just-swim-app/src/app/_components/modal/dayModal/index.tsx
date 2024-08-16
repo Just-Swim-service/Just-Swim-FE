@@ -5,7 +5,7 @@ import { MouseEvent, useState } from 'react';
 import { ConfirmModal } from '@components';
 import { randomId } from '@utils';
 import { DayModalProps, DayProps } from '@types';
-import { DAY_KOR_TO_ENG, WEEK_DAYS } from '@data';
+import { DAY_KOR_TO_ENG, WEEK_DAYS, WEEK_DAYS_TO_ENG } from '@data';
 
 import styled from './styles.module.scss';
 
@@ -18,7 +18,7 @@ export function DayModal ({
     ...initialDays
   });
 
-  const changeSelectedDay = (day: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday") => {
+  const changeSelectedDay = (day: typeof WEEK_DAYS_TO_ENG[number]) => {
     setSelectedDays(prev => ({
       ...prev,
       [day]: !prev[day]
