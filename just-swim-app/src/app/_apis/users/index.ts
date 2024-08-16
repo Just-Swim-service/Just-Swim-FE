@@ -27,7 +27,7 @@ export const postUserLogin = async (data: PostUserLoginReq) => {
   });
 };
 
-export const postSetUserType = async (data: string) => {
+export const postUserType = async (data: string) => {
   return await api(`${USER_API_PATH}/${data}`, HTTP_METHODS.POST);
 };
 
