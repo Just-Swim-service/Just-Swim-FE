@@ -23,45 +23,13 @@ export default function ClassInfoEdit() {
 
   const [lecture, setLecture] = useState([]);
   const [error, setError] = useState(null);
-
   const [formData, setFormData] = useState({});
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const handleEdit = async (lectureId: any) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: AUTHORIZATION_HEADER,
-          },
-          body: JSON.stringify(formData),
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `API error: ${response.status} - ${await response.text()}`,
-        );
-      }
-
-      // 성공 시 서버에서 반환받은 데이터로 업데이트
-      const updatedLectureData = await response.json();
-      console.log(updatedLectureData);
-      setLecture(updatedLectureData); // 수정된 데이터로 업데이트
-      alert('수정되었습니다.');
-    } catch (error) {
-      console.error('API error:', error);
-      alert('수정 중 오류가 발생했습니다.');
-    }
   };
 
   useEffect(() => {
@@ -96,13 +64,39 @@ export default function ClassInfoEdit() {
     return <p>데이터 로딩 중...</p>;
   }
 
-  const isFormDataChanged = (lectureData: any, formData: any) => {
+  const isFormDataChanged = (lectureData: object, formData: object) => {
     for (const key in formData) {
       if (lectureData[key] !== formData[key]) {
         return true;
       }
     }
     return false;
+  };
+
+  const handleEdit = async (lectureId: number) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: AUTHORIZATION_HEADER,
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      const updatedLectureData = await response.json();
+      console.log(updatedLectureData);
+
+      setLecture(updatedLectureData);
+
+      alert('수정되었습니다.');
+    } catch (error) {
+      console.error('API error:', error);
+      alert('수정 중 오류가 발생했습니다.');
+    }
   };
 
   return (
