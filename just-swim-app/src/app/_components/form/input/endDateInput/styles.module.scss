@@ -1,0 +1,18 @@
+@import '@/globals.scss';
+
+.switch_wrapper {
+  width: fit-content;
+  
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  margin-left: auto;
+  margin-bottom: 13px;
+
+  & > p {
+    @include Body4-R;
+
+    color: $--Primary-blue;
+  }
+}

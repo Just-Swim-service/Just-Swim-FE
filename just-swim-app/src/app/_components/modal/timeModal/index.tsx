@@ -31,7 +31,7 @@ export function TimeModal({
       <div className={styled.modal}>
         <TimePicker
           value={selectedTime}
-          setValue={changeSelectedTime}
+          updateValue={changeSelectedTime}
         />
       </div>
     </ConfirmModal>

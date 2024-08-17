@@ -1,5 +1,6 @@
 export * from './button';
-export * from './calendar';
 export * from './carousel';
 export * from './item';
 export * from './modal';
+export * from './slider';
+export * from './switch';
