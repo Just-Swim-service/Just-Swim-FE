@@ -76,4 +76,16 @@
       color: $--Cancel;
     }
   }
+
+  .error_message {
+    position: absolute;
+    left: 2px;
+    bottom: -22px;
+
+    & > p {
+      @include Body4-R;
+
+      color: $--Cancel;
+    }
+  }
 }

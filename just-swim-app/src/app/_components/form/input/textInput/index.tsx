@@ -13,6 +13,7 @@ function _TextInput({
   valid = true,
   maxLength = 0,
   onChange = () => {},
+  errorMessage = '',
   ...props
 }: TextInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
@@ -44,6 +45,12 @@ ref: ForwardedRef<HTMLInputElement>) {
         <span>/</span>
         <span>{maxLength}</span>
       </div>
+      {
+        count !== 0 && errorMessage && 
+        <div className={styled.error_message}>
+          <p>{errorMessage}</p>
+        </div>
+      }
     </div>
   );
 }

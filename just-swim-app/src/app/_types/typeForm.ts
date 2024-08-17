@@ -3,6 +3,7 @@ import { ChangeEvent } from "react";
 export interface TextInputProps {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
 }
 
 export interface ColorInputProps {
