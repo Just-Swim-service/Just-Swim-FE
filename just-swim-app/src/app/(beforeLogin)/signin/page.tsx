@@ -1,7 +1,7 @@
 import styles from './page.module.scss';
 import JustSwimSVG from '@assets/logo.svg';
 
-import { SNSSignInButton } from '../_components/button/snsSignUpButton';
+import { SNSSignInButton } from './_components/button/snsSignIpButton';
 import { JUST_SWIM, SNS, TEXT } from '@data';
 import { Provider } from '@types';
 

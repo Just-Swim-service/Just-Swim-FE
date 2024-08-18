@@ -1,0 +1,24 @@
+@import '@/globals.scss';
+
+.header_wrapper {
+  min-width: 320px;
+  max-width: 640px;
+  width: 100%;
+
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+
+  padding: 25px 16px 0;
+
+  & > button {
+    @include Title3-M;
+
+    color: $--Primary-blue;
+  }
+
+  & > p {
+    @include Title3-SB;
+  }
+}

@@ -34,7 +34,7 @@ export interface GetUserProfileRes {
   };
 }
 
-export interface PostSetUserTypeReq {
+export interface PostUserTypeReq {
   userType: UserType;
 }
 

@@ -6,7 +6,7 @@ import { DateInputProps } from "@types";
 import { DateModal } from '@components';
 import { useModal } from "@hooks";
 import { IconInputValid } from "@assets";
-import { mergeRefs } from "@utils";
+import { mergeRefs, numberFormat } from "@utils";
 
 import styled from './styles.module.scss';
 
@@ -27,20 +27,29 @@ function _DateInput({
   valid = true,
   defaultValue = '',
   suffix = '',
+  use = true,
   renderIcon = () => {},
   placeholder = '',
   ...props
 }: DateInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const today = new Date();
+  const todayValue = defaultValue || `${today.getFullYear()}.${numberFormat(today.getMonth() + 1)}.${numberFormat(today.getDate())}`;
 
-  const [selectedDate, setSelectedDate] = useState<string>(checkDefaultValue(defaultValue) ? defaultValue : '');
+  const [selectedDate, setSelectedDate] = useState<string>(use && checkDefaultValue(todayValue) ? todayValue : '');
 
   const changeSelectedDate = (date: string) => {
     setSelectedDate(date);
   }
   
   const { modal, showModal, hideModal } = useModal();
+
+  const onClickInput = () => {
+    if (use) {
+      showModal();
+    }
+  }
 
   useEffect(() => {
     if (inputRef.current) {
@@ -54,7 +63,7 @@ ref: ForwardedRef<HTMLInputElement>) {
       <div className={styled.icon_wrapper}>
         {renderIcon()}
       </div>
-      <div className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`} onClick={showModal}>
+      <div className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`} onClick={onClickInput}>
         <span>{selectedDate ? formatDate(selectedDate, suffix) : placeholder}</span>
       </div>
       {

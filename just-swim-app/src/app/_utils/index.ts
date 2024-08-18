@@ -2,4 +2,5 @@ export * from './numberFormat';
 export * from './optimization';
 export * from './randomId';
 export * from './refs';
-export * from './useURLImage';
+export * from './handleTokenInCookies';
+export * from './server';

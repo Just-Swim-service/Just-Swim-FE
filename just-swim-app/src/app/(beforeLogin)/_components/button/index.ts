@@ -1,1 +1,0 @@
-import { SNSSignInButton } from './snsSignUpButton';

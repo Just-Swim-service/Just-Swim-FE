@@ -1,34 +1,14 @@
 @import '@/globals.scss';
 
-.time_picker {
+.container {
   position: relative;
-  
-  // width: 100%;
+
+  width: 100%;
 
   margin: 50px 0;
 
   display: flex;
   justify-content: center;
-  align-items: flex-end;
 
-  &_container {
-    position: relative;
-
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-
-    overflow: hidden;
-
-    .selected_overlay {
-      position: absolute;
-
-      left: 0;
-      right: 0;
-
-      pointer-events: none;
-
-      z-index: 1;
-    }
-  }
+  gap: 10px;
 }

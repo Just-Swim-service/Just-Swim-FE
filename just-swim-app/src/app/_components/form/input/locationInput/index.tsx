@@ -1,34 +1,68 @@
 "use client";
 
-import { ForwardedRef, InputHTMLAttributes, forwardRef, useState } from 'react';
+import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 import { LocationInputPros } from '@types';
 import { IconInputValid, IconLocation } from '@assets';
+import { mergeRefs } from '@utils';
 
 import styled from './styles.module.scss';
+import { locationStore } from '@store';
 
 function _LocationInput({
   name,
   valid = true,
+  defalutValue = '',
   ...props
 }: LocationInputPros & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
-  const [location, setLocation] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [nowLocation, setNowLocation] = useState<string>(defalutValue);
+
+  const { location, setLocation } = locationStore();
+
+  useEffect(() => {
+    if (location) {
+      setNowLocation(location);
+    }
+
+    return () => {
+      // 하드코딩된 부분, 추후 보다 적절한 방향으로 수정 필요
+      if (history.state.__PRIVATE_NEXTJS_INTERNALS_TREE[1].children[1].children[0] === 'search' && history.state.__PRIVATE_NEXTJS_INTERNALS_TREE[1].children[1].children[1].children[0] === 'location') {
+        setLocation(nowLocation);
+
+        return;
+      }
+
+      setLocation("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nowLocation]);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('value', nowLocation);
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, [nowLocation]);
 
   return (
     <div className={styled.input_wrapper}>
-      <div className={styled.icon_wrapper}>
+      <Link
+        href='/search/location'
+        className={styled.icon_wrapper}
+      >
         <IconLocation width={20} height={20} />
-      </div>
+      </Link>
       <input
         {...props}
         name={name}
         className={`${styled.location_input} ${!valid ? styled.invalid : ''}`}
-        ref={ref}
+        ref={mergeRefs(inputRef, ref)}
         type='text'
         readOnly
-        value={location}
+        value={nowLocation}
       />
       {valid && <IconInputValid width={18} height={18} />}
     </div>

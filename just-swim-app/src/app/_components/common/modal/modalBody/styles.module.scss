@@ -14,8 +14,6 @@
 
   background-color: rgba(0, 0, 0, 0.4);
 
-  z-index: 200;
-
   .modal {
     width: 100%;
 
@@ -32,12 +30,18 @@
       height: 4px;
       
       padding-top: 10px;
+      padding-bottom: 5px;
       
       div {
-        background-color: $--gray-300;
         width: 30px;
         height: 4px;
+        
         margin: 0 auto;
+        
+        background-color: $--gray-300;
+
+        user-select: none;
+        pointer-events: none;
       }
     }
   }

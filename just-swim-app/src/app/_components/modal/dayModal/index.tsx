@@ -5,28 +5,9 @@ import { MouseEvent, useState } from 'react';
 import { ConfirmModal } from '@components';
 import { randomId } from '@utils';
 import { DayModalProps, DayProps } from '@types';
+import { DAY_KOR_TO_ENG, WEEK_DAYS, WEEK_DAYS_TO_ENG } from '@data';
 
 import styled from './styles.module.scss';
-
-const days = [
-  "월",
-  "화",
-  "수",
-  "목",
-  "금",
-  "토",
-  "일",
-];
-
-const dayKorToEng: {[props: string]: any} = {
-  "월": "monday",
-  "화": "tuesday",
-  "수": "wednesday",
-  "목": "thursday",
-  "금":  "friday",
-  "토": "saturday",
-  "일": "sunday",
-}
 
 export function DayModal ({
   initialDays,
@@ -37,7 +18,7 @@ export function DayModal ({
     ...initialDays
   });
 
-  const changeSelectedDay = (day: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday") => {
+  const changeSelectedDay = (day: typeof WEEK_DAYS_TO_ENG[number]) => {
     setSelectedDays(prev => ({
       ...prev,
       [day]: !prev[day]
@@ -59,13 +40,13 @@ export function DayModal ({
       <div className={styled.modal}>
         <div className={styled.day_list}>
           {
-            days.map(day => {
+            WEEK_DAYS.map(day => {
               return (
                 <button
                   key={randomId()}
-                  className={`${styled.day_button} ${selectedDays[dayKorToEng[day]] ? styled.selected : ''}`}
+                  className={`${styled.day_button} ${selectedDays[DAY_KOR_TO_ENG[day]] ? styled.selected : ''}`}
                   onClick={() => {
-                    changeSelectedDay(dayKorToEng[day]);
+                    changeSelectedDay(DAY_KOR_TO_ENG[day]);
                   }}
                 >
                   <span>{day}</span>

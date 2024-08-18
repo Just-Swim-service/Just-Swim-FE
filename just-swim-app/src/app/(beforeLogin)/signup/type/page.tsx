@@ -3,14 +3,11 @@
 import styles from './pages.module.scss';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
-import { getTokenInCookies, setTokenInCookies } from '@/(beforeLogin)/_utils';
-import { HTTP_STATUS, TEXT, USER_TYPE } from '@data';
+import { getTokenInCookies, setTokenInCookies, setUserType } from '@utils';
+import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
+import { useUserStore } from '@store';
+import { getMyProfile } from '@apis';
 import { UserType } from '@types';
-
-import { usePostSetUserType } from '@/(beforeLogin)/_utils/server/usePostSetUserType';
-import { getMyProfile } from '@/_apis/users.ts';
-import { ROUTES } from '@/_data/routes';
-import { useUserStore } from '@/_store/user';
 
 // TODO: fetch 캐싱 알아보기
 export default function Type() {
@@ -21,7 +18,6 @@ export default function Type() {
   const [token, setToken] = useState<string>();
 
   const { setAddUserToken, setAddUserProfile, getUserType } = useUserStore();
-  const { setUserType } = usePostSetUserType();
 
   useLayoutEffect(() => {
     const checkToken = async () => {
@@ -107,15 +103,12 @@ export default function Type() {
         })}
       </div>
       <div className={styles.select_type_footer}>
-        <div
-          className={`${styles.button_wrapper} ${styles[type ? 'active' : '']}`}>
-          <button
-            type="button"
-            className={styles.select_button}
-            onClick={handleSetType}>
-            {TEXT.COMMON.select}
-          </button>
-        </div>
+        <button
+          type="button"
+          className={`${styles.select_button} ${styles[type ? 'active' : '']}`}
+          onClick={handleSetType}>
+          {TEXT.COMMON.select}
+        </button>
       </div>
     </>
   );
