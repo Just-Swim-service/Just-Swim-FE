@@ -8,4 +8,61 @@
   height: 100vh;
   align-items: center;
   padding: 19px 16px 19px 16px;
+
+  .account_header {
+    @include Title2-SB;
+
+    color: $--Black;
+
+    width: 100vw;
+    margin-top: 5px;
+    display: flex;
+
+    .content {
+      @include Title3-M;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: inherit;
+      margin-bottom: 34px;
+      padding: 11px 16px;
+      border-bottom: 1px solid $--gray-100;
+
+      .back_link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-right: 8px;
+
+        svg path {
+          fill: $--Black;
+        }
+      }
+
+      .edit_link {
+        @include Body1-R;
+
+        line-height: 1em;
+        color: $--Primary-blue;
+        border-bottom: $--Primary-blue 1px solid;
+        :hover {
+          cursor: pointer;
+        }
+      }
+
+      .abled {
+        pointer-events: auto;
+        color: $--Primary-blue;
+        border-bottom: $--Primary-blue 1px solid;
+      }
+
+      .disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+        color: $--gray-400;
+        border-bottom: $--gray-400 1px solid;
+      }
+    }
+  }
 }

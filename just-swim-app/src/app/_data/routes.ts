@@ -13,6 +13,7 @@ const SCHEDULE_ROUTE = {
 
 const ACCOUNT_ROUTE = {
   root: '/account',
+  edit: '/account/edit',
   deletion: '/account/deletion',
 };
 

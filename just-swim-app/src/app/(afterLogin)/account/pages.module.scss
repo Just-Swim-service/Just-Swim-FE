@@ -46,20 +46,16 @@
 
 .account_section {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 
   .account_image_wrapper {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin-bottom: 4px;
+    display: flex;
+    width: 60px;
+    height: 60px;
 
     .account_img {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       border-radius: 50%;
       background-color: $--gray-100;
       background-size: cover;
@@ -67,70 +63,5 @@
       background-repeat: no-repeat;
       overflow: hidden;
     }
-
-    .image_button {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 40px;
-      height: 40px;
-      border: $--gray-200 1px solid;
-      border-radius: 50%;
-      background-color: $--White;
-
-      .input_file {
-        display: none;
-      }
-    }
-  }
-  .name_input_wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .name_title {
-      @include Title3-M;
-
-      color: $--gray-600;
-    }
-
-    .name_input {
-      @include Title3-M;
-
-      width: 100%;
-      height: 51px;
-
-      padding: 15px 16px;
-
-      background-color: $--gray-50;
-
-      outline: 2px solid $--gray-100;
-      border-radius: 6px;
-
-      border: none;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-  }
-}
-
-.account_footer {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 10px;
-  width: 100%;
-
-  .button_wrapper {
-    width: inherit;
-    height: 52px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
   }
 }

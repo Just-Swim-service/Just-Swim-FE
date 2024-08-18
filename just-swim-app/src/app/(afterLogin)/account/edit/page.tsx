@@ -1,29 +1,32 @@
 'use client';
 
+import React, { useLayoutEffect } from 'react';
 import styles from './pages.module.scss';
 import { useRouter } from 'next/navigation';
-import { IconArrowLeft, IconGallery, IconInputValid } from '@assets';
 
-import { useLayoutEffect, useState } from 'react';
-import { ROUTES } from '@/_data/routes';
+import { IconGallery, IconInputValid } from '@assets';
+import { URLImage } from '@components';
 import { useUserStore } from '@store';
-import { useURLImage } from '@utils';
-import { patchUserEdit } from '@/_apis/users.ts';
-import { HTTP_STATUS } from '@data';
-import { TextInput } from '@components';
+import { ROUTES } from '@data';
+
+import { AccountContext } from '../layout';
 
 export default function Account() {
   const router = useRouter();
 
-  const { URLImage } = useURLImage();
-  const { getUserName, getToken, getUserImage, setAddUserProfile } =
-    useUserStore();
-  const userToken = getToken();
+  const accountContextData = React.useContext(AccountContext);
+  const {
+    userToken,
+    editable,
+    userName,
+    profileImage,
+    setEditable,
+    setUserName,
+    setProfileImage,
+  } = accountContextData;
+  const { getUserName, getUserImage } = useUserStore();
   const initUserName = getUserName(userToken);
   const initUserImage = getUserImage(userToken);
-  const [editable, setEditable] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string>('');
-  const [profileImage, setProfileImage] = useState<string>('');
 
   useLayoutEffect(() => {
     const init = async () => {
@@ -38,24 +41,6 @@ export default function Account() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleEditProfile = async () => {
-    const { status } = await patchUserEdit({
-      profileImage: profileImage,
-      name: userName,
-    });
-
-    if (status === HTTP_STATUS.OK) {
-      await setAddUserProfile({
-        token: userToken,
-        profile: {
-          name: userName,
-          profileImage: profileImage,
-        },
-      });
-      setEditable(false);
-    }
-  };
-
   const handleUserName = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(evt.target.value);
     handleSetEditableTrue();
@@ -64,7 +49,6 @@ export default function Account() {
   const handleProfileImage = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     const file = evt.target.files?.[0];
-
     if (file) {
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -73,31 +57,14 @@ export default function Account() {
       handleSetEditableTrue();
     }
   };
-
   const handleSetEditableTrue = () => {
     if (!editable) {
       setEditable(true);
     }
   };
 
-  const handleBackPage = () => {
-    router.back();
-  };
-
   return (
     <>
-      <div className={styles.account_header}>
-        <div className={styles.content}>
-          <div className={styles.back_link} onClick={handleBackPage}>
-            <IconArrowLeft width={20} height={20} fill="#ff0000" />
-            <p>프로필</p>
-          </div>
-          <div
-            className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}>
-            <div onClick={handleEditProfile}>완료</div>
-          </div>
-        </div>
-      </div>
       <div className={styles.account_section}>
         <div className={styles.account_image_wrapper}>
           <div className={styles.account_img}>
