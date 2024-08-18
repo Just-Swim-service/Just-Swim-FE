@@ -97,21 +97,20 @@
   justify-content: flex-end;
   width: 100%;
 
-  .button_wrapper {
+  .select_button {
+    @include Title3-SB;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: inherit;
     height: 52px;
+
     background-color: $--gray-300;
+    color: $--White;
+    border-radius: 13px;
     pointer-events: none;
     border: none;
-
-    .select_button {
-      @include Title3-SB;
-
-      width: 100%;
-      height: 100%;
-      color: $--White;
-      border-radius: 13px;
-    }
   }
 
   .active {

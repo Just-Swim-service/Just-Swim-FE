@@ -103,15 +103,12 @@ export default function Type() {
         })}
       </div>
       <div className={styles.select_type_footer}>
-        <div
-          className={`${styles.button_wrapper} ${styles[type ? 'active' : '']}`}>
-          <button
-            type="button"
-            className={styles.select_button}
-            onClick={handleSetType}>
-            {TEXT.COMMON.select}
-          </button>
-        </div>
+        <button
+          type="button"
+          className={`${styles.select_button} ${styles[type ? 'active' : '']}`}
+          onClick={handleSetType}>
+          {TEXT.COMMON.select}
+        </button>
       </div>
     </>
   );
