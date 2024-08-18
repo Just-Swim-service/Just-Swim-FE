@@ -1,54 +1,12 @@
 @import '@/globals.scss';
 
-.account_header {
-  @include Title2-SB;
-
-  color: $--Black;
-
-  width: 100vw;
-  margin-top: 5px;
-  display: flex;
-
-  .content {
-    @include Title3-M;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: inherit;
-    margin-bottom: 34px;
-    padding: 11px 16px;
-    border-bottom: 1px solid $--gray-100;
-
-    .back_link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-right: 8px;
-
-      svg path {
-        fill: $--Black;
-      }
-    }
-
-    .edit_link {
-      @include Body1-R;
-
-      line-height: 1em;
-      color: $--Primary-blue;
-      border-bottom: $--Primary-blue 1px solid;
-      :hover {
-        cursor: pointer;
-      }
-    }
-  }
-}
-
-.account_section {
+.account_profile {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 18px 16px;
   width: 100%;
+  border-bottom: 8px solid $--gray-50;
 
   .account_image_wrapper {
     display: flex;
@@ -62,6 +20,52 @@
       background-position: center;
       background-repeat: no-repeat;
       overflow: hidden;
+    }
+  }
+}
+
+.account_setting {
+  @include Title4-M;
+
+  width: 100%;
+  padding: 18px 16px 11px 16px;
+  display: flex;
+  flex-direction: column;
+
+  .account_setting_title {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .app_version {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 65px;
+    margin-bottom: 10px;
+
+    span {
+      @include Body3-R;
+      color: $--gray-600;
+    }
+  }
+
+  .app_setting {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid $--gray-200;
+
+    .app_setting_menu {
+      display: flex;
+      justify-content: space-between;
+      height: 54px;
+      align-items: center;
+
+      .deletion {
+        color: $--Cancel;
+      }
     }
   }
 }

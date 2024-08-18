@@ -7,7 +7,7 @@
   min-height: 640px;
   height: 100vh;
   align-items: center;
-  padding: 19px 16px 19px 16px;
+  padding: 19px 0 19px 0;
 
   .account_header {
     @include Title2-SB;
@@ -25,7 +25,6 @@
       align-items: center;
       justify-content: space-between;
       width: inherit;
-      margin-bottom: 34px;
       padding: 11px 16px;
       border-bottom: 1px solid $--gray-100;
 

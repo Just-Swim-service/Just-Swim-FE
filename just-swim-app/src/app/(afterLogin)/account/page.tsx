@@ -2,12 +2,18 @@
 
 import styles from './pages.module.scss';
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import { IconArrowLeft } from '@assets';
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconSelectUser,
+  IconSetting,
+} from '@assets';
 
 import { useLayoutEffect } from 'react';
 import { ROUTES } from '@data';
 import { useUserStore } from '@store';
 import { ConfirmButton, URLImage } from '@components';
+import Link from 'next/link';
 
 export default function Account() {
   const router = useRouter();
@@ -28,26 +34,32 @@ export default function Account() {
     router.push(ROUTES.ACCOUNT.edit);
   };
 
-  const handleAccountDeletion = () => {
-    router.push(ROUTES.ACCOUNT.deletion);
+  const handleManageAccount = () => {
+    // TODO: 계정/정보 관리 로직
+  };
+
+  const handlePolicyApp = () => {
+    // TODO: 약관 및 운영정책 로직
+  };
+
+  const handleSendOpinion = () => {
+    // TODO: 의견 보내기 로직
+    router.replace(ROUTES.ONBOARDING.root);
   };
 
   const handleLogOut = () => {
-    // TODO: 로그아웃 로직
-    router.replace(ROUTES.ONBOARDING.root);
+    // TODO: 로그아웃 로직 - 모달
+    // router.replace(ROUTES.ONBOARDING.root);
+  };
+
+  const handleAccountDeletion = () => {
+    // TODO: 회원탈퇴 로직
+    router.push(ROUTES.ACCOUNT.deletion);
   };
 
   return (
     <>
-      {/* <div className={styles.account_header}>
-        <div className={styles.content}>
-          <div className={styles.back_link} onClick={handleBackPage}>
-            <IconArrowLeft width={20} height={20} fill="#ff0000" />
-            <p>프로필</p>
-          </div>
-        </div>
-      </div> */}
-      <div className={styles.account_section}>
+      <div className={styles.account_profile}>
         <div className={styles.account_image_wrapper}>
           <div className={styles.account_img}>
             <URLImage
@@ -61,19 +73,44 @@ export default function Account() {
         </div>
         <button onClick={handleProfileEdit}>프로필 수정하기</button>
       </div>
-      {/* <div className={styles.account_footer}>
-        <ConfirmButton
-          text="로그아웃"
-          kind="cancel"
-          onClick={handleAccountDeletion}
-        />
-        <ConfirmButton
-          text="회원 탈퇴"
-          kind="cancel-sub"
-          border={true}
-          onClick={handleLogOut}
-        />
-      </div> */}
+      <div className={styles.account_setting}>
+        <div className={styles.account_setting_title}>
+          <IconSetting />
+          <div>앱 설정</div>
+        </div>
+        {/* account 상수 '이름: url' 로 객체 만들어서, map 돌리기 */}
+        <div className={styles.app_setting}>
+          <Link className={styles.app_setting_menu} href={''}>
+            <span>계정 / 정보 관리</span>
+            <IconArrowRight width={12} height={12} fill="#000000" />
+          </Link>
+          <Link className={styles.app_setting_menu} href={''}>
+            <span>약관 및 운영정책</span>
+            <IconArrowRight width={12} height={12} fill="#000000" />
+          </Link>
+          <Link className={styles.app_setting_menu} href={''}>
+            <span>의견 보내기</span>
+            <IconArrowRight width={12} height={12} fill="#000000" />
+          </Link>
+        </div>
+        <div className={styles.app_version}>
+          <div>
+            <div>버전 정보</div>
+            <span>최신버전: 1.1.0</span>
+          </div>
+          <span>1.1.0</span>
+        </div>
+        <div className={styles.app_setting}>
+          <div className={styles.app_setting_menu} onClick={handleLogOut}>
+            로그아웃
+          </div>
+          <div className={styles.app_setting_menu}>
+            <Link className={styles.deletion} href={'/account/deletion'}>
+              탈퇴하기
+            </Link>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
