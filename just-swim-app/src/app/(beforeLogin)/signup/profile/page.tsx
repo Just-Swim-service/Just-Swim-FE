@@ -5,8 +5,8 @@ import { useLayoutEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
+import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
-import { IconGallery } from '@assets';
 import { patchUserEdit } from '@apis';
 import { useUserStore } from '@store';
 import { UserType } from '@types';
@@ -18,6 +18,7 @@ export default function Profile() {
     useUserStore();
   const userToken = getToken();
   const [type, setType] = useState<UserType>();
+  const [valid, setValid] = useState<boolean>(false);
   const [inputName, setInputName] = useState<string>('');
   const [inputImage, setInputImage] = useState<string>('');
 
@@ -31,10 +32,6 @@ export default function Profile() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleSkipPage = () => {
-    router.push(ROUTES.ONBOARDING.complete);
-  };
 
   const handleNextPage = async () => {
     const { status } = await patchUserEdit({
@@ -56,6 +53,7 @@ export default function Profile() {
 
   const handleInputName = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setInputName(evt.target.value);
+    setValid(true);
   };
 
   const handleInputImage = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +66,7 @@ export default function Profile() {
         setInputImage(reader.result as string);
       };
     }
+    setValid(true);
   };
 
   return (
@@ -109,26 +108,22 @@ export default function Profile() {
             </div>
           </label>
         </div>
-        <input
-          type="text"
-          value={inputName}
-          onChange={handleInputName}
-          className={styles.nickname}
-        />
+        <div className={styles.nickname_wrapper}>
+          <input
+            type="text"
+            value={inputName}
+            onChange={handleInputName}
+            className={styles.nickname}
+          />
+          {valid && <IconInputValid width={18} height={18} />}
+        </div>
       </div>
       <div className={styles.profile_setting_footer}>
         <div className={styles.button_wrapper}>
           <button
             className={`${styles.select_button} ${styles.active}`}
             onClick={handleNextPage}>
-            {TEXT.COMMON.next}
-          </button>
-        </div>
-        <div className={styles.button_wrapper}>
-          <button
-            className={`${styles.select_button} ${styles.inactive}`}
-            onClick={handleSkipPage}>
-            {TEXT.COMMON.skip}
+            {valid ? TEXT.COMMON.done : TEXT.COMMON.next}
           </button>
         </div>
       </div>
