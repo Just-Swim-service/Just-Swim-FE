@@ -1,6 +1,8 @@
 import IconArrowRight from './icon_arrow_right.svg';
+import IconArrowRightSmall from './icon_arrow_right_small.svg';
 import IconArrowLeft from './icon_arrow_left.svg';
 import IconCancelWhite from './icon_cancel_white.svg';
+import IconCheck from './icon_check.svg';
 import IconDelete from './icon_delete.svg';
 import IconInputValid from './icon_input_valid.svg';
 import IconCalendar from './icon_calendar.svg';
@@ -34,4 +36,6 @@ export {
   IconGallery,
   IconSelectUser,
   IconSearch,
+  IconCheck,
+  IconArrowRightSmall,
 };
