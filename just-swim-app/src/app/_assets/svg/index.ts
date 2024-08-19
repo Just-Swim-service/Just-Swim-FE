@@ -20,6 +20,7 @@ import IconTrash from './icon_trash.svg';
 import IconValidWhite from './icon_valid_white.svg';
 import IconArrowRightSmall from './icon_arrow_right_small.svg';
 import IconCheck from './icon_check.svg';
+import IconCheckboxInvalid from './icon_checkbox_invalid.svg';
 
 export {
   IconArrowRight,
@@ -44,4 +45,5 @@ export {
   IconShare,
   IconArrowRightSmall,
   IconCheck,
+  IconCheckboxInvalid,
 };

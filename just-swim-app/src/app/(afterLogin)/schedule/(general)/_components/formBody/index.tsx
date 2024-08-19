@@ -1,11 +1,11 @@
 'use client';
 
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, MouseEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ColorInput, EndDateInput, DayInput, FormButton, HistoryBackHeader, LocationInput, TextInput, TimeInput } from '@components';
-import { IconRepeatTime } from '@assets';
+import { IconCheckboxInvalid, IconRepeatTime } from '@assets';
 
 import { formAction } from "./action";
 import { lectureSchema, LectureType } from "./schema";
@@ -61,8 +61,6 @@ export function FormBody({
   });
   
   const onSubmit = handleSubmit(async (data: LectureType) => {
-    console.log(data);
-
     const formData = new FormData();
 
     formData.append("apiType", type);
@@ -82,12 +80,13 @@ export function FormBody({
     const result = await formAction(formData);
 
     // @ts-ignore
-    // if (result.statusCode === 500) {
-    //   setServerErrors(s => ({
-    //     ...s,
-    //     duplicate: '중복된 일정이 있습니다.',
-    //   }));
-    // }
+    if (result.statusCode === 500) {
+      setServerErrors(s => ({
+        ...s,
+        duplicate: '같은 일정으로 등록된 수업이 있습니다.',
+      }));
+    }
+
     // 서버 측에 문제가 있어 추후에 수정하겠습니다.
   });
 
@@ -95,14 +94,18 @@ export function FormBody({
     await onSubmit();
   }
 
-  const clearTitleError = () => {
+  const clearTitleError = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+
     setServerErrors(s => ({
       ...s,
       title: '',
     }));
   }
 
-  const clearDuplicateError = () => {
+  const clearDuplicateError = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    
     setServerErrors(s => ({
       ...s,
       duplicate: '',
@@ -113,7 +116,7 @@ export function FormBody({
     <div>
       <HistoryBackHeader title={type === 'add' ? '수업 등록하기' : '수업 수정하기'} />
       <main>
-        <section>
+        <section className={styled.container}>
           <form action={onValid} className={styled.form}>
             <div className={styled.form_body}>
               <div className={styled.upper_container}>
@@ -188,6 +191,25 @@ export function FormBody({
               <FormButton text="확인" active={isValid && !serverErrors.duplicate} />
             </div>
           </form>
+          {
+            (serverErrors.title || serverErrors.duplicate) &&
+            <div className={styled.error_container}>
+              {
+                serverErrors.title &&
+                <div className={styled.error_message}>
+                  <IconCheckboxInvalid />
+                  <p>{serverErrors.title}</p>
+                </div>
+              }
+              {
+                serverErrors.duplicate &&
+                <div className={styled.error_message}>
+                  <IconCheckboxInvalid />
+                  <p>{serverErrors.duplicate}</p>
+                </div>
+              }
+            </div>
+          }
         </section>
       </main>
     </div>
