@@ -1,74 +1,22 @@
 @import '@/globals.scss';
 
-.account_header {
-  @include Title2-SB;
-
-  color: $--Black;
-
-  width: 100vw;
-  margin-top: 5px;
-  display: flex;
-
-  .content {
-    @include Title3-M;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: inherit;
-    margin-bottom: 34px;
-    padding: 11px 16px;
-    border-bottom: 1px solid $--gray-100;
-
-    .back_link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-right: 8px;
-
-      svg path {
-        fill: $--Black;
-      }
-    }
-
-    .edit_link {
-      @include Body1-R;
-
-      line-height: 1em;
-      :hover {
-        cursor: pointer;
-      }
-    }
-
-    .abled {
-      pointer-events: auto;
-      color: $--Primary-blue;
-      border-bottom: $--Primary-blue 1px solid;
-    }
-
-    .disabled {
-      cursor: not-allowed;
-      pointer-events: none;
-      color: $--gray-400;
-      border-bottom: $--gray-400 1px solid;
-    }
-  }
-}
-
 .account_section {
   display: flex;
+  gap: 4px;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  padding: 22px 16px;
 
   .account_image_wrapper {
     position: relative;
     width: 100px;
     height: 100px;
-    margin-bottom: 4px;
 
     .account_img {
       display: flex;
+      width: inherit;
+      height: inherit;
       justify-content: center;
       align-items: center;
       border-radius: 50%;

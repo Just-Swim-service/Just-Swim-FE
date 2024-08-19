@@ -68,12 +68,7 @@ export default function Account() {
       <div className={styles.account_section}>
         <div className={styles.account_image_wrapper}>
           <div className={styles.account_img}>
-            <URLImage
-              imageURL={profileImage}
-              alt="profile image"
-              width={100}
-              height={100}
-            />
+            <URLImage imageURL={profileImage} alt="profile image" />
           </div>
           <label htmlFor="select_image" className={styles.image_button}>
             <IconGallery />

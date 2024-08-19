@@ -9,11 +9,15 @@
   border-bottom: 8px solid $--gray-50;
 
   .account_image_wrapper {
+    @include Heading2;
+
     display: flex;
-    width: 60px;
-    height: 60px;
+    align-items: center;
+    gap: 12px;
 
     .account_img {
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background-color: $--gray-100;
       background-size: cover;
@@ -21,6 +25,15 @@
       background-repeat: no-repeat;
       overflow: hidden;
     }
+  }
+
+  .account_change_profile {
+    @include Body3-R;
+
+    color: $--gray-700;
+    border: 1px solid $--gray-200;
+    border-radius: 8px;
+    padding: 6px 10px;
   }
 }
 
@@ -55,9 +68,21 @@
   .app_setting {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid $--gray-200;
 
     .app_setting_menu {
+      display: flex;
+      justify-content: space-between;
+      height: 54px;
+      align-items: center;
+    }
+  }
+
+  .account_action {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid $--gray-200;
+
+    .account_action_menu {
       display: flex;
       justify-content: space-between;
       height: 54px;

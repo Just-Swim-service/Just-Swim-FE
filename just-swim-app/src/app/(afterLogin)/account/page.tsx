@@ -1,30 +1,28 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { useParams, usePathname, useRouter } from 'next/navigation';
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconSelectUser,
-  IconSetting,
-} from '@assets';
+import { useRouter } from 'next/navigation';
+import { IconArrowRight, IconSetting } from '@assets';
 
-import { useLayoutEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ROUTES } from '@data';
 import { useUserStore } from '@store';
-import { ConfirmButton, URLImage } from '@components';
+import { URLImage } from '@components';
 import Link from 'next/link';
 
 export default function Account() {
   const router = useRouter();
 
   const { getUserName, getToken, getUserImage } = useUserStore();
-  const userToken = getToken();
-  const userName = getUserName(userToken);
-  const userImage = getUserImage(userToken);
+  const [userName, setUserName] = useState('');
+  const [userImage, setUserImage] = useState('');
 
-  useLayoutEffect(() => {
-    if (!userToken) {
+  useEffect(() => {
+    const userToken = getToken();
+    if (userToken) {
+      setUserName(getUserName(userToken));
+      setUserImage(getUserImage(userToken));
+    } else {
       router.push(ROUTES.ONBOARDING.signin);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,16 +60,15 @@ export default function Account() {
       <div className={styles.account_profile}>
         <div className={styles.account_image_wrapper}>
           <div className={styles.account_img}>
-            <URLImage
-              imageURL={userImage}
-              alt="profile image"
-              width={100}
-              height={100}
-            />
+            <URLImage imageURL={userImage} alt="profile image" />
           </div>
-          <div>홍길동</div>
+          <div suppressHydrationWarning>{userName}</div>
         </div>
-        <button onClick={handleProfileEdit}>프로필 수정하기</button>
+        <button
+          className={styles.account_change_profile}
+          onClick={handleProfileEdit}>
+          프로필 수정하기
+        </button>
       </div>
       <div className={styles.account_setting}>
         <div className={styles.account_setting_title}>
@@ -80,15 +77,21 @@ export default function Account() {
         </div>
         {/* account 상수 '이름: url' 로 객체 만들어서, map 돌리기 */}
         <div className={styles.app_setting}>
-          <Link className={styles.app_setting_menu} href={''}>
+          <Link
+            className={styles.app_setting_menu}
+            href={ROUTES.ONBOARDING.root}>
             <span>계정 / 정보 관리</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
           </Link>
-          <Link className={styles.app_setting_menu} href={''}>
+          <Link
+            className={styles.app_setting_menu}
+            href={ROUTES.ONBOARDING.root}>
             <span>약관 및 운영정책</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
           </Link>
-          <Link className={styles.app_setting_menu} href={''}>
+          <Link
+            className={styles.app_setting_menu}
+            href={ROUTES.ONBOARDING.root}>
             <span>의견 보내기</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
           </Link>
@@ -100,11 +103,11 @@ export default function Account() {
           </div>
           <span>1.1.0</span>
         </div>
-        <div className={styles.app_setting}>
-          <div className={styles.app_setting_menu} onClick={handleLogOut}>
+        <div className={styles.account_action}>
+          <div className={styles.account_action_menu} onClick={handleLogOut}>
             로그아웃
           </div>
-          <div className={styles.app_setting_menu}>
+          <div className={styles.account_action_menu}>
             <Link className={styles.deletion} href={'/account/deletion'}>
               탈퇴하기
             </Link>
