@@ -15,7 +15,7 @@ const ACCOUNT_ROUTE = {
   root: '/account',
   edit: '/account/edit',
   deletion: '/account/deletion',
-};
+} as const;
 
 export const ROUTES = {
   ONBOARDING: { ...SIGNIN_ROUTE },

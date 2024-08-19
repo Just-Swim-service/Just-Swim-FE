@@ -6,7 +6,7 @@ import styles from './layout.module.scss';
 import { IconArrowLeft } from '@assets';
 import React, { useState, SetStateAction } from 'react';
 import { patchUserEdit } from '@apis';
-import { HTTP_STATUS } from '@data';
+import { HTTP_STATUS, ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
 
 type ContextProps = {
@@ -54,6 +54,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         },
       });
       setEditable(false);
+      router.replace(ROUTES.ACCOUNT.root);
     }
   };
 
@@ -68,17 +69,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className={styles.back_link} onClick={handleBackPage}>
             <IconArrowLeft width={20} height={20} fill="#ff0000" />
             <p>
-              {param === '/account'
-                ? '내 정보'
-                : '/account/edit'
-                  ? '프로필 수정'
-                  : ''}
+              {param === ROUTES.ACCOUNT.root
+                ? TEXT.ACCOUNT_PAGE.myInfo
+                : ROUTES.ACCOUNT.edit
+                  ? TEXT.ACCOUNT_PAGE.editInfoTitle
+                  : null}
             </p>
           </div>
-          {param === '/account/edit' ? (
+          {param === ROUTES.ACCOUNT.edit ? (
             <div
               className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}>
-              <div onClick={handleEditProfile}>완료</div>
+              <div onClick={handleEditProfile}>{TEXT.COMMON.done}</div>
             </div>
           ) : null}
         </div>

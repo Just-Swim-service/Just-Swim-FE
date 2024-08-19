@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import styles from './pages.module.scss';
 import { useRouter } from 'next/navigation';
 
 import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
 import { useUserStore } from '@store';
-import { ROUTES } from '@data';
+import { ROUTES, TEXT } from '@data';
 
 import { AccountContext } from '../layout';
 
@@ -28,7 +28,7 @@ export default function Account() {
   const initUserName = getUserName(userToken);
   const initUserImage = getUserImage(userToken);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const init = async () => {
       if (!userToken) {
         router.push(ROUTES.ONBOARDING.signin);
@@ -84,7 +84,7 @@ export default function Account() {
           </label>
         </div>
         <div className={styles.name_input_wrapper}>
-          <p className={styles.name_title}>이름</p>
+          <p className={styles.name_title}>{TEXT.ACCOUNT_PAGE.name}</p>
           <div className={styles.input_wrapper}>
             <input
               type="text"

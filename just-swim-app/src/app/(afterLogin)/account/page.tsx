@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { IconArrowRight, IconSetting } from '@assets';
 
 import { useEffect, useState } from 'react';
-import { ROUTES } from '@data';
+import { ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
 import { URLImage } from '@components';
 import Link from 'next/link';
@@ -52,7 +52,7 @@ export default function Account() {
 
   const handleAccountDeletion = () => {
     // TODO: 회원탈퇴 로직
-    router.push(ROUTES.ACCOUNT.deletion);
+    // router.push(ROUTES.ACCOUNT.deletion);
   };
 
   return (
@@ -67,15 +67,16 @@ export default function Account() {
         <button
           className={styles.account_change_profile}
           onClick={handleProfileEdit}>
-          프로필 수정하기
+          {TEXT.ACCOUNT_PAGE.editInfo}
         </button>
       </div>
       <div className={styles.account_setting}>
         <div className={styles.account_setting_title}>
           <IconSetting />
-          <div>앱 설정</div>
+          <div>{TEXT.ACCOUNT_PAGE.appSetting}</div>
         </div>
         {/* account 상수 '이름: url' 로 객체 만들어서, map 돌리기 */}
+        {/* 로그아웃, 탈퇴하기 진행하며 할 예정 */}
         <div className={styles.app_setting}>
           <Link
             className={styles.app_setting_menu}
@@ -105,11 +106,11 @@ export default function Account() {
         </div>
         <div className={styles.account_action}>
           <div className={styles.account_action_menu} onClick={handleLogOut}>
-            로그아웃
+            {TEXT.ACCOUNT_PAGE.logout}
           </div>
           <div className={styles.account_action_menu}>
             <Link className={styles.deletion} href={'/account/deletion'}>
-              탈퇴하기
+              {TEXT.ACCOUNT_PAGE.deletion}
             </Link>
           </div>
         </div>
