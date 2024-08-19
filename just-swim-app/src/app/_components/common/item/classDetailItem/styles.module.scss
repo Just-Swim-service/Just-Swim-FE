@@ -1,0 +1,153 @@
+@import '@/globals.scss';
+
+.container {
+  width: 100%;
+
+  display: flex;
+
+  .time_info {
+    width: 34px;
+
+    display: flex;
+    flex-direction: column;
+
+    .meridiem {
+      @include Body3-R;
+
+      color: $--gray-400;
+    }
+
+    .start_time {
+      @include Title5-M;
+    }
+  }
+
+  .content {
+    flex-grow: 1;
+
+    position: relative;
+
+    padding: 10px 12px 10px 14px;
+    
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+    
+    border-radius: 8px;
+
+    background-color: $--White;
+
+    .main_info {
+      display: flex;
+      justify-content: space-between;
+
+      .title_info {
+        display: flex;
+        flex-direction: column;
+
+        gap: 1px;
+
+        .class_name {
+          @include Title4-M;
+        }
+
+        .class_info {
+          @include Body3-R;
+
+          color: $--gray-900;
+        }
+      }
+    }
+
+    .extra_info {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      .class_day {
+        @include Body4-R;
+
+        display: flex;
+        align-items: center;
+
+        gap: 3px;
+
+        color: $--gray-700;
+
+        & path {
+          fill: $--gray-400;
+        }
+      }
+
+      & > span {
+        height: 8px;
+        border-left: 1px solid $--gray-400;
+      }
+
+      .class_location {
+        @include Body4-R;
+
+        display: flex;
+        align-items: center;
+
+        gap: 3px;
+
+        color: $--gray-700;
+
+        & path {
+          fill: $--gray-400;
+        }
+      }
+    }
+
+    .student_info {
+      display: flex;
+
+      .student {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 20px;
+        height: 20px;
+
+        border-radius: 50%;
+        
+        margin-left: -6px;
+      }
+
+      .student_count {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 20px;
+        height: 20px;
+
+        border-radius: 50%;
+
+        margin-left: -6px;
+        font-size: 8px;
+
+        background-color: $--White;
+        box-shadow: 0px 0px 10px 1px rgb(158, 158, 158, 0.2);
+      }
+
+      .empty_student {
+        @include Body5-R;
+        
+        position: absolute;
+        top: 10px;
+        right: 12px;
+
+        border-radius: 11px;
+        padding: 2px 10px;
+        
+        color: $--gray-600;
+        background-color: $--gray-100;
+      }
+    }
+  }
+}

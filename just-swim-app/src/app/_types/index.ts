@@ -4,3 +4,6 @@ export * from './typeForm';
 export * from './typeLayout';
 export * from './typeModal';
 export * from './typePicker';
+
+export * from './typeLecture';
+export * from './typeProfile';

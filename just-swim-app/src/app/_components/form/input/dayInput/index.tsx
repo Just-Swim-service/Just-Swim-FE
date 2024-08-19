@@ -7,6 +7,7 @@ import { DayInputProps } from '@types';
 import { useModal } from '@hooks';
 import { IconInputValid, IconCalendar } from '@assets';
 import { mergeRefs } from '@utils';
+import { DAY_ENG_TO_KOR, DAY_KOR_TO_ENG, WEEK_DAYS_TO_ENG } from '@data';
 
 import styled from './styles.module.scss';
 
@@ -18,27 +19,6 @@ interface DayProps {
   "friday": boolean,
   "saturday": boolean,
   "sunday": boolean,
-  [props: string]: any,
-}
-
-const dayEngToKor: {[props: string]: any} = {
-  "monday": "월",
-  "tuesday": "화",
-  "wednesday": "수",
-  "thursday": "목",
-  "friday": "금",
-  "saturday": "토",
-  "sunday": "일",
-}
-
-const dayKorToEng: {[props: string]: any} = {
-  "월": "monday",
-  "화": "tuesday",
-  "수": "wednesday",
-  "목": "thursday",
-  "금":  "friday",
-  "토": "saturday",
-  "일": "sunday",
 }
 
 const makeInitialValue = (defaultValue: string): DayProps => {
@@ -55,7 +35,7 @@ const makeInitialValue = (defaultValue: string): DayProps => {
   if (defaultValue) {
     defaultValue.split('').forEach(day => {
       // @ts-ignore
-      result[dayKorToEng[day]] = true;
+      result[DAY_KOR_TO_ENG[day]] = true;
     });
   }
 
@@ -65,9 +45,9 @@ const makeInitialValue = (defaultValue: string): DayProps => {
 const makeInputValue = (days: DayProps) => {
   let result = '';
 
-  for (const day of Object.keys(days)) {
+  for (const day of WEEK_DAYS_TO_ENG) {
     if (days[day]) {
-      result += dayEngToKor[day];
+      result += DAY_ENG_TO_KOR[day];
     }
   }
 
@@ -77,9 +57,9 @@ const makeInputValue = (days: DayProps) => {
 const makePrintValue = (days: DayProps) => {
   let result = '';
 
-  for (const day of Object.keys(days)) {
+  for (const day of WEEK_DAYS_TO_ENG) {
     if (days[day]) {
-      result += `${dayEngToKor[day]}, `;
+      result += `${DAY_ENG_TO_KOR[day]}, `;
     }
   }
 
@@ -100,6 +80,7 @@ function _DayInput({
   valid = true,
   defaultValue = '',
   placeholder = '',
+  errorMessage = '',
   ...props
 }: DayInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
@@ -141,13 +122,19 @@ ref: ForwardedRef<HTMLInputElement>) {
       <div className={styled.icon_wrapper} onClick={showModal}>
         <IconCalendar width={14} height={14} />
       </div>
-      <div className={`${styled.day_input} ${inputValue ? '' : styled.empty}`} onClick={showModal}>
+      <div className={`${styled.day_input} ${inputValue ? '' : styled.empty} ${!valid && styled.invalid}`} onClick={showModal}>
         <span>{inputValue ? makePrintValue(days) : placeholder}</span>
       </div>
       {
         valid && 
         <div className={styled.valid_warpper}>
           <IconInputValid width={18} height={18} />
+        </div>
+      }
+      {
+        errorMessage && 
+        <div className={styled.error_message}>
+          <p>{errorMessage}</p>
         </div>
       }
       <input

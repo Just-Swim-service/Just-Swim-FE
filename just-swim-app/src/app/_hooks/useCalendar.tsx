@@ -19,7 +19,11 @@ const calculatePrevMonth = (startDay: Date) => {
     days.push(i);
   }
 
-  return days;
+  if (days.length !== 7) {
+    return days;
+  } else {
+    return [];
+  }
 }
 
 const calculateThisMonth = (endDay: Date) => {
@@ -99,6 +103,8 @@ export function useCalendar({
       return (
         <div key={randomId()}>
           <CalendarItem
+            year={current.year}
+            month={current.month - 1}
             date={day}
             isDisabled={true}
             isToday={false}
@@ -111,6 +117,8 @@ export function useCalendar({
       return (
         <div key={randomId()} onClick={() => {changeSelected(day)}}>
           <CalendarItem
+            year={current.year}
+            month={current.month}
             date={day}
             isDisabled={false}
             isToday={current.year === today.getFullYear() && current.month === today.getMonth() && day === today.getDate()}
@@ -123,6 +131,8 @@ export function useCalendar({
       return (
         <div key={randomId()}>
           <CalendarItem
+            year={current.year}
+            month={current.month + 1}
             date={day}
             isDisabled={true}
             isToday={false}

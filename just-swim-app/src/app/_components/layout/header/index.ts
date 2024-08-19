@@ -3,3 +3,4 @@ export * from './header';
 export * from './profileHeader';
 
 export * from './historyBackHeader';
+export * from './userIconHeader';

@@ -7,6 +7,10 @@ export function useModal() {
     setModal(true);
   }
 
+  const unshowModal = () => {
+    setModal(false);
+  }
+
   const hideModal = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
 
@@ -18,5 +22,6 @@ export function useModal() {
     setModal,
     showModal,
     hideModal,
+    unshowModal,
   }
 }

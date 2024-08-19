@@ -1,0 +1,12 @@
+@import '@/globals.scss';
+
+.button_wrapper {
+  width: 100%;
+
+  padding: 74px 16px 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+

@@ -23,6 +23,7 @@ export interface DateInputProps {
 export interface DayInputProps {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
   defaultValue?: string;
 }
 
@@ -35,12 +36,14 @@ export interface FileInputProps {
 export interface LocationInputPros {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
   defalutValue?: string;
 }
 
 export interface TimeInputProps {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
   defaultValue?: string;
   defaultTimeValue?: string;
 }

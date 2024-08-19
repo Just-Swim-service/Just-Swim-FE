@@ -57,6 +57,14 @@ ref: ForwardedRef<HTMLInputElement>) {
       inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (use) {
+      setSelectedDate(use && checkDefaultValue(todayValue) ? todayValue : '');
+    } else {
+      setSelectedDate('');
+    }
+  }, [use])
   
   return (
     <div className={styled.input_wrapper}>
@@ -76,6 +84,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         {...props}
         name={name}
         ref={mergeRefs(inputRef, ref)}
+        placeholder={placeholder}
         type='text'
         readOnly
         hidden
