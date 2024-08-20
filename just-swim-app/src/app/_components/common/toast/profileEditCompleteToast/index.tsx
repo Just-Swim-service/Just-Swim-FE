@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { ToastPortal } from '@components';
+import { Portal } from '@components';
 import { IconCheckboxSelected } from '@assets';
 
 import styled from './styles.module.scss';
@@ -35,7 +35,7 @@ export function ProfileEditCompleteToast({
   }, [disappear, unshowToast]);
 
   return (
-    <ToastPortal>
+    <Portal type='toast'>
       {
         !unmount ?
         <div className={`${styled.container} ${disappear && styled.unshow}`}>
@@ -44,6 +44,6 @@ export function ProfileEditCompleteToast({
         </div>
         : <></>
       }
-    </ToastPortal>
+    </Portal>
   )
 }

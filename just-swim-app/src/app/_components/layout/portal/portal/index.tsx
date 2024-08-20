@@ -3,7 +3,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-export function Portal({ children }: { children: ReactElement }) {
+export function Portal({ children, type = 'modal' }: { children: ReactElement, type?: 'modal' | 'toast' }) {
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -14,5 +14,5 @@ export function Portal({ children }: { children: ReactElement }) {
 
   if (typeof window === 'undefined') return <></>;
 
-  return mounted ? createPortal(children, document.getElementById('modal-portal') as HTMLElement) : <></>;
+  return mounted ? createPortal(children, document.getElementById(`${type}-portal`) as HTMLElement) : <></>;
 };
