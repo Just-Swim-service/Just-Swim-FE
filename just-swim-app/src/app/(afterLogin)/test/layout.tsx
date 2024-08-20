@@ -4,11 +4,7 @@ import React, { useState } from "react";
 
 import { ProfileEditCompleteToast } from "@components";
 
-export const PageContext = React.createContext<{
-  showToast: () => void
-}>({
-  showToast: () => {}
-});
+import { PageContext } from "./pageContext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [show, setShow] = useState<boolean>(false);

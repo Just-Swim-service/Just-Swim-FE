@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";;
 
-import { PageContext } from "./layout";
+import { PageContext } from "./pageContext";
 
 export default function Test() {
   const context = React.useContext(PageContext);
