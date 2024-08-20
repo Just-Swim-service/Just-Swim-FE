@@ -38,7 +38,7 @@ function InputWrapper({
 
 export function FormBody({
   type = 'add',
-  id,
+  id = '',
   lecture
 }: {
   type?: 'add' | 'modify',
@@ -60,32 +60,17 @@ export function FormBody({
     mode: 'onChange'
   });
   
-  const onSubmit = handleSubmit(async (data: LectureType) => {
-    const formData = new FormData();
+  const onSubmit = handleSubmit(async (input: LectureType) => {
+    const data = {
+      ...input,
+      'lectureQRCode': "QR코드",
+    };
 
-    formData.append("apiType", type);
+    const result = await formAction(data, type, id);
 
-    if (isModify) {
-      formData.append("lectureId", id!);
-    }
-
-    formData.append("lectureTitle", data.lectureTitle);
-    formData.append("lectureContent", data.lectureContent);
-    formData.append("lectureTime", data.lectureTime);
-    formData.append("lectureDays", data.lectureDays);
-    formData.append("lectureLocation", data.lectureLocation);
-    formData.append("lectureEndDate", data.lectureEndDate);
-    formData.append("lectureColor", data.lectureColor);
-
-    const result = await formAction(formData);
-
-    // @ts-ignore
-    if (result.statusCode === 500) {
-      setServerErrors(s => ({
-        ...s,
-        duplicate: '같은 일정으로 등록된 수업이 있습니다.',
-      }));
-    }
+    setServerErrors({
+      ...result,
+    });
 
     // 서버 측에 문제가 있어 추후에 수정하겠습니다.
   });
