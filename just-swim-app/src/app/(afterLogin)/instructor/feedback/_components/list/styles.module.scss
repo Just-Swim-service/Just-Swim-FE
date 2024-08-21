@@ -1,0 +1,152 @@
+@import '@/globals.scss';
+
+// FeedbackCard랑 같은 폴더로 이동
+.wrap {
+  background-color: $--gray-50;
+  padding: 21px 16px;
+  // padding: 14px 10px;
+
+  .text {
+    color: $--gray-600;
+    @include Body3-R;
+    .title {
+      @include Title3-M;
+    }
+  }
+}
+.feedback_item {
+  width: 100%;
+
+  padding: 14px 10px;
+
+  border-radius: 8px;
+  border: 1px solid $--gray-100;
+  background-color: $--White;
+
+  .header {
+    margin-bottom: 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .image_wrapper {
+      width: 22px;
+      height: 22px;
+
+      border-radius: 50%;
+      overflow: hidden;
+
+      & > img {
+        object-fit: cover;
+      }
+    }
+
+    .feedback_to {
+      & > p {
+        @include Title5-M;
+
+        color: $--Black;
+      }
+    }
+  }
+
+  .content {
+    margin-bottom: 16px;
+
+    & > p {
+      @include Body2-R;
+
+      color: $--gray-800;
+
+      word-break: break-word;
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .info {
+    display: flex;
+    gap: 14px;
+
+    .wrapper {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+
+      & > p {
+        @include Body4-R;
+
+        color: $--gray-700;
+      }
+    }
+
+    .date_wrapper {
+      @extend .wrapper;
+    }
+
+    .target_wrapper {
+      @extend .wrapper;
+    }
+  }
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  margin-top: 20px;
+  // padding: 20px;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  .list {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    overflow-y: scroll;
+  }
+
+  .page {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 81px;
+
+    .button {
+      @include Body4-R;
+
+      width: 30px;
+      height: 30px;
+
+      border: 1px solid $--gray-200;
+      border-radius: 50%;
+    }
+
+    .move_button {
+      @extend .button;
+    }
+
+    .page_button {
+      @extend .button;
+    }
+
+    .page_button.selected {
+      color: $--White;
+
+      background-color: $--Primary-blue;
+      border: none;
+    }
+  }
+}

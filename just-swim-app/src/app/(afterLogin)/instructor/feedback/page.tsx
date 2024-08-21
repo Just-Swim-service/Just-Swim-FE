@@ -4,6 +4,9 @@ import { InstructorBottomNavBar, ProfileHeader } from '@components';
 
 import { FeedbackList, FeedbackTypeButton } from './_components';
 import styled from './feedback.module.scss';
+import { List } from './_components';
+import { getSortedFeedback } from '@apis';
+// import { getCachedSortedFeedback } from './server';
 
 export default async function Feedback() {
   const data = {
@@ -11,11 +14,14 @@ export default async function Feedback() {
     image: '',
   };
 
+  const cachedFeedbackList = (await getSortedFeedback()) || [];
+
   return (
     <div className={styled.layout}>
       <ProfileHeader leftContent="피드백" data={data} />
       <FeedbackTypeButton />
-      <FeedbackList />
+      {/* <FeedbackList /> */}
+      <List feedback={cachedFeedbackList} />
       <div className={styled.nav}>
         <InstructorBottomNavBar />
       </div>
