@@ -23,10 +23,12 @@ export async function formAction(data: LectureBasicProps, type: 'add' | 'modify'
     }
     
     const [targetStart, targetEnd] = schedule.lectureTime.split('~').map(t => parseInt(t.split(':').join('')));
-
-    if ((inputStart >= targetStart && inputStart <= targetEnd) || (inputEnd >= targetStart && inputEnd <= targetEnd)) {
-      valid = false;
-      errors.duplicate = '같은 일정으로 등록된 수업이 있습니다.';
+    
+    for (const day of data.lectureDays) {
+      if (schedule.lectureDays.includes(day) && ((inputStart >= targetStart && inputStart <= targetEnd) || (inputEnd >= targetStart && inputEnd <= targetEnd))) {
+        valid = false;
+        errors.duplicate = '같은 일정으로 등록된 수업이 있습니다.';
+      }
     }
   }
 
