@@ -132,8 +132,8 @@ async function getFeedback(): Promise<FeedbackProps[] | null> {
 // _utils 폴더 내부로 이동
 // 최신순으로 정렬, 날짜가 같을 경우 id 역순으로 정렬
 function sortFeedback(a: FeedbackProps, b: FeedbackProps) {
-  const aTime = new Date(a.feedbackDate);
-  const bTime = new Date(b.feedbackDate);
+  const aTime = new Date(a.feedbackCreatedAt);
+  const bTime = new Date(b.feedbackCreatedAt);
 
   if (aTime < bTime) {
     return 1;
