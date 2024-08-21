@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from './searchClass.module.scss';
 import Location from '@assets/location.svg';
@@ -11,61 +11,33 @@ import Clear from '@assets/clear.svg';
 
 import { Header } from '@components';
 import { randomId } from '@utils';
+import { searchClassStore } from '@store';
+import { useRouter } from 'next/navigation';
 
 export default function SearchClass() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const router = useRouter();
 
-  let classList = [
-    {
-      id: '1',
-      name: '아침 5 반',
-      week: '금,토 요일',
-      location: '강동구 실내 수영장',
-      time: '11:00 ~ 12:00',
-    },
-    {
-      id: '2',
-      name: '아티스틱 스윔 반',
-      week: '금,토 요일',
-      location: '강동구 실내 수영장',
-      time: '11:00 ~ 12:00',
-    },
-    {
-      id: '3',
-      name: '생존 수영 반',
-      week: '금,토 요일',
-      location: '왕십리 스윔센터',
-      time: '11:00 ~ 12:00',
-    },
-    {
-      id: '4',
-      name: '아침 5 반',
-      week: '금,토 요일',
-      location: '강동구 실내 수영장',
-      time: '11:00 ~ 12:00',
-    },
-    {
-      id: '5',
-      name: '아티스틱 스윔 반',
-      week: '금,토 요일',
-      location: '강동구 실내 수영장',
-      time: '11:00 ~ 12:00',
-    },
-    {
-      id: '6',
-      name: '생존 수영 반',
-      week: '금,토 요일',
-      location: '왕십리 스윔센터',
-      time: '11:00 ~ 12:00',
-    },
-    {
-      id: '7',
-      name: '생존 수영 반',
-      week: '금,토 요일',
-      location: '왕십리 스윔센터',
-      time: '11:00 ~ 12:00',
-    },
-  ];
+  // const [selected, setSelected] = useState<string | null>(null);
+
+  // const [classList, setClassList] = useState([]);
+  const {
+    userList,
+    checkedList,
+    checkItemHandler,
+    setSelectedListHandler,
+    loadUserList,
+    setCheckAllHandler,
+  } = searchClassStore();
+
+  useEffect(() => {
+    loadUserList();
+    console.log('ddd');
+  }, [loadUserList]);
+
+  const checkLength = () => {
+    const checkedCount = checkedList.length;
+    return checkedCount;
+  };
 
   return (
     <>
@@ -76,45 +48,75 @@ export default function SearchClass() {
           수업을 선택해주세요
         </p>
         <div className={styled.search_class}>
-          {classList.map((item) => (
-            <button
-              key={randomId()}
-              className={`${styled.item} ${selected === item.id ? styled.active : ''}`}
-              onClick={() => setSelected(item.id)}>
+          {userList.map((group, index) => (
+            <li
+              key={index}
+              className={`${styled.item} ${
+                checkedList.some(
+                  (checkedItem) => checkedItem.lectureId === group.lectureId,
+                )
+                  ? styled.active
+                  : ''
+              }`}>
+              <input
+                className={styled.check}
+                id={group.lectureId}
+                type="checkbox"
+                onChange={(e) => checkItemHandler(e, group.lectureId)}
+                checked={checkedList.some(
+                  (checkedItem) => checkedItem.lectureId === group.lectureId,
+                )}
+              />
+              <label htmlFor={group.lectureId}>
+                {checkedList.some(
+                  (checkedItem) => checkedItem.lectureId === group.lectureId,
+                ) ? (
+                  <Check color={'#3689FF'} />
+                ) : (
+                  <Check color={'#d7dbde'} />
+                )}
+              </label>
               <div>
-                <span className={styled.check}>
-                  {selected === item.id ? (
-                    <Check color={'#3689FF'} />
-                  ) : (
-                    <Check color={'#d7dbde'} />
-                  )}
-                </span>
-                <p className={styled.name}>{item.name}</p>
+                <p className={styled.name}>{group.lectureTitle}</p>
                 <p>
                   <span>
                     <Calendar_SM width="15" />
                   </span>
-                  {item.week}
+                  {group.lectureDays}
                 </p>
                 <p>
                   <span>
                     <Location width="15" />
                   </span>
-                  {item.location}
+                  {group.lectureTime}
                 </p>
                 <p>
                   <span>
                     <Clock width="15" />
                   </span>
-                  {item.time}
+                  {group.lectureLocation}
                 </p>
               </div>
-            </button>
+            </li>
           ))}
         </div>
-        <button className={styled.select_button} disabled={selected === null}>
-          해당 수업 선택
-        </button>
+        <div className={styled.btn}>
+          <button
+            type="button"
+            className={`${styled.complete_btn} ${checkLength() == 0 ? styled.disabled : ''}`}
+            onClick={() => {
+              setSelectedListHandler();
+              router.push('/instructor/feedback/create/class');
+            }}>
+            선택 완료
+          </button>
+          <button
+            type="button"
+            className={styled.select_all_btn}
+            onClick={setCheckAllHandler}>
+            전체 선택
+          </button>
+        </div>
       </div>
     </>
   );

@@ -1,4 +1,5 @@
-import { getMemberList } from '@/_apis/member';
+import { ClassContentCard } from '@components';
+import { getClassList, getMemberList } from '@/_apis/member';
 import { ChangeEvent } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -10,6 +11,20 @@ interface Member {
   profileImage: string;
   lectureId: string;
   lectureTitle: string;
+}
+
+interface ClassGroup {
+  lectureColor: string;
+  lectureContent: string;
+  lectureDays: string;
+  lectureEndDate: string;
+  lectureId: string;
+  lectureLocatio: stringn;
+  lectureQRCode: string;
+  lectureTime: string;
+  lectureTitle: string;
+  memberProfileImage: string;
+  memberUserId: string;
 }
 
 type State = {
@@ -93,4 +108,65 @@ const searchUserStore = create<State & Action>()(
   ),
 );
 
-export { searchUserStore };
+const searchClassStore = create<State & Action>()(
+  persist(
+    (set) => ({
+      reset: () => {
+        set(initialState);
+      },
+      userList: [],
+      loadUserList: async () => {
+        const userList = await getClassList();
+        set({ userList: userList || [] });
+      },
+      checkedList: [],
+      selectedList: [],
+      checkItemHandler: (e: ChangeEvent<HTMLInputElement>, lectureId: string) =>
+        set((state: any) => {
+          const isChecked = e.target.checked;
+
+          const selectMember = state.userList.find(
+            (member: ClassGroup) => member.lectureId === lectureId,
+          );
+          if (!selectMember) return state;
+          return {
+            checkedList: isChecked
+              ? [...state.checkedList, selectMember]
+              : state.checkedList.filter(
+                  (member: ClassGroup) => member.lectureId !== lectureId,
+                ),
+          };
+        }),
+      setCheckAllHandler: () =>
+        set((state: any) => {
+          return {
+            checkedList: [...state.userList],
+          };
+        }),
+      setSelectedListHandler: () =>
+        set((state: any) => {
+          return {
+            selectedList: state.checkedList,
+          };
+        }),
+
+      removeItemHandler: (lectureId: string) =>
+        set((state: any) => ({
+          selectedList: state.selectedList.filter(
+            (member: ClassGroup) => member.lectureId !== lectureId,
+          ),
+          checkedList: state.checkedList.filter(
+            (member: ClassGroup) => member.lectureId !== lectureId,
+          ),
+        })),
+    }),
+    {
+      name: 'checked_class_list',
+      partialize: (state: any) => ({
+        selectedList: state.selectedList,
+        checkedList: state.checkedList,
+      }),
+    },
+  ),
+);
+export { searchUserStore, searchClassStore };
