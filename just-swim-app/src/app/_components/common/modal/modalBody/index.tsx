@@ -4,9 +4,9 @@ import { MouseEvent, TouchEvent, useRef, useState } from "react";
 
 import { usePreventScroll } from "@hooks";
 import { ModalBodyProps } from "@types";
+import { Portal } from "@components";
 
 import styled from './styles.module.scss';
-import Portal from "@/_components/layout/portal";
 
 export function ModalBody({
   children,

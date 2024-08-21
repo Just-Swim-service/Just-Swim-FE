@@ -17,6 +17,7 @@ import IconGoogle from './icon_google.svg';
 import IconGallery from './icon_gallery.svg';
 import IconSelectUser from './icon_select_user.svg';
 import IconSearch from './icon_search.svg';
+import IconCheckboxSelected from './icon_checkbox_selected.svg';
 
 export {
   IconArrowRight,
@@ -38,4 +39,5 @@ export {
   IconSearch,
   IconCheck,
   IconArrowRightSmall,
+  IconCheckboxSelected,
 };
