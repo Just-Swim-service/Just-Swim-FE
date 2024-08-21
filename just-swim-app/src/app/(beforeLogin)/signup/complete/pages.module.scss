@@ -1,0 +1,74 @@
+@import '@/globals.scss';
+
+.complete_header {
+  flex-grow: 1;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: flex-complete;
+  margin-top: 51px;
+  width: 100%;
+
+  h3 {
+    @include Title2-SB;
+
+    color: $--Black;
+  }
+}
+
+.complete_section {
+  flex-grow: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .profile_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+
+  .type_button_img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .type_button_img div {
+    width: 100px;
+    height: 100px;
+    background-color: #ebecee;
+  }
+}
+
+.complete_footer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+
+  .button_wrapper {
+    width: inherit;
+    height: 52px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .select_button {
+    background-color: $--Primary-blue;
+    color: $--White;
+    width: inherit;
+    height: 100%;
+    border-radius: 8px;
+  }
+}
