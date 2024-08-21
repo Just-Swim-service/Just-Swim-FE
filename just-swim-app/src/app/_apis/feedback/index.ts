@@ -56,6 +56,7 @@ export interface FeedbackProps {
   feedbackDate: string;
   feedbackContent: string;
   lectureTitle: string;
+  feedbackCreatedAt: string;
   members: {
     memberUserId: string;
     memberProfileImage: string;
