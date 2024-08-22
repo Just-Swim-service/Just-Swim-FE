@@ -61,10 +61,12 @@
           img:nth-child(n + 2) {
             margin-left: -8px;
           }
+          float: left;
         }
 
-        p {
+        .count {
           @include Title5-SB;
+          float: right;
         }
       }
     }

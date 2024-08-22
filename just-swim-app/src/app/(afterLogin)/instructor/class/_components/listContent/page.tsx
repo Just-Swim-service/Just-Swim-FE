@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styled from './listContent.module.scss';
 import { IconRepeatTime, IconLocation, IconClock } from '@assets';
+import Image from 'next/image';
 
 export default function ListContent() {
   const [lectures, setLectures] = useState([]);
-  const [error, setError] = useState(null);
 
   const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/schedule`;
   const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_DB_TOKEN}`;
@@ -20,9 +20,6 @@ export default function ListContent() {
       },
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
         return response.json();
       })
       .then((data) => {
@@ -30,8 +27,8 @@ export default function ListContent() {
           (lecture: { lectureEndDate: string }) => {
             const lectureEndDate = new Date(
               lecture.lectureEndDate.replace(/\./g, '-'),
-            ); // Replace dots with dashes for Date object parsing
-            const isPastLecture = lectureEndDate < new Date(); // Compare with current date
+            );
+            const isPastLecture = lectureEndDate < new Date();
 
             return {
               ...lecture,
@@ -40,20 +37,11 @@ export default function ListContent() {
           },
         );
         setLectures(processedLectures);
-      })
-      .catch((error) => {
-        setError(error);
-        console.error('API error:', error);
       });
   }, []);
 
-  if (error) {
-    console.error('API error:', error);
-    return <p>API 오류 발생</p>;
-  }
-
   if (!lectures || lectures.length === 0) {
-    return <p>데이터 로딩 중...</p>;
+    return <p>데이터 로딩 중입니다.</p>;
   }
 
   const ongoingLectures = lectures.filter((lecture) => !lecture.isPastLecture);
@@ -79,7 +67,11 @@ export default function ListContent() {
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
-                              <IconLocation />
+                              <IconLocation
+                                width="18"
+                                height="18"
+                                color={'red'}
+                              />
                             </span>
                             {item.lectureLocation}
                           </p>
@@ -97,10 +89,28 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
+                          <div className={styled.photo_list}>
+                            {item.members && item.members.length > 0 && (
+                              <>
+                                {item.members.map((member, index) => (
+                                  <Image
+                                    key={index}
+                                    src={member.memberProfileImage}
+                                    alt="회원 프로필 사진"
+                                    width={28}
+                                    height={28}
+                                    style={{
+                                      borderRadius: '28px',
+                                      verticalAlign: 'middle',
+                                    }}
+                                  />
+                                ))}
+                              </>
+                            )}
+                          </div>
                           <p className={styled.count}>
-                            {item.memberUserId &&
-                            typeof item.memberUserId === 'number'
-                              ? `${item.memberUserId}명`
+                            {item.members && item.members.length > 0
+                              ? `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -147,10 +157,28 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
+                          <div className={styled.photo_list}>
+                            {item.members && item.members.length > 0 && (
+                              <>
+                                {item.members.map((member, index) => (
+                                  <Image
+                                    key={index}
+                                    src={member.memberProfileImage}
+                                    alt="회원 프로필 사진"
+                                    width={28}
+                                    height={28}
+                                    style={{
+                                      borderRadius: '28px',
+                                      verticalAlign: 'middle',
+                                    }}
+                                  />
+                                ))}
+                              </>
+                            )}
+                          </div>
                           <p className={styled.count}>
-                            {item.memberUserId &&
-                            typeof item.memberUserId === 'number'
-                              ? `${item.memberUserId}명`
+                            {item.members && item.members.length > 0
+                              ? `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -203,10 +231,28 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
+                          <div className={styled.photo_list}>
+                            {item.members && item.members.length > 0 && (
+                              <>
+                                {item.members.map((member, index) => (
+                                  <Image
+                                    key={index}
+                                    src={member.memberProfileImage}
+                                    alt="회원 프로필 사진"
+                                    width={28}
+                                    height={28}
+                                    style={{
+                                      borderRadius: '28px',
+                                      verticalAlign: 'middle',
+                                    }}
+                                  />
+                                ))}
+                              </>
+                            )}
+                          </div>
                           <p className={styled.count}>
-                            {item.memberUserId &&
-                            typeof item.memberUserId === 'number'
-                              ? `${item.memberUserId}명`
+                            {item.members && item.members.length > 0
+                              ? `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -253,10 +299,28 @@ export default function ListContent() {
                           </p>
                         </div>
                         <div className={styled.profile_box}>
+                          <div className={styled.photo_list}>
+                            {item.members && item.members.length > 0 && (
+                              <>
+                                {item.members.map((member, index) => (
+                                  <Image
+                                    key={index}
+                                    src={member.memberProfileImage}
+                                    alt="회원 프로필 사진"
+                                    width={28}
+                                    height={28}
+                                    style={{
+                                      borderRadius: '28px',
+                                      verticalAlign: 'middle',
+                                    }}
+                                  />
+                                ))}
+                              </>
+                            )}
+                          </div>
                           <p className={styled.count}>
-                            {item.memberUserId &&
-                            typeof item.memberUserId === 'number'
-                              ? `${item.memberUserId}명`
+                            {item.members && item.members.length > 0
+                              ? `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>
