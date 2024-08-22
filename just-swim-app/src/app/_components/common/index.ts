@@ -5,3 +5,5 @@ export * from './modal';
 export * from './urlImage';
 export * from './slider';
 export * from './switch';
+export * from './toast';
+
