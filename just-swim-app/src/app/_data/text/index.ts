@@ -1,4 +1,4 @@
-import { COMMON_TEXT } from './common';
+import { COMMON_COMPONENT_TEXT, COMMON_TEXT } from './common';
 import {
   SIGNUP_TEXT,
   SELECT_TEXT,
@@ -9,6 +9,7 @@ import { ACCOUNT_TEXT } from './account';
 
 export const TEXT = {
   COMMON: { ...COMMON_TEXT },
+  COMMON_COMPONENT: { ...COMMON_COMPONENT_TEXT },
   SIGNUP_PAGE: { ...SIGNUP_TEXT },
   TYPE_SELECT_PAGE: { ...SELECT_TEXT },
   SET_PROFILE_PAGE: { ...SET_PROFILE_TEXT },

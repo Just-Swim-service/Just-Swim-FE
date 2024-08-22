@@ -57,6 +57,7 @@ export default function Account() {
       handleSetEditableTrue();
     }
   };
+
   const handleSetEditableTrue = () => {
     if (!editable) {
       setEditable(true);

@@ -8,6 +8,7 @@ import React, { useState, SetStateAction } from 'react';
 import { patchUserEdit } from '@apis';
 import { HTTP_STATUS, ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
+import { ProfileEditCompleteToast } from '@components';
 
 type ContextProps = {
   userToken: string;
@@ -35,9 +36,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const { getToken, setAddUserProfile } = useUserStore();
   const userToken = getToken();
+  const [show, setShow] = useState<boolean>(false);
   const [editable, setEditable] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
+
+  const showToast = () => {
+    setShow(true);
+  };
+
+  const unshowToast = () => {
+    setShow(false);
+  };
 
   const handleEditProfile = async () => {
     const { status } = await patchUserEdit({
@@ -54,6 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         },
       });
       setEditable(false);
+      showToast();
       router.replace(ROUTES.ACCOUNT.root);
     }
   };
@@ -95,6 +106,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           setProfileImage: setProfileImage,
         }}>
         {children}
+        {show && <ProfileEditCompleteToast unshowToast={unshowToast} />}
       </AccountContext.Provider>
     </div>
   );
