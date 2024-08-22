@@ -25,8 +25,9 @@ const feedbackStore = create<any>()(
         content: '',
         file: '',
         fileURL: '',
+        target: '',
       },
-      setFeedbackHandler: (form) =>
+      setFeedbackHandler: (form, targetType: string) =>
         set((state: any) => {
           console.log(form);
           return {
@@ -36,6 +37,8 @@ const feedbackStore = create<any>()(
               content: form.content,
               file: form.file,
               fileURL: form.fileURL,
+              target: form.target,
+              type: targetType,
             },
           };
         }),

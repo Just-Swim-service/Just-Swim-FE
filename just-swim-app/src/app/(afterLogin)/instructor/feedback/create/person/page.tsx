@@ -94,7 +94,7 @@ export default function FeedbackWrite() {
       }
     });
 
-    setFeedbackHandler(formDataObject);
+    setFeedbackHandler(formDataObject, 'personal');
 
     const errors = await submitForm(formData);
 
