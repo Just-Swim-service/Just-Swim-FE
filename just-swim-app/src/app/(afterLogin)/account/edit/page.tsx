@@ -8,8 +8,7 @@ import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
 import { useUserStore } from '@store';
 import { ROUTES, TEXT } from '@data';
-
-import { AccountContext } from '../layout';
+import { AccountContext } from '../_context/context';
 
 export default function Account() {
   const router = useRouter();

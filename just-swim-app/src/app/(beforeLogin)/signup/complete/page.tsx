@@ -21,6 +21,7 @@ export default function Complete() {
       const image = getUserImage(userToken);
       setUserImage(image);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRoute = () => {
@@ -40,12 +41,7 @@ export default function Complete() {
       </div>
       <div className={styles.complete_section}>
         <div className={styles.profile_img}>
-          <URLImage
-            imageURL={userImage as string}
-            alt="profile image"
-            width={125}
-            height={125}
-          />
+          <URLImage imageURL={userImage as string} alt="profile image" />
         </div>
       </div>
       <div className={styles.complete_footer}>

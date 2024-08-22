@@ -4,31 +4,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import styles from './layout.module.scss';
 
 import { IconArrowLeft } from '@assets';
-import React, { useState, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { patchUserEdit } from '@apis';
 import { HTTP_STATUS, ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
 import { ProfileEditCompleteToast } from '@components';
-
-type ContextProps = {
-  userToken: string;
-  editable: boolean;
-  userName: string;
-  profileImage: string;
-  setEditable: React.Dispatch<SetStateAction<boolean>>;
-  setUserName: React.Dispatch<SetStateAction<string>>;
-  setProfileImage: React.Dispatch<SetStateAction<string>>;
-};
-
-export const AccountContext = React.createContext<ContextProps>({
-  userToken: '',
-  editable: false,
-  userName: '',
-  profileImage: '',
-  setEditable: () => {},
-  setUserName: () => {},
-  setProfileImage: () => {},
-});
+import { AccountContext } from './_context/context';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
