@@ -37,7 +37,7 @@ export const lectureSchema = z.object({
     });
   }
 
-  const [from , to] = lectureTime.split('~').map(v => parseInt(v.split(':').join('')));
+  const [from , to] = lectureTime.split('-').map(v => parseInt(v.split(':').join('')));
 
   if (from >= to) {
     ctx.addIssue({
