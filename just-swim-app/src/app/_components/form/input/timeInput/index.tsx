@@ -85,7 +85,7 @@ ref: ForwardedRef<HTMLInputElement>) {
     }
 
     if (inputRef.current) {
-      inputRef.current.setAttribute('value', `${startTime}~${endTime}`);
+      inputRef.current.setAttribute('value', `${startTime}-${endTime}`);
       inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }, [startTime, endTime]);
