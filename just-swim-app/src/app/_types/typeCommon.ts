@@ -9,12 +9,13 @@ export interface ConfirmButtonProps {
 }
 
 export interface CalendarProps {
-  DateBlock?: JSX.ElementType,
   selectedDate?: string,
   changeSelectedDate?: (date: string) => void
 }
 
 export interface CalendarItemProps {
+  year?: number,
+  month?: number,
   date: number,
   isDisabled: boolean,
   isToday: boolean,

@@ -10,7 +10,7 @@ import { IconInputValid, IconClock } from '@assets';
 
 import styled from './styles.module.scss';
 
-const checkDefaultValue = (defalutValue: string) => {
+const checkValue = (defalutValue: string) => {
   const regexp = /\d{2}:\d{2}~\d{2}:\d{2}$/g;
 
   return regexp.test(defalutValue);
@@ -21,11 +21,13 @@ const TimeBlock = ({
   changeSelectedTime,
   defaultTimeValue = "10:30",
   placeholder = '',
+  valid
 }: {
   selectedTime: string,
   changeSelectedTime: (time: string) => void,
   defaultTimeValue?: string,
   placeholder?: string,
+  valid: boolean
 }) => {
   const { modal, showModal, hideModal } = useModal();
   
@@ -35,7 +37,7 @@ const TimeBlock = ({
   return (
     <div className={styled.input_wrapper}>
       <div
-        className={`${styled.time_input} ${selectedTime ? '' : styled.empty}`}
+        className={`${styled.time_input} ${selectedTime ? '' : styled.empty} ${!valid && styled.invalid}`}
         onClick={showModal}
       >
         <span className={styled.meridiem}>{selectedTime ? hourValue >= 12 ? "PM" : "AM" : ''}</span>
@@ -58,12 +60,13 @@ function _TimeInput({
   valid = true,
   defaultValue = "",
   defaultTimeValue = "10:30",
+  errorMessage = '',
   ...props
 }: TimeInputProps & InputHTMLAttributes<HTMLInputElement>,
 ref: ForwardedRef<HTMLInputElement>) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const flag = checkDefaultValue(defaultValue);
+  const flag = checkValue(defaultValue);
 
   const [startTime, setStartTime] = useState<string>(flag ? defaultValue.slice(0, 5) : '');
   const [endTime, setEndTime] = useState<string>(flag ? defaultValue.slice(6) : '');
@@ -77,8 +80,12 @@ ref: ForwardedRef<HTMLInputElement>) {
   }
 
   useEffect(() => {
+    if (!startTime && !endTime) {
+      return;
+    }
+
     if (inputRef.current) {
-      inputRef.current.setAttribute('value', `${startTime}~${endTime}`);
+      inputRef.current.setAttribute('value', `${startTime}-${endTime}`);
       inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }, [startTime, endTime]);
@@ -90,6 +97,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         changeSelectedTime={changeStartTime}
         defaultTimeValue={defaultTimeValue}
         placeholder='시작 시간'
+        valid={valid}
       />
       <div className={styled.divider}>
         <span>~</span>
@@ -99,6 +107,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         changeSelectedTime={changeEndTime}
         defaultTimeValue={defaultTimeValue}
         placeholder='종료 시간'
+        valid={valid}
       />
       <div className={styled.icon_wrapper}>
         <IconClock width={20} height={20} />
@@ -107,6 +116,18 @@ ref: ForwardedRef<HTMLInputElement>) {
         valid && 
         <div className={`${styled.valid_warpper} ${startTime && endTime ? '' : styled.empty}`}>
           <IconInputValid width={18} height={18} />
+        </div>
+      }
+      {
+        checkValue(inputRef.current?.value || '') && errorMessage && 
+        <div className={styled.error_message}>
+          <p>{errorMessage}</p>
+        </div>
+      }
+      {
+        errorMessage && 
+        <div className={styled.error_message}>
+          <p>{errorMessage}</p>
         </div>
       }
       <input

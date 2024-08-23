@@ -11,12 +11,15 @@ export function TipModal({
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) {
   const [next, setNext] = useState('1');
+
   const handleTipModal = () => {
     setNext('2');
   };
+
   const handleShowModal = () => {
     setShowModal(false);
   };
+
   return (
     <div className={styled.tip_modal}>
       <div className={styled.modal_background}>
@@ -55,7 +58,7 @@ export function TipModal({
               ) : (
                 <Link
                   href={{
-                    pathname: `/instructor/register`,
+                    pathname: `/schedule/add`,
                   }}>
                   <button
                     className={`${styled.select_button} ${styled.active}`}
@@ -69,7 +72,7 @@ export function TipModal({
               {next === '1' ? (
                 <Link
                   href={{
-                    pathname: `/instructor/register`,
+                    pathname: `/schedule/add`,
                   }}>
                   <button className={styled.select_button} onClick={handleShowModal}>
                     건너뛰기

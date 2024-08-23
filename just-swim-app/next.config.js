@@ -19,6 +19,9 @@ const nextConfig = {
         port: '',
         pathname: '/dn/**',
       },
+      {
+        hostname: "t1.kakaocdn.net"
+      }
     ],
   },
 };

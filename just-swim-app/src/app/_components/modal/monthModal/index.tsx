@@ -12,6 +12,7 @@ export function MonthModal({
   monthValue,
   updateValue,
   hideModal,
+  unshowModal,
 }: MonthModalProps) {
   const [currentValue, setCurrentValue] = useState<{ year: number, month: number }>({
     year: yearValue,
@@ -24,6 +25,7 @@ export function MonthModal({
 
   const confirmSelectedMonth = () => {
     updateValue({ year: currentValue.year, month: currentValue.month });
+    unshowModal();
   }
 
   return (

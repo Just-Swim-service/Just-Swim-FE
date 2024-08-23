@@ -46,7 +46,7 @@ ref: ForwardedRef<HTMLInputElement>) {
         <span>{maxLength}</span>
       </div>
       {
-        count !== 0 && errorMessage && 
+        errorMessage && 
         <div className={styled.error_message}>
           <p>{errorMessage}</p>
         </div>
