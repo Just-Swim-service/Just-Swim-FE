@@ -13,14 +13,19 @@ import IconInputValid from './icon_input_valid.svg';
 import IconLocation from './icon_location.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
 import IconRepeat from './icon_repeat.svg';
-import IconSearch from './icon_search.svg';
-import IconSelectUser from './icon_select_user.svg';
 import IconShare from './icon_share.svg';
 import IconTrash from './icon_trash.svg';
 import IconValidWhite from './icon_valid_white.svg';
 import IconArrowRightSmall from './icon_arrow_right_small.svg';
 import IconCheck from './icon_check.svg';
 import IconCheckboxInvalid from './icon_checkbox_invalid.svg';
+import IconKakao from './icon_kakao.svg';
+import IconNaver from './icon_naver.svg';
+import IconGoogle from './icon_google.svg';
+import IconGallery from './icon_gallery.svg';
+import IconSelectUser from './icon_select_user.svg';
+import IconSearch from './icon_search.svg';
+import IconCheckboxSelected from './icon_checkbox_selected.svg';
 
 export {
   IconArrowRight,
@@ -34,6 +39,10 @@ export {
   IconValidWhite,
   IconTrash,
   IconRepeatTime,
+  IconKakao,
+  IconNaver,
+  IconGoogle,
+  IconGallery,
   IconSelectUser,
   IconSearch,
   IconCalendarHome,
@@ -46,4 +55,5 @@ export {
   IconArrowRightSmall,
   IconCheck,
   IconCheckboxInvalid,
+  IconCheckboxSelected,
 };
