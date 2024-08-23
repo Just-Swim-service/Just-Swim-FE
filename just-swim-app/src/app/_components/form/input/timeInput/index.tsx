@@ -11,7 +11,7 @@ import { IconInputValid, IconClock } from '@assets';
 import styled from './styles.module.scss';
 
 const checkValue = (defalutValue: string) => {
-  const regexp = /\d{2}:\d{2}~\d{2}:\d{2}$/g;
+  const regexp = /\d{2}:\d{2}-\d{2}:\d{2}$/g;
 
   return regexp.test(defalutValue);
 }
@@ -146,7 +146,7 @@ ref: ForwardedRef<HTMLInputElement>) {
  * 상위 컴포넌트에서 TimeInput 대한 className을 직접 설정하지 않도록 주의! (동작하지 않음)
  * @param {string} name input의 name
  * @param {boolean} valid input이 유효한지 여부
- * @param {string} defaultValue input의 초기 시간 값, 'xx:xx~xx:xx' 형태
+ * @param {string} defaultValue input의 초기 시간 값, 'xx:xx-xx:xx' 형태
  * @param {string} defaultTimeValue time picker에서 처음에 보여줄 시간
  * @param {import('react').MutableRefObject<HTMLInputElement>} ref input의 ref attribute에 연결할 target
  * @param {import('react').InputHTMLAttributes<HTMLInputElement>} attributes input에서 사용 가능한 모든 attributes
