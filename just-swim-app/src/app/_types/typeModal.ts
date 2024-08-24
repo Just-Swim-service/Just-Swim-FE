@@ -2,8 +2,6 @@ import { MouseEvent } from "react";
 
 import { DayProps } from "@types";
 
-
-
 export interface ModalBodyProps {
   children?: React.ReactNode,
   hideModal: (event: MouseEvent<HTMLElement>) => void,
@@ -42,4 +40,5 @@ export interface MonthModalProps extends ModalBodyProps {
   yearValue: number,
   monthValue: number,
   updateValue: ({ year, month }: { year: number, month: number }) => void,
+  unshowModal: () => void,
 }

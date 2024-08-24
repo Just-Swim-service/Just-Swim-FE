@@ -9,10 +9,11 @@ import { randomId } from "@utils";
 import styled from './styles.module.scss';
 
 function _EndDateInput({
+  defaultValue,
   ...props
 }: DateInputProps & InputHTMLAttributes<HTMLInputElement>, 
 ref: ForwardedRef<HTMLInputElement>) {
-  const [useEndDate, setUseEndDate] = useState<boolean>(false);
+  const [useEndDate, setUseEndDate] = useState<boolean>(defaultValue ? true : false);
 
   const onChangeSwitch = useCallback(() => {
     setUseEndDate(s => !s);
@@ -22,9 +23,9 @@ ref: ForwardedRef<HTMLInputElement>) {
     <div>
       <div className={styled.switch_wrapper}>
         <p>종료일 설정</p>
-        <SlideSwitch defaultState="off" onChange={onChangeSwitch} />
+        <SlideSwitch defaultState={useEndDate ? 'on' : 'off'} onChange={onChangeSwitch} />
       </div>
-      <DateInput key={randomId()} {...props} ref={ref} use={useEndDate}/>
+      <DateInput defaultValue={defaultValue} {...props} ref={ref} use={useEndDate}/>
     </div>
   )
 }

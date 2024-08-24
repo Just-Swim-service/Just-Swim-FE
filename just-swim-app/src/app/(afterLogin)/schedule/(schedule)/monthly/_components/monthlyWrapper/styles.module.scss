@@ -1,0 +1,56 @@
+@import '@/globals.scss';
+
+.container {
+  height: calc(100vh - 263px);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.days {
+  @include Title4-M;
+
+  width: 32px;
+  height: 32px;
+}
+
+.days.disabled {
+  color: $--gray-300;
+  cursor: default;
+}
+
+.days.today {
+  color: $--Primary-blue;
+}
+
+.days.selected {
+  color: $--White;
+  background-color: $--Primary-blue;
+
+  border-radius: 50%;
+}
+
+.dot_wrapper {
+  margin-top: 5px;
+
+  .count {
+    display: flex;
+    justify-content: center;
+
+    .dot {
+      width: 6px;
+      height: 6px;
+
+      border: 0.5px solid white;
+      border-radius: 50%;
+
+      background-color: $--gray-300;
+
+      margin-left: -1px;
+    }
+
+    .dot:first-child {
+      margin-left: 0;
+    }
+  }
+}

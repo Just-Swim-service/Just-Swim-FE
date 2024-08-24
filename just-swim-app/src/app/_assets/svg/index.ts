@@ -1,16 +1,24 @@
-import IconArrowRight from './icon_arrow_right.svg';
-import IconArrowRightSmall from './icon_arrow_right_small.svg';
+import IconAdd from './icon_add.svg';
 import IconArrowLeft from './icon_arrow_left.svg';
-import IconCancelWhite from './icon_cancel_white.svg';
-import IconCheck from './icon_check.svg';
-import IconDelete from './icon_delete.svg';
-import IconInputValid from './icon_input_valid.svg';
+import IconArrowRight from './icon_arrow_right.svg';
+import IconCalendarHome from './icon_calendar_home.svg';
 import IconCalendar from './icon_calendar.svg';
-import IconLocation from './icon_location.svg';
+import IconCancelWhite from './icon_cancel_white.svg';
+import IconClass from './icon_class.svg';
 import IconClock from './icon_clock.svg';
-import IconValidWhite from './icon_valid_white.svg';
-import IconTrash from './icon_trash.svg';
+import IconDelete from './icon_delete.svg';
+import IconDownload from './icon_download.svg';
+import IconFeedback from './icon_feedback.svg';
+import IconInputValid from './icon_input_valid.svg';
+import IconLocation from './icon_location.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
+import IconRepeat from './icon_repeat.svg';
+import IconShare from './icon_share.svg';
+import IconTrash from './icon_trash.svg';
+import IconValidWhite from './icon_valid_white.svg';
+import IconArrowRightSmall from './icon_arrow_right_small.svg';
+import IconCheck from './icon_check.svg';
+import IconCheckboxInvalid from './icon_checkbox_invalid.svg';
 import IconKakao from './icon_kakao.svg';
 import IconNaver from './icon_naver.svg';
 import IconGoogle from './icon_google.svg';
@@ -38,8 +46,16 @@ export {
   IconGallery,
   IconSelectUser,
   IconSearch,
-  IconCheck,
+  IconCalendarHome,
+  IconClass,
+  IconFeedback,
+  IconRepeat,
+  IconAdd,
+  IconDownload,
+  IconShare,
   IconArrowRightSmall,
   IconSetting,
+  IconCheck,
+  IconCheckboxInvalid,
   IconCheckboxSelected,
 };

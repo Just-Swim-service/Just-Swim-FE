@@ -1,0 +1,110 @@
+@import '@/globals.scss';
+
+.container {
+  position: relative;
+}
+
+.form {
+  min-height: calc(100vh - 48px);
+}
+
+.form_body {
+  height: calc(100vh - 120px);
+
+  overflow-y: scroll;
+}
+
+.upper_container {
+  padding: 24px 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.divider {
+  width: 100%;
+  height: 8px;
+
+  background-color: $--gray-50;
+}
+
+.lower_container {
+  padding: 22px 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.button_container {
+  margin-top: auto;
+}
+
+.fieldset {
+  position: relative;
+}
+
+.fieldset_title {
+  margin-bottom: 6px;
+
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+
+  & > p {
+    @include Title2-M;
+  }
+
+  & > span {
+    @include Body5-R;
+
+    color: $--Primary-blue;
+  }
+}
+
+.end_date {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+
+  & > p {
+    @include Body4-R;
+
+    color: $--Primary-blue;
+  }
+}
+
+.error_container {
+  position: absolute;
+
+  left: 50%;
+  bottom: 86px;
+
+  transform: translate(-50%);
+
+  .error_message {
+    width: fit-content;
+
+    margin: 0 auto;
+    padding: 13px 18px;
+  
+    border-radius: 10px;
+    border-bottom: 1px solid $--Cancel;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 20px;
+
+    white-space: nowrap;
+
+    & > p {
+      color: $--Cancel;
+    }
+  }
+}

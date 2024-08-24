@@ -1,0 +1,44 @@
+@import '@/globals.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .month_info {
+    width: 100%;
+
+    padding: 12px 16px 0;
+    margin-bottom: 8px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    & > p {
+      @include Title3-SB;
+
+      color: $--Black;
+    }
+  }
+
+  .week_days {
+    width: 100%;
+
+    display: flex;
+
+    padding: 0 16px 6px;
+
+    border-bottom: 1px solid $--gray-200;
+
+    .weeek_item {
+      width: calc(100% / 7);
+
+      color: $--Black;
+      text-align: center;
+
+      & > span {
+        @include Body2-R;
+      }
+    }
+  }
+}
