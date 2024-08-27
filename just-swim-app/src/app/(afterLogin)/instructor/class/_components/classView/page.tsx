@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import styled from './listContent.module.scss';
+import styled from './classView.module.scss';
 import { IconRepeatTime, IconLocation, IconClock } from '@assets';
 import Image from 'next/image';
 
-export default function ListContent() {
+export default function classView() {
   const [lectures, setLectures] = useState([]);
 
   const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/schedule`;

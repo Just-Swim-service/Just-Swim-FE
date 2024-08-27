@@ -8,8 +8,9 @@
 .tab_list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   flex: 1;
+  margin: 0 16px;
 
   .tab_content {
     width: 146px;

@@ -3,7 +3,7 @@
 import { ProfileHeader } from '@components';
 
 import Search from './_components/search/page';
-import ListContent from './_components/listContent/page';
+import ClassView from './_components/classView/page';
 
 export default function classList() {
   const data = {
@@ -15,7 +15,7 @@ export default function classList() {
     <>
       <ProfileHeader leftContent="수업 정보" data={data} />
       <Search />
-      <ListContent />
+      <ClassView />
     </>
   );
 }
