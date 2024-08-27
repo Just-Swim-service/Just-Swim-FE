@@ -28,9 +28,9 @@
       "@types": ["./src/app/_types/index.ts"],
       "@utils": ["./src/app/_utils/index.ts"],
       "@assets/*": ["./public/assets/*"],
-      "@/*": ["./src/app/*"],
-    },
+      "@/*": ["./src/app/*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "src/**/*", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

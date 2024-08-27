@@ -42,6 +42,18 @@
   .valid_warpper.empty {
     display: none;
   }
+
+  .error_message {
+    position: absolute;
+    left: 2px;
+    bottom: -22px;
+
+    & > p {
+      @include Body4-R;
+
+      color: $--Cancel;
+    }
+  }
 }
 
 .input_wrapper {
@@ -73,6 +85,10 @@
 
       padding-right: 5px;
     }
+  }
+
+  .time_input.invalid {
+    outline: 2px solid $--Cancel;
   }
   
   .time_input.empty {

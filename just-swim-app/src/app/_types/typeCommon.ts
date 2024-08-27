@@ -9,9 +9,17 @@ export interface ConfirmButtonProps {
 }
 
 export interface CalendarProps {
-  DateBlock?: JSX.ElementType,
   selectedDate?: string,
   changeSelectedDate?: (date: string) => void
+}
+
+export interface CalendarItemProps {
+  year?: number,
+  month?: number,
+  date: number,
+  isDisabled: boolean,
+  isToday: boolean,
+  isSelected: boolean,
 }
 
 export interface ImageCarouselProps {
@@ -21,15 +29,4 @@ export interface ImageCarouselProps {
   useDeleteButton?: boolean,
   deleteImage?: (index: number) => void,
   hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-}
-
-export interface ModalBodyProps {
-  children?: React.ReactNode,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-}
-
-export interface ConfirmModalProps {
-  children?: React.ReactNode,
-  hideModal: (event: MouseEvent<HTMLButtonElement>) => void,
-  confirmCallback: (event: MouseEvent<HTMLButtonElement>) => void,
 }

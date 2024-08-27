@@ -3,6 +3,7 @@ import { ChangeEvent } from "react";
 export interface TextInputProps {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
 }
 
 export interface ColorInputProps {
@@ -14,6 +15,7 @@ export interface DateInputProps {
   name: string;
   valid?: boolean;
   defaultValue?: string;
+  use?: boolean;
   renderIcon?: Function;
   suffix?: string;
 }
@@ -21,6 +23,7 @@ export interface DateInputProps {
 export interface DayInputProps {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
   defaultValue?: string;
 }
 
@@ -33,11 +36,14 @@ export interface FileInputProps {
 export interface LocationInputPros {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
+  defalutValue?: string;
 }
 
 export interface TimeInputProps {
   name: string;
   valid?: boolean;
+  errorMessage: string | undefined;
   defaultValue?: string;
   defaultTimeValue?: string;
 }
