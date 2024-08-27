@@ -43,3 +43,11 @@ export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
     body: formData,
   });
 };
+
+export const postUserLogout = async () => {
+  return await api(`${USER_API_PATH}/logout`, HTTP_METHODS.POST);
+};
+
+export const deleteUser = async () => {
+  return await api(`${USER_API_PATH}/withdraw`, HTTP_METHODS.DELETE);
+};
