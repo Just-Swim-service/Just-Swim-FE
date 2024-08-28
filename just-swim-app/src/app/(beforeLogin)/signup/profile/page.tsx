@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { useLayoutEffect, useState } from 'react';
+import { Suspense, useLayoutEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
@@ -88,12 +88,7 @@ export default function Profile() {
       <div className={styles.profile_setting_section}>
         <div className={styles.profile_image_wrapper}>
           <div className={styles.profile_img}>
-            <URLImage
-              imageURL={inputImage}
-              alt="profile image"
-              width={125}
-              height={125}
-            />
+            <URLImage imageURL={inputImage} alt="profile image" />
           </div>
           <label htmlFor="select_image" className={styles.image_button}>
             <IconGallery />

@@ -5,3 +5,7 @@ export const COMMON_TEXT = {
   start: '시작하기',
   done: '완료',
 } as const;
+
+export const COMMON_COMPONENT_TEXT = {
+  profileToast: '프로필 수정이 완료되었습니다.',
+} as const;
