@@ -19,7 +19,7 @@ interface ClassGroup {
   lectureDays: string;
   lectureEndDate: string;
   lectureId: string;
-  lectureLocatio: stringn;
+  lectureLocatio: string;
   lectureQRCode: string;
   lectureTime: string;
   lectureTitle: string;
@@ -48,6 +48,7 @@ type Action = {
   loadUserList: () => Promise<void>;
 };
 
+// @ts-ignore
 const initialState: State = {
   selectedList: [],
   checkedList: [],

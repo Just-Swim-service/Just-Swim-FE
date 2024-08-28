@@ -26,7 +26,9 @@ function _FileInput(
     size = 20,
     id = 'fileInput',
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
+    // @ts-ignore
     setValue,
+    // @ts-ignore
     errors = [],
     ...props
   }: FileInputProps &

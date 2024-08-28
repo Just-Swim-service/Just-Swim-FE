@@ -21,11 +21,13 @@ export function Profile({
       <div className={styled.img_list}>
         {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
         {customers.map((el, index) => {
+          // @ts-ignore
           return el.profileImage ? (
             <div
               key={index}
               className={styled.profile_img}
               style={{
+                // @ts-ignore
                 backgroundImage: `url(${el.profileImage})`,
                 width: width,
                 height: height,

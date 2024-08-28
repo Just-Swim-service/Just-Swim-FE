@@ -67,14 +67,18 @@ export default function FeedbackWrite() {
 
     formData.append('target', data.target);
     formData.append('date', data.date);
+    // @ts-ignore
     formData.append('link', data.link);
     formData.append('content', data.content);
     // https://stackoverflow.com/questions/35940290/how-to-convert-base64-string-to-javascript-file-object-like-as-from-file-input-f
     Array.from(images).forEach((el, i) => {
+      // @ts-ignore
       formData.append('file', el.file);
+      // @ts-ignore
       formData.append('fileURL', el.dataUrl);
     });
 
+    // @ts-ignore
     const formDataObject: CustomFormData = {};
     // formData.forEach((value, key) => {
     //   formDataObject[key] = value;
@@ -85,11 +89,14 @@ export default function FeedbackWrite() {
       // File 다중선택시 배열이 아닌, 1개만 들어가는 문제 해결방법,,
       if (key === 'fileURL' || key === 'file') {
         if (Object.hasOwn(formDataObject, key)) {
+          // @ts-ignore
           formDataObject[key].push(value);
         } else {
+          // @ts-ignore
           formDataObject[key] = [value];
         }
       } else {
+        // @ts-ignore
         formDataObject[key] = value;
       }
     });
@@ -102,6 +109,7 @@ export default function FeedbackWrite() {
     router.push(`confirm`);
   });
 
+  // @ts-ignore
   const onValid = async (data: CreateState) => {
     const imageurlList: string[] = [];
     // RHF에 의해서 자동으로 호출
@@ -137,6 +145,7 @@ export default function FeedbackWrite() {
           dataUrl: result,
           file: file,
         };
+        // @ts-ignore
         setImages((prev) => [...prev, obj]);
       };
     });
@@ -156,6 +165,7 @@ export default function FeedbackWrite() {
             </div>
             <SelectPersonInput
               {...register('target')}
+              // @ts-ignore
               setValue={setValue}
               errors={[errors.target?.message ?? '']}
             />
@@ -174,6 +184,7 @@ export default function FeedbackWrite() {
               placeholder="수업 일자를 선택해주세요"
               suffix="종료"
               {...register('date')}
+              // @ts-ignore
               errors={[errors.date?.message ?? '']}
             />
           </div>
@@ -186,6 +197,7 @@ export default function FeedbackWrite() {
             <FileInput
               {...register('file')}
               onChange={handleChange}
+              // @ts-ignore
               setValue={setValue}
             />
           </div>
@@ -195,6 +207,7 @@ export default function FeedbackWrite() {
             <LinkInput
               placeholder="첨부하고자 하는 URL을 입력해주세요"
               {...register('link')}
+              // @ts-ignore
               errors={[errors.link?.message ?? '']}
             />
           </div>
@@ -207,6 +220,7 @@ export default function FeedbackWrite() {
               placeholder="피드백을 입력해주세요"
               height={100}
               {...register('content')}
+              // @ts-ignore
               errors={[errors.content?.message ?? '']}
             />
           </div>

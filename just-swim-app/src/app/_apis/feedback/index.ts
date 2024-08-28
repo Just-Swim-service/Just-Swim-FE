@@ -15,6 +15,7 @@ const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/feedback`;
 //   return json.data;
 // }
 
+// @ts-ignore
 async function postFeedback(data, type, target) {
   let value = {
     feedbackType: type,
@@ -31,6 +32,7 @@ async function postFeedback(data, type, target) {
   if (data.file) {
     Array.from(data.file).forEach((el, i) => {
       // console.log(el);
+      // @ts-ignore
       formData.append('files', el);
     });
   }

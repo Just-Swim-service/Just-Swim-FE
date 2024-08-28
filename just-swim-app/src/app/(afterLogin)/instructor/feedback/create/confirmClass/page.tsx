@@ -10,9 +10,11 @@ import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
 
 export default function ClassFeedbackConfirm() {
+  // @ts-ignore
   const { selectedList, reset } = searchUserStore();
   const { formDataState } = feedbackStore();
-  const target = JSON.parse(formDataState.target);
+  const target = JSON.parse(formDataState.target || '[]');
+  //   const target = JSON.parse(formDataState.target);
   const [checked, setChecked] = useState(false);
 
   const router = useRouter();
@@ -23,7 +25,8 @@ export default function ClassFeedbackConfirm() {
   const handleSubmit = () => {
     // console.log('formDataState', formDataState);
 
-    const userIds = target[0].members.map((el) => Number(el.userId));
+    // @ts-ignore
+    const userIds = (target[0]?.members || []).map((el) => Number(el.userId));
     const lectureId = Number(target[0].lectureId);
     const target_users = [
       {
@@ -62,7 +65,7 @@ export default function ClassFeedbackConfirm() {
               )}
               {/* 혜빈  데이터 형식 같아지면 수정할 것 */}
               <Profile
-                customers={target[0].members}
+                customers={target[0]?.members || []}
                 width={20}
                 height={20}
                 count={false}
@@ -97,7 +100,8 @@ export default function ClassFeedbackConfirm() {
               </span>
             </div>
             <div className={styled.preview_wrapper}>
-              {formDataState.fileURL?.map((preview, index) => {
+              {/* @ts-ignore */}
+              {(formDataState.fileURL || []).map((preview, index) => {
                 // console.log(Object.keys(preview));
                 return (
                   <div

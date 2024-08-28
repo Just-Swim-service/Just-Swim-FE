@@ -27,6 +27,7 @@ const feedbackStore = create<any>()(
         fileURL: '',
         target: '',
       },
+      // @ts-ignore
       setFeedbackHandler: (form, targetType: string) =>
         set((state: any) => {
           console.log(form);

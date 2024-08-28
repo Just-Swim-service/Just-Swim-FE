@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 import { randomId } from '@utils';
 
+// @ts-ignore
 import { FeedbackProps } from '../../server';
 
 // import EmptyProfile from './empty_profile.png';

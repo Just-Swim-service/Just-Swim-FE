@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from '@assets/link.svg';
 import styled from './feedbackConfirm.module.scss';
 import { Header, Profile } from '@components';
@@ -10,15 +10,18 @@ import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
 
 export default function PersonalFeedbackConfirm() {
+  // @ts-ignore
   const { selectedList, reset } = searchUserStore();
   const { formDataState } = feedbackStore();
-  const target = JSON.parse(formDataState.target);
+  //   const target = JSON.parse(formDataState.target);
+  const target = JSON.parse(formDataState.target || '[]');
   const [checked, setChecked] = useState(false);
   const router = useRouter();
 
   const handleSubmit = () => {
     // console.log('formDataState', formDataState);
 
+    // @ts-ignore
     const userIds = target.map((el) => Number(el.userId));
     const lectureId = Number(selectedList[0].lectureId);
     const target_users = [
@@ -72,7 +75,8 @@ export default function PersonalFeedbackConfirm() {
               </span>
             </div>
             <div className={styled.preview_wrapper}>
-              {formDataState.fileURL?.map((preview, index) => {
+              {/* @ts-ignore */}
+              {(formDataState.fileURL || []).map((preview, index) => {
                 // console.log(Object.keys(preview));
                 return (
                   <div

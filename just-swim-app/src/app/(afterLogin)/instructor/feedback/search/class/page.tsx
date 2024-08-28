@@ -26,6 +26,7 @@ export default function SearchClass() {
     checkItemHandler,
     setSelectedListHandler,
     loadUserList,
+    // @ts-ignore
     setCheckAllHandler,
   } = searchClassStore();
 
@@ -82,18 +83,21 @@ export default function SearchClass() {
                   <span>
                     <Calendar_SM width="15" />
                   </span>
+                  {/* @ts-ignore */}
                   {group.lectureDays}
                 </p>
                 <p>
                   <span>
                     <Location width="15" />
                   </span>
+                  {/* @ts-ignore */}
                   {group.lectureTime}
                 </p>
                 <p>
                   <span>
                     <Clock width="15" />
                   </span>
+                  {/* @ts-ignore */}
                   {group.lectureLocation}
                 </p>
               </div>

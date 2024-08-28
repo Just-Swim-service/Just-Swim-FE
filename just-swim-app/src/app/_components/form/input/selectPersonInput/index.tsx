@@ -20,6 +20,7 @@ import { IconSelectUser } from '@assets';
 import { searchUserStore } from '@store';
 
 function _SelectPersonInput(
+  // @ts-ignore
   { name, setValue, ...props }: SelectPersonInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {

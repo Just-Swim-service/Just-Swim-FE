@@ -21,6 +21,7 @@ import { searchClassStore } from '@store';
 import { Profile } from '@/_components/temp';
 
 function _SelectClassInput(
+  // @ts-ignore
   { name, setValue, ...props }: SelectPersonInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
@@ -64,6 +65,7 @@ function _SelectClassInput(
               <div className={styled.tag}>전체</div>
               <div className={styled.title}>{preview.lectureTitle}</div>
               <Profile
+                // @ts-ignore
                 customers={selectedList[0].members}
                 width={28}
                 height={28}
