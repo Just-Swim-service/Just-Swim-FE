@@ -9,18 +9,22 @@ import { searchUserStore } from '@store';
 import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
 
-export default function PersonalFeedbackConfirm() {
+export default function ClassFeedbackConfirm() {
   const { selectedList, reset } = searchUserStore();
   const { formDataState } = feedbackStore();
   const target = JSON.parse(formDataState.target);
   const [checked, setChecked] = useState(false);
+
   const router = useRouter();
+
+  console.log('formDataState', formDataState);
+  console.log('target', target);
 
   const handleSubmit = () => {
     // console.log('formDataState', formDataState);
 
-    const userIds = target.map((el) => Number(el.userId));
-    const lectureId = Number(selectedList[0].lectureId);
+    const userIds = target[0].members.map((el) => Number(el.userId));
+    const lectureId = Number(target[0].lectureId);
     const target_users = [
       {
         userIds,
@@ -56,7 +60,28 @@ export default function PersonalFeedbackConfirm() {
               ) : (
                 <div>{target[0]?.lectureTitle}</div>
               )}
-              <Profile customers={target} width={20} height={20} count={false} />
+              {/* 혜빈  데이터 형식 같아지면 수정할 것 */}
+              <Profile
+                customers={target[0].members}
+                width={20}
+                height={20}
+                count={false}
+              />
+              {/* {formDataState.type === 'personal' ? (
+                <Profile
+                  customers={target}
+                  width={20}
+                  height={20}
+                  count={false}
+                />
+              ) : (
+                <Profile
+                  customers={target.members}
+                  width={20}
+                  height={20}
+                  count={false}
+                />
+              )} */}
             </div>
           </div>
           <div className={styled.wrap}>

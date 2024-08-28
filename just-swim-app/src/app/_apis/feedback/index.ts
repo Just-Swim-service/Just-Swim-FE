@@ -1,4 +1,6 @@
+import { FeedbackProps } from '@/_types/typeFeedback';
 import { notFound } from 'next/navigation';
+import { useEffect, useState } from 'react';
 // import { unstable_cache } from 'next/cache';
 
 const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/feedback`;
@@ -37,7 +39,7 @@ async function postFeedback(data, type, target) {
     console.log(value, key);
   });
 
-  const response = await fetch(URL, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}/feedback`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
@@ -47,23 +49,6 @@ async function postFeedback(data, type, target) {
 
   const json = await response.json();
   return json;
-}
-
-// _types 폴더 내부로 이동
-export interface FeedbackProps {
-  feedbackId: string;
-  feedbackType: string;
-  feedbackDate: string;
-  feedbackContent: string;
-  lectureTitle: string;
-  feedbackCreatedAt: string;
-  members: {
-    memberUserId: string;
-    memberProfileImage: string;
-    // swagger 보니까 nickname이 넘어오는데 name이 넘어와야 할 것 같음
-    // 현재 null로 넘어오기 때문에 확인 요망
-    memberNickname: string | null;
-  }[];
 }
 
 // 이 부분은 무시해도 좋음

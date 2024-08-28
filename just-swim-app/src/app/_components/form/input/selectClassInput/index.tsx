@@ -64,10 +64,10 @@ function _SelectClassInput(
               <div className={styled.tag}>전체</div>
               <div className={styled.title}>{preview.lectureTitle}</div>
               <Profile
-                customers={selectedList}
+                customers={selectedList[0].members}
                 width={28}
                 height={28}
-                xMargin={-12}
+                xMargin={-6}
                 count={true}
               />
 

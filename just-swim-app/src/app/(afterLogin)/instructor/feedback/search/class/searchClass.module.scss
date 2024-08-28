@@ -18,12 +18,14 @@
 
     .item {
       width: 48%;
+      max-width: 48%;
       height: 151px;
       flex: 1;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       box-shadow: 0 0 0 1px $--gray-300;
+      background-color: $--gray-50;
       border-radius: 12px;
       padding: 20px 12px;
       margin-bottom: 10px;
@@ -62,6 +64,7 @@
 
   .active {
     box-shadow: 0 0 0 2px $--Primary-blue !important;
+    background-color: $--White !important;
   }
 }
 
