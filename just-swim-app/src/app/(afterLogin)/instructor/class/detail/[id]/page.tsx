@@ -79,7 +79,6 @@ export default function ClassDetail() {
         if (data.data && data.data.lectureTime) {
           const lectureTime = data.data.lectureTime.split('-');
           setLecture({ ...data.data, lectureTime });
-          console.log(data);
         } else {
           setLecture(data.data);
         }
@@ -132,7 +131,9 @@ export default function ClassDetail() {
             height={24}
             style={{ borderRadius: '50% 50%', marginRight: '7px' }}
           />
-          <div>{lecture.instructor.instructorName} 강사님 수업</div>
+          <div className={styled.instructor_name}>
+            <p>{lecture.instructor.instructorName}</p> 강사님 수업
+          </div>
         </div>
 
         <Image
@@ -144,18 +145,23 @@ export default function ClassDetail() {
         />
 
         <div className={styled.save_share}>
-          <div className={styled.col}>
+          <button
+            className={styled.col}
+            onClick={() => {
+              const imageUrl = `${`/qrcode/${lectureId}`}`;
+              const imageName = `qrcode.png`;
+            }}>
             <div className={styled.circle}>
               <IconDownload />
             </div>
             <div>저장하기</div>
-          </div>
-          <div className={styled.col}>
+          </button>
+          <button className={styled.col}>
             <div className={styled.circle}>
               <IconShare />
             </div>
             <div>공유하기</div>
-          </div>
+          </button>
         </div>
       </div>
 
@@ -208,14 +214,14 @@ export default function ClassDetail() {
                 <IconClock />
               </span>
               <span className={styled.twelve}>
-                {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM` : `AM`}
+                {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
               {lecture.lectureTime[0]}
             </div>
-            ~
+            <span className={styled.wave}>~</span>
             <div>
               <span className={styled.twelve}>
-                {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM` : `AM`}
+                {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
               {lecture.lectureTime[1]}
             </div>

@@ -21,6 +21,22 @@
     background-color: $--gray-50;
     border: 1px solid $--gray-200;
     border-radius: 10px;
+
+    .instructor_name {
+      display: flex;
+      align-items: center;
+
+      p {
+        width: 10rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-word;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 1; // 원하는 라인수
+        -webkit-box-orient: vertical;
+      }
+    }
   }
 
   .qr_image {
@@ -135,7 +151,7 @@
       align-items: center;
 
       div {
-        width: 35%;
+        width: 135px;
         padding: 15px 16px;
         background-color: $--White;
         border-radius: 6px;
@@ -144,6 +160,11 @@
 
       .twelve {
         color: $--gray-400;
+      }
+
+      .wave {
+        width: 43px;
+        text-align: center;
       }
     }
 
