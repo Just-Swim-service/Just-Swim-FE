@@ -1,15 +1,27 @@
-const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/member`;
-console.log(URL);
+const URL = `${process.env.NEXT_PUBLIC_DB_HOST}`;
+// console.log(URL);
 
 async function getMemberList() {
-  const response = await fetch(URL, {
+  const response = await fetch(`${URL}/member`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
     },
   });
   const json = await response.json();
-  return json;
+  return json.data;
 }
 
-export { getMemberList };
+async function getClassList() {
+  const response = await fetch(`${URL}/lecture/myLectures`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+    },
+  });
+  const json = await response.json();
+
+  return json.data;
+}
+
+export { getMemberList, getClassList };
