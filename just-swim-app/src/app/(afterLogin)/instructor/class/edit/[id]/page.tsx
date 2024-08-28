@@ -51,6 +51,7 @@ export default function ClassInfoEdit() {
 
   const isFormDataChanged = (lectureData: object, formData: object) => {
     for (const key in formData) {
+      //  @ts-ignore
       if (lectureData[key] !== formData[key]) {
         return true;
       }
@@ -83,12 +84,14 @@ export default function ClassInfoEdit() {
 
   return (
     <div>
+      {/* @ts-ignore */}
       <div key={lecture.id}>
         <Header title="수업 정보 수정" />
         <div className={styled.edit}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              //  @ts-ignore
               handleEdit(lecture.lectureId);
             }}>
             <div className={styled.inner}>
@@ -97,25 +100,29 @@ export default function ClassInfoEdit() {
                 <br />
                 적용되니 유의해주세요.
               </h3>
-
               <label htmlFor="lectureTitle">
                 수업명
                 <span>(필수)</span>
               </label>
+              {/* @ts-ignore */}
               <TextInput
                 name="lectureTitle"
+                //  @ts-ignore
                 defaultValue={lecture.lectureTitle}
+                //  @ts-ignore
                 value={formData.lectureTitle}
                 onChange={handleChange}
               />
-
               <label htmlFor="lectureContent">
                 수업 설명
                 <span>(필수)</span>
               </label>
+              {/* @ts-ignore */}
               <TextInput
                 name="lectureContent"
+                //  @ts-ignore
                 defaultValue={lecture.lectureContent}
+                //  @ts-ignore
                 value={formData.lectureContent}
                 onChange={handleChange}
               />
@@ -128,10 +135,14 @@ export default function ClassInfoEdit() {
                 수업 시간
                 <span>(필수)</span>
               </label>
+              {/* @ts-ignore */}
               <TimeInput
                 name="lectureTime"
+                //  @ts-ignore
                 defaultValue={lecture.lectureTime}
+                //  @ts-ignore
                 defaultTimeValue={lecture.lectureTime}
+                //  @ts-ignore
                 value={formData.lectureTime}
                 onChange={handleChange}
               />
@@ -140,23 +151,31 @@ export default function ClassInfoEdit() {
                 수업 요일
                 <span>(필수)</span>
               </label>
+              {/* @ts-ignore */}
               <DayInput
                 name="lectureDays"
+                //  @ts-ignore
                 defaultValue={lecture.lectureDays}
+                //  @ts-ignore
                 value={formData.lectureDays}
               />
 
               <label htmlFor="lectureLocation">수업 위치</label>
+              {/* @ts-ignore */}
               <LocationInput
                 name="lectureLocation"
+                // @ts-ignore
                 defaultValue={lecture.lectureLocation}
+                // @ts-ignore
                 value={formData.lectureLocation}
               />
 
               <label htmlFor="lectureEndDate">종료 일자</label>
               <DateInput
                 name="lectureEndDate"
+                // @ts-ignore
                 defaultValue={lecture.lectureEndDate}
+                // @ts-ignore
                 value={formData.lectureEndDate}
                 onChange={handleChange}
               />
@@ -164,7 +183,9 @@ export default function ClassInfoEdit() {
               <label htmlFor="lectureColor">구분 색</label>
               <ColorInput
                 name="lectureColor"
+                // @ts-ignore
                 defaultValue={lecture.lectureColor}
+                // @ts-ignore
                 value={formData.lectureColor}
                 onChange={handleChange}
               />

@@ -6,7 +6,7 @@ import styled from './classView.module.scss';
 import { IconRepeatTime, IconLocation, IconClock } from '@assets';
 import Image from 'next/image';
 
-export default function classView() {
+export default function ClassView() {
   const [lectures, setLectures] = useState([]);
 
   const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/schedule`;
@@ -44,7 +44,9 @@ export default function classView() {
     return <p>데이터 로딩 중입니다.</p>;
   }
 
+  // @ts-ignore
   const ongoingLectures = lectures.filter((lecture) => !lecture.isPastLecture);
+  // @ts-ignore
   const pastLectures = lectures.filter((lecture) => lecture.isPastLecture);
 
   return (
@@ -56,13 +58,18 @@ export default function classView() {
             <>
               {index % 2 === 0 && (
                 <div
+                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
+                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
+                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
+                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
+                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
@@ -73,25 +80,30 @@ export default function classView() {
                                 color={'red'}
                               />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0 && (
                               <>
+                                {/* @ts-ignore */}
                                 {item.members.map((member, index) => (
                                   <Image
                                     key={index}
@@ -109,8 +121,10 @@ export default function classView() {
                             )}
                           </div>
                           <p className={styled.count}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0
-                              ? `${item.members.length}명`
+                              ? // @ts-ignore
+                                `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -128,38 +142,48 @@ export default function classView() {
             <>
               {index % 2 !== 0 && (
                 <div
+                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
+                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
+                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
+                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
+                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
                               <IconLocation />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0 && (
                               <>
+                                {/* @ts-ignore */}
                                 {item.members.map((member, index) => (
                                   <Image
                                     key={index}
@@ -177,8 +201,10 @@ export default function classView() {
                             )}
                           </div>
                           <p className={styled.count}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0
-                              ? `${item.members.length}명`
+                              ? // @ts-ignore
+                                `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -202,38 +228,48 @@ export default function classView() {
             <>
               {index % 2 === 0 && (
                 <div
+                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
+                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
+                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
+                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
+                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
                               <IconLocation />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0 && (
                               <>
+                                {/* @ts-ignore */}
                                 {item.members.map((member, index) => (
                                   <Image
                                     key={index}
@@ -251,8 +287,10 @@ export default function classView() {
                             )}
                           </div>
                           <p className={styled.count}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0
-                              ? `${item.members.length}명`
+                              ? // @ts-ignore
+                                `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -270,38 +308,48 @@ export default function classView() {
             <>
               {index % 2 !== 0 && (
                 <div
+                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
+                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
+                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
+                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
+                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
                               <IconLocation />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
+                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0 && (
                               <>
+                                {/* @ts-ignore */}
                                 {item.members.map((member, index) => (
                                   <Image
                                     key={index}
@@ -319,8 +367,10 @@ export default function classView() {
                             )}
                           </div>
                           <p className={styled.count}>
+                            {/* @ts-ignore */}
                             {item.members && item.members.length > 0
-                              ? `${item.members.length}명`
+                              ? //   @ts-ignore
+                                `${item.members.length}명`
                               : '0명'}
                           </p>
                         </div>

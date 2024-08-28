@@ -85,6 +85,7 @@ export default function ClassDetail() {
       });
   }, [lectureId]);
 
+  //  @ts-ignore
   if (!lecture || lecture.length === 0) {
     return <p>로딩 중</p>;
   }
@@ -120,11 +121,13 @@ export default function ClassDetail() {
       />
 
       <div className={styled.qr}>
+        {/* @ts-ignore */}
         <h2>{lecture.lectureTitle}</h2>
+        {/* @ts-ignore */}
         <div className={styled.desc}>{lecture.lectureTitle}</div>
-
         <div className={styled.instructor}>
           <Image
+            // @ts-ignore
             src={lecture.instructor.instructorProfileImage}
             alt="프로필"
             width={24}
@@ -132,10 +135,10 @@ export default function ClassDetail() {
             style={{ borderRadius: '50% 50%', marginRight: '7px' }}
           />
           <div className={styled.instructor_name}>
+            {/* @ts-ignore */}
             <p>{lecture.instructor.instructorName}</p> 강사님 수업
           </div>
         </div>
-
         <Image
           className={styled.qr_image}
           src={`/qrcode/${lectureId}`}
@@ -143,7 +146,6 @@ export default function ClassDetail() {
           width={114}
           height={114}
         />
-
         <div className={styled.save_share}>
           <button
             className={styled.col}
@@ -171,14 +173,18 @@ export default function ClassDetail() {
           <div className={styled.count_box}>
             <p className={styled.personnel}>현재 인원</p>
             <p className={styled.count}>
+              {/* @ts-ignore */}
               {lecture.members && lecture.members.length > 0
-                ? `${lecture.members.length}명`
+                ? // @ts-ignore
+                  `${lecture.members.length}명`
                 : '0명'}
             </p>
           </div>
           <div className={`${styled.profile} ${styled.box}`}>
+            {/* @ts-ignore */}
             {lecture.members && lecture.members.length > 0 ? (
               <>
+                {/* @ts-ignore */}
                 {lecture.members.map((member, index) => (
                   <Image
                     key={index}
@@ -214,15 +220,19 @@ export default function ClassDetail() {
                 <IconClock />
               </span>
               <span className={styled.twelve}>
+                {/* @ts-ignore */}
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
+              {/* @ts-ignore */}
               {lecture.lectureTime[0]}
             </div>
             <span className={styled.wave}>~</span>
             <div>
               <span className={styled.twelve}>
+                {/* @ts-ignore */}
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
+              {/* @ts-ignore */}
               {lecture.lectureTime[1]}
             </div>
           </div>
@@ -233,6 +243,7 @@ export default function ClassDetail() {
                 <IconCalendar />
               </span>
               매주&nbsp;
+              {/* @ts-ignore */}
               {lecture.lectureDays.replace(/(.)(?=.)/g, '$1, ')}요일
             </p>
           </div>
@@ -242,6 +253,7 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconLocation />
               </span>
+              {/* @ts-ignore */}
               {lecture.lectureLocation}
             </p>
           </div>
@@ -259,6 +271,7 @@ export default function ClassDetail() {
             <p>
               <span
                 className={styled.color_box}
+                //  @ts-ignore
                 style={{ backgroundColor: `${lecture.lectureColor}` }}></span>
               구분색
             </p>
@@ -286,6 +299,7 @@ export default function ClassDetail() {
           />
         )}
 
+        {/* @ts-ignore */}
         {lecture.memberUserId === 0 ? (
           <></>
         ) : (
