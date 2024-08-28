@@ -1,0 +1,56 @@
+@import '@/globals.scss';
+
+.edit {
+  width: 100%;
+
+  form {
+    margin-bottom: 100px;
+
+    .inner {
+      width: 90%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      h3 {
+        @include Title2-SB;
+        margin: 16px 0 22px 0;
+      }
+
+      label {
+        @include Title5-M;
+
+        span {
+          @include Body5-R;
+          color: $--Primary-blue;
+          margin-left: 2px;
+        }
+      }
+    }
+
+    .line {
+      width: 100vw;
+      height: 8px;
+      background-color: $--gray-50;
+      display: block;
+      margin: 8px 0 22px 0;
+    }
+
+    .edit_btn {
+      @include Title3-SB;
+      position: fixed;
+      bottom: 0;
+      width: 100vw;
+      padding: 14px 0 34px 0;
+      text-align: center;
+      color: $--White;
+      background-color: $--Primary-blue;
+
+      &:disabled {
+        background-color: $--gray-300;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

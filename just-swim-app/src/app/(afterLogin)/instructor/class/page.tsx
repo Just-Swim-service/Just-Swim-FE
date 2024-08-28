@@ -1,12 +1,11 @@
 'use client';
 
-
 import { ProfileHeader } from '@components';
 
-import SearchBox from './_components/searchBox/page';
-import TabContent from './_components/tabContent/page';
+import Search from './_components/search/page';
+import ClassView from './_components/classView/page';
 
-export default function classListTabs() {
+export default function classList() {
   const data = {
     name: '강사',
     image: '',
@@ -15,8 +14,8 @@ export default function classListTabs() {
   return (
     <>
       <ProfileHeader leftContent="수업 정보" data={data} />
-      <SearchBox />
-      <TabContent />
+      <Search />
+      <ClassView />
     </>
   );
 }

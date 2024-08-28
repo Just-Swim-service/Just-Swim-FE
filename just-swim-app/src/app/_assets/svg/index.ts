@@ -29,6 +29,7 @@ import IconGoogle from './icon_google.svg';
 import IconGallery from './icon_gallery.svg';
 import IconSelectUser from './icon_select_user.svg';
 import IconSearch from './icon_search.svg';
+import IconTrashcan from './icon_trashcan.svg';
 import IconSetting from './icon_setting.svg';
 import IconCheckboxSelected from './icon_checkbox_selected.svg';
 
@@ -54,13 +55,14 @@ export {
   IconGallery,
   IconSelectUser,
   IconSearch,
+  IconRepeat,
+  IconShare,
+  IconDownload,
+  IconTrashcan,
   IconCalendarHome,
   IconClass,
   IconFeedback,
-  IconRepeat,
   IconAdd,
-  IconDownload,
-  IconShare,
   IconArrowRightSmall,
   IconSetting,
   IconCheck,
