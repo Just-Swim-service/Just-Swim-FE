@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import styled from './classView.module.scss';
-import { IconRepeatTime, IconLocation, IconClock } from '@assets';
 import Image from 'next/image';
 
+import styled from './classView.module.scss';
+
+import { IconRepeatTime, IconLocation, IconClock } from '@assets';
+import { LectureProps } from '@types';
+
 export default function ClassView() {
-  const [lectures, setLectures] = useState([]);
+  const [lectures, setLectures] = useState<LectureProps[]>([]);
 
   const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/schedule`;
   const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_DB_TOKEN}`;
@@ -38,7 +41,7 @@ export default function ClassView() {
         );
         setLectures(processedLectures);
       });
-  }, []);
+  }, [API_URL, AUTHORIZATION_HEADER]);
 
   if (!lectures || lectures.length === 0) {
     return <p>데이터 로딩 중입니다.</p>;
@@ -54,22 +57,17 @@ export default function ClassView() {
       <p className={styled.title}>진행 중인 수업</p>
       <div className={styled.tab_list}>
         <div className="left_content">
-          {ongoingLectures.map((item, index) => (
+          {ongoingLectures.map((item: LectureProps, index) => (
             <>
               {index % 2 === 0 && (
                 <div
-                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
-                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
-                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
-                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
-                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
@@ -80,51 +78,46 @@ export default function ClassView() {
                                 color={'red'}
                               />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0 && (
-                              <>
-                                {/* @ts-ignore */}
-                                {item.members.map((member, index) => (
-                                  <Image
-                                    key={index}
-                                    src={member.memberProfileImage}
-                                    alt="회원 프로필 사진"
-                                    width={28}
-                                    height={28}
-                                    style={{
-                                      borderRadius: '28px',
-                                      verticalAlign: 'middle',
-                                    }}
-                                  />
-                                ))}
-                              </>
-                            )}
+                            {item.lectureMembers &&
+                              item.lectureMembers.length > 0 && (
+                                <>
+                                  {item.lectureMembers.map((member, index) => (
+                                    <Image
+                                      key={index}
+                                      src={member.memberProfileImage}
+                                      alt="회원 프로필 사진"
+                                      width={28}
+                                      height={28}
+                                      style={{
+                                        borderRadius: '28px',
+                                        verticalAlign: 'middle',
+                                      }}
+                                    />
+                                  ))}
+                                </>
+                              )}
                           </div>
                           <p className={styled.count}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0
-                              ? // @ts-ignore
-                                `${item.members.length}명`
+                            {item.lectureMembers &&
+                            item.lectureMembers.length > 0
+                              ? `${item.lectureMembers.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -138,73 +131,63 @@ export default function ClassView() {
         </div>
 
         <div className="right_content">
-          {ongoingLectures.map((item, index) => (
+          {ongoingLectures.map((item: LectureProps, index) => (
             <>
               {index % 2 !== 0 && (
                 <div
-                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
-                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
-                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
-                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
-                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
                               <IconLocation />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0 && (
-                              <>
-                                {/* @ts-ignore */}
-                                {item.members.map((member, index) => (
-                                  <Image
-                                    key={index}
-                                    src={member.memberProfileImage}
-                                    alt="회원 프로필 사진"
-                                    width={28}
-                                    height={28}
-                                    style={{
-                                      borderRadius: '28px',
-                                      verticalAlign: 'middle',
-                                    }}
-                                  />
-                                ))}
-                              </>
-                            )}
+                            {item.lectureMembers &&
+                              item.lectureMembers.length > 0 && (
+                                <>
+                                  {item.lectureMembers.map((member, index) => (
+                                    <Image
+                                      key={index}
+                                      src={member.memberProfileImage}
+                                      alt="회원 프로필 사진"
+                                      width={28}
+                                      height={28}
+                                      style={{
+                                        borderRadius: '28px',
+                                        verticalAlign: 'middle',
+                                      }}
+                                    />
+                                  ))}
+                                </>
+                              )}
                           </div>
                           <p className={styled.count}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0
-                              ? // @ts-ignore
-                                `${item.members.length}명`
+                            {item.lectureMembers &&
+                            item.lectureMembers.length > 0
+                              ? `${item.lectureMembers.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -224,73 +207,63 @@ export default function ClassView() {
 
       <div className={styled.tab_list}>
         <div className="left_content">
-          {pastLectures.map((item, index) => (
+          {pastLectures.map((item: LectureProps, index) => (
             <>
               {index % 2 === 0 && (
                 <div
-                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
-                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
-                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
-                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
-                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
                               <IconLocation />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0 && (
-                              <>
-                                {/* @ts-ignore */}
-                                {item.members.map((member, index) => (
-                                  <Image
-                                    key={index}
-                                    src={member.memberProfileImage}
-                                    alt="회원 프로필 사진"
-                                    width={28}
-                                    height={28}
-                                    style={{
-                                      borderRadius: '28px',
-                                      verticalAlign: 'middle',
-                                    }}
-                                  />
-                                ))}
-                              </>
-                            )}
+                            {item.lectureMembers &&
+                              item.lectureMembers.length > 0 && (
+                                <>
+                                  {item.lectureMembers.map((member, index) => (
+                                    <Image
+                                      key={index}
+                                      src={member.memberProfileImage}
+                                      alt="회원 프로필 사진"
+                                      width={28}
+                                      height={28}
+                                      style={{
+                                        borderRadius: '28px',
+                                        verticalAlign: 'middle',
+                                      }}
+                                    />
+                                  ))}
+                                </>
+                              )}
                           </div>
                           <p className={styled.count}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0
-                              ? // @ts-ignore
-                                `${item.members.length}명`
+                            {item.lectureMembers &&
+                            item.lectureMembers.length > 0
+                              ? `${item.lectureMembers.length}명`
                               : '0명'}
                           </p>
                         </div>
@@ -304,73 +277,63 @@ export default function ClassView() {
         </div>
 
         <div className="right_content">
-          {pastLectures.map((item, index) => (
+          {pastLectures.map((item: LectureProps, index) => (
             <>
               {index % 2 !== 0 && (
                 <div
-                  // @ts-ignore
                   key={item.lectureId}
                   className={styled.tab_content}
-                  // @ts-ignore
                   style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
                   <div className={styled.lectureItem}>
-                    {/* @ts-ignore */}
                     <Link href={`/instructor/class/detail/${item.lectureId}`}>
                       <div className={styled.text_content}>
-                        {/* @ts-ignore */}
                         <p className={styled.name}>{item.lectureTitle}</p>
-                        {/* @ts-ignore */}
                         <p className={styled.target}>{item.lectureContent}</p>
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
                               <IconLocation />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconClock />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
                               <IconRepeatTime />
                             </span>
-                            {/* @ts-ignore */}
                             {item.lectureTime}
                           </p>
                         </div>
                         <div className={styled.profile_box}>
                           <div className={styled.photo_list}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0 && (
-                              <>
-                                {/* @ts-ignore */}
-                                {item.members.map((member, index) => (
-                                  <Image
-                                    key={index}
-                                    src={member.memberProfileImage}
-                                    alt="회원 프로필 사진"
-                                    width={28}
-                                    height={28}
-                                    style={{
-                                      borderRadius: '28px',
-                                      verticalAlign: 'middle',
-                                    }}
-                                  />
-                                ))}
-                              </>
-                            )}
+                            {item.lectureMembers &&
+                              item.lectureMembers.length > 0 && (
+                                <>
+                                  {item.lectureMembers.map((member, index) => (
+                                    <Image
+                                      key={index}
+                                      src={member.memberProfileImage}
+                                      alt="회원 프로필 사진"
+                                      width={28}
+                                      height={28}
+                                      style={{
+                                        borderRadius: '28px',
+                                        verticalAlign: 'middle',
+                                      }}
+                                    />
+                                  ))}
+                                </>
+                              )}
                           </div>
                           <p className={styled.count}>
-                            {/* @ts-ignore */}
-                            {item.members && item.members.length > 0
-                              ? //   @ts-ignore
-                                `${item.members.length}명`
+                            {item.lectureMembers &&
+                            item.lectureMembers.length > 0
+                              ? `${item.lectureMembers.length}명`
                               : '0명'}
                           </p>
                         </div>
