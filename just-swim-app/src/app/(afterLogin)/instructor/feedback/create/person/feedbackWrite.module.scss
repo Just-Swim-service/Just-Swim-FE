@@ -14,12 +14,13 @@
     margin-top: 2px;
   }
 
+  .inner {
+    padding: 22px 16px 0;
+  }
   /* Hide the ugly default input */
   #chooseFile {
     visibility: hidden;
   }
-
-  padding: 22px 16px;
 
   .select_customer {
     .flex {
@@ -92,99 +93,61 @@
       }
     }
   }
+}
 
-  .feedback_content {
-    padding: 20px 0 49px;
+.divider {
+  width: 100%;
+  height: 8px;
+  background-color: $--gray-50;
+}
 
-    .wrap {
-      margin: 6px 0 22px;
-      .title {
-        margin-bottom: 6px;
-      }
+.feedback_content {
+  padding: 20px 16px 80px;
+
+  .wrap {
+    margin: 6px 0 22px;
+    .title {
+      margin-bottom: 6px;
     }
-    .flex {
-      width: 100%;
-      display: flex;
-      gap: 10px;
-      overflow: hidden;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      margin-top: 6px;
+  }
 
-      padding-bottom: 17px;
-      .box {
-        width: 78px;
-        height: 78px;
-        background-color: $--gray-50;
+  .sub_title.file {
+    margin-bottom: 6px;
+  }
 
-        flex-shrink: 0;
+  .link {
+    display: flex;
+    gap: 8px;
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    margin: 6px 0 22px;
 
-        label {
-          .add {
-            img {
-              // margin: 0 auto;
-            }
-          }
-        }
-        input,
-        #chooseFile2 {
-          display: none;
-        }
-      }
-
-      .added_file {
-        width: 78px;
-        height: 78px;
-        background-color: $--gray-50;
-
-        flex-shrink: 0;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-
-    .link {
-      display: flex;
-      gap: 8px;
-
-      margin: 6px 0 22px;
-
-      input {
-        flex: 1;
-        padding: 15px 16px;
-        background-color: $--gray-50;
-        border: none;
-      }
-      button {
-        width: 48px;
-        height: 51px;
-        border: 1px solid $--gray-200;
-        border-radius: 6px;
-      }
-    }
-
-    .feedback_area {
-      width: 100%;
-      height: 183px;
-
-      margin: 6px 0 49px;
-      padding: 18px 16px;
-
+    input {
+      flex: 1;
+      padding: 15px 16px;
       background-color: $--gray-50;
       border: none;
+    }
+    button {
+      width: 48px;
+      height: 51px;
+      border: 1px solid $--gray-200;
+      border-radius: 6px;
+    }
+  }
 
-      &::placeholder {
-        text-align: center;
-        padding: 65px 0;
-      }
+  .feedback_area {
+    width: 100%;
+    height: 183px;
+
+    margin: 6px 0 49px;
+    padding: 18px 16px;
+
+    background-color: $--gray-50;
+    border: none;
+
+    &::placeholder {
+      text-align: center;
+      padding: 65px 0;
     }
   }
 }
@@ -197,4 +160,8 @@
   background-color: $--Primary-blue;
   color: $--White;
   padding: 14px 0 34px;
+}
+
+.submit_btn:disabled {
+  background-color: $--gray-300;
 }
