@@ -6,13 +6,14 @@ import { Portal } from '@components';
 import { IconCheckboxSelected } from '@assets';
 
 import styled from './styles.module.scss';
+import { TEXT } from '@data';
 
 export function ProfileEditCompleteToast({
   until = 3000,
   unshowToast = () => {},
 }: {
-  until?: number,
-  unshowToast?: () => void
+  until?: number;
+  unshowToast?: () => void;
 }) {
   const [unmount, setUnmount] = useState<boolean>(false);
   const [disappear, setDisappear] = useState<boolean>(false);
@@ -35,15 +36,15 @@ export function ProfileEditCompleteToast({
   }, [disappear, unshowToast]);
 
   return (
-    <Portal type='toast'>
-      {
-        !unmount ?
+    <Portal type="toast">
+      {!unmount ? (
         <div className={`${styled.container} ${disappear && styled.unshow}`}>
           <IconCheckboxSelected />
-          <p>프로필 수정이 완료되었습니다.</p>
+          <p>{TEXT.COMMON_COMPONENT.profileToast}</p>
         </div>
-        : <></>
-      }
+      ) : (
+        <></>
+      )}
     </Portal>
-  )
+  );
 }

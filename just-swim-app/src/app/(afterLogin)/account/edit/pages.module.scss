@@ -1,0 +1,94 @@
+@import '@/globals.scss';
+
+.account_section {
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 22px 16px;
+
+  .account_image_wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+
+    .account_img {
+      display: flex;
+      width: inherit;
+      height: inherit;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: $--gray-100;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    .image_button {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border: $--gray-200 1px solid;
+      border-radius: 50%;
+      background-color: $--White;
+
+      .input_file {
+        display: none;
+      }
+    }
+  }
+
+  .name_input_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .name_title {
+      @include Title3-M;
+
+      color: $--gray-600;
+    }
+
+    .input_wrapper {
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .name_input {
+        @include Title3-M;
+
+        width: 100%;
+        height: 51px;
+
+        padding: 15px 16px;
+
+        background-color: $--gray-50;
+
+        outline: 2px solid $--gray-100;
+        border-radius: 6px;
+
+        border: none;
+      }
+
+      svg {
+        position: absolute;
+
+        top: 50%;
+        transform: translate(0, -50%);
+
+        right: 16px;
+      }
+    }
+  }
+}

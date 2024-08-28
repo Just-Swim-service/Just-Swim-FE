@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import iconArrowDown from '@assets/icon_arrow_down.png';
@@ -18,7 +18,6 @@ export default function SearchPerson() {
   const {
     userList,
     checkedList,
-    selectedList,
     checkItemHandler,
     setSelectedListHandler,
     loadUserList,
@@ -36,7 +35,6 @@ export default function SearchPerson() {
     if (userList.length > 0) {
       setStateObj(consvertUserListToLectureIdObj());
     }
-    console.log('stateObj', stateObj);
   }, [userList]);
 
   // userList를 lecturId에 따라서 리스트를 그려주기 위해 lecturId가 key인 object로 변경
@@ -154,7 +152,7 @@ export default function SearchPerson() {
           type="button"
           onClick={() => {
             setSelectedListHandler();
-            router.push('/instructor/feedback/write/person');
+            router.push('/instructor/feedback/create/person');
           }}
           className={` ${checkLength() == 0 ? styled.disabled : ''}`}>
           {checkLength()}명 선택하기

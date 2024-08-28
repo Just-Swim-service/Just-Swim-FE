@@ -11,7 +11,14 @@ const SCHEDULE_ROUTE = {
   root: '/schedule',
 } as const;
 
+const ACCOUNT_ROUTE = {
+  root: '/account',
+  edit: '/account/edit',
+  deletion: '/account/deletion',
+} as const;
+
 export const ROUTES = {
   ONBOARDING: { ...SIGNIN_ROUTE },
   SCHEDULE: { ...SCHEDULE_ROUTE },
+  ACCOUNT: { ...ACCOUNT_ROUTE },
 } as const;

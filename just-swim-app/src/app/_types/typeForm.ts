@@ -1,8 +1,9 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent } from 'react';
 
 export interface TextInputProps {
   name: string;
   valid?: boolean;
+  link?: boolean;
   errorMessage: string | undefined;
 }
 
