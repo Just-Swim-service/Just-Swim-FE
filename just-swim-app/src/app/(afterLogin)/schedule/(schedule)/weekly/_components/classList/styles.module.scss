@@ -1,0 +1,74 @@
+@import '@/globals.scss';
+
+.container {
+  position: relative;
+
+  width: 100%;
+  height: calc(100vh - 389px);
+  
+  padding: 20px 0 0;
+  
+  background-color: $--gray-50;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  .not_exist {
+    @include Title5-M;
+
+    color: $--gray-400;
+
+    position: absolute;
+
+    top: 32px;
+    left: 50%;
+
+    transform: translate(-50%);
+  }
+    
+  .info {
+    @include Title3-SB;
+
+    padding: 0 16px;
+    margin-bottom: 16px;
+
+    display: flex;
+    gap: 1px;
+
+    .date {
+      @include Title3-M;
+    }
+
+    .date.blue {
+      color: $--Primary-blue;
+    }
+
+    .date.red {
+      color: $--Cancel;
+    }
+  }
+
+  .list_container {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 16px;
+
+    overflow-y: scroll;
+  }
+
+  .list {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    
+    gap: 14px;
+
+    padding-bottom: 10px;
+  }
+}

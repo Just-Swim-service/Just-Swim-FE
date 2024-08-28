@@ -39,6 +39,10 @@
     color: $--gray-500;
   }
 
+  .day_input.invalid {
+    outline: 2px solid $--Cancel;
+  }
+
   .valid_warpper {
     position: absolute;
 
@@ -50,5 +54,17 @@
 
   .day_input.empty + .valid_warpper {
     display: none;
+  }
+
+  .error_message {
+    position: absolute;
+    left: 2px;
+    bottom: -22px;
+
+    & > p {
+      @include Body4-R;
+
+      color: $--Cancel;
+    }
   }
 }

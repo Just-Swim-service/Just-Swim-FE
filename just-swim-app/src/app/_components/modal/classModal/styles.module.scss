@@ -1,0 +1,35 @@
+@import '@/globals.scss';
+
+.list {
+  padding: 10px 16px 30px;
+
+  display: flex;
+  flex-direction: column;
+  
+  gap: 14px;
+
+  overflow-y: scroll;
+  
+  .info {
+    @include Title3-SB;
+
+    margin-bottom: 16px;
+
+    display: flex;
+    gap: 1px;
+
+    .date {
+      @include Title3-M;
+      
+      color: $--Black;
+    }
+
+    .date.blue {
+      color: $--Primary-blue;
+    }
+
+    .date.red {
+      color: $--Cancel;
+    }
+  }
+}

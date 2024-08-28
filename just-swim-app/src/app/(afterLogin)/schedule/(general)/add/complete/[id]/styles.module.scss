@@ -1,0 +1,30 @@
+@import '@/globals.scss';
+
+.container {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  .complete_message {
+    @include Title2-SB;
+
+    width: 100%;
+  
+    padding: 22px 16px;
+  
+    border-bottom: 1px solid $--gray-100;
+  }
+  
+  .button_wrapper {
+    width: 100%;
+
+    padding: 74px 16px 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
