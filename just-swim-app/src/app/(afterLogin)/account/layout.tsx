@@ -14,6 +14,7 @@ import { AccountContext } from './_context/context';
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const param = usePathname();
+  console.log(param);
 
   const { getToken, setAddUserProfile } = useUserStore();
   const userToken = getToken();
@@ -65,13 +66,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 ? TEXT.ACCOUNT_PAGE.myInfo
                 : ROUTES.ACCOUNT.edit
                   ? TEXT.ACCOUNT_PAGE.editInfoTitle
-                  : null}
+                  : '/account/deletion'
+                    ? '탈퇴하기'
+                    : null}
             </p>
           </div>
           {param === ROUTES.ACCOUNT.edit ? (
             <div
               className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}>
               <div onClick={handleEditProfile}>{TEXT.COMMON.done}</div>
+            </div>
+          ) : null}
+          {param === '/account/deletion' ? (
+            <div
+              className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}>
+              <div>건너뛰기</div>
             </div>
           ) : null}
         </div>
