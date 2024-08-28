@@ -41,13 +41,7 @@ export default function ClassInfoEdit() {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.data && data.data.lectureTime) {
-          const lectureTime = data.data.lectureTime.split('-');
-          setLecture({ ...data.data, lectureTime });
-          console.log(data);
-        } else {
-          setLecture(data.data);
-        }
+        setLecture(data.data);
       });
   }, [lectureId]);
 
@@ -110,7 +104,8 @@ export default function ClassInfoEdit() {
               </label>
               <TextInput
                 name="lectureTitle"
-                value={formData.lectureTitle || lecture.lectureTitle}
+                defaultValue={lecture.lectureTitle}
+                value={formData.lectureTitle}
                 onChange={handleChange}
               />
 
@@ -120,7 +115,8 @@ export default function ClassInfoEdit() {
               </label>
               <TextInput
                 name="lectureContent"
-                value={formData.lectureContent || lecture.lectureContent}
+                defaultValue={lecture.lectureContent}
+                value={formData.lectureContent}
                 onChange={handleChange}
               />
             </div>
@@ -134,8 +130,9 @@ export default function ClassInfoEdit() {
               </label>
               <TimeInput
                 name="lectureTime"
-                defaultValue={formData.lectureTime || lecture.lectureTime}
+                defaultValue={lecture.lectureTime}
                 defaultTimeValue={lecture.lectureTime}
+                value={formData.lectureTime}
                 onChange={handleChange}
               />
 
@@ -145,32 +142,30 @@ export default function ClassInfoEdit() {
               </label>
               <DayInput
                 name="lectureDays"
-                defaultValue={formData.lectureDays || lecture.lectureDays}
+                defaultValue={lecture.lectureDays}
+                value={formData.lectureDays}
               />
 
               <label htmlFor="lectureLocation">수업 위치</label>
-              <TextInput
+              <LocationInput
                 name="lectureLocation"
-                value={formData.lectureLocation || lecture.lectureLocation}
-                onChange={handleChange}
+                defaultValue={lecture.lectureLocation}
+                value={formData.lectureLocation}
               />
-              {/* 수정 완료되면 추가 */}
-              {/* <LocationInput
-                  name="lectureLocation"
-                  defaultValue={lecture.lectureLocation}
-                /> */}
 
               <label htmlFor="lectureEndDate">종료 일자</label>
               <DateInput
                 name="lectureEndDate"
-                defaultValue={formData.lectureEndDate || lecture.lectureEndDate}
+                defaultValue={lecture.lectureEndDate}
+                value={formData.lectureEndDate}
                 onChange={handleChange}
               />
 
               <label htmlFor="lectureColor">구분 색</label>
               <ColorInput
                 name="lectureColor"
-                defaultValue={formData.lectureColor || lecture.lectureColor}
+                defaultValue={lecture.lectureColor}
+                value={formData.lectureColor}
                 onChange={handleChange}
               />
             </div>
