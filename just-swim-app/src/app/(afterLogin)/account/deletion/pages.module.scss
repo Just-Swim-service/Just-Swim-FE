@@ -92,3 +92,11 @@
     }
   }
 }
+
+.deletion_confirm {
+  button {
+    color: $--White !important;
+
+    background-color: $--Cancel !important;
+  }
+}

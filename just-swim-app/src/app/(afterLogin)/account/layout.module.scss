@@ -32,7 +32,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding-right: 8px;
+        gap: 8px;
 
         svg path {
           fill: $--Black;

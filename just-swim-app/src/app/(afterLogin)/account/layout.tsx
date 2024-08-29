@@ -62,13 +62,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className={styles.back_link} onClick={handleBackPage}>
             <IconArrowLeft width={20} height={20} fill="#ff0000" />
             <p>
-              {param === ROUTES.ACCOUNT.root
-                ? TEXT.ACCOUNT_PAGE.myInfo
-                : ROUTES.ACCOUNT.edit
-                  ? TEXT.ACCOUNT_PAGE.editInfoTitle
-                  : '/account/deletion'
-                    ? '탈퇴하기'
-                    : null}
+              {param === ROUTES.ACCOUNT.root ? TEXT.ACCOUNT_PAGE.myInfo : ''}
+              {param === ROUTES.ACCOUNT.edit
+                ? TEXT.ACCOUNT_PAGE.editInfoTitle
+                : ''}
+              {param === '/account/deletion' ? '탈퇴하기' : ''}
             </p>
           </div>
           {param === ROUTES.ACCOUNT.edit ? (
