@@ -1,4 +1,3 @@
-// import './colorModal.scss';
 import { TEXT } from '@data';
 import styled from './deleteModal.module.scss';
 import { useState } from 'react';
@@ -18,10 +17,12 @@ export function DeleteModal(props: any) {
             탈퇴와 즉시 등록된 개인 정보가 삭제되며,
             <br />한 번 삭제된 정보는 복구가 불가능 합니다.
           </p>
-          <input type="checkbox" onClick={() => setIsActive(!isActive)} />
-          유의사항을 확인했습니다
         </div>
         <div className={styled.second_modal}>
+          <input type="checkbox" onClick={() => setIsActive(!isActive)} />
+          <p>유의사항을 확인했습니다</p>
+        </div>
+        <div className={styled.third_modal}>
           <button onClick={() => setShowModal(false)}>
             {TEXT.COMMON.cancel}
           </button>

@@ -24,6 +24,7 @@ function Radio({
   name,
   disabled,
   selected,
+  defaultChecked,
   onChange,
 }: {
   children: React.ReactNode;
@@ -31,6 +32,7 @@ function Radio({
   name: string;
   disabled?: boolean;
   selected: boolean;
+  defaultChecked?: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }) {
   return (
@@ -41,6 +43,7 @@ function Radio({
         name={name}
         disabled={disabled}
         checked={selected}
+        defaultChecked={defaultChecked}
         onChange={onChange}
       />
       {children}
@@ -49,18 +52,18 @@ function Radio({
 }
 
 function RadioGroup({ children }: { children: React.ReactNode }) {
-  return <fieldset>{children}</fieldset>;
+  return <fieldset className={styles.radio_group}>{children}</fieldset>;
 }
 
 export default function Deletion() {
   const router = useRouter();
   const { setResetUser } = useUserStore();
   const [showDeletionModal, setShowDeletionModal] = useState(false);
-  const [isActive, setIsActive] = useState(false);
   const [isETCActive, setIsETCActive] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string | null>(
+    'NO_MORE_USE',
+  );
 
-  console.log(isActive);
   const setUserDeletion = async () => {
     await deleteUser();
     removeTokenInCookies();
@@ -70,7 +73,6 @@ export default function Deletion() {
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.name);
-    setIsActive(true);
     setSelectedValue(event.target.name);
 
     if (event.target.name === 'ETC') {
@@ -83,78 +85,81 @@ export default function Deletion() {
   const handleDeletion = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowDeletionModal(true);
-    console.log('event: ', event);
   };
 
   return (
     <>
-      <div className={styles.account_section}></div>
-      <div className={styles.select_type_header}>
-        <div>
-          <h3>탈퇴하는 이유가 무엇인가요?</h3>
+      <div className={styles.deletion}>
+        <div className={styles.deletion_header}>
+          <div className={styles.title}>
+            <h3>탈퇴하는 이유가 무엇인가요?</h3>
+          </div>
+          <div className={styles.content}>
+            <p>더 나은 서비스가 될 수 있도록 의견을 들려주세요.</p>
+          </div>
         </div>
-        <div>
-          <p>더 나은 서비스가 될 수 있도록 의견을 들려주세요.</p>
+        <div className={styles.deletion_section}>
+          <form
+            onSubmit={(event) => {
+              handleDeletion(event);
+            }}>
+            <RadioGroup>
+              <Radio
+                name="NO_MORE_USE"
+                value="더 이상 사용하지 않는 앱이에요."
+                onChange={handleRadioChange}
+                selected={selectedValue === 'NO_MORE_USE'}>
+                더 이상 사용하지 않는 앱이에요.
+              </Radio>
+              <Radio
+                name="NOT_USEFUL"
+                value="기능이 유용하지 않아요."
+                onChange={handleRadioChange}
+                selected={selectedValue === 'NOT_USEFUL'}>
+                기능이 유용하지 않아요.
+              </Radio>
+              <Radio
+                name="ERROR"
+                value="오류가 생겨서 쓸 수가 없어요."
+                onChange={handleRadioChange}
+                selected={selectedValue === 'ERROR'}>
+                오류가 생겨서 쓸 수가 없어요.
+              </Radio>
+              <Radio
+                name="PRIVACE"
+                value="개인 정보 공개가 불안해요."
+                onChange={handleRadioChange}
+                selected={selectedValue === 'PRIVACE'}>
+                개인 정보 공개가 불안해요.
+              </Radio>
+              <Radio
+                name="OTHER_SERVICE"
+                value="다른 유사 서비스를 이용 중이에요."
+                onChange={handleRadioChange}
+                selected={selectedValue === 'OTHER_SERVICE'}>
+                다른 유사 서비스를 이용 중이에요.
+              </Radio>
+              <Radio
+                name="ETC"
+                value="기타"
+                onChange={handleRadioChange}
+                selected={selectedValue === 'ETC'}>
+                기타
+                {isETCActive && <input></input>}
+              </Radio>
+            </RadioGroup>
+            <div className={styles.deletion_confirm}>
+              <ConfirmButton kind="confirm" text="확인" type="submit" />
+            </div>
+          </form>
         </div>
-      </div>
-      <form
-        onSubmit={(event) => {
-          handleDeletion(event);
-        }}>
-        <RadioGroup>
-          <Radio
-            name="NO_MORE_USE"
-            value="더 이상 사용하지 않는 앱이에요."
-            onChange={handleRadioChange}
-            selected={selectedValue === 'NO_MORE_USE'}>
-            더 이상 사용하지 않는 앱이에요.
-          </Radio>
-          <Radio
-            name="NOT_USEFUL"
-            value="기능이 유용하지 않아요."
-            onChange={handleRadioChange}
-            selected={selectedValue === 'NOT_USEFUL'}>
-            기능이 유용하지 않아요.
-          </Radio>
-          <Radio
-            name="PRIVACE"
-            value="개인 정보 공개가 불안해요."
-            onChange={handleRadioChange}
-            selected={selectedValue === 'PRIVACE'}>
-            개인 정보 공개가 불안해요.
-          </Radio>
-          <Radio
-            name="OTHER_SERVICE"
-            value="다른 유사 서비스를 이용 중이에요."
-            onChange={handleRadioChange}
-            selected={selectedValue === 'OTHER_SERVICE'}>
-            다른 유사 서비스를 이용 중이에요.
-          </Radio>
-          <Radio
-            name="ETC"
-            value="기타"
-            onChange={handleRadioChange}
-            selected={selectedValue === 'ETC'}>
-            기타
-            {isETCActive && <input></input>}
-          </Radio>
-        </RadioGroup>
-        <div
-          className={`${isActive ? styles.active : ''} ${styles.deletion_confirm} `}>
-          <ConfirmButton
-            kind="confirm"
-            text="확인"
-            type="submit"
-            active={isActive}
+        {showDeletionModal && (
+          <DeleteModal
+            setShowModal={setShowDeletionModal}
+            setUserDeletion={setUserDeletion}
           />
-        </div>
-      </form>
-      {showDeletionModal && (
-        <DeleteModal
-          setShowModal={setShowDeletionModal}
-          setUserDeletion={setUserDeletion}
-        />
-      )}
+        )}
+      </div>
     </>
   );
 }

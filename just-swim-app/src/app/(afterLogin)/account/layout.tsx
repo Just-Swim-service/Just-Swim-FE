@@ -77,9 +77,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           ) : null}
           {param === '/account/deletion' ? (
             <div
-              className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}>
-              <div>건너뛰기</div>
-            </div>
+              className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}></div>
           ) : null}
         </div>
       </div>

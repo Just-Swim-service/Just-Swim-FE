@@ -41,7 +41,19 @@
       }
     }
 
-    div {
+    .second_modal {
+      @include Body3-R;
+
+      display: flex;
+      gap: 8px;
+
+      input {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .third_modal {
       display: flex;
       width: inherit;
       justify-content: space-between;
