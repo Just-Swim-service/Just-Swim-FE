@@ -6,6 +6,7 @@ import styles from './pages.module.scss';
 import { IconGallery, IconInputValid } from '@assets';
 import {
   ConfirmButton,
+  DeleteModal,
   FormButton,
   Input,
   LogoutModal,
@@ -59,6 +60,7 @@ export default function Deletion() {
   const [isETCActive, setIsETCActive] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
+  console.log(isActive);
   const setUserDeletion = async () => {
     await deleteUser();
     removeTokenInCookies();
@@ -137,7 +139,8 @@ export default function Deletion() {
             {isETCActive && <input></input>}
           </Radio>
         </RadioGroup>
-        <div className={styles.deletion_confirm}>
+        <div
+          className={`${isActive ? styles.active : ''} ${styles.deletion_confirm} `}>
           <ConfirmButton
             kind="confirm"
             text="확인"
@@ -147,10 +150,9 @@ export default function Deletion() {
         </div>
       </form>
       {showDeletionModal && (
-        <LogoutModal
-          showModal={showDeletionModal}
+        <DeleteModal
           setShowModal={setShowDeletionModal}
-          setUserLogout={setUserDeletion}
+          setUserDeletion={setUserDeletion}
         />
       )}
     </>

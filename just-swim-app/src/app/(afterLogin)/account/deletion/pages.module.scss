@@ -96,7 +96,12 @@
 .deletion_confirm {
   button {
     color: $--White !important;
+    background-color: $--gray-300 !important;
+  }
+}
 
+.active {
+  button {
     background-color: $--Cancel !important;
   }
 }

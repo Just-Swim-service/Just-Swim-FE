@@ -1,9 +1,8 @@
 @import '@/globals.scss';
 
 .modal_background {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  justify-content: center;
   position: absolute;
   z-index: 20;
   top: 0;
@@ -15,54 +14,55 @@
 
   .modal {
     width: 95%;
-    height: 220px;
     background-color: $--White;
     border-radius: 8px;
     margin: auto;
     padding: 22px 16px;
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
+    gap: 24px;
     align-items: center;
 
-    p {
-      @include Title3-SB;
-    }
+    .first_modal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
 
-    .description {
-      @include Body4-R;
-      color: $--gray-600;
-    }
+      .first_modal_title {
+        @include Title3-SB;
+      }
 
-    label {
-      @include Body3-R;
+      .first_modal_content {
+        @include Title4-M;
 
-      input {
-        margin-right: 8px;
-        vertical-align: middle;
+        text-align: center;
+        color: $--gray-600;
       }
     }
 
-    .modal_button {
+    div {
       display: flex;
       width: inherit;
       justify-content: space-between;
 
       button {
         @include Title3-SB;
-        width: 40%;
+        width: 48%;
         height: 52px;
         border-radius: 13px;
         border: 1px solid $--gray-200;
         background-color: $--White;
         color: $--gray-700;
-        position: static;
 
         &:last-child {
-          background-color: $--Cancel;
+          background-color: $--gray-300;
           color: $--White;
           border: none;
         }
+      }
+      .active {
+        background-color: $--Cancel !important;
       }
     }
   }
