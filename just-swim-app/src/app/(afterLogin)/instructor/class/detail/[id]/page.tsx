@@ -15,6 +15,7 @@ import {
 } from '@assets';
 import { Header } from '@components';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -300,12 +301,25 @@ export default function ClassDetail() {
         )}
 
         {/* @ts-ignore */}
-        {lecture.memberUserId === 0 ? (
+        {lecture.members.memberUserId === 0 ? (
           <></>
         ) : (
-          <button className={styled.feedback_btn}>
+          <Link
+            className={styled.feedback_btn}
+            href={{
+              pathname: `/instructor/feedback/create/class`,
+              query: {
+                id: lectureId,
+                // @ts-ignore
+                member: lecture.members
+                  // @ts-ignore
+                  .map((member) => member.memberUserId)
+                  .join(','),
+              },
+            }}
+            as={`/instructor/feedback/create/class`}>
             수강생 전체 피드백 남기기
-          </button>
+          </Link>
         )}
       </div>
       <div className={styled.bottom_gap}></div>
