@@ -1,0 +1,260 @@
+@import '@/globals.scss';
+
+.container {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    padding: 20px 16px 0;
+
+    .type {
+      width: 100%;
+      height: 40px;
+  
+      display: flex;
+  
+      .select {
+        flex-grow: 1;
+  
+        border-bottom: 2px solid $--gray-300;
+  
+        & > span {
+          @include Title4-SB;
+  
+          color: $--gray-300;
+        }
+      }
+  
+      .select.selected {
+        border-bottom: 2px solid $--Primary-blue;
+  
+        & > span {
+          color: $--Primary-blue;
+        }
+      }
+    }
+  
+    .search {
+      width: 100%;
+  
+      margin: 12px 0 4px;
+  
+      position: relative;
+  
+      .icon {
+        width: 22px;
+        height: 22px;
+  
+        position: absolute;
+  
+        top: 50%;
+        left: 14px;
+  
+        transform: translate(0, -50%);
+      }
+  
+      .input {
+        @include Title3-M;
+  
+        width: 100%;
+        height: 48px;
+  
+        padding: 0 20px 0 42px;
+  
+        border-radius: 6px;
+  
+        background-color: $--gray-50;
+  
+        border: none;
+        outline: none;
+  
+        &::placeholder {
+          @include Title3-M;
+  
+          color: $--gray-500;
+        }
+
+        &:focus {
+          outline: 2px solid $--Primary-blue;
+        }
+      }
+    }
+  }
+
+  .info {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 4px 4px -2px $--gray-300;
+
+    & > p {
+      @include Title3-SB;
+
+      color: $--Black;
+    }
+
+    .button {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+
+      & > span {
+        @include Body2-R;
+
+        color: $--Primary-blue;
+      }
+    }
+
+    .button.reverse {
+      & > svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .button_container {
+    width: 100%;
+    height: 92px;
+
+    padding: 20px 16px;
+
+    .button {
+      width: 100%;
+      height: 52px;
+
+      border-radius: 13px;
+
+      & > span {
+        @include Title3-SB;
+
+        color: $--White;
+      }
+    }
+
+    .button.disable {
+      background-color: $--gray-300;
+    }
+
+    .button.active {
+      background-color: $--Primary-blue;
+    }
+  }
+}
+
+.list {
+  width: 100%;
+
+  padding: 20px 16px;
+
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: scroll;
+}
+
+.group_list {
+  @extend .list;
+
+  .title {
+    @include Title4-M;
+
+    color: $--Black;
+
+    margin-bottom: 5px;
+  }
+}
+
+.name_list {
+  @extend .list;
+}
+
+.member_item {
+  width: 100%;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px solid $--gray-200;
+
+  .check_box {
+    width: 18px;
+    height: 18px;
+
+    border-radius: 4px;
+
+    margin-right: 10px;
+
+    border: 2px solid $--gray-200;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check_box.selected {
+    border: none;
+
+    background-color: $--Primary-blue;
+  }
+
+  .image_wrapper {
+    width: 34px;
+    height: 34px;
+
+    margin-right: 8px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    & > img {
+      object-fit: cover;
+    }
+
+    .empty_image {
+      width: 34px;
+      height: 34px;
+
+      background-color: $--gray-300;
+    }
+  }
+
+  .name {
+    @include Title3-M;
+
+    color: $--Black;
+  }
+
+  .lecture {
+    width: 60px;
+    height: 22px;
+
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background-color: $--Chips;
+
+    & > p {
+      @include Body4-R;
+
+      color: $--Primary-blue;
+    }
+  }
+}

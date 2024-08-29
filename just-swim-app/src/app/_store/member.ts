@@ -44,6 +44,7 @@ type Action = {
     userId: Prams['userId'],
   ) => void;
   setSelectedListHandler: () => void;
+  updateSelectedList: (list: Member[] | []) => void;
   removeItemHandler: (userId: Prams['userId']) => void;
   loadUserList: () => Promise<void>;
 };
@@ -81,6 +82,13 @@ const searchUserStore = create<State & Action>()(
               : state.checkedList.filter(
                   (member: Member) => member.userId !== userId,
                 ),
+          };
+        }),
+      // 추가한 부분
+      updateSelectedList: (list: Member[]) => 
+        set((state: any) => {
+          return {
+            selectedList: [...list],
           };
         }),
       setSelectedListHandler: () =>
