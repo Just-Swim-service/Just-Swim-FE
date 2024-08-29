@@ -24,6 +24,14 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleConfirm = () => {
+    if (isChecked) {
+      onConfirm();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -40,6 +48,8 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
             type="checkbox"
             id="confirmation-checkbox"
             style={{ marginRight: '8px' }}
+            checked={isChecked}
+            onChange={() => setIsChecked(!isChecked)}
           />
           <label htmlFor="confirmation-checkbox">유의사항을 확인했습니다.</label>
         </form>
@@ -47,7 +57,10 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
           <button className={styled.button_cancel} onClick={onCancel}>
             취소
           </button>
-          <button className={styled.button_ok} onClick={onConfirm}>
+          <button
+            className={styled.button_ok}
+            onClick={handleConfirm}
+            disabled={!isChecked}>
             수업 삭제
           </button>
         </div>

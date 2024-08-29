@@ -248,7 +248,6 @@
   transform: translate(-50%, -50%);
   z-index: 999;
   width: 328px;
-  height: 216px;
   padding: 20px;
   background-color: $--White;
   text-align: center;
@@ -288,6 +287,11 @@
       border: 1px solid $--Cancel;
       border-radius: 13px;
       color: $--White;
+
+      &:disabled {
+        border: 1px solid $--gray-300;
+        background-color: $--gray-300;
+      }
     }
 
     p {
