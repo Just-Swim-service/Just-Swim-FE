@@ -314,25 +314,27 @@ export default function ClassDetail() {
         )}
 
         {/* @ts-ignore */}
-        {lecture.members.memberUserId === 0 ? (
+        {lecture.members.length === 0 ? (
           <></>
         ) : (
-          <Link
-            className={styled.feedback_btn}
-            href={{
-              pathname: `/instructor/feedback/create/class`,
-              query: {
-                id: lectureId,
-                // @ts-ignore
-                member: lecture.members
+          <div className={styled.feedback_bg}>
+            <Link
+              className={styled.feedback_btn}
+              href={{
+                pathname: `/instructor/feedback/create/class`,
+                query: {
+                  id: lectureId,
                   // @ts-ignore
-                  .map((member) => member.memberUserId)
-                  .join(','),
-              },
-            }}
-            as={`/instructor/feedback/create/class`}>
-            수강생 전체 피드백 남기기
-          </Link>
+                  member: lecture.members
+                    // @ts-ignore
+                    .map((member) => member.memberUserId)
+                    .join(','),
+                },
+              }}
+              as={`/instructor/feedback/create/class`}>
+              수강생 전체 피드백 남기기
+            </Link>
+          </div>
         )}
       </div>
       <div className={styled.bottom_gap}></div>

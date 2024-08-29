@@ -215,20 +215,27 @@
     gap: 6px;
   }
 
-  .feedback_btn {
+  .feedback_bg {
     position: fixed;
     left: 50%;
-    transform: translate(-50%, 0);
     bottom: 20px;
-    text-align: center;
+    transform: translate(-50%, 20px);
 
-    width: 90%;
-    padding: 14px 0;
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(#f8f9fa 0%, #f8f9fa 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border-radius: 13px;
-
-    background-color: $--Primary-blue;
-    color: white;
+    .feedback_btn {
+      width: 90%;
+      padding: 14px 0;
+      border-radius: 13px;
+      background-color: $--Primary-blue;
+      color: white;
+      text-align: center;
+    }
   }
 }
 
