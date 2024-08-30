@@ -61,11 +61,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className={styles.back_link} onClick={handleBackPage}>
             <IconArrowLeft width={20} height={20} fill="#ff0000" />
             <p>
-              {param === ROUTES.ACCOUNT.root
-                ? TEXT.ACCOUNT_PAGE.myInfo
-                : ROUTES.ACCOUNT.edit
-                  ? TEXT.ACCOUNT_PAGE.editInfoTitle
-                  : null}
+              {param === ROUTES.ACCOUNT.root ? TEXT.ACCOUNT_PAGE.myInfo : ''}
+              {param === ROUTES.ACCOUNT.edit
+                ? TEXT.ACCOUNT_PAGE.editInfoTitle
+                : ''}
+              {param === '/account/deletion' ? '탈퇴하기' : ''}
             </p>
           </div>
           {param === ROUTES.ACCOUNT.edit ? (
@@ -73,6 +73,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}>
               <div onClick={handleEditProfile}>{TEXT.COMMON.done}</div>
             </div>
+          ) : null}
+          {param === '/account/deletion' ? (
+            <div
+              className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}></div>
           ) : null}
         </div>
       </div>

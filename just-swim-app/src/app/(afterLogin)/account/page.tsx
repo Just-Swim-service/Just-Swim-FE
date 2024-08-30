@@ -7,15 +7,19 @@ import { IconArrowRight, IconSetting } from '@assets';
 import { useEffect, useState } from 'react';
 import { ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
-import { URLImage } from '@components';
+import { URLImage, LogoutModal } from '@components';
 import Link from 'next/link';
+import { postUserLogout } from '@apis';
+import { removeTokenInCookies } from '@utils';
 
 export default function Account() {
   const router = useRouter();
 
-  const { getUserName, getToken, getUserImage } = useUserStore();
+  const { getUserName, getToken, getUserImage, setResetUser } = useUserStore();
+
   const [userName, setUserName] = useState('');
   const [userImage, setUserImage] = useState('');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const userToken = getToken();
@@ -23,10 +27,17 @@ export default function Account() {
       setUserName(getUserName(userToken));
       setUserImage(getUserImage(userToken));
     } else {
-      router.push(ROUTES.ONBOARDING.signin);
+      //   router.push(ROUTES.ONBOARDING.signin);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const setUserLogout = async () => {
+    await postUserLogout();
+    removeTokenInCookies();
+    setResetUser();
+    router.replace(ROUTES.ONBOARDING.root);
+  };
 
   const handleProfileEdit = () => {
     router.push(ROUTES.ACCOUNT.edit);
@@ -46,13 +57,7 @@ export default function Account() {
   };
 
   const handleLogOut = () => {
-    // TODO: 로그아웃 로직 - 모달
-    // router.replace(ROUTES.ONBOARDING.root);
-  };
-
-  const handleAccountDeletion = () => {
-    // TODO: 회원탈퇴 로직
-    // router.push(ROUTES.ACCOUNT.deletion);
+    setShowLogoutModal(true);
   };
 
   return (
@@ -75,8 +80,7 @@ export default function Account() {
           <IconSetting />
           <div>{TEXT.ACCOUNT_PAGE.appSetting}</div>
         </div>
-        {/* account 상수 '이름: url' 로 객체 만들어서, map 돌리기 */}
-        {/* 로그아웃, 탈퇴하기 진행하며 할 예정 */}
+        {/* 디자인 정해지면 구현 예정 */}
         <div className={styles.app_setting}>
           <Link
             className={styles.app_setting_menu}
@@ -115,6 +119,13 @@ export default function Account() {
           </div>
         </div>
       </div>
+      {showLogoutModal && (
+        <LogoutModal
+          showModal={showLogoutModal}
+          setShowModal={setShowLogoutModal}
+          setUserLogout={setUserLogout}
+        />
+      )}
     </>
   );
 }
