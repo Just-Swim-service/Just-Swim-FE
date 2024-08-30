@@ -113,6 +113,15 @@
       &_no {
         color: $--gray-600;
       }
+
+      .profile_position {
+        position: relative;
+
+        img:nth-child(n + 2) {
+          margin-left: -8px;
+        }
+        float: left;
+      }
     }
 
     .box {
@@ -125,6 +134,10 @@
 
     .profile_no {
       @include Title5-M;
+    }
+
+    .arrow_box {
+      align-items: center;
     }
   }
 }

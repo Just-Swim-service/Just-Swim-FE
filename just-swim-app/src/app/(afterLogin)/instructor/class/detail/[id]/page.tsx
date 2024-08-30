@@ -12,6 +12,7 @@ import {
   IconRepeat,
   IconShare,
   IconDownload,
+  IconArrowRight,
 } from '@assets';
 import { Header } from '@components';
 import { useRouter } from 'next/navigation';
@@ -194,24 +195,32 @@ export default function ClassDetail() {
                 : '0명'}
             </p>
           </div>
-          <div className={`${styled.profile} ${styled.box}`}>
+          <Link
+            className={`${styled.profile} ${styled.box}`}
+            href={`/instructor/class/detail/${lectureId}/members`}>
             {/* @ts-ignore */}
             {lecture.members && lecture.members.length > 0 ? (
               <>
                 {/* @ts-ignore */}
-                {lecture.members.map((member, index) => (
-                  <Image
-                    key={index}
-                    src={member.memberProfileImage}
-                    alt="회원 프로필 사진"
-                    width={32}
-                    height={32}
-                    style={{
-                      borderRadius: '32px',
-                      verticalAlign: 'middle',
-                    }}
-                  />
-                ))}
+                <div className={styled.profile_position}>
+                  {/* @ts-ignore */}
+                  {lecture.members.slice(-7).map((member, index) => (
+                    <Image
+                      key={index}
+                      src={member.memberProfileImage}
+                      alt="회원 프로필 사진"
+                      width={32}
+                      height={32}
+                      style={{
+                        borderRadius: '32px',
+                        verticalAlign: 'middle',
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className={styled.arrow_box}>
+                  <IconArrowRight width={20} height={20} />
+                </div>
               </>
             ) : (
               <>
@@ -220,7 +229,7 @@ export default function ClassDetail() {
                 </p>
               </>
             )}
-          </div>
+          </Link>
         </div>
       </div>
 

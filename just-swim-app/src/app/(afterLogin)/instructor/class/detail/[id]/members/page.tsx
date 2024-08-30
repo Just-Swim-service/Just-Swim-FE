@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import searchIcon from '/public/assets/icon_search.png';
 import arrowRightIcon from '/public/assets/icon_arrow_right.png';
