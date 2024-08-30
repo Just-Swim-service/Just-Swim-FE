@@ -63,7 +63,6 @@ export default function Deletion() {
   };
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.name);
     setSelectedValue(event.target.name);
   };
 
