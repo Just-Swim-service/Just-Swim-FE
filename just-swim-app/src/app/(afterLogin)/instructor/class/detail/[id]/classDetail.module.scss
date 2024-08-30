@@ -113,6 +113,15 @@
       &_no {
         color: $--gray-600;
       }
+
+      .profile_position {
+        position: relative;
+
+        img:nth-child(n + 2) {
+          margin-left: -8px;
+        }
+        float: left;
+      }
     }
 
     .box {
@@ -125,6 +134,10 @@
 
     .profile_no {
       @include Title5-M;
+    }
+
+    .arrow_box {
+      align-items: center;
     }
   }
 }
@@ -215,19 +228,27 @@
     gap: 6px;
   }
 
-  .feedback_btn {
+  .feedback_bg {
     position: fixed;
     left: 50%;
-    transform: translate(-50%, 0);
     bottom: 20px;
+    transform: translate(-50%, 20px);
 
-    width: 90%;
-    padding: 14px 0;
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(#f8f9fa 0%, #f8f9fa 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border-radius: 13px;
-
-    background-color: $--Primary-blue;
-    color: white;
+    .feedback_btn {
+      width: 90%;
+      padding: 14px 0;
+      border-radius: 13px;
+      background-color: $--Primary-blue;
+      color: white;
+      text-align: center;
+    }
   }
 }
 
@@ -247,7 +268,6 @@
   transform: translate(-50%, -50%);
   z-index: 999;
   width: 328px;
-  height: 216px;
   padding: 20px;
   background-color: $--White;
   text-align: center;
@@ -287,6 +307,11 @@
       border: 1px solid $--Cancel;
       border-radius: 13px;
       color: $--White;
+
+      &:disabled {
+        border: 1px solid $--gray-300;
+        background-color: $--gray-300;
+      }
     }
 
     p {
