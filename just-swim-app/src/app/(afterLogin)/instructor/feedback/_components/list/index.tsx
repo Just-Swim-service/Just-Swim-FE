@@ -16,6 +16,8 @@ import IconIndividual from '@assets/individual.svg';
 import IconGroup from '@assets/group.svg';
 
 import styled from './styles.module.scss';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // 한 페이지에 몇 개의 아이템을 보여줄지 여부
 // 추후 수정 요망
@@ -28,9 +30,14 @@ const pagesToShow = 5;
 // _components 폴더 내부나 페이지 폴더 내부 _components 폴더로 이동
 function FeedbackCard({ feedback }: { feedback: FeedbackProps }) {
   const selectedMember = feedback.members[0];
-
+  const router = useRouter();
+  const goToFeedbackDetail = (feedbackId: string) => {
+    router.push(`feedback/feedbackDetail/${feedbackId}`);
+  };
   return (
-    <div className={styled.feedback_item}>
+    <div
+      className={styled.feedback_item}
+      onClick={() => goToFeedbackDetail(feedback.feedbackId)}>
       <div className={styled.header}>
         <div className={styled.image_wrapper}>
           <Image

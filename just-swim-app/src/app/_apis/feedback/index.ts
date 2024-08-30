@@ -151,4 +151,22 @@ async function getSortedFeedback(): Promise<FeedbackProps[] | null> {
 //   },
 // );
 
-export { getFeedback, postFeedback, getSortedFeedback };
+// 피드백 사셍
+async function getFeedbackDetail(id: string): Promise<FeedbackProps[] | null> {
+  const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
+    header: {
+      token: true,
+      json: true,
+      credential: true,
+    },
+  });
+
+  if (result.success) {
+    return result.data;
+  } else {
+    return notFound();
+  }
+}
+
+export { getFeedback, postFeedback, getSortedFeedback, getFeedbackDetail };
