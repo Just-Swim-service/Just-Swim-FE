@@ -9,8 +9,8 @@ import Image from 'next/image';
 export default function ClassView() {
   const [lectures, setLectures] = useState([]);
 
-  const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/schedule`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_DB_TOKEN}`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   useEffect(() => {
     fetch(API_URL, {

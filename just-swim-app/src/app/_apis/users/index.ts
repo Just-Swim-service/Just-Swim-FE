@@ -5,11 +5,11 @@ import api from '../api';
 import { GetUserProfileRes, PatchUserEditReq, PostUserLoginReq } from '@types';
 
 const USER_API_PATH = '/user';
-const OAUTH_API_PATH = 'api/Oauth';
+const OAUTH_API_PATH = 'Oauth';
 
 export const getSignUp = async (param: string) => {
   const response = await fetch(
-    `${process.env.API_PATH}/${OAUTH_API_PATH}/${param}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/${OAUTH_API_PATH}/${param}`,
     {
       method: HTTP_METHODS.GET,
     },

@@ -1,16 +1,16 @@
-"use server";
+'use server';
 
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
 import { unstable_cache } from 'next/cache';
 
 // _types 폴더 내부로 이동
 export interface MemberProps {
-  userId: string,
-  memberId: string,
-  lectureId: string,
-  lectureTitle: string,
-  memberNickname: string,
-  profileImage: string,
+  userId: string;
+  memberId: string;
+  lectureId: string;
+  lectureTitle: string;
+  memberNickname: string;
+  profileImage: string;
 }
 
 // 이 부분은 무시해도 좋음
@@ -23,30 +23,29 @@ async function Fetch<T>({
     json: false,
     credential: false,
   },
-  body = null
+  body = null,
 }: {
-  url: string,
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELsETE',
+  url: string;
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELsETE';
   header?: {
-    token?: boolean,
-    json?: boolean,
-    credential?: boolean,
-  }
-  body?: Object | null,
+    token?: boolean;
+    json?: boolean;
+    credential?: boolean;
+  };
+  body?: Object | null;
 }): Promise<T> {
   try {
-    const response = await fetch(
-      url, 
-      {
-        method,
-        headers: {
-          'Content-Type': header.json ? 'application/json' : '',
-          'Authorization': header.token ? `Bearer ${process.env.ACCOUNT_TOKEN}` : '',
-          'credentials': header.credential ? 'include' : '',
-        },
-        body: body && JSON.stringify(body),
-      }
-    );
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': header.json ? 'application/json' : '',
+        Authorization: header.token
+          ? `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
+          : '',
+        credentials: header.credential ? 'include' : '',
+      },
+      body: body && JSON.stringify(body),
+    });
 
     const result = await response.json();
 
@@ -58,13 +57,13 @@ async function Fetch<T>({
 
 // _apis 폴더 내부로 이동
 async function getMember(): Promise<MemberProps[] | null> {
-  const result = await Fetch<{ success: boolean, data: MemberProps[] }>({
-    url: `${process.env.API_URL}/member`,
+  const result = await Fetch<{ success: boolean; data: MemberProps[] }>({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/member`,
     header: {
       token: true,
       json: true,
       credential: true,
-    }
+    },
   });
 
   if (result.success) {
@@ -74,14 +73,10 @@ async function getMember(): Promise<MemberProps[] | null> {
   }
 }
 
-export const getCachedMember = unstable_cache(
-  getMember,
-  ['member-list'],
-  {
-    tags: ['member'],
-    revalidate: 60,
-  }
-);
+export const getCachedMember = unstable_cache(getMember, ['member-list'], {
+  tags: ['member'],
+  revalidate: 60,
+});
 
 // _utils 폴더 내부로 이동
 // 이름 순으로 정렬, 이름이 같을 경우 강의명 순으로 정렬
@@ -107,8 +102,10 @@ interface DataProps {
 // 강의 별로 수강생 묶어주기
 // 현재는 강의명 기준으로 묶었는데 강의명보다는 강의 id로 처리하는 것이 훨씬 안정적으로 보임
 // 현재 백엔드에서 중복 강의명에 대한 처리가 되어있지 않아서 문제가 발생할 여지가 있음
-async function getMemberGroupByLecture(): Promise<{ lecture: string, members: MemberProps[] }[]> {
-  const memberList = await getCachedMember() || [];
+async function getMemberGroupByLecture(): Promise<
+  { lecture: string; members: MemberProps[] }[]
+> {
+  const memberList = (await getCachedMember()) || [];
   const data: DataProps = {};
 
   for (const member of memberList) {
@@ -123,11 +120,11 @@ async function getMemberGroupByLecture(): Promise<{ lecture: string, members: Me
 
   const keys = Object.keys(data).sort();
   const result = [];
- 
+
   for (const key of keys) {
     result.push({
       lecture: key,
-      members: data[key].sort(sortMember)
+      members: data[key].sort(sortMember),
     });
   }
 
@@ -140,13 +137,13 @@ export const getCachedMemberGroupByLecture = unstable_cache(
   {
     tags: ['member'],
     revalidate: 60,
-  }
+  },
 );
 
 // _utils 폴더 내부로 이동
 // 이름순으로 수강생 정렬
 async function getSortedMember() {
-  const memberList = await getCachedMember() || [];
+  const memberList = (await getCachedMember()) || [];
 
   memberList.sort(sortMember);
 
@@ -159,5 +156,5 @@ export const getCachedSortedMember = unstable_cache(
   {
     tags: ['member'],
     revalidate: 60,
-  }
+  },
 );

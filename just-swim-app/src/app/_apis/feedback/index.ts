@@ -41,7 +41,7 @@ async function postFeedback(data, type, target) {
     console.log(value, key);
   });
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}/feedback`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/feedback`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
@@ -97,7 +97,7 @@ async function Fetch<T>({
 // _apis 폴더 내부로 이동
 async function getFeedback(): Promise<FeedbackProps[] | null> {
   const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
-    url: `${process.env.NEXT_PUBLIC_DB_HOST}/feedback`,
+    url: `${process.env.NEXT_PUBLIC_API_URL}/feedback`,
     header: {
       token: true,
       json: true,
