@@ -13,19 +13,19 @@ export function UserIconHeader({
   title,
   image = '/assets/profile1.png',
 }: {
-  title: string,
-  image?: string,
+  title: string;
+  image?: string;
 }) {
   return (
     <header className={styled.header}>
       <div className={styled.title_wrapper}>
         <h1>{title}</h1>
       </div>
-      <Link href={`/`}>
+      <Link href={`/account`}>
         <div className={styled.profile_image}>
           <Image src={image} alt={image} width={34} height={34} />
         </div>
       </Link>
     </header>
-  )
+  );
 }
