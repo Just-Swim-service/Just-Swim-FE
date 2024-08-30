@@ -19,11 +19,7 @@ export default function ClassFeedbackConfirm() {
 
   const router = useRouter();
 
-  console.log('formDataState', formDataState);
-  console.log('target', target);
-
   const handleSubmit = () => {
-    // console.log('formDataState', formDataState);
 
     // @ts-ignore
     const userIds = (target[0]?.members || []).map((el) => Number(el.userId));
