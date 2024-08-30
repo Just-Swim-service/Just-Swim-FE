@@ -27,7 +27,7 @@ export default function Account() {
       setUserName(getUserName(userToken));
       setUserImage(getUserImage(userToken));
     } else {
-      router.push(ROUTES.ONBOARDING.signin);
+      //   router.push(ROUTES.ONBOARDING.signin);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
