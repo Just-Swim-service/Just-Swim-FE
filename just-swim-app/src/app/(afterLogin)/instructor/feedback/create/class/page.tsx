@@ -68,10 +68,10 @@ export default function FeedbackWrite() {
 
     // @ts-ignore
     const formDataObject: CustomFormData = {};
-    formData.forEach((value, key) => {
-      // @ts-ignore
-      formDataObject[key] = value;
-    });
+    // formData.forEach((value, key) => {
+    // @ts-ignore
+    // formDataObject[key] = value;
+    // });
 
     formData.forEach((value, key) => {
       // console.log(value, key);
