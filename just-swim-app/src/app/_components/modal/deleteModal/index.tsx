@@ -1,3 +1,5 @@
+'use client';
+
 import { TEXT } from '@data';
 import styled from './deleteModal.module.scss';
 import { useState } from 'react';
