@@ -10,18 +10,19 @@ import { EditHeader, FileInput } from '@components';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getFeedbackDetail } from '@apis';
+import { FeedbackIndo, FeedbackProps } from '@/_types/typeFeedback';
 
-export default function FeedbackDetail(id) {
-  const [feedbackInfo, setFeedbackInfo] = useState([]);
+export default function FeedbackDetail(id: any) {
+  const [feedbackInfo, setFeedbackInfo] = useState<FeedbackIndo | []>([]);
   const [feedbackTarget, setFeedbackTarget] = useState([]);
   const feedbackId = id.params.id;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getFeedbackDetail(feedbackId);
-        setFeedbackInfo(data.feedback[0]);
-        setFeedbackTarget(data.feedbackTargetList);
+        const data: any = await getFeedbackDetail(feedbackId);
+        setFeedbackInfo(data?.feedback[0]);
+        setFeedbackTarget(data?.feedbackTargetList);
       } catch {}
     };
     fetchData();

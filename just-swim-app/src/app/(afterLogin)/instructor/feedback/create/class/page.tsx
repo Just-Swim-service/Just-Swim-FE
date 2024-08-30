@@ -26,10 +26,10 @@ export default function FeedbackWrite() {
   const { setFeedbackHandler } = feedbackStore();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [lecture, setLecture] = useState('');
+  const [lecture, setLecture] = useState<any>('');
 
   useEffect(() => {
-    const param = searchParams.getAll('lecture');
+    const param: any = searchParams.getAll('lecture');
     if (param.length > 0) {
       setLecture(JSON.parse(param));
     }
