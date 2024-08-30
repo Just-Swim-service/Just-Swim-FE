@@ -9,12 +9,12 @@ import {
   PostUserLoginReq,
 } from '@types';
 
-const USER_API_PATH = '/user';
-const OAUTH_API_PATH = 'api/Oauth';
+const USER_NEXT_PUBLIC_API_URL = '/user';
+const OAUTH_NEXT_PUBLIC_API_URL = 'api/Oauth';
 
 export const getSignUp = async (param: string) => {
   const response = await fetch(
-    `${process.env.API_PATH}/${OAUTH_API_PATH}/${param}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/${OAUTH_NEXT_PUBLIC_API_URL}/${param}`,
     {
       method: HTTP_METHODS.GET,
     },
@@ -33,28 +33,28 @@ export const postUserLogin = async (data: PostUserLoginReq) => {
 };
 
 export const postUserType = async (data: string) => {
-  return await api(`${USER_API_PATH}/${data}`, HTTP_METHODS.POST);
+  return await api(`${USER_NEXT_PUBLIC_API_URL}/${data}`, HTTP_METHODS.POST);
 };
 
 export const getMyProfile = async (): Promise<GetUserProfileRes> => {
-  return await api(`${USER_API_PATH}/myProfile`, HTTP_METHODS.GET);
+  return await api(`${USER_NEXT_PUBLIC_API_URL}/myProfile`, HTTP_METHODS.GET);
 };
 
 export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
   const formData = new FormData();
 
   formData.append('editUserDto', JSON.stringify(data));
-  return await api(`${USER_API_PATH}/edit`, HTTP_METHODS.PATCH, {
+  return await api(`${USER_NEXT_PUBLIC_API_URL}/edit`, HTTP_METHODS.PATCH, {
     body: formData,
   });
 };
 
 export const postUserLogout = async () => {
-  return await api(`${USER_API_PATH}/logout`, HTTP_METHODS.POST);
+  return await api(`${USER_NEXT_PUBLIC_API_URL}/logout`, HTTP_METHODS.POST);
 };
 
 export const deleteUser = async (data: DeleteUserReq) => {
-  return await api(`${USER_API_PATH}/withdraw`, HTTP_METHODS.DELETE, {
+  return await api(`${USER_NEXT_PUBLIC_API_URL}/withdraw`, HTTP_METHODS.DELETE, {
     body: JSON.stringify(data),
   });
 };

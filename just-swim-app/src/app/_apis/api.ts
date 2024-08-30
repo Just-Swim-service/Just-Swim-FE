@@ -20,7 +20,7 @@ const api = async <T>(
   method: HTTP_METHODS_TYPE,
   options?: RequestInit,
 ): Promise<Response<T>> => {
-  const base = `${process.env.API_PATH}/api`;
+  const base = `${process.env.NEXT_PUBLIC_API_URL}`;
   const authorizationToken = cookies().get('token')?.value;
   const URL = `${base}${url}`;
   const defaultOptions: RequestInit = {
@@ -40,7 +40,7 @@ const api = async <T>(
     return { status: response.status, data };
   } catch (error) {
     // redirect('/not-found');
-    throw new Error("Redirect to not-found pages")
+    throw new Error('Redirect to not-found pages');
   }
 };
 
