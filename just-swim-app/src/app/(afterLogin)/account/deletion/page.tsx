@@ -1,21 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './pages.module.scss';
 
-import { IconGallery, IconInputValid } from '@assets';
-import {
-  ConfirmButton,
-  DeleteModal,
-  FormButton,
-  Input,
-  LogoutModal,
-  URLImage,
-} from '@components';
-import { ROUTES, TEXT } from '@data';
+import { ConfirmButton, DeleteModal } from '@components';
+import { DELETION_REASON, ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
 import { removeTokenInCookies } from '@utils';
-import { useRouter } from 'next/navigation';
 import { deleteUser } from '@apis';
 
 function Radio({
@@ -59,9 +51,8 @@ export default function Deletion() {
   const router = useRouter();
   const { setResetUser } = useUserStore();
   const [showDeletionModal, setShowDeletionModal] = useState(false);
-  const [isETCActive, setIsETCActive] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(
-    'NO_MORE_USE',
+    DELETION_REASON.NO_MORE_USE.name,
   );
 
   const setUserDeletion = async () => {
@@ -74,12 +65,6 @@ export default function Deletion() {
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.name);
     setSelectedValue(event.target.name);
-
-    if (event.target.name === 'ETC') {
-      setIsETCActive(true);
-    } else {
-      setIsETCActive(false);
-    }
   };
 
   const handleDeletion = (event: React.FormEvent<HTMLFormElement>) => {
@@ -92,10 +77,10 @@ export default function Deletion() {
       <div className={styles.deletion}>
         <div className={styles.deletion_header}>
           <div className={styles.title}>
-            <h3>탈퇴하는 이유가 무엇인가요?</h3>
+            <h3>{TEXT.ACCOUNT_PAGE.deletionTitle}</h3>
           </div>
           <div className={styles.content}>
-            <p>더 나은 서비스가 될 수 있도록 의견을 들려주세요.</p>
+            <p>{TEXT.ACCOUNT_PAGE.deletionContent}</p>
           </div>
         </div>
         <div className={styles.deletion_section}>
@@ -105,51 +90,54 @@ export default function Deletion() {
             }}>
             <RadioGroup>
               <Radio
-                name="NO_MORE_USE"
-                value="더 이상 사용하지 않는 앱이에요."
+                name={DELETION_REASON.NO_MORE_USE.name}
+                value={DELETION_REASON.NO_MORE_USE.text}
                 onChange={handleRadioChange}
-                selected={selectedValue === 'NO_MORE_USE'}>
-                더 이상 사용하지 않는 앱이에요.
+                selected={selectedValue === DELETION_REASON.NO_MORE_USE.name}>
+                {DELETION_REASON.NO_MORE_USE.text}
               </Radio>
               <Radio
-                name="NOT_USEFUL"
-                value="기능이 유용하지 않아요."
+                name={DELETION_REASON.NOT_USEFUL.name}
+                value={DELETION_REASON.NOT_USEFUL.text}
                 onChange={handleRadioChange}
-                selected={selectedValue === 'NOT_USEFUL'}>
-                기능이 유용하지 않아요.
+                selected={selectedValue === DELETION_REASON.NOT_USEFUL.name}>
+                {DELETION_REASON.NOT_USEFUL.text}
               </Radio>
               <Radio
-                name="ERROR"
-                value="오류가 생겨서 쓸 수가 없어요."
+                name={DELETION_REASON.ERROR.name}
+                value={DELETION_REASON.ERROR.text}
                 onChange={handleRadioChange}
-                selected={selectedValue === 'ERROR'}>
-                오류가 생겨서 쓸 수가 없어요.
+                selected={selectedValue === DELETION_REASON.ERROR.name}>
+                {DELETION_REASON.ERROR.text}
               </Radio>
               <Radio
-                name="PRIVACE"
-                value="개인 정보 공개가 불안해요."
+                name={DELETION_REASON.PRIVACE.name}
+                value={DELETION_REASON.PRIVACE.text}
                 onChange={handleRadioChange}
-                selected={selectedValue === 'PRIVACE'}>
-                개인 정보 공개가 불안해요.
+                selected={selectedValue === DELETION_REASON.PRIVACE.name}>
+                {DELETION_REASON.PRIVACE.text}
               </Radio>
               <Radio
-                name="OTHER_SERVICE"
-                value="다른 유사 서비스를 이용 중이에요."
+                name={DELETION_REASON.ERROR.name}
+                value={DELETION_REASON.ERROR.text}
                 onChange={handleRadioChange}
-                selected={selectedValue === 'OTHER_SERVICE'}>
-                다른 유사 서비스를 이용 중이에요.
+                selected={selectedValue === DELETION_REASON.ERROR.name}>
+                {DELETION_REASON.ERROR.text}
               </Radio>
               <Radio
-                name="ETC"
-                value="기타"
+                name={DELETION_REASON.ETC.name}
+                value={DELETION_REASON.ETC.text}
                 onChange={handleRadioChange}
-                selected={selectedValue === 'ETC'}>
-                기타
-                {isETCActive && <input></input>}
+                selected={selectedValue === DELETION_REASON.ETC.name}>
+                {DELETION_REASON.ETC.text}
               </Radio>
             </RadioGroup>
             <div className={styles.deletion_confirm}>
-              <ConfirmButton kind="confirm" text="확인" type="submit" />
+              <ConfirmButton
+                kind="confirm"
+                text={TEXT.COMMON.confirm}
+                type="submit"
+              />
             </div>
           </form>
         </div>
