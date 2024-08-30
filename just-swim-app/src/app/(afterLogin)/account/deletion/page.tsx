@@ -91,6 +91,7 @@ export default function Deletion() {
             <RadioGroup>
               {DELETION_REASON.map((reason) => (
                 <Radio
+                  key={reason.name}
                   name={reason.name}
                   value={reason.text}
                   onChange={handleRadioChange}

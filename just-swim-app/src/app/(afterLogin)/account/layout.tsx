@@ -14,7 +14,6 @@ import { AccountContext } from './_context/context';
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const param = usePathname();
-  console.log(param);
 
   const { getToken, setAddUserProfile } = useUserStore();
   const userToken = getToken();
