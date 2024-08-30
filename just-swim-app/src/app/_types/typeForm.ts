@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+import { LectureProps } from './typeLecture';
 
 export interface TextInputProps {
   name: string;
@@ -67,4 +68,5 @@ export interface TextAreaProps {
 
 export interface SelectPersonInputProps {
   name: string;
+  lecture?: LectureProps;
 }

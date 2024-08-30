@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import styled from './feedbackWrite.module.scss';
 
@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema, FormType } from '@/_schema';
 import { SelectClassInput } from '@/_components/form/input/selectClassInput';
 import { IconCalendar } from '@assets';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
 import { submitForm } from './action';
 
@@ -25,6 +25,15 @@ interface CustomFormData {
 export default function FeedbackWrite() {
   const { setFeedbackHandler } = feedbackStore();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [lecture, setLecture] = useState('');
+
+  useEffect(() => {
+    const param = searchParams.getAll('lecture');
+    if (param.length > 0) {
+      setLecture(JSON.parse(param));
+    }
+  }, []);
 
   const {
     register,
@@ -138,6 +147,7 @@ export default function FeedbackWrite() {
 
             <SelectClassInput
               {...register('target')}
+              lecture={lecture}
               // @ts-ignore
               setValue={setValue}
               errors={[errors.target?.message ?? '']}

@@ -22,11 +22,21 @@ import { Profile } from '@/_components/temp';
 
 function _SelectClassInput(
   // @ts-ignore
-  { name, setValue, ...props }: SelectPersonInputProps,
+  { name, setValue, lecture, ...props }: SelectPersonInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const { selectedList, removeItemHandler } = searchClassStore();
+  const {
+    selectedList,
+    removeItemHandler,
+    updateSelectedList,
+    updateCheckList,
+  } = searchClassStore();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    lecture?.lectureId && updateSelectedList([lecture]);
+    lecture?.lectureId && updateCheckList([lecture]);
+  }, [lecture]);
 
   useEffect(() => {
     const value = selectedList.length > 0 ? JSON.stringify(selectedList) : '';

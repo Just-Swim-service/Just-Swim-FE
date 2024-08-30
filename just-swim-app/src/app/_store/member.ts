@@ -85,7 +85,7 @@ const searchUserStore = create<State & Action>()(
           };
         }),
       // 추가한 부분
-      updateSelectedList: (list: Member[]) => 
+      updateSelectedList: (list: Member[]) =>
         set((state: any) => {
           return {
             selectedList: [...list],
@@ -150,6 +150,19 @@ const searchClassStore = create<State & Action>()(
         set((state: any) => {
           return {
             checkedList: [...state.userList],
+          };
+        }),
+      // 추가한 부분
+      updateCheckList: (list: ClassGroup[]) =>
+        set((state: any) => {
+          return {
+            checkedList: [...list],
+          };
+        }),
+      updateSelectedList: (list: ClassGroup[]) =>
+        set((state: any) => {
+          return {
+            selectedList: [...list],
           };
         }),
       setSelectedListHandler: () =>

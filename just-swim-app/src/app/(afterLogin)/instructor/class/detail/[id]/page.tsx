@@ -15,6 +15,7 @@ import {
 } from '@assets';
 import { Header } from '@components';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -287,7 +288,6 @@ export default function ClassDetail() {
           <IconTrashcan />
           수업 삭제
         </button>
-
         {showConfirmModal && (
           <ConfirmModal
             isOpen={showConfirmModal}
@@ -298,14 +298,22 @@ export default function ClassDetail() {
             onCancel={() => setShowConfirmModal(false)}
           />
         )}
-
         {/* @ts-ignore */}
-        {lecture.memberUserId === 0 ? (
+        {lecture.members.memberUserId === 0 ? (
           <></>
         ) : (
-          <button className={styled.feedback_btn}>
+          <Link
+            className={styled.feedback_btn}
+            href={{
+              pathname: `/instructor/feedback/create/class`,
+              query: {
+                lecture: JSON.stringify(lecture),
+              },
+            }}
+            // as={`/instructor/feedback/create/class`}
+          >
             수강생 전체 피드백 남기기
-          </button>
+          </Link>
         )}
       </div>
       <div className={styled.bottom_gap}></div>

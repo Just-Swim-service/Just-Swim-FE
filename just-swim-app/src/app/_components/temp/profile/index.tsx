@@ -20,7 +20,7 @@ export function Profile({
     <div className={styled.row}>
       <div className={styled.img_list}>
         {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
-        {customers.map((el, index) => {
+        {customers?.map((el, index) => {
           // @ts-ignore
           return el.profileImage ? (
             <div
@@ -56,7 +56,7 @@ export function Profile({
       </div>
       {count ? (
         <div className={styled.count} style={{ marginLeft: '9px' }}>
-          {customers.length}명
+          {customers?.length}명
         </div>
       ) : (
         <></>
