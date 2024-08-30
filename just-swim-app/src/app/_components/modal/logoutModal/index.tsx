@@ -1,15 +1,26 @@
+import { TEXT } from '@data';
 import styled from './logoutModal.module.scss';
 
 export function LogoutModal(props: any) {
-  const { showModal, setShowModal } = props;
+  const { setShowModal, setUserLogout } = props;
 
   return (
     <div className={styled.modal_background}>
       <div className={styled.modal}>
-        <p>로그아웃 하시겠습니까?</p>
-        <div>
-          <button onClick={() => setShowModal(false)}>취소</button>
-          <button>확인</button>
+        <div className={styled.first_modal}>
+          <p className={styled.first_modal_title}>
+            {TEXT.ACCOUNT_PAGE.logoutTitle}
+          </p>
+          <p className={styled.first_modal_content}>
+            {TEXT.ACCOUNT_PAGE.logoutContent.first} <br />
+            {TEXT.ACCOUNT_PAGE.logoutContent.second}
+          </p>
+        </div>
+        <div className={styled.second_modal}>
+          <button onClick={() => setShowModal(false)}>
+            {TEXT.COMMON.cancel}
+          </button>
+          <button onClick={setUserLogout}>{TEXT.COMMON.confirm}</button>
         </div>
       </div>
     </div>

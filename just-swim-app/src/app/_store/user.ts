@@ -18,6 +18,7 @@ type UserStoreType = {
   getUserImage: (token: string) => string;
   setAddUserToken: (token: string) => void;
   setAddUserProfile: ({ token, profile }: User) => void;
+  setResetUser: () => void;
 };
 
 export const useUserStore = create(
@@ -72,6 +73,11 @@ export const useUserStore = create(
             user: overWriteUser,
           };
         });
+      },
+      setResetUser: () => {
+        set(() => ({
+          user: {},
+        }));
       },
     }),
     {
