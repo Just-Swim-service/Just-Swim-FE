@@ -5,11 +5,11 @@ import api from '../api';
 import { GetUserProfileRes, PatchUserEditReq, PostUserLoginReq } from '@types';
 
 const USER_API_PATH = '/user';
-const OAUTH_API_PATH = 'api/Oauth';
+const OAUTH_API_PATH = 'Oauth';
 
 export const getSignUp = async (param: string) => {
   const response = await fetch(
-    `${process.env.API_PATH}/${OAUTH_API_PATH}/${param}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/${OAUTH_API_PATH}/${param}`,
     {
       method: HTTP_METHODS.GET,
     },
@@ -46,8 +46,4 @@ export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
 
 export const postUserLogout = async () => {
   return await api(`${USER_API_PATH}/logout`, HTTP_METHODS.POST);
-};
-
-export const deleteUser = async () => {
-  return await api(`${USER_API_PATH}/withdraw`, HTTP_METHODS.DELETE);
 };
