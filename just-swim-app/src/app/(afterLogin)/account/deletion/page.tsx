@@ -52,7 +52,7 @@ export default function Deletion() {
   const { setResetUser } = useUserStore();
   const [showDeletionModal, setShowDeletionModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(
-    DELETION_REASON.NO_MORE_USE.name,
+    DELETION_REASON.filter((reason) => reason.name === 'NO_MORE_USE')[0].name,
   );
 
   const setUserDeletion = async () => {
@@ -89,48 +89,15 @@ export default function Deletion() {
               handleDeletion(event);
             }}>
             <RadioGroup>
-              <Radio
-                name={DELETION_REASON.NO_MORE_USE.name}
-                value={DELETION_REASON.NO_MORE_USE.text}
-                onChange={handleRadioChange}
-                selected={selectedValue === DELETION_REASON.NO_MORE_USE.name}>
-                {DELETION_REASON.NO_MORE_USE.text}
-              </Radio>
-              <Radio
-                name={DELETION_REASON.NOT_USEFUL.name}
-                value={DELETION_REASON.NOT_USEFUL.text}
-                onChange={handleRadioChange}
-                selected={selectedValue === DELETION_REASON.NOT_USEFUL.name}>
-                {DELETION_REASON.NOT_USEFUL.text}
-              </Radio>
-              <Radio
-                name={DELETION_REASON.ERROR.name}
-                value={DELETION_REASON.ERROR.text}
-                onChange={handleRadioChange}
-                selected={selectedValue === DELETION_REASON.ERROR.name}>
-                {DELETION_REASON.ERROR.text}
-              </Radio>
-              <Radio
-                name={DELETION_REASON.PRIVACE.name}
-                value={DELETION_REASON.PRIVACE.text}
-                onChange={handleRadioChange}
-                selected={selectedValue === DELETION_REASON.PRIVACE.name}>
-                {DELETION_REASON.PRIVACE.text}
-              </Radio>
-              <Radio
-                name={DELETION_REASON.ERROR.name}
-                value={DELETION_REASON.ERROR.text}
-                onChange={handleRadioChange}
-                selected={selectedValue === DELETION_REASON.ERROR.name}>
-                {DELETION_REASON.ERROR.text}
-              </Radio>
-              <Radio
-                name={DELETION_REASON.ETC.name}
-                value={DELETION_REASON.ETC.text}
-                onChange={handleRadioChange}
-                selected={selectedValue === DELETION_REASON.ETC.name}>
-                {DELETION_REASON.ETC.text}
-              </Radio>
+              {DELETION_REASON.map((reason) => (
+                <Radio
+                  name={reason.name}
+                  value={reason.text}
+                  onChange={handleRadioChange}
+                  selected={selectedValue === reason.name}>
+                  {reason.text}
+                </Radio>
+              ))}
             </RadioGroup>
             <div className={styles.deletion_confirm}>
               <ConfirmButton
