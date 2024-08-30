@@ -43,10 +43,6 @@ export default function ClassView() {
       });
   }, [API_URL, AUTHORIZATION_HEADER]);
 
-  if (!lectures || lectures.length === 0) {
-    return <p>데이터 로딩 중입니다.</p>;
-  }
-
   const ongoingLectures = lectures.filter((lecture) => !lecture.isPastLecture);
   const pastLectures = lectures.filter((lecture) => lecture.isPastLecture);
 
@@ -73,20 +69,24 @@ export default function ClassView() {
                               <IconLocation
                                 width="18"
                                 height="18"
-                                color={'red'}
+                                fill="#5C5E62"
                               />
                             </span>
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconClock />
+                              <IconClock width="18" height="18" fill="#5C5E62" />
                             </span>
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconRepeatTime />
+                              <IconRepeatTime
+                                width="18"
+                                height="18"
+                                fill="#5C5E62"
+                              />
                             </span>
                             {item.lectureTime}
                           </p>
@@ -142,19 +142,27 @@ export default function ClassView() {
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
-                              <IconLocation />
+                              <IconLocation
+                                width="18"
+                                height="18"
+                                fill="#5C5E62"
+                              />
                             </span>
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconClock />
+                              <IconClock width="18" height="18" fill="#5C5E62" />
                             </span>
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconRepeatTime />
+                              <IconRepeatTime
+                                width="18"
+                                height="18"
+                                fill="#5C5E62"
+                              />
                             </span>
                             {item.lectureTime}
                           </p>
@@ -216,19 +224,27 @@ export default function ClassView() {
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
-                              <IconLocation />
+                              <IconLocation
+                                width="18"
+                                height="18"
+                                fill="#5C5E62"
+                              />
                             </span>
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconClock />
+                              <IconClock width="18" height="18" fill="#5C5E62" />
                             </span>
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconRepeatTime />
+                              <IconRepeatTime
+                                width="18"
+                                height="18"
+                                fill="#5C5E62"
+                              />
                             </span>
                             {item.lectureTime}
                           </p>
@@ -284,19 +300,27 @@ export default function ClassView() {
                         <div className={styled.info}>
                           <p>
                             <span className={styled.icon}>
-                              <IconLocation />
+                              <IconLocation
+                                width="18"
+                                height="18"
+                                fill="#5C5E62"
+                              />
                             </span>
                             {item.lectureLocation}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconClock />
+                              <IconClock width="18" height="18" fill="#5C5E62" />
                             </span>
                             {item.lectureDays}
                           </p>
                           <p>
                             <span className={styled.icon}>
-                              <IconRepeatTime />
+                              <IconRepeatTime
+                                width="18"
+                                height="18"
+                                fill="#5C5E62"
+                              />
                             </span>
                             {item.lectureTime}
                           </p>
