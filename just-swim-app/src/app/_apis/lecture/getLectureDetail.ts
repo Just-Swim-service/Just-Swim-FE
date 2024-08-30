@@ -1,19 +1,21 @@
 'use server';
 
-import { unstable_cache } from "next/cache";
-import { notFound } from "next/navigation";
+import { unstable_cache } from 'next/cache';
+import { notFound } from 'next/navigation';
 
-import { LectureProps } from "@types";
-import { Fetch } from "@utils";
+import { LectureProps } from '@types';
+import { Fetch } from '@utils';
 
-export async function getLectureDetail(lectureId: number): Promise<LectureProps | null> {
-  const result = await Fetch<{ success: boolean, data: LectureProps }>({
-    url: `${process.env.API_URL}/lecture/${lectureId}`,
+export async function getLectureDetail(
+  lectureId: number,
+): Promise<LectureProps | null> {
+  const result = await Fetch<{ success: boolean; data: LectureProps }>({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`,
     header: {
       token: true,
       json: true,
       credential: true,
-    }
+    },
   });
 
   if (result.success) {
@@ -24,14 +26,10 @@ export async function getLectureDetail(lectureId: number): Promise<LectureProps 
 }
 
 export async function getCachedLectureDetail(lectureId: number) {
-  const cachedResult = unstable_cache(
-    getLectureDetail,
-    ['lecture-detail'],
-    {
-      tags: [`lecture-detail`],
-      revalidate: 60,
-    }
-  )
+  const cachedResult = unstable_cache(getLectureDetail, ['lecture-detail'], {
+    tags: [`lecture-detail`],
+    revalidate: 60,
+  });
 
   return cachedResult(lectureId);
 }

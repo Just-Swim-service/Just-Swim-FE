@@ -13,7 +13,7 @@ export default function ClassView() {
   const [lectures, setLectures] = useState<LectureViewProps[]>([]);
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   useEffect(() => {
     fetch(API_URL, {

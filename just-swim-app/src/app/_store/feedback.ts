@@ -30,7 +30,6 @@ const feedbackStore = create<any>()(
       // @ts-ignore
       setFeedbackHandler: (form, targetType: string) =>
         set((state: any) => {
-          console.log(form);
           return {
             formDataState: {
               date: form.date,

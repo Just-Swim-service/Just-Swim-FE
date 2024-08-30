@@ -78,7 +78,7 @@ export default function ClassDetail() {
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -287,7 +287,6 @@ export default function ClassDetail() {
           <IconTrashcan width={24} height={24} fill="#FF4D4D" />
           수업 삭제
         </button>
-
         {showConfirmModal && (
           <ConfirmModal
             isOpen={showConfirmModal}
@@ -298,29 +297,22 @@ export default function ClassDetail() {
             onCancel={() => setShowConfirmModal(false)}
           />
         )}
-
         {/* @ts-ignore */}
-        {lecture.members.length === 0 ? (
+        {lecture.members.memberUserId === 0 ? (
           <></>
         ) : (
-          <div className={styled.feedback_bg}>
-            <Link
-              className={styled.feedback_btn}
-              href={{
-                pathname: `/instructor/feedback/create/class`,
-                query: {
-                  id: lectureId,
-                  // @ts-ignore
-                  member: lecture.members
-                    // @ts-ignore
-                    .map((member) => member.memberUserId)
-                    .join(','),
-                },
-              }}
-              as={`/instructor/feedback/create/class`}>
-              수강생 전체 피드백 남기기
-            </Link>
-          </div>
+          <Link
+            className={styled.feedback_btn}
+            href={{
+              pathname: `/instructor/feedback/create/class`,
+              query: {
+                lecture: JSON.stringify(lecture),
+              },
+            }}
+            // as={`/instructor/feedback/create/class`}
+          >
+            수강생 전체 피드백 남기기
+          </Link>
         )}
       </div>
       <div className={styled.bottom_gap}></div>

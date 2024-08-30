@@ -20,7 +20,7 @@ export default function ClassInfoEdit() {
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState([]);
   const [formData, setFormData] = useState({});
@@ -62,7 +62,7 @@ export default function ClassInfoEdit() {
   const handleEdit = async (lectureId: number) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`,
+        `${process.env.NEXT_PUBLIC_DB_HOST}/lecture/${lectureId}`,
         {
           method: 'PATCH',
           headers: {
