@@ -19,8 +19,8 @@ export default function ClassInfoEdit() {
   const router = useRouter();
 
   const lectureId = params.id;
-  const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_DB_TOKEN}`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
+  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState([]);
   const [formData, setFormData] = useState({});

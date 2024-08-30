@@ -12,9 +12,12 @@ import {
   IconRepeat,
   IconShare,
   IconDownload,
+  IconArrowRight,
 } from '@assets';
 import { Header } from '@components';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -23,6 +26,14 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleConfirm = () => {
+    if (isChecked) {
+      onConfirm();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -39,6 +50,8 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
             type="checkbox"
             id="confirmation-checkbox"
             style={{ marginRight: '8px' }}
+            checked={isChecked}
+            onChange={() => setIsChecked(!isChecked)}
           />
           <label htmlFor="confirmation-checkbox">유의사항을 확인했습니다.</label>
         </form>
@@ -46,7 +59,10 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
           <button className={styled.button_cancel} onClick={onCancel}>
             취소
           </button>
-          <button className={styled.button_ok} onClick={onConfirm}>
+          <button
+            className={styled.button_ok}
+            onClick={handleConfirm}
+            disabled={!isChecked}>
             수업 삭제
           </button>
         </div>
@@ -61,8 +77,8 @@ export default function ClassDetail() {
   const router = useRouter();
 
   const lectureId = params.id;
-  const API_URL = `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_DB_TOKEN}`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
+  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -139,32 +155,8 @@ export default function ClassDetail() {
             <p>{lecture.instructor.instructorName}</p> 강사님 수업
           </div>
         </div>
-        <Image
-          className={styled.qr_image}
-          src={`/qrcode/${lectureId}`}
-          alt="QR code"
-          width={114}
-          height={114}
-        />
-        <div className={styled.save_share}>
-          <button
-            className={styled.col}
-            onClick={() => {
-              const imageUrl = `${`/qrcode/${lectureId}`}`;
-              const imageName = `qrcode.png`;
-            }}>
-            <div className={styled.circle}>
-              <IconDownload />
-            </div>
-            <div>저장하기</div>
-          </button>
-          <button className={styled.col}>
-            <div className={styled.circle}>
-              <IconShare />
-            </div>
-            <div>공유하기</div>
-          </button>
-        </div>
+        {/* @ts-ignore */}
+        <QRCode lectureData={lectureId} instructorData={lectureId} />
       </div>
 
       <div className={styled.invite}>
@@ -180,24 +172,32 @@ export default function ClassDetail() {
                 : '0명'}
             </p>
           </div>
-          <div className={`${styled.profile} ${styled.box}`}>
+          <Link
+            className={`${styled.profile} ${styled.box}`}
+            href={`/instructor/class/detail/${lectureId}/members`}>
             {/* @ts-ignore */}
             {lecture.members && lecture.members.length > 0 ? (
               <>
                 {/* @ts-ignore */}
-                {lecture.members.map((member, index) => (
-                  <Image
-                    key={index}
-                    src={member.memberProfileImage}
-                    alt="회원 프로필 사진"
-                    width={32}
-                    height={32}
-                    style={{
-                      borderRadius: '32px',
-                      verticalAlign: 'middle',
-                    }}
-                  />
-                ))}
+                <div className={styled.profile_position}>
+                  {/* @ts-ignore */}
+                  {lecture.members.slice(-7).map((member, index) => (
+                    <Image
+                      key={index}
+                      src={member.memberProfileImage}
+                      alt="회원 프로필 사진"
+                      width={32}
+                      height={32}
+                      style={{
+                        borderRadius: '32px',
+                        verticalAlign: 'middle',
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className={styled.arrow_box}>
+                  <IconArrowRight width={20} height={20} fill="black" />
+                </div>
               </>
             ) : (
               <>
@@ -206,7 +206,7 @@ export default function ClassDetail() {
                 </p>
               </>
             )}
-          </div>
+          </Link>
         </div>
       </div>
 
@@ -217,7 +217,7 @@ export default function ClassDetail() {
           <div className={styled.class_time}>
             <div>
               <span className={styled.icon}>
-                <IconClock />
+                <IconClock width={20} height={20} fill="#212223" />
               </span>
               <span className={styled.twelve}>
                 {/* @ts-ignore */}
@@ -240,7 +240,7 @@ export default function ClassDetail() {
           <div className={styled.lecture_info}>
             <p>
               <span className={styled.icon}>
-                <IconCalendar />
+                <IconCalendar width={20} height={20} fill="#212223" />
               </span>
               매주&nbsp;
               {/* @ts-ignore */}
@@ -251,7 +251,7 @@ export default function ClassDetail() {
           <div className={styled.lecture_info}>
             <p>
               <span className={styled.icon}>
-                <IconLocation />
+                <IconLocation width={20} height={20} fill="#212223" />
               </span>
               {/* @ts-ignore */}
               {lecture.lectureLocation}
@@ -261,7 +261,7 @@ export default function ClassDetail() {
           <div className={styled.lecture_info}>
             <p>
               <span className={styled.icon}>
-                <IconRepeat />
+                <IconRepeat width={20} height={20} fill="#212223" />
               </span>
               종료일 없이 반복
             </p>
@@ -284,7 +284,7 @@ export default function ClassDetail() {
         <button
           className={styled.delete}
           onClick={() => setShowConfirmModal(true)}>
-          <IconTrashcan />
+          <IconTrashcan width={24} height={24} fill="#FF4D4D" />
           수업 삭제
         </button>
 
@@ -300,12 +300,27 @@ export default function ClassDetail() {
         )}
 
         {/* @ts-ignore */}
-        {lecture.memberUserId === 0 ? (
+        {lecture.members.length === 0 ? (
           <></>
         ) : (
-          <button className={styled.feedback_btn}>
-            수강생 전체 피드백 남기기
-          </button>
+          <div className={styled.feedback_bg}>
+            <Link
+              className={styled.feedback_btn}
+              href={{
+                pathname: `/instructor/feedback/create/class`,
+                query: {
+                  id: lectureId,
+                  // @ts-ignore
+                  member: lecture.members
+                    // @ts-ignore
+                    .map((member) => member.memberUserId)
+                    .join(','),
+                },
+              }}
+              as={`/instructor/feedback/create/class`}>
+              수강생 전체 피드백 남기기
+            </Link>
+          </div>
         )}
       </div>
       <div className={styled.bottom_gap}></div>
