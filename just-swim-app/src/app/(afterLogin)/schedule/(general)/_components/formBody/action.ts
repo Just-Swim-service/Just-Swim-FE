@@ -22,7 +22,7 @@ export async function formAction(data: LectureBasicProps, type: 'add' | 'modify'
       errors.title = '중복된 강의명이 존재합니다.';
     }
     
-    const [targetStart, targetEnd] = schedule.lectureTime.split('~').map(t => parseInt(t.split(':').join('')));
+    const [targetStart, targetEnd] = schedule.lectureTime.split('-').map(t => parseInt(t.split(':').join('')));
     
     for (const day of data.lectureDays) {
       if (schedule.lectureDays.includes(day) && ((inputStart >= targetStart && inputStart <= targetEnd) || (inputEnd >= targetStart && inputEnd <= targetEnd))) {
