@@ -2,6 +2,7 @@
 
 .container {
   margin: 0 16px;
+  // height: 100dvh;
 
   .title {
     @include Title2-SB;
@@ -12,38 +13,50 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    width: 100%;
+    gap: 10px;
 
     .item {
       width: 48%;
+      max-width: 48%;
+      height: 151px;
+      flex: 1;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       box-shadow: 0 0 0 1px $--gray-300;
+      background-color: $--gray-50;
       border-radius: 12px;
       padding: 20px 12px;
       margin-bottom: 10px;
 
-      div {
-        width: 100%;
-        position: relative;
+      position: relative;
 
-        .check {
-          position: absolute;
-          right: 0;
-        }
+      .check {
+        display: none;
+      }
 
-        .name {
-          @include Title3-SB;
-          margin-bottom: 12px;
-        }
+      .check + label {
+        position: absolute;
+        right: 7px;
+        top: 13px;
+      }
 
-        p {
-          @include Body2-R;
-          text-align: left;
+      .name {
+        @include Title3-SB;
+        margin-bottom: 12px;
+        width: 50%;
+        white-space: nowrap; /* 텍스트를 줄바꿈 없이 한 줄로 표시 */
+        overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+        text-overflow: ellipsis; /* 오버플로된 텍스트의 말줄임표 표시 */
+      }
 
-          span {
-            margin-right: 5px;
-          }
+      p {
+        @include Body2-R;
+        text-align: left;
+
+        span {
+          margin-right: 5px;
         }
       }
     }
@@ -51,14 +64,33 @@
 
   .active {
     box-shadow: 0 0 0 2px $--Primary-blue !important;
+    background-color: $--White !important;
   }
+}
 
-  .select_button {
+.btn {
+  position: fixed;
+  width: 90%;
+  bottom: 24px;
+  button {
     @include Title3-SB;
     width: 100%;
     padding: 14px 0;
+    // background-color: $--White;
     background-color: $--Primary-blue;
+
     color: white;
     border-radius: 13px;
+    &.disabled {
+      background-color: $--gray-300;
+    }
+    &.select_all_btn {
+      color: $--Primary-blue;
+      background-color: $--White;
+    }
+    &.complete_btn {
+      margin-bottom: 6px;
+      // background-color: $--Primary-blue;
+    }
   }
 }

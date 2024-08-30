@@ -1,19 +1,28 @@
-import { ChangeEvent, ForwardedRef, TextareaHTMLAttributes, forwardRef } from 'react';
+import {
+  ChangeEvent,
+  ForwardedRef,
+  TextareaHTMLAttributes,
+  forwardRef,
+} from 'react';
 
 import { TextAreaProps } from '@types';
 
 import styled from './styles.module.scss';
 
-function _TextArea({
-  name,
-  height = 183,
-  onChange,
-  ...props
-}: TextAreaProps & TextareaHTMLAttributes<HTMLTextAreaElement>,
-ref: ForwardedRef<HTMLTextAreaElement>) {
+function _TextArea(
+  {
+    name,
+    height = 183,
+    onChange,
+    // @ts-ignore
+    errors = [],
+    ...props
+  }: TextAreaProps & TextareaHTMLAttributes<HTMLTextAreaElement>,
+  ref: ForwardedRef<HTMLTextAreaElement>,
+) {
   const autoGrow = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    event.target.style.height = (event.target.scrollHeight) + "px";
-  }
+    event.target.style.height = event.target.scrollHeight + 'px';
+  };
 
   const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (onChange) {
@@ -21,7 +30,7 @@ ref: ForwardedRef<HTMLTextAreaElement>) {
     }
 
     autoGrow(event);
-  }
+  };
 
   return (
     <div className={styled.area_wrapper}>
@@ -35,6 +44,12 @@ ref: ForwardedRef<HTMLTextAreaElement>) {
         }}
         onChange={onChangeHandler}
       />
+      <span className={styled.error}>
+        {/* @ts-ignore */}
+        {errors.map((error, index) => (
+          <li key={index}>{error}</li>
+        ))}
+      </span>
     </div>
   );
 }
