@@ -95,7 +95,7 @@ export default function ClassView() {
                           <div className={styled.photo_list}>
                             {item.members && item.members.length > 0 && (
                               <>
-                                {item.members.map((member, index) => (
+                                {item.members.slice(-4).map((member, index) => (
                                   <Image
                                     key={index}
                                     src={member.memberProfileImage}
@@ -171,7 +171,7 @@ export default function ClassView() {
                           <div className={styled.photo_list}>
                             {item.members && item.members.length > 0 && (
                               <>
-                                {item.members.map((member, index) => (
+                                {item.members.slice(-4).map((member, index) => (
                                   <Image
                                     key={index}
                                     src={member.memberProfileImage}
@@ -253,7 +253,7 @@ export default function ClassView() {
                           <div className={styled.photo_list}>
                             {item.members && item.members.length > 0 && (
                               <>
-                                {item.members.map((member, index) => (
+                                {item.members.slice(-4).map((member, index) => (
                                   <Image
                                     key={index}
                                     src={member.memberProfileImage}
@@ -329,7 +329,7 @@ export default function ClassView() {
                           <div className={styled.photo_list}>
                             {item.members && item.members.length > 0 && (
                               <>
-                                {item.members.map((member, index) => (
+                                {item.members.slice(-4).map((member, index) => (
                                   <Image
                                     key={index}
                                     src={member.memberProfileImage}
