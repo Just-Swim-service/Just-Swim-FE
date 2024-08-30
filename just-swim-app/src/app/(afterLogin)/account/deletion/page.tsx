@@ -65,7 +65,7 @@ export default function Deletion() {
   );
 
   const setUserDeletion = async () => {
-    await deleteUser();
+    await deleteUser({ withdrawalReasonContent: selectedValue! });
     removeTokenInCookies();
     setResetUser();
     router.replace(ROUTES.ONBOARDING.root);
