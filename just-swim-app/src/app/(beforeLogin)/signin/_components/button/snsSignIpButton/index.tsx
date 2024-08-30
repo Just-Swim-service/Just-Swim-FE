@@ -41,8 +41,10 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
       }
       return router.replace(ROUTES.ONBOARDING.type);
     }
-
     const redirectURL = await getSignUp(sns);
+    if (!redirectURL) {
+      throw new Error('Failed to get the redirect URL');
+    }
     return router.push(redirectURL!);
   };
 

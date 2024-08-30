@@ -12,6 +12,10 @@ import IconFeedback from './icon_feedback.svg';
 import IconInputValid from './icon_input_valid.svg';
 import IconLocation from './icon_location.svg';
 import IconRepeatTime from './icon_repeat_time.svg';
+import IconLink from './icon_link.svg';
+import IconHome from './icon_home.svg';
+import IconSendFeedback from './icon_send_feedback.svg';
+import IconNavCalendar from './icon_nav_calendar.svg';
 import IconRepeat from './icon_repeat.svg';
 import IconShare from './icon_share.svg';
 import IconTrash from './icon_trash.svg';
@@ -25,6 +29,7 @@ import IconGoogle from './icon_google.svg';
 import IconGallery from './icon_gallery.svg';
 import IconSelectUser from './icon_select_user.svg';
 import IconSearch from './icon_search.svg';
+import IconTrashcan from './icon_trashcan.svg';
 import IconSetting from './icon_setting.svg';
 import IconCheckboxSelected from './icon_checkbox_selected.svg';
 
@@ -40,19 +45,24 @@ export {
   IconValidWhite,
   IconTrash,
   IconRepeatTime,
+  IconLink,
+  IconHome,
+  IconSendFeedback,
+  IconNavCalendar,
   IconKakao,
   IconNaver,
   IconGoogle,
   IconGallery,
   IconSelectUser,
   IconSearch,
+  IconRepeat,
+  IconShare,
+  IconDownload,
+  IconTrashcan,
   IconCalendarHome,
   IconClass,
   IconFeedback,
-  IconRepeat,
   IconAdd,
-  IconDownload,
-  IconShare,
   IconArrowRightSmall,
   IconSetting,
   IconCheck,
