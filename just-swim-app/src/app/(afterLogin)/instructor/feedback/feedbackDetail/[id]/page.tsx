@@ -48,6 +48,7 @@ export default function FeedbackDetail(id: any) {
           <span className={styled.detail_icon}>
             <Calendar />
           </span>
+          {/* @ts-ignore */}
           <p>{feedbackInfo.feedbackDate}</p>
         </div>
         <div className={styled.detail_title}>
@@ -60,17 +61,20 @@ export default function FeedbackDetail(id: any) {
           {/* <p>User 1122 님</p> */}
           <p>
             {feedbackTarget.length > 0
-              ? `${feedbackTarget[0]?.memberNickname} 외 ${feedbackTarget.length} 명`
-              : `${feedbackTarget[0]?.memberNickname}`}
+              ? // @ts-ignore
+                `${feedbackTarget[0]?.memberNickname} 외 ${feedbackTarget.length} 명`
+              : // @ts-ignore
+                `${feedbackTarget[0]?.memberNickname}`}
           </p>
         </div>
-
+        {/* @ts-ignore */}
         {feedbackInfo.images?.length > 0 ? (
           <>
             <div className={styled.detail_title}>
               <p>첨부 파일</p>
             </div>
             <div className={styled.detail_photo}>
+              {/* @ts-ignore */}
               {(feedbackInfo.images || []).map((image, index) => {
                 console.log('image', image.imagePath);
                 return (
@@ -92,7 +96,6 @@ export default function FeedbackDetail(id: any) {
         ) : (
           ''
         )}
-
         {}
         <div className={styled.detail_title}>
           <p>첨부 링크</p>
@@ -100,11 +103,11 @@ export default function FeedbackDetail(id: any) {
         <div className={styled.detail_content}>
           <p>https://github.com/Just-Swim-service</p>
         </div>
-
         <div className={styled.detail_title}>
           <p>피드백</p>
         </div>
         <div className={styled.detail_content}>
+          {/* @ts-ignore */}
           <p>{feedbackInfo.feedbackContent}</p>
         </div>
       </div>

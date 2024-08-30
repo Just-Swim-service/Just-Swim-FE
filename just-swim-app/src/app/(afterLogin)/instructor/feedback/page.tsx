@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 
 export default async function Feedback() {
   // 피드백 작성중 페이지 이탈한 경우 store reset
+  // @ts-ignore
   const { reset } = searchClassStore();
   // const { reset } = searchUserStore();
   useEffect(() => {

@@ -29,11 +29,13 @@ function _SelectClassInput(
     selectedList,
     removeItemHandler,
     updateSelectedList,
+    /* @ts-ignore */
     updateCheckList,
   } = searchClassStore();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    /* @ts-ignore */
     lecture?.lectureId && updateSelectedList([lecture]);
     lecture?.lectureId && updateCheckList([lecture]);
   }, [lecture]);
