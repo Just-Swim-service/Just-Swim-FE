@@ -25,6 +25,7 @@ export default async function Feedback() {
     image: '',
   };
 
+  ('use server');
   const cachedFeedbackList = (await getSortedFeedback()) || [];
 
   return (

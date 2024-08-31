@@ -1,4 +1,5 @@
 import { FeedbackProps } from '@/_types/typeFeedback';
+import { getTokenInCookies } from '@utils';
 import { notFound } from 'next/navigation';
 import { useEffect, useState } from 'react';
 // import { unstable_cache } from 'next/cache';
@@ -17,6 +18,8 @@ const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/feedback`;
 
 // @ts-ignore
 async function postFeedback(data, type, target) {
+  const authorizationToken = getTokenInCookies();
+
   let value = {
     feedbackType: type,
     feedbackDate: data.date,
@@ -44,7 +47,7 @@ async function postFeedback(data, type, target) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/feedback`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+      Authorization: `Bearer ${authorizationToken}`,
     },
     body: formData,
   });
@@ -73,14 +76,16 @@ async function Fetch<T>({
   };
   body?: Object | null;
 }): Promise<T> {
+  const authorizationToken = await getTokenInCookies();
+
+  console.log('token: ', authorizationToken);
+
   try {
     const response = await fetch(url, {
       method,
       headers: {
         'Content-Type': header.json ? 'application/json' : '',
-        Authorization: header.token
-          ? `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-          : '',
+        Authorization: header.token ? `Bearer ${authorizationToken}` : '',
         credentials: header.credential ? 'include' : '',
       },
       body: body && JSON.stringify(body),

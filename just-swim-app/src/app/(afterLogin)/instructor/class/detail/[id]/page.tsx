@@ -18,6 +18,7 @@ import { Header } from '@components';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
+import { getTokenInCookies } from '@utils';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -75,10 +76,11 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
 export default function ClassDetail() {
   const params = useParams();
   const router = useRouter();
+  const authorizationToken = getTokenInCookies();
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${authorizationToken}`;
 
   const [lecture, setLecture] = useState();
   const [showConfirmModal, setShowConfirmModal] = useState(false);

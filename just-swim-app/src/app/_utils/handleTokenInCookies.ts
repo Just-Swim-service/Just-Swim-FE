@@ -1,6 +1,6 @@
 'use server';
-
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const setTokenInCookies = (token: string) => {
   cookies().set('token', token);
@@ -9,6 +9,10 @@ export const setTokenInCookies = (token: string) => {
 
 export const getTokenInCookies = () => {
   const token = cookies().get('token')?.value;
+
+  if (!token) {
+    return redirect('/');
+  }
   return token || '';
 };
 

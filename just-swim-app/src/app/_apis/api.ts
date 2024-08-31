@@ -21,6 +21,7 @@ const api = async <T>(
   options?: RequestInit,
 ): Promise<Response<T>> => {
   const base = `${process.env.NEXT_PUBLIC_API_URL}`;
+  // TODO: 바꾸기
   const authorizationToken = cookies().get('token')?.value;
   const URL = `${base}${url}`;
   const defaultOptions: RequestInit = {

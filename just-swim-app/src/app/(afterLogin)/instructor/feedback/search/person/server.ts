@@ -2,6 +2,7 @@
 
 import { notFound } from 'next/navigation';
 import { unstable_cache } from 'next/cache';
+import { getTokenInCookies } from '@utils';
 
 // _types 폴더 내부로 이동
 export interface MemberProps {
@@ -34,14 +35,14 @@ async function Fetch<T>({
   };
   body?: Object | null;
 }): Promise<T> {
+  const authorizationToken = getTokenInCookies();
+
   try {
     const response = await fetch(url, {
       method,
       headers: {
         'Content-Type': header.json ? 'application/json' : '',
-        Authorization: header.token
-          ? `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-          : '',
+        Authorization: header.token ? `Bearer ${authorizationToken}` : '',
         credentials: header.credential ? 'include' : '',
       },
       body: body && JSON.stringify(body),

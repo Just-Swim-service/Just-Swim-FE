@@ -1,11 +1,15 @@
+import { getTokenInCookies } from '@utils';
+
 const URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 // console.log(URL);
 
 async function getMemberList() {
+  const authorizationToken = getTokenInCookies();
+
   const response = await fetch(`${URL}/member`, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+      Authorization: `Bearer ${authorizationToken}`,
     },
   });
   const json = await response.json();
@@ -13,10 +17,12 @@ async function getMemberList() {
 }
 
 async function getClassList() {
+  const authorizationToken = getTokenInCookies();
+
   const response = await fetch(`${URL}/lecture/myLectures`, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+      Authorization: `Bearer ${authorizationToken}`,
     },
   });
   const json = await response.json();

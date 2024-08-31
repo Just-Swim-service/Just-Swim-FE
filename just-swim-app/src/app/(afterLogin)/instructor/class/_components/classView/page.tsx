@@ -8,12 +8,14 @@ import styled from './classView.module.scss';
 
 import { IconRepeatTime, IconLocation, IconClock } from '@assets';
 import { LectureViewProps } from '@types';
+import { getTokenInCookies } from '@utils';
 
 export default function ClassView() {
   const [lectures, setLectures] = useState<LectureViewProps[]>([]);
+  const authorizationToken = getTokenInCookies();
 
+  const AUTHORIZATION_HEADER = `Bearer ${authorizationToken}`;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
-  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   useEffect(() => {
     fetch(API_URL, {
