@@ -10,66 +10,6 @@
   .desc {
     @include Title5-M;
   }
-
-  .instructor {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    padding: 8px 14px;
-    margin: 24px auto 0;
-    background-color: $--gray-50;
-    border: 1px solid $--gray-200;
-    border-radius: 10px;
-
-    .instructor_name {
-      display: flex;
-      align-items: center;
-
-      p {
-        width: 10rem;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-word;
-
-        display: -webkit-box;
-        -webkit-line-clamp: 1; // 원하는 라인수
-        -webkit-box-orient: vertical;
-      }
-    }
-  }
-
-  .qr_image {
-    display: block;
-    margin: 12px auto 8px;
-  }
-
-  .save_share {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-
-    .col {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: $--gray-700;
-      font-size: 12px;
-
-      .circle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        width: 32px;
-        height: 32px;
-        border: 1px solid $--gray-200;
-        border-radius: 100%;
-        margin-bottom: 6px;
-      }
-    }
-  }
 }
 
 .invite {

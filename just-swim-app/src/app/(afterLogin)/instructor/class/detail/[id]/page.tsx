@@ -142,22 +142,24 @@ export default function ClassDetail() {
         <h2>{lecture.lectureTitle}</h2>
         {/* @ts-ignore */}
         <div className={styled.desc}>{lecture.lectureTitle}</div>
-        <div className={styled.instructor}>
-          <Image
-            // @ts-ignore
-            src={lecture.instructor.instructorProfileImage}
-            alt="프로필"
-            width={24}
-            height={24}
-            style={{ borderRadius: '50% 50%', marginRight: '7px' }}
-          />
-          <div className={styled.instructor_name}>
-            {/* @ts-ignore */}
-            <p>{lecture.instructor.instructorName}</p> 강사님 수업
-          </div>
-        </div>
         {/* @ts-ignore */}
-        <QRCode lectureData={lectureId} instructorData={lectureId} />
+        {lecture && lecture.instructor && (
+          <QRCode
+            lectureData={{
+              // @ts-ignore
+              title: lecture.lectureTitle,
+              // @ts-ignore
+              content: lecture.lectureContent,
+            }}
+            instructorData={{
+              // @ts-ignore
+              name: lecture.instructor.instructorName,
+              // @ts-ignore
+              image: lecture.instructor.instructorProfileImage,
+            }}
+            style={{ backgroundColor: '#fff' }}
+          />
+        )}
       </div>
 
       <div className={styled.invite}>
