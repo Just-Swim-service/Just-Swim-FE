@@ -18,6 +18,7 @@ import { Header } from '@components';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
+import dayjs from 'dayjs';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -184,7 +185,7 @@ export default function ClassDetail() {
                   {lecture.members.slice(-7).map((member, index) => (
                     <Image
                       key={index}
-                      src={member.memberProfileImage}
+                      src={member.profileImage}
                       alt="회원 프로필 사진"
                       width={32}
                       height={32}
@@ -263,7 +264,15 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconRepeat width={20} height={20} fill="#212223" />
               </span>
-              종료일 없이 반복
+              {/* @ts-ignore */}
+              {lecture.lectureEndDate ? (
+                <>
+                  {/* @ts-ignore */}
+                  {dayjs(lecture.lectureEndDate).format('YYYY년 MM월 DD일')} 종료
+                </>
+              ) : (
+                <span>종료일 없이 반복</span>
+              )}
             </p>
           </div>
 
