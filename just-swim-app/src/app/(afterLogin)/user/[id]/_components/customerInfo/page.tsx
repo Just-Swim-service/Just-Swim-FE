@@ -2,8 +2,15 @@ import styled from './customerInfo.module.scss';
 import DateRange from '@assets/date_range.svg';
 import Phone from '@assets/phone.svg';
 import Email from '@assets/email.svg';
+import { useParams } from 'next/navigation';
 
 export default function CustomerInfo() {
+  const params = useParams();
+
+  const lectureId = params.id;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId}`;
+  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+
   return (
     <>
       <div className={styled.customer_info}>

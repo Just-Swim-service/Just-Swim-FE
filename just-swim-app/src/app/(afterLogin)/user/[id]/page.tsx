@@ -5,7 +5,7 @@ import CustomerInfo from './_components/customerInfo/page';
 import FeedbackRecord from './_components/feedbackRecord/page';
 import CustomerClass from './_components/customerClass/page';
 
-export default function customerDetail() {
+export default function User() {
   const data = {
     name: '강사',
     image: '',
