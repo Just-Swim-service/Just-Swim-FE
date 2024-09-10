@@ -32,6 +32,11 @@ import IconSearch from './icon_search.svg';
 import IconTrashcan from './icon_trashcan.svg';
 import IconSetting from './icon_setting.svg';
 import IconCheckboxSelected from './icon_checkbox_selected.svg';
+import IconCalendarBirth from './icon_calendar_birth.svg';
+import IconEmail from './icon_email.svg';
+import IconPhone from './icon_phone.svg';
+import IconAccountBox from './icon_account_box.svg';
+import IconHistoryEdu from './icon_history_edu.svg';
 
 export {
   IconArrowRight,
@@ -68,4 +73,9 @@ export {
   IconCheck,
   IconCheckboxInvalid,
   IconCheckboxSelected,
+  IconCalendarBirth,
+  IconEmail,
+  IconPhone,
+  IconAccountBox,
+  IconHistoryEdu,
 };
