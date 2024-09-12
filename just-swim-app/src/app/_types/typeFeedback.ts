@@ -5,20 +5,19 @@ export interface FeedbackProps {
   feedbackContent: string;
   lectureTitle: string;
   feedbackCreatedAt: string;
-  //   members: {
-  //     memberUserId: string;
-  //     memberProfileImage: string;
-  //     // swagger 보니까 nickname이 넘어오는데 name이 넘어와야 할 것 같음
-  //     // 현재 null로 넘어오기 때문에 확인 요망
-  //     memberNickname: string | null;
-  //   }[];
-  members: Members[];
+  instructor: {
+    instructorUserId: string;
+    instructorName: string;
+    instructorProfileImage: string | null;
+  }[];
+  feedbackTargetList: Members[];
 }
 
 export interface Members {
+  lectureTitle: string;
   memberUserId: string;
   memberProfileImage: string;
+  memberNickname: string | null;
   // swagger 보니까 nickname이 넘어오는데 name이 넘어와야 할 것 같음
   // 현재 null로 넘어오기 때문에 확인 요망
-  memberNickname: string | null;
 }
