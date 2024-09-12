@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
 import dayjs from 'dayjs';
+import { LectureViewProps } from '@types';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -81,7 +82,7 @@ export default function ClassDetail() {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
   const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
 
-  const [lecture, setLecture] = useState();
+  const [lecture, setLecture] = useState<LectureViewProps>();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
@@ -187,6 +188,7 @@ export default function ClassDetail() {
                   {lecture.members.slice(-7).map((member, index) => (
                     <Image
                       key={index}
+                      // @ts-ignore
                       src={member.profileImage}
                       alt="회원 프로필 사진"
                       width={32}

@@ -10,7 +10,7 @@ import { Header } from '@components';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 
-export default function members() {
+export default function Members() {
   const params = useParams();
 
   const lectureId = params.id;
