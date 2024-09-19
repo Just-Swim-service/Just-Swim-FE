@@ -271,7 +271,7 @@ export default function User() {
                               }}
                             />
                           </div>
-                          + {item.images[index].imagePath.length}장
+                          + {item.images.length}장
                         </p>
                       </div>
                     </div>
