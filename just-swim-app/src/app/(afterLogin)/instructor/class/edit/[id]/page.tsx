@@ -61,17 +61,14 @@ export default function ClassInfoEdit() {
 
   const handleEdit = async (lectureId: number) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_HOST}/api/lecture/${lectureId}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: AUTHORIZATION_HEADER,
-          },
-          body: JSON.stringify(formData),
+      const response = await fetch(API_URL, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: AUTHORIZATION_HEADER,
         },
-      );
+        body: JSON.stringify(formData),
+      });
       const updatedLectureData = await response.json();
       console.log(updatedLectureData);
       setLecture(updatedLectureData);
@@ -158,6 +155,7 @@ export default function ClassInfoEdit() {
                 defaultValue={lecture.lectureDays}
                 //  @ts-ignore
                 value={formData.lectureDays}
+                onChange={handleChange}
               />
 
               <label htmlFor="lectureLocation">수업 위치</label>
@@ -168,6 +166,7 @@ export default function ClassInfoEdit() {
                 defaultValue={lecture.lectureLocation}
                 // @ts-ignore
                 value={formData.lectureLocation}
+                onChange={handleChange}
               />
 
               <label htmlFor="lectureEndDate">종료 일자</label>
