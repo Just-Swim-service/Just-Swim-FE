@@ -10,8 +10,6 @@ import {
   IconCalendar,
   IconLocation,
   IconRepeat,
-  IconShare,
-  IconDownload,
   IconArrowRight,
 } from '@assets';
 import { Header } from '@components';
