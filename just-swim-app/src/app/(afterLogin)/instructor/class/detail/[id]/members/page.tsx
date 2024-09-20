@@ -1,14 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import searchIcon from '/public/assets/icon_search.png';
-import arrowRightIcon from '/public/assets/icon_arrow_right.png';
 import Link from 'next/link';
-import styled from './customerList.module.scss';
+import styled from './members.module.scss';
 
 import { Header } from '@components';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useLayoutEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { LectureMembersProps } from '@types';
+import { IconArrowRight, IconArrowRightSmall, IconSearch } from '@assets';
 
 export default function Members() {
   const params = useParams();
@@ -18,6 +18,7 @@ export default function Members() {
   const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [members, setMembers] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     fetch(API_URL, {
@@ -32,15 +33,28 @@ export default function Members() {
       });
   }, [lectureId]);
 
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+
+  useLayoutEffect(() => {
+    if (members) {
+      setMembers(members);
+    }
+  }, [members]);
+
   return (
     <div className={styled.customerList}>
       <Header title="수강생 목록" />
       <div className={styled.inner}>
         <div className={styled.search}>
-          <input type="text" placeholder="회원명으로 검색하세요" />
-          <button>
-            <Image src={searchIcon} alt="검색" />
-          </button>
+          <IconSearch />
+          <input
+            type="text"
+            placeholder="수강생 이름으로 검색"
+            value={searchText}
+            onChange={handleSearch}
+          />
         </div>
         <div>
           <div className={`${styled.row} ${styled.title}`}>
@@ -48,25 +62,22 @@ export default function Members() {
             <button>가나다순</button>
           </div>
           {members &&
-            members.map((item, index) => (
+            members.map((item: LectureMembersProps, index) => (
               <li key={index} className={styled.customer}>
-                <input type="checkbox" id={`checkbox ${index}`} />
                 <label className={`${styled.row}`} htmlFor={`checkbox ${index}`}>
                   <Image
-                    // @ts-ignore
                     src={item.profileImage}
                     alt="profile"
                     width={34}
                     height={34}
+                    style={{ borderRadius: '34px' }}
                   />
-                  {/* @ts-ignore */}
 
-                  <div>{item.nickName}</div>
+                  <div>{item.name}</div>
                 </label>
-                {/* @ts-ignore */}
 
                 <Link href={`/user/${item.userId}`}>
-                  <Image src={arrowRightIcon} alt="자세히보기" />
+                  <IconArrowRightSmall height="10" fill="black" />
                 </Link>
               </li>
             ))}

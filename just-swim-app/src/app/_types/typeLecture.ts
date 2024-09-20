@@ -31,3 +31,13 @@ export interface ScheduleSummary {
   day: string;
   lectures: LectureProps[];
 }
+
+export interface LectureMembersProps {
+  memberId: string;
+  userId: number;
+  lectureTitle: string;
+  lectureId: string;
+  nickName: string;
+  name: string;
+  profileImage: string;
+}
