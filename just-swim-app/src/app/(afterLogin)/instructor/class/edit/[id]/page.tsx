@@ -1,5 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+
 import {
   TimeInput,
   Header,
@@ -10,8 +13,6 @@ import {
   ColorInput,
 } from '@components';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import styled from './classInfoEdit.module.scss';
 
 export default function ClassInfoEdit() {
@@ -46,7 +47,7 @@ export default function ClassInfoEdit() {
   }, [lectureId]);
 
   if (!lecture || lecture.length === 0) {
-    return <p>로딩 중</p>;
+    return null;
   }
 
   const isFormDataChanged = (lectureData: object, formData: object) => {
@@ -70,7 +71,6 @@ export default function ClassInfoEdit() {
         body: JSON.stringify(formData),
       });
       const updatedLectureData = await response.json();
-      console.log(updatedLectureData);
       setLecture(updatedLectureData);
       alert('수정되었습니다.');
       router.push(`/instructor/class/detail/${lectureId}`);
