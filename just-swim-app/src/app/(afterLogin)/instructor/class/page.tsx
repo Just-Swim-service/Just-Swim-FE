@@ -1,18 +1,13 @@
 'use client';
 
-import { BottomNav, ProfileHeader } from '@components';
+import { BottomNav, Header } from '@components';
 
 import ClassView from './_components/classView/page';
 
 export default function classList() {
-  const data = {
-    name: '강사',
-    image: '',
-  };
-
   return (
     <>
-      <ProfileHeader leftContent="수업 정보" data={data} />
+      <Header title="수업 정보" />
       <ClassView />
       <BottomNav />
     </>
