@@ -77,6 +77,8 @@ const ClassList = React.memo(
   },
 );
 
+ClassList.displayName = 'ClassList';
+
 export default function ClassView() {
   const [lectures, setLectures] = useState<LectureViewProps[]>([]);
   const [searchText, setSearchText] = useState('');
