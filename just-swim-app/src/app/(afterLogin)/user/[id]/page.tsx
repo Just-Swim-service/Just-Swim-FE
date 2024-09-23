@@ -1,6 +1,6 @@
 'use client';
 
-import { ProfileHeader } from '@components';
+import { Header } from '@components';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from './user.module.scss';
@@ -45,13 +45,7 @@ export default function User() {
 
   return (
     <>
-      <ProfileHeader
-        leftContent="수업 정보"
-        data={{
-          name: '',
-          image: '',
-        }}
-      />
+      <Header title="회원 정보" />
 
       {member && (
         <>
