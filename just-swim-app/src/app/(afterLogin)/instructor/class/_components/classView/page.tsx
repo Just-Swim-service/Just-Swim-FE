@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useState, useEffect, useLayoutEffect } from 'react';
+import { ChangeEvent, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -9,77 +9,80 @@ import styled from './classView.module.scss';
 import { IconRepeatTime, IconLocation, IconClock, IconSearch } from '@assets';
 import { LectureViewProps } from '@types';
 
-function ClassList({ item, index }: { item: LectureViewProps; index: number }) {
-  return (
-    <div
-      key={index}
-      className={styled.tab_content}
-      style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
-      <div className={styled.lectureItem}>
-        <Link href={`/instructor/class/detail/${item.lectureId}`}>
-          <div className={styled.text_content}>
-            <p className={styled.name}>{item.lectureTitle}</p>
-            <p className={styled.target}>{item.lectureContent}</p>
-            <div className={styled.info}>
-              <p>
-                <span className={styled.icon}>
-                  <IconLocation width="18" height="18" fill="#5C5E62" />
-                </span>
-                {item.lectureLocation}
-              </p>
-              <p>
-                <span className={styled.icon}>
-                  <IconClock width="18" height="18" fill="#5C5E62" />
-                </span>
-                {item.lectureDays}
-              </p>
-              <p>
-                <span className={styled.icon}>
-                  <IconRepeatTime width="18" height="18" fill="#5C5E62" />
-                </span>
-                {item.lectureTime}
-              </p>
-            </div>
-            <div className={styled.profile_box}>
-              <div className={styled.photo_list}>
-                {item.members && item.members.length > 0 && (
-                  <>
-                    {item.members.slice(-4).map((member, index) => (
-                      <Image
-                        key={index}
-                        src={member.memberProfileImage}
-                        alt="회원 프로필 사진"
-                        width={28}
-                        height={28}
-                        style={{
-                          borderRadius: '28px',
-                          verticalAlign: 'middle',
-                        }}
-                      />
-                    ))}
-                  </>
-                )}
-              </div>
-              <p className={styled.count}>
-                {item.members && item.members.length > 0
-                  ? `${item.members.length}명`
-                  : '0명'}
-              </p>
-            </div>
-          </div>
-        </Link>
-      </div>
-    </div>
-  );
-}
+import React from 'react';
 
-export default async function ClassView() {
+const ClassList = React.memo(
+  ({ item, index }: { item: LectureViewProps; index: number }) => {
+    return (
+      <div
+        key={item.lectureId}
+        className={styled.tab_content}
+        style={{ boxShadow: `0px -3px 0 0 ${item.lectureColor}` }}>
+        <div className={styled.lectureItem}>
+          <Link href={`/instructor/class/detail/${item.lectureId}`}>
+            <div className={styled.text_content}>
+              <p className={styled.name}>{item.lectureTitle}</p>
+              <p className={styled.target}>{item.lectureContent}</p>
+              <div className={styled.info}>
+                <p>
+                  <span className={styled.icon}>
+                    <IconLocation width="18" height="18" fill="#5C5E62" />
+                  </span>
+                  {item.lectureLocation}
+                </p>
+                <p>
+                  <span className={styled.icon}>
+                    <IconClock width="18" height="18" fill="#5C5E62" />
+                  </span>
+                  {item.lectureDays}
+                </p>
+                <p>
+                  <span className={styled.icon}>
+                    <IconRepeatTime width="18" height="18" fill="#5C5E62" />
+                  </span>
+                  {item.lectureTime}
+                </p>
+              </div>
+              <div className={styled.profile_box}>
+                <div className={styled.photo_list}>
+                  {item.members && item.members.length > 0 && (
+                    <>
+                      {item.members.slice(-4).map((member, index) => (
+                        <Image
+                          key={index}
+                          src={member.memberProfileImage}
+                          alt="회원 프로필 사진"
+                          width={28}
+                          height={28}
+                          style={{
+                            borderRadius: '28px',
+                            verticalAlign: 'middle',
+                          }}
+                        />
+                      ))}
+                    </>
+                  )}
+                </div>
+                <p className={styled.count}>
+                  {item.members && item.members.length > 0
+                    ? `${item.members.length}명`
+                    : '0명'}
+                </p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+    );
+  },
+);
+
+export default function ClassView() {
   const [lectures, setLectures] = useState<LectureViewProps[]>([]);
+  const [searchText, setSearchText] = useState('');
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
   const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
-
-  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     fetch(API_URL, {
@@ -88,9 +91,7 @@ export default async function ClassView() {
         Authorization: AUTHORIZATION_HEADER,
       },
     })
-      .then((response) => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         const processedLectures = data.data.map(
           (lecture: { lectureEndDate: string }) => {
@@ -109,32 +110,36 @@ export default async function ClassView() {
       });
   }, [API_URL, AUTHORIZATION_HEADER]);
 
-  const ongoingLectures = lectures.filter(
-    (lecture) =>
-      !lecture.isPastLecture &&
-      lecture.lectureTitle.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  const ongoingLectures = useMemo(() => {
+    return lectures.filter(
+      (lecture) =>
+        !lecture.isPastLecture &&
+        (searchText === '' ||
+          lecture.members?.some((member) =>
+            member.memberName.toLowerCase().includes(searchText.toLowerCase()),
+          )),
+    );
+  }, [lectures, searchText]);
 
-  const pastLectures = lectures.filter(
-    (lecture) =>
-      lecture.isPastLecture &&
-      lecture.lectureTitle.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  const pastLectures = useMemo(() => {
+    return lectures.filter(
+      (lecture) =>
+        lecture.isPastLecture &&
+        (searchText === '' ||
+          lecture.members?.some((member) =>
+            member.memberName.toLowerCase().includes(searchText.toLowerCase()),
+          )),
+    );
+  }, [lectures, searchText]);
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
 
-  useLayoutEffect(() => {
-    if (lectures) {
-      setLectures(lectures);
-    }
-  }, [lectures]);
-
   return (
     <>
       <div className={styled.search}>
-        <IconSearch />
+        <IconSearch className={styled.search_icon} />
         <input
           type="text"
           placeholder="수강생 검색하기"
@@ -146,13 +151,13 @@ export default async function ClassView() {
       <p className={styled.title}>진행 중인 수업</p>
       <div className={styled.tab_list}>
         <div className="left_content">
-          {ongoingLectures.map((item: LectureViewProps, index) => (
+          {ongoingLectures.map((item: LectureViewProps, index: number) => (
             <>{index % 2 === 0 && <ClassList item={item} index={index} />}</>
           ))}
         </div>
 
         <div className="right_content">
-          {ongoingLectures.map((item: LectureViewProps, index) => (
+          {ongoingLectures.map((item: LectureViewProps, index: number) => (
             <>{index % 2 !== 0 && <ClassList item={item} index={index} />}</>
           ))}
         </div>
@@ -164,13 +169,13 @@ export default async function ClassView() {
 
       <div className={styled.tab_list}>
         <div className="left_content">
-          {pastLectures.map((item: LectureViewProps, index) => (
+          {pastLectures.map((item: LectureViewProps, index: number) => (
             <>{index % 2 === 0 && <ClassList item={item} index={index} />}</>
           ))}
         </div>
 
         <div className="right_content">
-          {pastLectures.map((item: LectureViewProps, index) => (
+          {pastLectures.map((item: LectureViewProps, index: number) => (
             <>{index % 2 !== 0 && <ClassList item={item} index={index} />}</>
           ))}
         </div>
