@@ -37,6 +37,7 @@ import IconEmail from './icon_email.svg';
 import IconPhone from './icon_phone.svg';
 import IconAccountBox from './icon_account_box.svg';
 import IconHistoryEdu from './icon_history_edu.svg';
+import IconArrowDown from './icon_arrow_down.svg';
 
 export {
   IconArrowRight,
@@ -78,4 +79,5 @@ export {
   IconPhone,
   IconAccountBox,
   IconHistoryEdu,
+  IconArrowDown,
 };

@@ -22,6 +22,7 @@ export interface LectureViewProps extends LectureBasicProps {
   isPastLecture: boolean;
   members?: {
     memberUserId: number;
+    memberName: string;
     memberProfileImage: string;
   }[];
 }
