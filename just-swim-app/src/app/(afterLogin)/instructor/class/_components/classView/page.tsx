@@ -50,6 +50,7 @@ const ClassList = React.memo(
                       {item.members.slice(-4).map((member, index) => (
                         <Image
                           key={index}
+                          //  @ts-ignore
                           src={member.memberProfileImage}
                           alt="회원 프로필 사진"
                           width={28}

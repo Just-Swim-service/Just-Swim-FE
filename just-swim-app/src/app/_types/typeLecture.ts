@@ -23,7 +23,11 @@ export interface LectureViewProps extends LectureBasicProps {
   members?: {
     memberUserId: number;
     memberName: string;
-    memberProfileImage: string;
+    profileImage: string;
+  }[];
+  instructor: {
+    instructorName: string;
+    instructorProfileImage: string;
   }[];
 }
 

@@ -14,6 +14,7 @@ import {
 } from '@components';
 
 import styled from './classInfoEdit.module.scss';
+import { LectureViewProps } from '@types';
 
 export default function ClassInfoEdit() {
   const params = useParams();
@@ -23,7 +24,7 @@ export default function ClassInfoEdit() {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
   const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
 
-  const [lecture, setLecture] = useState([]);
+  const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [formData, setFormData] = useState({});
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -46,6 +47,7 @@ export default function ClassInfoEdit() {
       });
   }, [lectureId]);
 
+  //  @ts-ignore
   if (!lecture || lecture.length === 0) {
     return null;
   }

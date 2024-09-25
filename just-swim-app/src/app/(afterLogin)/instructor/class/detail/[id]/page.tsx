@@ -131,7 +131,6 @@ export default function ClassDetail() {
     }
   };
 
-  /* @ts-ignore */
   const lectureTime = lecture.lectureTime || ['', ''];
 
   return (
@@ -142,17 +141,13 @@ export default function ClassDetail() {
       />
 
       <div className={styled.qr}>
-        {/* @ts-ignore */}
         <h2>{lecture.lectureTitle}</h2>
-        {/* @ts-ignore */}
         <div className={styled.desc}>{lecture.lectureTitle}</div>
-        {/* @ts-ignore */}
         {lecture.instructor && (
           <QRCode
             lectureData={{
               // @ts-ignore
               title: lecture.lectureTitle,
-              // @ts-ignore
               content: lecture.lectureContent,
             }}
             instructorData={{
@@ -172,23 +167,18 @@ export default function ClassDetail() {
           <div className={styled.count_box}>
             <p className={styled.personnel}>현재 인원</p>
             <p className={styled.count}>
-              {/* @ts-ignore */}
               {lecture.members?.length ? `${lecture.members.length}명` : '0명'}
             </p>
           </div>
           <Link
             className={`${styled.profile} ${styled.box}`}
             href={`/instructor/class/detail/${lectureId}/members`}>
-            {/* @ts-ignore */}
             {lecture.members && lecture.members.length > 0 ? (
               <>
-                {/* @ts-ignore */}
                 <div className={styled.profile_position}>
-                  {/* @ts-ignore */}
                   {lecture.members.slice(-7).map((member, index) => (
                     <Image
                       key={index}
-                      // @ts-ignore
                       src={member.profileImage}
                       alt="회원 프로필 사진"
                       width={32}
@@ -225,19 +215,15 @@ export default function ClassDetail() {
                 <IconClock width={20} height={20} fill="#212223" />
               </span>
               <span className={styled.twelve}>
-                {/* @ts-ignore */}
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
-              {/* @ts-ignore */}
               {lectureTime[0]}
             </div>
             <span className={styled.wave}>~</span>
             <div>
               <span className={styled.twelve}>
-                {/* @ts-ignore */}
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
-              {/* @ts-ignore */}
               {lectureTime[1]}
             </div>
           </div>
@@ -247,7 +233,6 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconCalendar width={20} height={20} fill="#212223" />
               </span>
-              {/* @ts-ignore */}
               매주 {lecture.lectureDays.replace(/(.)(?=.)/g, '$1, ')}요일
             </p>
           </div>
@@ -257,7 +242,6 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconLocation width={20} height={20} fill="#212223" />
               </span>
-              {/* @ts-ignore */}
               {lecture.lectureLocation}
             </p>
           </div>
@@ -267,10 +251,8 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconRepeat width={20} height={20} fill="#212223" />
               </span>
-              {/* @ts-ignore */}
               {lecture.lectureEndDate ? (
                 <>
-                  {/* @ts-ignore */}
                   {dayjs(lecture.lectureEndDate).format('YYYY년 MM월 DD일')} 종료
                 </>
               ) : (
@@ -283,7 +265,6 @@ export default function ClassDetail() {
             <p>
               <span
                 className={styled.color_box}
-                //  @ts-ignore
                 style={{ backgroundColor: `${lecture.lectureColor}` }}></span>
               구분색
             </p>
@@ -324,7 +305,6 @@ export default function ClassDetail() {
                   id: lectureId,
                   // @ts-ignore
                   member: lecture.members
-                    // @ts-ignore
                     .map((member) => member.memberUserId)
                     .join(','),
                 },
