@@ -2,7 +2,12 @@
 
 import { HTTP_METHODS, HTTP_STATUS } from '@data';
 import api from '../api';
-import { GetUserProfileRes, PatchUserEditReq, PostUserLoginReq } from '@types';
+import {
+  DeleteUserReq,
+  GetUserProfileRes,
+  PatchUserEditReq,
+  PostUserLoginReq,
+} from '@types';
 
 const USER_API_PATH = '/user';
 const OAUTH_API_PATH = 'Oauth';
@@ -46,4 +51,10 @@ export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
 
 export const postUserLogout = async () => {
   return await api(`${USER_API_PATH}/logout`, HTTP_METHODS.POST);
+};
+
+export const deleteUser = async (data: DeleteUserReq) => {
+  return await api(`${USER_API_PATH}/withdraw`, HTTP_METHODS.DELETE, {
+    body: JSON.stringify(data),
+  });
 };

@@ -22,7 +22,7 @@ export default function ClassInfoEdit() {
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [formData, setFormData] = useState({});

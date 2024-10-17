@@ -7,13 +7,13 @@ import { LectureProps } from '@types';
 import { Fetch } from '@utils';
 
 async function getInProgressSchedule(): Promise<LectureProps[] | null> {
-  const result = await Fetch<{ success: boolean, data: LectureProps[] }>({
-    url: `${process.env.API_URL}/lecture/schedule`,
+  const result = await Fetch<{ success: boolean; data: LectureProps[] }>({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`,
     header: {
       token: true,
       json: true,
       credential: true,
-    }
+    },
   });
 
   if (result.success) {
@@ -29,5 +29,5 @@ export const getCachedInProgressSchedule = unstable_cache(
   {
     tags: ['schedule'],
     revalidate: 60,
-  }
+  },
 );

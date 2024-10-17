@@ -1,4 +1,4 @@
-const URL = `${process.env.NEXT_PUBLIC_DB_HOST}`;
+const URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 // console.log(URL);
 
 async function getMemberList() {

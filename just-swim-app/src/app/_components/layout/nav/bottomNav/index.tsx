@@ -18,19 +18,19 @@ export function BottomNav() {
     <div className={styled.container}>
       <div className={styled.list}>
         <Link
-          href="/schedule"
+          href="/instructor/schedule"
           className={`${styled.item} ${pathname.startsWith('/schedule') && styled.selected}`}>
             <IconCalendarHome width={22} height={22} />
             <span>홈</span>
         </Link>
         <Link
-          href="/class"
+          href="/instructor/class"
           className={`${styled.item} ${pathname.startsWith('/class') && styled.selected}`}>
             <IconClass width={22} height={22} />
             <span>수업</span>
         </Link>
         <Link
-          href="/feedback"
+          href="/instructor/feedback"
           className={`${styled.item} ${pathname.startsWith('/feedback') && styled.selected}`}>
             <IconFeedback width={22} height={22} />
             <span>피드백</span>

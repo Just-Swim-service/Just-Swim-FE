@@ -21,3 +21,16 @@ export interface Members {
   // swagger 보니까 nickname이 넘어오는데 name이 넘어와야 할 것 같음
   // 현재 null로 넘어오기 때문에 확인 요망
 }
+
+export interface FeedbackIndo {
+  feedbackContetn: string;
+  feedbackDate: string;
+  feedbackId: string;
+  feedbackType: string;
+  images: [];
+  instructor: {
+    instructorName: string;
+    instructorProfileImage: string;
+    instructorUserId: string;
+  };
+}

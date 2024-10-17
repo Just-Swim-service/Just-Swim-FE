@@ -44,3 +44,7 @@ export interface PatchUserEditReq {
   birth: string;
   phoneNumber: string;
 }
+
+export interface DeleteUserReq {
+  withdrawalReasonContent: string;
+}

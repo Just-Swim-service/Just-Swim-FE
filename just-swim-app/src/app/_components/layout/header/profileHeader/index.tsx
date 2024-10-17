@@ -17,7 +17,7 @@ export function ProfileHeader({ leftContent, data }: Props) {
     <>
       <div className="profile_header">
         <div className="left_content">{leftContent}</div>
-        <Link href={`/`}>
+        <Link href={`/account`}>
           <div className="link_to_profile">
             <Image src={data.image} alt={data.image} width={34} height={34} />
           </div>

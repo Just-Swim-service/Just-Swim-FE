@@ -80,7 +80,7 @@ export default function ClassDetail() {
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -280,7 +280,6 @@ export default function ClassDetail() {
           <IconTrashcan width={24} height={24} fill="#FF4D4D" />
           수업 삭제
         </button>
-
         {showConfirmModal && (
           <ConfirmModal
             isOpen={showConfirmModal}
@@ -291,9 +290,8 @@ export default function ClassDetail() {
             onCancel={() => setShowConfirmModal(false)}
           />
         )}
-
         {/* @ts-ignore */}
-        {lecture.members.length === 0 ? (
+        {lecture.members.memberUserId === 0 ? (
           <></>
         ) : (
           <div className={styled.feedback_bg}>

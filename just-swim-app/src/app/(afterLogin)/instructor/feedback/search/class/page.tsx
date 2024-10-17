@@ -32,7 +32,6 @@ export default function SearchClass() {
 
   useEffect(() => {
     loadUserList();
-    console.log('ddd');
   }, [loadUserList]);
 
   const checkLength = () => {

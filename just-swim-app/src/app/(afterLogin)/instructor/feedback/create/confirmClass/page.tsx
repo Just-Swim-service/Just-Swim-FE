@@ -5,13 +5,13 @@ import Link from '@assets/link.svg';
 import styled from './feedbackConfirm.module.scss';
 import { Header, Profile } from '@components';
 import { feedbackStore } from '@/_store/feedback';
-import { searchUserStore } from '@store';
+import { searchClassStore } from '@store';
 import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
 
 export default function ClassFeedbackConfirm() {
   // @ts-ignore
-  const { selectedList, reset } = searchUserStore();
+  const { selectedList, reset } = searchClassStore();
   const { formDataState } = feedbackStore();
   const target = JSON.parse(formDataState.target || '[]');
   //   const target = JSON.parse(formDataState.target);
@@ -19,11 +19,7 @@ export default function ClassFeedbackConfirm() {
 
   const router = useRouter();
 
-  console.log('formDataState', formDataState);
-  console.log('target', target);
-
   const handleSubmit = () => {
-    // console.log('formDataState', formDataState);
 
     // @ts-ignore
     const userIds = (target[0]?.members || []).map((el) => Number(el.userId));
