@@ -115,7 +115,7 @@ export default function ClassView() {
     );
   };
 
-  const renderLectureList = (lectures: LectureViewProps[]) => {
+  const renderLectureList = (lectures: LectureViewProps[], isPast: boolean) => {
     return lectures.length ? (
       <>
         <div className="left_content">
@@ -131,7 +131,15 @@ export default function ClassView() {
       </>
     ) : (
       <div className={styled.null}>
-        <p>기록이 없습니다.</p>
+        <p>
+          {isPast ? (
+            '지난 수업 기록이 없습니다.'
+          ) : (
+            <>
+              수강 중인 수업이 없습니다. <br /> 강사님께 QR코드를 요청해 보세요!
+            </>
+          )}
+        </p>
       </div>
     );
   };
@@ -139,16 +147,17 @@ export default function ClassView() {
   return (
     <>
       <Header title="수업 정보" />
+
       <p className={styled.title}>진행 중인 수업</p>
       <div className={styled.tab_list}>
-        {renderLectureList(filteredLectures(false))}
+        {renderLectureList(filteredLectures(false), false)}
       </div>
 
       <div className={styled.bar}></div>
 
       <p className={styled.title}>지난 수업</p>
       <div className={styled.tab_list}>
-        {renderLectureList(filteredLectures(true))}
+        {renderLectureList(filteredLectures(true), true)}
       </div>
 
       <BottomNav />
