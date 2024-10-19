@@ -6,7 +6,7 @@ import Send from '@assets/send.svg';
 import Calendar from '@assets/calendar.svg';
 import UserTypeIndividual from '@assets/user_type_individual.svg';
 
-import { EditHeader, FileInput, HistoryBackHeader } from '@components';
+import { FileInput, HistoryBackHeader } from '@components';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getFeedbackDetail } from '@apis';
@@ -30,7 +30,6 @@ export default function FeedbackDetail(id: any) {
 
   return (
     <>
-      {/* <EditHeader leftContent="피드백 기록 보기" data={{ dataUrl: '/' }} /> */}
       <HistoryBackHeader title='피드백 기록 보기' additionalLink='/' additionalContent='수정하기' />
       <div className={styled.detail_container}>
         <div className={styled.feedback_date}>
