@@ -15,7 +15,7 @@ export default function Members() {
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId}`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [members, setMembers] = useState<LectureMembersProps[]>([]);
   const [searchText, setSearchText] = useState('');
@@ -30,7 +30,7 @@ export default function Members() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setMembers(data.data);
+        setMembers(data.data || []);
       });
   }, [lectureId]);
 
