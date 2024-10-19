@@ -1,14 +1,15 @@
 'use client';
 
-import styles from './page.module.scss';
-import JustSwimSVG from '@assets/logo.svg';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { SNSSignInButton } from './_components/button/snsSignIpButton';
+import JustSwimSVG from '@assets/logo.svg';
 import { JUST_SWIM, ROUTES, SNS, TEXT } from '@data';
 import { Provider } from '@types';
-import { useEffect } from 'react';
 import { getTokenInCookies } from '@utils';
-import { useRouter } from 'next/navigation';
+
+import { SNSSignInButton } from './_components/button/snsSignIpButton';
+import styles from './page.module.scss';
 
 export interface SNSLoginButtonProps {
   sns: Provider;
@@ -20,12 +21,14 @@ export default function SignIn() {
   useEffect(() => {
     const checkCookies = async () => {
       const isLogin = await getTokenInCookies();
+
       if (!isLogin) {
         return;
       } else {
         router.push(ROUTES.SCHEDULE.root);
       }
     };
+
     checkCookies();
   }, [router]);
 

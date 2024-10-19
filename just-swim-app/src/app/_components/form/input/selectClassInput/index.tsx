@@ -18,7 +18,7 @@ import Link from 'next/link';
 
 import { IconSelectUser } from '@assets';
 import { searchClassStore } from '@store';
-import { Profile } from '@/_components/temp';
+import { ProfileCard } from '@components';
 
 function _SelectClassInput(
   // @ts-ignore
@@ -62,7 +62,7 @@ function _SelectClassInput(
       />
       <div className={styled.input_inner_wrapper}>
         <Link
-          href={'/instructor/feedback/search/class'}
+          href={'/feedback/search/class'}
           className={styled.select_user}>
           <div className={styled.icon_wrapper}>
             <IconSelectUser width={30} height={30} />
@@ -76,7 +76,7 @@ function _SelectClassInput(
             <div key={randomId()} className={styled.preview_item}>
               <div className={styled.tag}>전체</div>
               <div className={styled.title}>{preview.lectureTitle}</div>
-              <Profile
+              <ProfileCard
                 // @ts-ignore
                 customers={selectedList[0].members}
                 width={28}

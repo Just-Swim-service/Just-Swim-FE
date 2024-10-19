@@ -1,6 +1,8 @@
-import { FeedbackProps } from '@/_types/typeFeedback';
 import { notFound } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
+import { FeedbackProps } from '@types';
+import { Fetch } from '@utils';
+
 // import { unstable_cache } from 'next/cache';
 
 const URL = `${process.env.NEXT_PUBLIC_DB_HOST}/feedback`;
@@ -25,8 +27,8 @@ async function postFeedback(data, type, target) {
     feedbackTarget: target,
   };
 
-  // console.log('val', value);
   let formData = new FormData();
+
   formData.append('feedbackDto', JSON.stringify(value));
 
   if (data.file) {
@@ -36,10 +38,6 @@ async function postFeedback(data, type, target) {
       formData.append('files', el);
     });
   }
-
-  formData.forEach((value, key) => {
-    console.log(value, key);
-  });
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/feedback`, {
     method: 'POST',
@@ -51,47 +49,6 @@ async function postFeedback(data, type, target) {
 
   const json = await response.json();
   return json;
-}
-
-// 이 부분은 무시해도 좋음
-async function Fetch<T>({
-  url,
-  method = 'GET',
-  header = {
-    token: false,
-    json: false,
-    credential: false,
-  },
-  body = null,
-}: {
-  url: string;
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELsETE';
-  header?: {
-    token?: boolean;
-    json?: boolean;
-    credential?: boolean;
-  };
-  body?: Object | null;
-}): Promise<T> {
-  try {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': header.json ? 'application/json' : '',
-        Authorization: header.token
-          ? `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-          : '',
-        credentials: header.credential ? 'include' : '',
-      },
-      body: body && JSON.stringify(body),
-    });
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    return notFound();
-  }
 }
 
 // _apis 폴더 내부로 이동
@@ -106,7 +63,39 @@ async function getFeedback(): Promise<FeedbackProps[] | null> {
   });
 
   if (result.success) {
-    return result.data;
+    // return result.data;
+    return [
+      {
+        "feedbackId": "1",
+        "feedbackDate": "2024.05.22",
+        "feedbackType": "group",
+        "feedbackContent": "회원님! 오늘 자세는 좋았으나 마지막 스퍼트가 부족해 보였어요 호흡하실 때에도 팔 각도를 조정해 주시면...",
+        "lectureTitle": "아침 2반",
+        "feedbackCreatedAt": '2024.08.13',
+        "members": [
+          {
+            "memberUserId": "2",
+            "memberProfileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg",
+            "memberNickname": "홍길동"
+          }
+        ]
+      },
+      {
+        "feedbackId": "2",
+        "feedbackDate": "2024.04.22",
+        "feedbackType": "personal",
+        "feedbackContent": "회원님! 오늘 자세는 좋았으나 마지막 스퍼트가 부족해 보였어요 호흡하실 때에도 팔 각도를 조정해 주시면...",
+        "lectureTitle": "아침 1반",
+        "feedbackCreatedAt": '2024.08.13',
+        "members": [
+          {
+            "memberUserId": "2",
+            "memberProfileImage": "http://k.kakaocdn.net/dn/d3UHmi/btsH8xClKxG/jGQI0gBeKrlOkneK7KYIbK/img_640x640.jpg",
+            "memberNickname": "이홍길"
+          }
+        ]
+      }
+    ];
   } else {
     return notFound();
   }
@@ -151,22 +140,60 @@ async function getSortedFeedback(): Promise<FeedbackProps[] | null> {
 //   },
 // );
 
-// 피드백 사셍
+// 피드백 상세
 async function getFeedbackDetail(id: string): Promise<FeedbackProps[] | null> {
-  const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
-    header: {
-      token: true,
-      json: true,
-      credential: true,
-    },
-  });
+  // const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
+  //   url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
+  //   header: {
+  //     token: true,
+  //     json: true,
+  //     credential: true,
+  //   },
+  // });
 
-  if (result.success) {
-    return result.data;
-  } else {
-    return notFound();
-  }
+  // if (result.success) {
+  //   return result.data;
+  //   return result.data;
+  // } else {
+  //   return notFound();
+  // }
+
+  return {
+    // @ts-ignore
+    "feedback": [
+      {
+        "feedbackId": "18",
+        "feedbackType": "group",
+        "feedbackDate": "2024.04.22",
+        "feedbackContent": "회원님! 오늘 자세는 좋았으나 마지막 스퍼트가 부족해 보였어요 호흡하실 때에도 팔 각도를 조정해 주시면...",
+        "feedbackLink": "URL",
+        "instructor": {
+          "instructorUserId": "1",
+          "instructorName": "김수영",
+          "instructorProfileImage": "http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R640x640"
+        },
+        "images": [
+          {
+            "imagePath": "https://s3.ap-northeast-2.amazonaws.com/just-swim-bucket/feedback/1/1718800708147-6.png"
+          }
+        ]
+      }
+    ],
+    "feedbackTargetList": [
+      {
+        "lectureTitle": "asdf",
+        "memberUserId": "2",
+        "memberNickname": "홍길동",
+        "memberProfileImage": "asdf"
+      },
+      {
+        "lectureTitle": "asdf",
+        "memberUserId": "3",
+        "memberNickname": "홍길순",
+        "memberProfileImage": "asdf"
+      }
+    ]
+  };
 }
 
 export { getFeedback, postFeedback, getSortedFeedback, getFeedbackDetail };

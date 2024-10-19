@@ -49,7 +49,7 @@ function _SelectPersonInput(
       />
       <div className={styled.input_inner_wrapper}>
         <Link
-          href={'/instructor/feedback/search/person'}
+          href={'/feedback/search/person'}
           className={styled.select_user}>
           <div className={styled.icon_wrapper}>
             <IconSelectUser width={30} height={30} />

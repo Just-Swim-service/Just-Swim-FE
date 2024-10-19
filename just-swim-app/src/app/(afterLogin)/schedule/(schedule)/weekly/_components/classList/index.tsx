@@ -1,17 +1,27 @@
+'use client';
+
+import React, { useRef } from 'react';
+
 import { ClassDetailItem } from '@components';
 import { LectureProps } from '@types';
 import { WEEK_DAYS } from '@data';
 import { randomId } from '@utils';
+import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
 
-export async function ClassList({
+function _ClassList({
   weeklyInfo,
   selectedDate,
+  token
 }: {
   weeklyInfo: { date: string, day: string, lectures: LectureProps[] }[],
   selectedDate: number,
+  token: string,
 }) {
+  const { getUserType } = useUserStore();
+
+  const type = useRef<string>(getUserType(token));
   const todaySchedules = weeklyInfo[selectedDate].lectures;
   const todayDate = weeklyInfo[selectedDate].date.split('.')[2];
 
@@ -37,6 +47,7 @@ export async function ClassList({
                   <ClassDetailItem
                     key={randomId()}
                     schedule={schedule}
+                    type={type.current}
                   />
                 )
               })
@@ -47,3 +58,5 @@ export async function ClassList({
     </div>
   )
 }
+
+export const ClassList = React.memo(_ClassList);

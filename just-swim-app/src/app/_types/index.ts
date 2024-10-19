@@ -1,5 +1,6 @@
 export * from './typeCommon';
 export * from './typeConstants';
+export * from './typeFeedback';
 export * from './typeForm';
 export * from './typeLayout';
 export * from './typeModal';

@@ -1,35 +1,6 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
-export async function APICommon<T>({
-  url,
-  method = 'GET',
-  body = null,
-}: {
-  url: string;
-  method?: string;
-  body?: Object | null;
-}): Promise<T | null> {
-  try {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-      },
-      body: body && JSON.stringify(body),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      return result.data || null;
-    } else {
-      return notFound();
-    }
-  } catch (error) {
-    return notFound();
-  }
-}
+import { getTokenInCookies } from '@utils';
 
 export async function Fetch<T>({
   url,
@@ -38,25 +9,33 @@ export async function Fetch<T>({
     token: false,
     json: false,
     credential: false,
+    formData: false,
   },
   body = null,
 }: {
   url: string;
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELsETE';
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   header?: {
     token?: boolean;
     json?: boolean;
     credential?: boolean;
+    formData?: boolean;
   };
   body?: Object | null;
 }): Promise<T> {
+  const token = await getTokenInCookies();
+
+  if (!token) {
+    redirect('/signin');
+  }
+
   try {
     const response = await fetch(url, {
       method,
       headers: {
-        'Content-Type': header.json ? 'application/json' : '',
+        'Content-Type': header.json ? 'application/json' : header.formData ? 'multipart/form-data' : '',
         Authorization: header.token
-          ? `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
+          ? `Bearer ${token}`
           : '',
         credentials: header.credential ? 'include' : '',
       },

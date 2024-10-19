@@ -1,25 +1,28 @@
 import { Suspense } from "react";
+
 import {
-  ScheduleHeaderLayout,
   ScheduleCommonLayout,
-  ScheduleNavLayout,
   ScheduleAddButton,
 } from "./_components";
+import { UserIconHeader, BottomNav } from "@components";
+import { getTokenInCookies } from "@utils";
 
-export default function Layout({
+export default async function Layout({
   children
 }: {
   children?: React.ReactNode,
 }) {
+  const token = await getTokenInCookies();
+
   return (
     <div>
-      <ScheduleHeaderLayout />
+      <UserIconHeader title="" />
       <ScheduleCommonLayout />
       <Suspense fallback={<div>Loading...</div>}>
         {children}
       </Suspense>
-      <ScheduleNavLayout />
-      <ScheduleAddButton />
+      <BottomNav />
+      <ScheduleAddButton token={token} />
     </div>
   )
 }

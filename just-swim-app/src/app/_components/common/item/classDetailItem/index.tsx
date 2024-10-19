@@ -1,17 +1,45 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { IconLocation, IconRepeat } from '@assets';
 import { LectureProps } from '@types';
 import { numberFormat, randomId } from '@utils';
+import { getLectureDetail } from '@apis';
+
+import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
 
 export function ClassDetailItem({
-  schedule
+  schedule,
+  type
 }: {
   schedule: LectureProps,
+  type: string,
 }) {
+  const [mounted, setMounted] = useState(false);
+  const [instructor, setInstructor] = useState<{
+    instructorName: string,
+    instructorProfileImage: string,
+  }>();
+
   const startTime = parseInt(schedule.lectureTime.split(":")[0]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const getDetail = async () => {
+      const result = await getLectureDetail(parseInt(schedule.lectureId));
+
+      setInstructor(result?.instructor);
+    }
+
+    getDetail();
+  }, [schedule.lectureId]);
 
   return (
     <div className={styled.container}>
@@ -30,36 +58,61 @@ export function ClassDetailItem({
               style={{ color: `${schedule.lectureColor}` }}>
               {schedule.lectureTitle}
             </p>
-            <p className={styled.class_info}>{schedule.lectureContent}</p>
-          </div>
-          
-          <div className={styled.student_info}>
             {
-              schedule.lectureMembers?.map((student: { memberUserId: number, memberProfileImage: string }, index) => (
-                <div key={randomId()} className={styled.student}>
-                  <Image
-                    src={student.memberProfileImage}
-                    alt={`${student.memberUserId}`}
-                    width={20}
-                    height={20}
-                  />
-                </div>
-              ))
-            }
-            {
-              schedule.lectureMembers && schedule.lectureMembers.length !== 0 
-              ?
-              <div
-                className={styled.student_count}
-                style={{ color: `${schedule.lectureColor}` }}>
-                <p>{schedule.lectureMembers.length}명</p>
-              </div>
-              :
-              <div className={styled.empty_student}>
-                <p>초대된 수강생이 없습니다</p>
-              </div>
+              mounted && type === 'instructor' &&
+              <p className={styled.class_info}>{schedule.lectureContent}</p>
             }
           </div>
+          <>
+            {
+              mounted &&
+              <>
+                {
+                  type === 'instructor' ? 
+                  <div className={styled.student_info}>
+                    {
+                      schedule.members?.map((student: { memberUserId: string, memberProfileImage: string }) => (
+                        <div key={randomId()} className={styled.student}>
+                          <Image
+                            src={student.memberProfileImage}
+                            alt={`${student.memberUserId}`}
+                            width={20}
+                            height={20}
+                          />
+                        </div>
+                      ))
+                    }
+                    {
+                      schedule.members && schedule.members.length !== 0 
+                      ?
+                      <div
+                        className={styled.student_count}
+                        style={{ color: `${schedule.lectureColor}` }}>
+                        <p>{schedule.members.length}명</p>
+                      </div>
+                      :
+                      <div className={styled.empty_student}>
+                        <p>초대된 수강생이 없습니다</p>
+                      </div>
+                    }
+                  </div> : 
+                  <div className={styled.student_info}>
+                    <div className={styled.instructor_name}>
+                      <p>{`${instructor?.instructorName} 강사`}</p>
+                    </div>
+                    <div className={styled.instructor_image}>
+                      <Image
+                        src={instructor?.instructorProfileImage || NoProfile}
+                        alt={`${instructor?.instructorName}`}
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                  </div>
+                }
+              </>
+            }
+          </>
         </div>
         <div className={styled.extra_info}>
           <p className={styled.class_day}>

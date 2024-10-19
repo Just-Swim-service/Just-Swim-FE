@@ -11,10 +11,17 @@ export interface LectureBasicProps {
 
 export interface LectureProps extends LectureBasicProps {
   lectureId: string;
-  lectureMembers?: {
-    memberUserId: number;
+  members?: {
+    memberUserId: string;
     memberProfileImage: string;
   }[];
+}
+
+export interface LectureDetailProps extends LectureProps {
+  instructor: {
+    instructorName: string,
+    instructorProfileImage: string,
+  }
 }
 
 export interface LectureViewProps extends LectureBasicProps {

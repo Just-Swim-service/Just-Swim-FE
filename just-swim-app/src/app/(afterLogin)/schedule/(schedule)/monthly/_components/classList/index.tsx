@@ -4,8 +4,9 @@ import { Dispatch, MouseEvent, SetStateAction, TouchEvent, useEffect, useRef, us
 
 import { LectureProps } from "@types";
 import { ClassDetailItem, Portal } from "@components";
-import { randomId, throttle } from "@utils";
+import { getTokenInCookies, randomId, throttle } from "@utils";
 import { WEEK_DAYS } from "@data";
+import { useUserStore } from "@store";
 
 import styled from './styles.module.scss';
 
@@ -20,6 +21,9 @@ export function ClassList({
   itemHeight: number,
   unshowClass: () => void,
 }) {
+  const { getUserType } = useUserStore();
+
+  const [type, setType] = useState<string>('');
   const date = new Date(selectedDate);
 
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
@@ -79,6 +83,16 @@ export function ClassList({
     setMovingCursorPosition(0);
   };
 
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await getTokenInCookies();
+
+      setType(getUserType(token));
+    }
+
+    getToken();
+  }, [getUserType]);
+
   return (
     <Portal>
       <div
@@ -111,6 +125,7 @@ export function ClassList({
                 <ClassDetailItem
                   key={randomId()}
                   schedule={schedule}
+                  type={type}
                 />
               )
             }): 

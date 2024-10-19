@@ -40,6 +40,7 @@ export const useUserStore = create(
       },
       getUserType: (token: string) => {
         return (get().user[token]?.profile?.userType || '') as UserType;
+        // return 'customer';
       },
       getUserImage: (token: string) => {
         return get().user[token]?.profile?.profileImage || '';

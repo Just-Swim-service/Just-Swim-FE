@@ -1,0 +1,40 @@
+@import '@/globals.scss';
+
+.button_box {
+  display: flex;
+  justify-content: space-between;
+  margin: 28px 0;
+  gap: 10px;
+  padding: 0 16px;
+
+  button {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    height: 152px;
+    background-color: $--gray-100;
+    border: 1px solid $--gray-200;
+    border-radius: 10px;
+    text-align: left;
+    padding: 15px;
+
+    .button_title {
+      @include Title3-M;
+
+      margin-top: auto;
+
+      span {
+        @include Title2-SB;
+      }
+    }
+
+    .button_desc {
+      @include Body3-R;
+
+      margin-top: 6px;
+
+      color: $--gray-600;
+    }
+  }
+}

@@ -5,5 +5,5 @@ export * from './optimization';
 export * from './randomId';
 export * from './refs';
 export * from './sort';
-export * from './handleTokenInCookies';
+export * from './token';
 export * from './server';

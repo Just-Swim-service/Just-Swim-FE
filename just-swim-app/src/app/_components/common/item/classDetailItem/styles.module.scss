@@ -104,6 +104,7 @@
 
     .student_info {
       display: flex;
+      align-items: center;
 
       .student {
         display: flex;
@@ -114,6 +115,8 @@
         height: 20px;
 
         border-radius: 50%;
+
+        overflow: hidden;
         
         margin-left: -6px;
       }
@@ -148,6 +151,27 @@
         color: $--gray-600;
         background-color: $--gray-100;
       }
+
+      .instructor_image {
+        width: 20px;
+        height: 20px;
+
+        border-radius: 50%;
+
+        overflow: hidden;
+      }
+    }
+
+    .instructor_name {
+      @include Body5-R;
+
+      padding: 3px 6px;
+
+      border-radius: 4px;
+
+      background-color: $--gray-100;
+
+      margin-right: 6px;
     }
   }
 }

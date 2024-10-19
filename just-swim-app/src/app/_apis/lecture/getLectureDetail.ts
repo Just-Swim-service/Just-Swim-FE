@@ -3,13 +3,13 @@
 import { unstable_cache } from 'next/cache';
 import { notFound } from 'next/navigation';
 
-import { LectureProps } from '@types';
+import { LectureDetailProps } from '@types';
 import { Fetch } from '@utils';
 
 export async function getLectureDetail(
   lectureId: number,
-): Promise<LectureProps | null> {
-  const result = await Fetch<{ success: boolean; data: LectureProps }>({
+): Promise<LectureDetailProps | null> {
+  const result = await Fetch<{ success: boolean; data: LectureDetailProps }>({
     url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`,
     header: {
       token: true,
