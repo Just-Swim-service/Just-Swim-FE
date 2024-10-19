@@ -87,7 +87,7 @@ export default function ClassView() {
   const [searchText, setSearchText] = useState('');
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
-  const AUTHORIZATION_HEADER = `${process.env.NEXT_PUBLIC_TOKEN}`;
+  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   useEffect(() => {
     fetch(API_URL, {
@@ -174,9 +174,9 @@ export default function ClassView() {
       <p className={styled.title}>지난 수업</p>
 
       <div className={styled.tab_list}>
-        <div className="left_content">
+        {/* <div className="left_content">
           {pastLectures.map((item: LectureViewProps, index: number) => (
-            <>{index % 2 === 0 && <ClassList item={item} index={index} />}</>
+            <div key={item.lectureId}>{index % 2 === 0 && <ClassList item={item} index={index} />}</div>
           ))}
         </div>
 
@@ -184,7 +184,10 @@ export default function ClassView() {
           {pastLectures.map((item: LectureViewProps, index: number) => (
             <>{index % 2 !== 0 && <ClassList item={item} index={index} />}</>
           ))}
-        </div>
+        </div> */}
+        {pastLectures.map((item: LectureViewProps, index: number) => (
+            <ClassList key={item.lectureId} item={item} index={index} />
+          ))}
       </div>
       <BottomNav />
     </>
