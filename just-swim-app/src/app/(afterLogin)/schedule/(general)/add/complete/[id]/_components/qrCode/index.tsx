@@ -65,7 +65,7 @@ export function QRCode({
       </div>
       <div className={styled.instructor}>
         <Image
-          src={instructorData.profileImage}
+          src={instructorData.profileImage || '/assets/profile1.png'}
           alt={`${instructorData.name}`}
           width={24}
           height={24}

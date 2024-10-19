@@ -179,7 +179,7 @@ export default function ClassDetail() {
                   {lecture.members.slice(-7).map((member, index) => (
                     <Image
                       key={index}
-                      src={member.profileImage}
+                      src={member.profileImage || '/assets/profile1.png'}
                       alt="회원 프로필 사진"
                       width={32}
                       height={32}
