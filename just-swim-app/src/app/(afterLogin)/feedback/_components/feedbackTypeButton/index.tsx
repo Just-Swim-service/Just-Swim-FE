@@ -27,10 +27,7 @@ export function FeedbackTypeButton({
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  console.log(type.current);
   
-
   return (
     <>
       {
