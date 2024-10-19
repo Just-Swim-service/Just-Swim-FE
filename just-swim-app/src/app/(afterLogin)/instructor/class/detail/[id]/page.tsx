@@ -1,23 +1,25 @@
 'use client';
 
-import Image from 'next/image';
-import styled from './classDetail.module.scss';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import {
   IconTrashcan,
   IconClock,
   IconCalendar,
   IconLocation,
   IconRepeat,
-  IconShare,
-  IconDownload,
   IconArrowRight,
 } from '@assets';
 import { Header } from '@components';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { LectureViewProps } from '@types';
+
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
+
+import dayjs from 'dayjs';
+import styled from './classDetail.module.scss';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -45,7 +47,7 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
           <br />
           해당 수강생의 화면에서도 삭제됩니다.
         </p>
-        <form action="#">
+        <form>
           <input
             type="checkbox"
             id="confirmation-checkbox"
@@ -80,7 +82,7 @@ export default function ClassDetail() {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
   const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
-  const [lecture, setLecture] = useState();
+  const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
@@ -92,18 +94,18 @@ export default function ClassDetail() {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.data && data.data.lectureTime) {
-          const lectureTime = data.data.lectureTime.split('-');
+        if (data.data) {
+          const lectureTime = data.data.lectureTime
+            ? data.data.lectureTime.split('-')
+            : [];
           setLecture({ ...data.data, lectureTime });
-        } else {
-          setLecture(data.data);
         }
       });
   }, [lectureId]);
 
   //  @ts-ignore
   if (!lecture || lecture.length === 0) {
-    return <p>로딩 중</p>;
+    return null;
   }
 
   const DeleteHandler = async () => {
@@ -129,6 +131,8 @@ export default function ClassDetail() {
     }
   };
 
+  const lectureTime = lecture.lectureTime || ['', ''];
+
   return (
     <div>
       <Header
@@ -137,26 +141,24 @@ export default function ClassDetail() {
       />
 
       <div className={styled.qr}>
-        {/* @ts-ignore */}
         <h2>{lecture.lectureTitle}</h2>
-        {/* @ts-ignore */}
         <div className={styled.desc}>{lecture.lectureTitle}</div>
-        <div className={styled.instructor}>
-          <Image
-            // @ts-ignore
-            src={lecture.instructor.instructorProfileImage}
-            alt="프로필"
-            width={24}
-            height={24}
-            style={{ borderRadius: '50% 50%', marginRight: '7px' }}
+        {lecture.instructor && (
+          <QRCode
+            lectureData={{
+              // @ts-ignore
+              title: lecture.lectureTitle,
+              content: lecture.lectureContent,
+            }}
+            instructorData={{
+              // @ts-ignore
+              name: lecture.instructor.instructorName,
+              // @ts-ignore
+              image: lecture.instructor.instructorProfileImage,
+            }}
+            style={{ backgroundColor: '#fff' }}
           />
-          <div className={styled.instructor_name}>
-            {/* @ts-ignore */}
-            <p>{lecture.instructor.instructorName}</p> 강사님 수업
-          </div>
-        </div>
-        {/* @ts-ignore */}
-        <QRCode lectureData={lectureId} instructorData={lectureId} />
+        )}
       </div>
 
       <div className={styled.invite}>
@@ -165,26 +167,19 @@ export default function ClassDetail() {
           <div className={styled.count_box}>
             <p className={styled.personnel}>현재 인원</p>
             <p className={styled.count}>
-              {/* @ts-ignore */}
-              {lecture.members && lecture.members.length > 0
-                ? // @ts-ignore
-                  `${lecture.members.length}명`
-                : '0명'}
+              {lecture.members?.length ? `${lecture.members.length}명` : '0명'}
             </p>
           </div>
           <Link
             className={`${styled.profile} ${styled.box}`}
             href={`/instructor/class/detail/${lectureId}/members`}>
-            {/* @ts-ignore */}
             {lecture.members && lecture.members.length > 0 ? (
               <>
-                {/* @ts-ignore */}
                 <div className={styled.profile_position}>
-                  {/* @ts-ignore */}
                   {lecture.members.slice(-7).map((member, index) => (
                     <Image
                       key={index}
-                      src={member.memberProfileImage}
+                      src={member.profileImage}
                       alt="회원 프로필 사진"
                       width={32}
                       height={32}
@@ -220,20 +215,16 @@ export default function ClassDetail() {
                 <IconClock width={20} height={20} fill="#212223" />
               </span>
               <span className={styled.twelve}>
-                {/* @ts-ignore */}
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
-              {/* @ts-ignore */}
-              {lecture.lectureTime[0]}
+              {lectureTime[0]}
             </div>
             <span className={styled.wave}>~</span>
             <div>
               <span className={styled.twelve}>
-                {/* @ts-ignore */}
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
-              {/* @ts-ignore */}
-              {lecture.lectureTime[1]}
+              {lectureTime[1]}
             </div>
           </div>
 
@@ -242,9 +233,7 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconCalendar width={20} height={20} fill="#212223" />
               </span>
-              매주&nbsp;
-              {/* @ts-ignore */}
-              {lecture.lectureDays.replace(/(.)(?=.)/g, '$1, ')}요일
+              매주 {lecture.lectureDays.replace(/(.)(?=.)/g, '$1, ')}요일
             </p>
           </div>
 
@@ -253,7 +242,6 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconLocation width={20} height={20} fill="#212223" />
               </span>
-              {/* @ts-ignore */}
               {lecture.lectureLocation}
             </p>
           </div>
@@ -263,7 +251,13 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconRepeat width={20} height={20} fill="#212223" />
               </span>
-              종료일 없이 반복
+              {lecture.lectureEndDate ? (
+                <>
+                  {dayjs(lecture.lectureEndDate).format('YYYY년 MM월 DD일')} 종료
+                </>
+              ) : (
+                <span>종료일 없이 반복</span>
+              )}
             </p>
           </div>
 
@@ -271,7 +265,6 @@ export default function ClassDetail() {
             <p>
               <span
                 className={styled.color_box}
-                //  @ts-ignore
                 style={{ backgroundColor: `${lecture.lectureColor}` }}></span>
               구분색
             </p>
@@ -301,18 +294,23 @@ export default function ClassDetail() {
         {lecture.members.memberUserId === 0 ? (
           <></>
         ) : (
-          <Link
-            className={styled.feedback_btn}
-            href={{
-              pathname: `/instructor/feedback/create/class`,
-              query: {
-                lecture: JSON.stringify(lecture),
-              },
-            }}
-            // as={`/instructor/feedback/create/class`}
-          >
-            수강생 전체 피드백 남기기
-          </Link>
+          <div className={styled.feedback_bg}>
+            <Link
+              className={styled.feedback_btn}
+              href={{
+                pathname: `/instructor/feedback/create/class`,
+                query: {
+                  id: lectureId,
+                  // @ts-ignore
+                  member: lecture.members
+                    .map((member) => member.memberUserId)
+                    .join(','),
+                },
+              }}
+              as={`/instructor/feedback/create/class`}>
+              수강생 전체 피드백 남기기
+            </Link>
+          </div>
         )}
       </div>
       <div className={styled.bottom_gap}></div>

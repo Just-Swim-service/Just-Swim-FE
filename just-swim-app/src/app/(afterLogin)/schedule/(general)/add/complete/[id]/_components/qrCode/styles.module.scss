@@ -45,11 +45,14 @@
     gap: 7px;
 
     & > img {
-      border-radius: 50%
+      border-radius: 50%;
     }
 
     & > p {
       @include Title4-M;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: break-word;
     }
   }
 
@@ -73,13 +76,13 @@
       .icon_wrapper {
         width: 40px;
         height: 40px;
-        
+
         display: flex;
         align-items: center;
         justify-content: center;
 
         background-color: $--White;
-        
+
         border-radius: 50%;
         border: 1px solid $--gray-200;
       }

@@ -1,0 +1,79 @@
+@import '@/globals.scss';
+
+.search {
+  position: relative;
+  width: 100%;
+  padding: 14px 16px;
+
+  .search_icon {
+    position: absolute;
+    top: 50%;
+    left: 29px;
+    transform: translate(0, -50%);
+  }
+
+  input {
+    @include Title3-M;
+    width: 100%;
+    height: 48px;
+    padding: 0 42px;
+    display: flex;
+    align-items: center;
+    border: none;
+    background-color: $--gray-50;
+    border-radius: 6px;
+    caret-color: $--Primary-blue;
+
+    &:focus {
+      outline: 1.5px solid $--Primary-blue;
+      border-radius: 6px;
+    }
+  }
+}
+
+.inner {
+  padding: 17px 16px 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  justify-content: space-between;
+  margin: 22px 0 18px;
+  font-size: 16px;
+
+  button {
+    font-size: 14px;
+    color: $--Primary-blue;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+
+    .icon {
+      margin-left: 5px;
+    }
+  }
+}
+
+.customer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 13px 0;
+  border-bottom: 1px solid $--gray-200;
+
+  input {
+    margin-right: 8px;
+  }
+
+  label {
+    flex: 1;
+
+    div {
+      margin-left: 10px;
+    }
+  }
+}

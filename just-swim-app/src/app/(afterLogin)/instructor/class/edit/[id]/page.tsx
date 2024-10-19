@@ -1,5 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+
 import {
   TimeInput,
   Header,
@@ -10,9 +13,8 @@ import {
   ColorInput,
 } from '@components';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import styled from './classInfoEdit.module.scss';
+import { LectureViewProps } from '@types';
 
 export default function ClassInfoEdit() {
   const params = useParams();
@@ -22,7 +24,7 @@ export default function ClassInfoEdit() {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
   const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
-  const [lecture, setLecture] = useState([]);
+  const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [formData, setFormData] = useState({});
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -45,8 +47,9 @@ export default function ClassInfoEdit() {
       });
   }, [lectureId]);
 
+  //  @ts-ignore
   if (!lecture || lecture.length === 0) {
-    return <p>로딩 중</p>;
+    return null;
   }
 
   const isFormDataChanged = (lectureData: object, formData: object) => {
@@ -61,19 +64,15 @@ export default function ClassInfoEdit() {
 
   const handleEdit = async (lectureId: number) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_HOST}/lecture/${lectureId}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: AUTHORIZATION_HEADER,
-          },
-          body: JSON.stringify(formData),
+      const response = await fetch(API_URL, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: AUTHORIZATION_HEADER,
         },
-      );
+        body: JSON.stringify(formData),
+      });
       const updatedLectureData = await response.json();
-      console.log(updatedLectureData);
       setLecture(updatedLectureData);
       alert('수정되었습니다.');
       router.push(`/instructor/class/detail/${lectureId}`);
@@ -158,6 +157,7 @@ export default function ClassInfoEdit() {
                 defaultValue={lecture.lectureDays}
                 //  @ts-ignore
                 value={formData.lectureDays}
+                onChange={handleChange}
               />
 
               <label htmlFor="lectureLocation">수업 위치</label>
@@ -168,6 +168,7 @@ export default function ClassInfoEdit() {
                 defaultValue={lecture.lectureLocation}
                 // @ts-ignore
                 value={formData.lectureLocation}
+                onChange={handleChange}
               />
 
               <label htmlFor="lectureEndDate">종료 일자</label>

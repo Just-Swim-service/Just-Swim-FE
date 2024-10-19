@@ -22,7 +22,12 @@ export interface LectureViewProps extends LectureBasicProps {
   isPastLecture: boolean;
   members?: {
     memberUserId: number;
-    memberProfileImage: string;
+    memberName: string;
+    profileImage: string;
+  }[];
+  instructor: {
+    instructorName: string;
+    instructorProfileImage: string;
   }[];
 }
 
@@ -30,4 +35,14 @@ export interface ScheduleSummary {
   date: string;
   day: string;
   lectures: LectureProps[];
+}
+
+export interface LectureMembersProps {
+  memberId: string;
+  userId: number;
+  lectureTitle: string;
+  lectureId: string;
+  nickName: string;
+  name: string;
+  profileImage: string;
 }
