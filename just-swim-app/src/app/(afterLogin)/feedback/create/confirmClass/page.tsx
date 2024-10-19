@@ -35,7 +35,7 @@ export default function ClassFeedbackConfirm() {
 
     reset();
 
-    router.push('/instructor/feedback');
+    router.push('/feedback');
   };
 
   return (

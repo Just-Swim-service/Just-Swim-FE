@@ -269,7 +269,7 @@ export function Search({
 
     // console.table(selected);
     updateSelectedList(selected);
-    router.push('/instructor/feedback/create/person');
+    router.push('/feedback/create/person');
   }
 
   return (

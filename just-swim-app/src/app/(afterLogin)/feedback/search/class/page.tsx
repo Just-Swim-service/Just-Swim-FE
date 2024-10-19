@@ -109,7 +109,7 @@ export default function SearchClass() {
             className={`${styled.complete_btn} ${checkLength() == 0 ? styled.disabled : ''}`}
             onClick={() => {
               setSelectedListHandler();
-              router.push('/instructor/feedback/create/class');
+              router.push('/feedback/create/class');
             }}>
             선택 완료
           </button>
