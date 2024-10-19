@@ -108,7 +108,7 @@ export default function User() {
                             }}>
                             <div className={styled.lectureItem}>
                               <Link
-                                href={`/instructor/class/detail/${item.lectureId}`}>
+                                href={`/class/detail/${item.lectureId}`}>
                                 <div className={styled.text_content}>
                                   <p className={styled.name}>
                                     {item.lectureTitle}
@@ -169,7 +169,7 @@ export default function User() {
                             }}>
                             <div className={styled.lectureItem}>
                               <Link
-                                href={`/instructor/class/detail/${item.lectureId}`}>
+                                href={`/class/detail/${item.lectureId}`}>
                                 <div className={styled.text_content}>
                                   <p className={styled.name}>
                                     {item.lectureTitle}
@@ -273,8 +273,8 @@ export default function User() {
                       <span>
                         <IconLink width={16} height={16} fill="#3689FF" />
                       </span>
-                      <Link href={`/instructor/feedback/feedbackDetail`}>
-                        https://alpha-justswim.netlify.app/instructor/feedback/feedbackDetail
+                      <Link href={`/feedback/feedbackDetail`}>
+                        https://alpha-justswim.netlify.app/feedback/feedbackDetail
                         {/* 추후 Link 수정 */}
                       </Link>
                     </div>

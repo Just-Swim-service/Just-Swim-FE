@@ -124,7 +124,7 @@ export default function ClassDetail() {
 
       alert('수업 삭제 성공');
       setShowConfirmModal(false);
-      router.push('/instructor/class');
+      router.push('/class');
     } catch (error) {
       console.error('수업 삭제 오류 발생', error);
       alert('수업 삭제에 실패하였습니다. 관리자에게 문의하세요.');
@@ -137,7 +137,7 @@ export default function ClassDetail() {
     <div>
       <Header
         title="수업 정보"
-        editURL={`/instructor/class/edit/${lectureId}`}
+        editURL={`/class/edit/${lectureId}`}
       />
 
       <div className={styled.qr}>
@@ -172,7 +172,7 @@ export default function ClassDetail() {
           </div>
           <Link
             className={`${styled.profile} ${styled.box}`}
-            href={`/instructor/class/detail/${lectureId}/members`}>
+            href={`/class/detail/${lectureId}/members`}>
             {lecture.members && lecture.members.length > 0 ? (
               <>
                 <div className={styled.profile_position}>
@@ -298,7 +298,7 @@ export default function ClassDetail() {
             <Link
               className={styled.feedback_btn}
               href={{
-                pathname: `/instructor/feedback/create/class`,
+                pathname: `/feedback/create/class`,
                 query: {
                   id: lectureId,
                   // @ts-ignore
@@ -307,7 +307,7 @@ export default function ClassDetail() {
                     .join(','),
                 },
               }}
-              as={`/instructor/feedback/create/class`}>
+              as={`/feedback/create/class`}>
               수강생 전체 피드백 남기기
             </Link>
           </div>

@@ -26,19 +26,19 @@ export function InstructorBottomNavBar() {
   return (
     <div className={styled.bottom_nav_bar_wrapper}>
       <Link
-        href="/instructor/class"
+        href="/class"
         className={`${styled.bottom_nav_bar} ${styled[type === 'classList' ? 'active' : '']}`}>
         <IconNavCalendar />
         <button onClick={() => handleBottomNavClick('classList')}>수업</button>
       </Link>
       <Link
-        href="/instructor/schedule"
+        href="/schedule"
         className={`${styled.bottom_nav_bar} ${styled[type === 'schedule' ? 'active' : '']}`}>
         <IconHome />
         <button onClick={() => handleBottomNavClick('schedule')}>홈</button>
       </Link>
       <Link
-        href="/instructor/feedback"
+        href="/feedback"
         className={`${styled.bottom_nav_bar} ${styled[type === 'feedback' ? 'active' : '']}`}>
         <IconSendFeedback />
         <button onClick={() => handleBottomNavClick('feedback')}>피드백</button>

@@ -75,7 +75,7 @@ export default function ClassInfoEdit() {
       const updatedLectureData = await response.json();
       setLecture(updatedLectureData);
       alert('수정되었습니다.');
-      router.push(`/instructor/class/detail/${lectureId}`);
+      router.push(`/class/detail/${lectureId}`);
     } catch (error) {
       alert('수정 중 오류가 발생했습니다.');
     }

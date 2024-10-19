@@ -24,7 +24,7 @@ export function BottomNav() {
             <span>홈</span>
         </Link>
         <Link
-          href="/instructor/class"
+          href="/class"
           className={`${styled.item} ${pathname.startsWith('/class') && styled.selected}`}>
             <IconClass width={22} height={22} />
             <span>수업</span>
