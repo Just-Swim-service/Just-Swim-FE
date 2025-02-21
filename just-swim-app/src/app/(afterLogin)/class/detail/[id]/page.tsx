@@ -84,6 +84,7 @@ export default function ClassDetail() {
   const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
+  console.log(lecture?.members);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
@@ -289,7 +290,7 @@ export default function ClassDetail() {
           />
         )}
         {/* @ts-ignore */}
-        {lecture.members.memberUserId === 0 ? (
+        {lecture.members.length === 0 ? (
           <></>
         ) : (
           <div className={styled.feedback_bg}>
