@@ -32,36 +32,13 @@ export function ScheduleAddButton({ token }: { token: string }) {
   useEffect(() => {
     const user = getUser();
     if (!user || isEmpty(user)) {
-      setUserData();
+      setUserData().then(() => {
+        setType(trim(getUserType(token)));
+      });
+    } else {
+      setType(trim(getUserType(token)));
     }
-    setType(trim(getUserType(token)));
   }, [getUser, getUserType, setUserData, token]);
-  //   useEffect(() => {
-  //     const setUserData = async () => {
-  //       const { status, data } = await getMyProfile();
-  //       if (status === 406) {
-  //         setAddUserToken('');
-  //         return router.replace('/signin');
-  //       }
-  //       setAddUserProfile({ token: token, profile: data?.data });
-  //       setType(trim(getUserType(token)));
-  //     };
-
-  //     const user = getUser();
-  //     if (!user || isEmpty(user)) {
-  //       setUserData();
-  //     }
-  //     setType(trim(getUserType(token)));
-  //   }, [
-  //     getUser,
-  //     getUserType,
-  //     setAddUserProfile,
-  //     setAddUserToken,
-  //     token,
-  //     router,
-  //     type,
-  //     setType,
-  //   ]);
 
   return (
     <>
