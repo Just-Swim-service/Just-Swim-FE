@@ -1,10 +1,7 @@
 'use client';
 
 import { BottomNav, UserIconHeader } from '@components';
-import {
-  ScheduleAddButton,
-  ScheduleCommonLayout,
-} from './(schedule)/_components';
+import { ScheduleAddButton, ScheduleCommonLayout } from './_components';
 import { Suspense, useEffect, useState } from 'react';
 import { setTokenInCookies } from '@utils';
 import { useSearchParams } from 'next/navigation';
