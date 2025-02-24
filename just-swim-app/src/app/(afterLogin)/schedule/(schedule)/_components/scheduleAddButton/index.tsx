@@ -31,7 +31,8 @@ export function ScheduleAddButton({ token }: { token: string }) {
 
   useEffect(() => {
     const user = getUser();
-    if (!user || isEmpty(user)) {
+
+    if ('' in user || !user) {
       setUserData().then(() => {
         setType(trim(getUserType(token)));
       });
