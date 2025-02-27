@@ -28,7 +28,8 @@ const nextConfig = {
         hostname: 'ssl.pstatic.net',
       },
       {
-        hostname: 's3.ap-northeast-2.amazonaws.com',
+        protocol: 'https',
+        hostname: 'just-swim-bucket.s3.ap-northeast-2.amazonaws.com',
       },
     ],
   },

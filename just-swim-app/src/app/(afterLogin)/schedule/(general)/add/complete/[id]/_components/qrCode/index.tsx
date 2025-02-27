@@ -10,7 +10,11 @@ import * as clipboard from 'clipboard-polyfill';
 import { ClipboardItem } from 'clipboard-polyfill';
 
 import { IconDownload, IconShare, ImageQRCode } from '@assets';
-import { LectureProps, InstructorProfileProps } from '@types';
+import {
+  LectureProps,
+  InstructorProfileProps,
+  LectureQRCodeProps,
+} from '@types';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
@@ -19,8 +23,9 @@ export function QRCode({
   lectureData,
   instructorData,
 }: {
-  lectureData: LectureProps;
+  lectureData: LectureQRCodeProps;
   instructorData: InstructorProfileProps;
+  style?: React.CSSProperties;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -76,7 +81,12 @@ export function QRCode({
         </p>
       </div>
       <div className={styled.qr_code}>
-        <Image src={ImageQRCode} alt="QR 코드 이미지" width={114} height={114} />
+        <Image
+          src={lectureData.lectureQRCode || ImageQRCode}
+          alt="QR 코드 이미지"
+          width={114}
+          height={114}
+        />
       </div>
       <div className={styled.qr_button_wrapper}>
         <button className={styled.qr_button} onClick={handleDownload}>

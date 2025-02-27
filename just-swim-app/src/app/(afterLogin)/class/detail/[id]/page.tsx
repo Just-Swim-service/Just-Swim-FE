@@ -84,7 +84,6 @@ export default function ClassDetail() {
   const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
-  console.log(lecture?.members);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
@@ -146,8 +145,9 @@ export default function ClassDetail() {
           <QRCode
             lectureData={{
               // @ts-ignore
-              title: lecture.lectureTitle,
-              content: lecture.lectureContent,
+              lectureTitle: lecture.lectureTitle,
+              lectureContent: lecture.lectureContent,
+              lectureQRCode: lecture.lectureQRCode,
             }}
             instructorData={{
               // @ts-ignore

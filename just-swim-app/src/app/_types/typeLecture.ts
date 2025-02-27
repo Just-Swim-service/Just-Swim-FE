@@ -58,3 +58,9 @@ export interface LectureMembersProps {
   name: string;
   profileImage: string;
 }
+
+export interface LectureQRCodeProps {
+  lectureTitle: string;
+  lectureContent: string;
+  lectureQRCode: string;
+}
