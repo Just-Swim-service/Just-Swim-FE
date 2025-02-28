@@ -4,17 +4,13 @@ import { useRef } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import saveAs from 'file-saver';
 import * as clipboard from 'clipboard-polyfill';
 import { ClipboardItem } from 'clipboard-polyfill';
 
 import { IconDownload, IconShare, ImageQRCode } from '@assets';
-import {
-  LectureProps,
-  InstructorProfileProps,
-  LectureQRCodeProps,
-} from '@types';
+import { InstructorProfileProps, LectureQRCodeProps } from '@types';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
@@ -34,13 +30,16 @@ export function QRCode({
 
     try {
       const div = containerRef.current;
-      const canvas = await html2canvas(div, { scale: 2 });
+      const dataUrl = await toPng(div, { cacheBust: true });
 
-      canvas.toBlob((blob) => {
-        if (blob) {
-          saveAs(blob, `${lectureData.lectureTitle} QR 코드.png`);
-        }
-      });
+      const byteCharacters = atob(dataUrl.split(',')[1]);
+      const byteArrays = new Uint8Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteArrays[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const blob = new Blob([byteArrays], { type: 'image/png' });
+      saveAs(blob, `${lectureData.lectureTitle} QR 코드.png`);
     } catch (error) {
       notFound();
     }
@@ -51,13 +50,16 @@ export function QRCode({
 
     try {
       const div = containerRef.current;
-      const canvas = await html2canvas(div, { scale: 2 });
+      const dataUrl = await toPng(div, { cacheBust: true });
 
-      canvas.toBlob((blob) => {
-        if (blob) {
-          clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        }
-      });
+      const byteCharacters = atob(dataUrl.split(',')[1]);
+      const byteArrays = new Uint8Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteArrays[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const blob = new Blob([byteArrays], { type: 'image/png' });
+      clipboard.write([new ClipboardItem({ 'image/png': blob })]);
     } catch (error) {
       notFound();
     }
