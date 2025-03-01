@@ -84,14 +84,14 @@ export default function SearchClass() {
                 </p>
                 <p>
                   <span>
-                    <Location width="15" />
+                    <Clock width="15" />
                   </span>
                   {/* @ts-ignore */}
-                  {group.lectureTime}
+                  {`${group.lectureTime[0]} ~ ${group.lectureTime[0]}`}
                 </p>
                 <p>
                   <span>
-                    <Clock width="15" />
+                    <Location width="15" />
                   </span>
                   {/* @ts-ignore */}
                   {group.lectureLocation}
