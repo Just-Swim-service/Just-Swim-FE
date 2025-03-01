@@ -6,6 +6,7 @@ import {
   MouseEvent,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import Image from 'next/image';
@@ -16,28 +17,43 @@ import { randomId } from '@utils';
 
 import styled from './styles.module.scss';
 
+const locationCache = new Map<string, { name: string; location: string }[]>();
+
 async function getLocationList(query: string) {
   if (!query) return [];
 
-  const response = await fetch(
-    `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(query)}`,
-    {
-      headers: {
-        Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
-      },
-    },
-  );
-
-  if (!response.ok) {
-    console.error('위치 검색 실패');
-    return [];
+  if (locationCache.has(query)) {
+    return locationCache.get(query)!;
   }
 
-  const data = await response.json();
-  return data.documents.map((doc: any) => ({
-    name: doc.place_name,
-    location: doc.road_address_name || doc.address_name,
-  }));
+  try {
+    const response = await fetch(
+      `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(query)}`,
+      {
+        headers: {
+          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      console.error('위치 검색 실패');
+      return [];
+    }
+
+    const data = await response.json();
+    const locations = data.documents.map((doc: any) => ({
+      name: doc.place_name,
+      location: doc.road_address_name || doc.address_name,
+    }));
+
+    locationCache.set(query, locations);
+
+    return locations;
+  } catch (error) {
+    console.error('location API 요청 중 오류 발생', error);
+    return [];
+  }
 }
 
 function LocationListItem({
@@ -88,6 +104,7 @@ export function LocationModal({
   const [locationList, setLocationList] = useState<
     { name: string; location: string }[]
   >([]);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -109,15 +126,23 @@ export function LocationModal({
   };
 
   useEffect(() => {
-    let isMounted = true; // 컴포넌트가 언마운트되면 데이터를 무시하기 위해 사용
-    const fetchLocations = async () => {
+    let isMounted = true;
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(async () => {
+      if (input.trim() === '') {
+        setLocationList([]);
+        return;
+      }
+
       const locations = await getLocationList(input);
       if (isMounted) {
         setLocationList(locations);
       }
-    };
-
-    fetchLocations();
+    }, 300);
 
     return () => {
       isMounted = false;
