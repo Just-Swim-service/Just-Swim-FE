@@ -7,8 +7,6 @@ import { FeedbackTypeButton, List } from './_components';
 
 import styled from './feedback.module.scss';
 
-// import { getCachedSortedFeedback } from './server';
-
 export default async function Feedback() {
   const feedbackList = (await getSortedFeedback()) || [];
   const token = await getTokenInCookies();

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { searchClassStore, searchUserStore, useUserStore } from '@store';
@@ -9,20 +9,43 @@ import FeedbackTypeButtonPersonal from '@assets/feedback_type_button_personal.sv
 
 import styled from './feedbackTypeButton.module.scss';
 import { feedbackStore } from '@/_store/feedback';
+import { getMyProfile } from '@apis';
+import { trim } from 'lodash';
 
 export function FeedbackTypeButton({ token }: { token: string }) {
   const router = useRouter();
-  const { getUserType } = useUserStore();
+  const { getUserType, getUser, setAddUserProfile, setAddUserToken } =
+    useUserStore();
   const { resetFeedbackFormData } = feedbackStore();
   const { resetClassData } = searchClassStore();
   const { resetMemberData } = searchUserStore();
+  const [type, setType] = useState<string>('');
 
-  const [userType, setUserType] = useState<string | null>(null);
+  const setUserData = useCallback(async () => {
+    try {
+      const { status, data } = await getMyProfile();
+      if (status === 406) {
+        setAddUserToken('');
+        return router.replace('/signin');
+      }
+      setAddUserProfile({ token: token, profile: data?.data });
+    } catch (error) {
+      setAddUserToken('');
+      return router.replace('/signin');
+    }
+  }, [setAddUserProfile, setAddUserToken, token, router]);
 
   useEffect(() => {
-    const type = getUserType(token);
-    setUserType(type);
-  }, [token, getUserType]);
+    const user = getUser();
+
+    if (Object.keys(user).length === 0 || !user) {
+      setUserData().then(() => {
+        setType(trim(getUserType(token)));
+      });
+    } else {
+      setType(trim(getUserType(token)));
+    }
+  }, [getUser, getUserType, setUserData, token]);
 
   const handleIndividualClick = (feedbackType: string) => {
     resetFeedbackFormData();
@@ -33,7 +56,7 @@ export function FeedbackTypeButton({ token }: { token: string }) {
 
   return (
     <>
-      {userType === 'instructor' && (
+      {type === 'instructor' && (
         <div className={styled.button_box}>
           <button
             onClick={() => handleIndividualClick('person')}
