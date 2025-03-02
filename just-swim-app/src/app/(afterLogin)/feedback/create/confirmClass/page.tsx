@@ -8,45 +8,48 @@ import { feedbackStore } from '@/_store/feedback';
 import { searchClassStore } from '@store';
 import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
+import { getLectureMembers } from '@/_apis/lecture/getLectureMembers';
 
 export default function ClassFeedbackConfirm() {
   // @ts-ignore
-  const { selectedList, resetClassData } = searchClassStore();
+  const { resetClassData } = searchClassStore();
   const { formDataState } = feedbackStore();
-  const target = JSON.parse(formDataState.target || '[]');
+  const target = JSON.parse(formDataState.targets || '[]');
 
   const totalMembersCount = target.reduce(
     (acc: any, cur: any) => acc + (cur.members?.length || 0),
     0,
   );
-  //   const target = JSON.parse(formDataState.target);
   const [checked, setChecked] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async () => {
     // @ts-ignore
-    const userIds = (target[0]?.members || []).map((el) => Number(el.userId));
-    const lectureId = Number(target[0].lectureId);
-    const target_users = [
-      {
-        lectureId,
-        userIds,
-      },
-    ];
+    const target_users: any = [];
+    const lectureId = target.map((item: any) => item.lectureId);
 
-    try {
-      const data = await postFeedback(
-        formDataState,
-        formDataState.type,
-        target_users,
+    for (let i = 0; i < lectureId.length; i++) {
+      const members = await getLectureMembers(lectureId[i]).then(
+        (res) => res.data,
       );
-
-      resetClassData();
-      router.replace('/feedback');
-      window.location.href = '/feedback';
+      console.log(members);
+      target_users.push({
+        lectureId: lectureId[i],
+        userIds: members?.map((item: any) => item.userId),
+      });
+    }
+    try {
+      const response = await postFeedback(formDataState, target_users);
+      if (response && response.status === 200) {
+        resetClassData();
+        router.push('/feedback');
+        window.location.href = '/feedback';
+      } else {
+        console.error('Feedback submission failed:', response);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error processing feedback response:', error);
     }
   };
 
@@ -108,19 +111,19 @@ export default function ClassFeedbackConfirm() {
             <div className={styled.title}>
               첨부 파일:
               <span>
-                {formDataState.file ? formDataState.fileURL.length : 0}개
+                {formDataState.files ? formDataState.files.length : 0}개
               </span>
             </div>
             <div className={styled.preview_wrapper}>
               {/* @ts-ignore */}
-              {(formDataState.fileURL || []).map((preview, index) => {
+              {(formDataState.files || []).map((preview, index) => {
                 // console.log(Object.keys(preview));
                 return (
                   <div
                     key={index}
                     className={styled.preview_item}
                     style={{
-                      backgroundImage: `url(${preview})`,
+                      backgroundImage: `url(${preview.fileURL})`,
                       width: '100px',
                       height: '100px',
                       backgroundSize: 'cover',
