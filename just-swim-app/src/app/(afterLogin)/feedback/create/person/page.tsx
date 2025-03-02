@@ -39,7 +39,7 @@ interface CustomFormData {
   date: string;
   files: File[] | null;
   targets: string;
-  link: string | null;
+  link: string | null | undefined;
   content: string;
 }
 
@@ -65,7 +65,6 @@ export default function FeedbackWrite() {
             lectureTitle: d.lectureTitle, // lectureTitle 추가
           })),
         );
-        console.log('memberData', memberData);
         setMembers(memberData);
       }
     };
@@ -84,45 +83,40 @@ export default function FeedbackWrite() {
     mode: 'onChange',
   });
 
-  //   const [feedbackFormData, setFeedbackFormData] = useState('');
-
-  // handleSubmit에는 RHF에서 validate된 데이터가 들어간다
   const onSubmit = async (data: FormType) => {
-    // console.log('images', images);
-    const formData = new FormData();
-
-    formData.append('target', data.target);
-    formData.append('date', data.date);
-    // @ts-ignore
-    formData.append('link', data.link);
-    formData.append('content', data.content);
-    // https://stackoverflow.com/questions/35940290/how-to-convert-base64-string-to-javascript-file-object-like-as-from-file-input-f
-    Array.from(images).forEach((el, i) => {
-      // @ts-ignore
-      formData.append('file', el.file);
-      // @ts-ignore
-      formData.append('fileURL', el.dataUrl);
-    });
-
-    // @ts-ignore
-    const formDataObject: CustomFormData = {};
-
-    formData.forEach((value, key) => {
-      // console.log(value, key);
-      // File 다중선택시 배열이 아닌, 1개만 들어가는 문제 해결방법,,
-      if (key === 'fileURL' || key === 'file') {
-        if (Object.hasOwn(formDataObject, key)) {
-          // @ts-ignore
-          formDataObject[key].push(value);
-        } else {
-          // @ts-ignore
-          formDataObject[key] = [value];
+    for (const image of data.file) {
+      try {
+        const presignedURL = await getFeedbackPresignedURL([image.name]);
+        if (!presignedURL) {
+          throw new Error('Presigned URL을 가져오지 못했습니다.');
         }
-      } else {
-        // @ts-ignore
-        formDataObject[key] = value;
+        const response = await fetch(presignedURL[0].presignedUrl, {
+          method: 'PUT',
+          body: image,
+          headers: {
+            'Content-Type': image.type, // 올리는 파일의 타입
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('파일 업로드 실패');
+        }
+        image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
+      } catch (error) {
+        return null;
       }
-    });
+    }
+    // console.log('data', data);
+
+    // console.log('presignedURLs', presignedURLs);
+
+    const formDataObject: CustomFormData = {
+      date: data.date,
+      targets: data.target,
+      link: data.link,
+      content: data.content,
+      files: data.file,
+    };
 
     setFeedbackFormData(formDataObject, 'personal');
     return router.push('/feedback/create/confirm');

@@ -6,7 +6,7 @@ import Send from '@assets/send.svg';
 import Calendar from '@assets/calendar.svg';
 import UserTypeIndividual from '@assets/user_type_individual.svg';
 import UserTypeGroup from '@assets/user_type_group.svg';
-import { IconArrowRightSmall } from '@assets';
+import { IconArrowRightSmall, IconDefaultProfile } from '@assets';
 import Link from '@assets/link.svg';
 
 import { HistoryBackHeader } from '@components';
@@ -113,15 +113,16 @@ export default function FeedbackDetail() {
                       key={index}
                       className={styled.preview_item}
                       style={{
-                        backgroundImage: `url(${image.imagePath})`,
+                        backgroundImage: image.imagePath
+                          ? `url(${image.imagePath.trim()})`
+                          : IconDefaultProfile,
                         width: '100px',
                         height: '100px',
                         backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                       }}></div>
                   );
                 })}
-                <div className={styled.photo}></div>
-                <div className={styled.photo}></div>
               </div>
             </div>
           )}

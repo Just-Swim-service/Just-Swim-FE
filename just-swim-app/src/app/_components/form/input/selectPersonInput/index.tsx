@@ -52,8 +52,6 @@ function _SelectPersonInput(
     setValue(name, value);
   }, [selectedList, name, setValue]);
 
-  console.log('selectedList: ', selectedList);
-
   return (
     <div className={styled.input_wrapper}>
       <input

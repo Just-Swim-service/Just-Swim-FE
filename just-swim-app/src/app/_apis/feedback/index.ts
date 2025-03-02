@@ -27,16 +27,15 @@ interface FeedbackValue {
   feedbackImage: string[];
 }
 // @ts-ignore
-async function postFeedback(data, type, target) {
+async function postFeedback(data, target) {
   const value: FeedbackValue = {
-    feedbackType: type,
+    feedbackType: data.type,
     feedbackDate: data.date,
     feedbackLink: data.link,
     feedbackContent: data.content,
     feedbackTarget: target,
-    feedbackImage: data.file?.map((file: any) => file.name),
+    feedbackImage: data.files?.map((file: any) => file.fileURL),
   };
-
   return await api('/feedback', 'POST', {
     body: JSON.stringify(value),
   });

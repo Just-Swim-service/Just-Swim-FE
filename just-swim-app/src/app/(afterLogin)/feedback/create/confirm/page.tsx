@@ -14,8 +14,7 @@ export default function PersonalFeedbackConfirm() {
   const { resetMemberData } = searchUserStore();
   const { getFeedbackFormData } = feedbackStore();
   const formDataState = getFeedbackFormData();
-  //   const target = JSON.parse(formDataState.target);
-  const target = JSON.parse(formDataState.target || '[]');
+  const target = JSON.parse(formDataState.targets || '[]');
   const [checked, setChecked] = useState(false);
   const router = useRouter();
 
@@ -30,17 +29,12 @@ export default function PersonalFeedbackConfirm() {
         return acc;
       }, {}),
     );
-
-    const response = await postFeedback(
-      formDataState,
-      formDataState.type,
-      target_users,
-    );
-
     try {
+      const response = await postFeedback(formDataState, target_users);
       if (response && response.status === 200) {
         resetMemberData();
         router.push('/feedback');
+        window.location.href = '/feedback';
       } else {
         console.error('Feedback submission failed:', response);
       }
@@ -91,19 +85,18 @@ export default function PersonalFeedbackConfirm() {
             <div className={styled.title}>
               첨부 파일:
               <span>
-                {formDataState.file ? formDataState.fileURL.length : 0}개
+                {formDataState.files ? formDataState.files.length : 0}개
               </span>
             </div>
             <div className={styled.preview_wrapper}>
               {/* @ts-ignore */}
-              {(formDataState.fileURL || []).map((preview, index) => {
-                // console.log(Object.keys(preview));
+              {(formDataState.files || []).map((preview, index) => {
                 return (
                   <div
                     key={index}
                     className={styled.preview_item}
                     style={{
-                      backgroundImage: `url(${preview})`,
+                      backgroundImage: `url(${preview.fileURL})`,
                       width: '100px',
                       height: '100px',
                       backgroundSize: 'cover',

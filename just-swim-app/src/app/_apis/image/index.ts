@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
-export async function getProfilePresignedURL(name: string): Promise<string[]> { 
+export async function getProfilePresignedURL(name: string): Promise<string[]> {
   const result = await Fetch<{ success: boolean; data: string[] }>({
     url: `${URL}/user/profileImage/presignedUrl`,
     method: 'POST',
@@ -14,8 +14,8 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
       credential: true,
     },
     body: {
-      'profileImage': name
-    }
+      profileImage: name,
+    },
   });
 
   if (result.success) {
@@ -25,8 +25,13 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
   }
 }
 
-export async function getFeedbackPresignedURL(files: string[]): Promise<{ fileName: string, presignedUrl: string }[]> {
-  const result = await Fetch<{ success: boolean; data: { fileName: string, presignedUrl: string }[] }>({
+export async function getFeedbackPresignedURL(
+  files: string[],
+): Promise<{ fileName: string; presignedUrl: string }[]> {
+  const result = await Fetch<{
+    success: boolean;
+    data: { fileName: string; presignedUrl: string }[];
+  }>({
     url: `${URL}/feedback/feedbackImage/presignedUrl`,
     method: 'POST',
     header: {
@@ -35,8 +40,8 @@ export async function getFeedbackPresignedURL(files: string[]): Promise<{ fileNa
       json: true,
     },
     body: {
-      'files': files
-    }
+      files: files,
+    },
   });
 
   if (result.success) {

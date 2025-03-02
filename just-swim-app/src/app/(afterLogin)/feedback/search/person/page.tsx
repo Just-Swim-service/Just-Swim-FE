@@ -105,7 +105,6 @@ function _GroupList({
   setSelected: Dispatch<SetStateAction<MemberProps[]>>;
   defaultList: MemberProps[];
 }) {
-  console.log('group: ', group);
   let list = group;
 
   // 배열 뒤집기
@@ -223,7 +222,6 @@ export default function Search() {
     updateSelectedList,
   } = searchUserStore();
 
-  //   console.log('selectedList', selectedList);
   const [type, setType] = useState<'group' | 'name'>('group');
   const [groupName, setGroupName] = useState<
     { lecture: string; members: MemberProps[] }[] | null
@@ -246,10 +244,8 @@ export default function Search() {
         ? Object.values(
             userList.data?.data.reduce((acc: any, member: any) => {
               const { lectureId, lectureTitle } = member;
-              console.log('lectureId: ', lectureId);
               // 그룹 키 생성
               if (!acc[lectureId]) {
-                console.log('acc[lectureId]: ', acc[lectureId]);
                 acc[lectureId] = {
                   lecture: lectureTitle,
                   members: [],

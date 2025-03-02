@@ -37,9 +37,8 @@ const feedbackStore = create<any>()(
               date: form.date,
               link: form.link,
               content: form.content,
-              file: form.file,
-              fileURL: form.fileURL,
-              target: form.target,
+              files: form.files,
+              targets: form.targets,
               type: targetType,
             },
           };
