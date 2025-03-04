@@ -1,14 +1,23 @@
 'use client';
 
-import { Dispatch, MouseEvent, SetStateAction, TouchEvent, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  TouchEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { LectureProps } from "@types";
-import { ClassDetailItem, Portal } from "@components";
-import { getTokenInCookies, randomId, throttle } from "@utils";
-import { WEEK_DAYS } from "@data";
-import { useUserStore } from "@store";
+import { LectureProps } from '@types';
+import { ClassDetailItem, Portal } from '@components';
+import { getTokenInCookies, randomId, throttle } from '@utils';
+import { WEEK_DAYS } from '@data';
+import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
+import Link from 'next/link';
 
 export function ClassList({
   selectedDate,
@@ -16,10 +25,10 @@ export function ClassList({
   itemHeight,
   unshowClass,
 }: {
-  selectedDate: string,
-  monthlyInfo: { date: string, day: string, lectures: LectureProps[] }[],
-  itemHeight: number,
-  unshowClass: () => void,
+  selectedDate: string;
+  monthlyInfo: { date: string; day: string; lectures: LectureProps[] }[];
+  itemHeight: number;
+  unshowClass: () => void;
 }) {
   const { getUserType } = useUserStore();
 
@@ -30,8 +39,8 @@ export function ClassList({
   const startCursorPosition = useRef<number>(0);
   const startDrag = useRef<boolean>(false);
 
-  const todayInfo = monthlyInfo.find(info => info.date === selectedDate);
-  const scheduleInfo = todayInfo?.lectures || [];  
+  const todayInfo = monthlyInfo.find((info) => info.date === selectedDate);
+  const scheduleInfo = todayInfo?.lectures || [];
 
   const handleDragStart = (event: MouseEvent<HTMLButtonElement>) => {
     startDrag.current = true;
@@ -49,7 +58,7 @@ export function ClassList({
 
     setMovingCursorPosition(event.pageY - startCursorPosition.current);
   };
-  
+
   const handleDragEnd = () => {
     if (!startDrag.current) {
       return;
@@ -72,9 +81,11 @@ export function ClassList({
       return;
     }
 
-    setMovingCursorPosition(event.targetTouches[0].pageY - startCursorPosition.current);
+    setMovingCursorPosition(
+      event.targetTouches[0].pageY - startCursorPosition.current,
+    );
   };
-  
+
   const handleTouchEnd = () => {
     if (movingCursorPositon > 100) {
       unshowClass();
@@ -88,7 +99,7 @@ export function ClassList({
       const token = await getTokenInCookies();
 
       setType(getUserType(token));
-    }
+    };
 
     getToken();
   }, [getUserType]);
@@ -99,9 +110,8 @@ export function ClassList({
         className={styled.container}
         style={{
           height: window.innerHeight - (266 + itemHeight + itemHeight),
-          transform: `translateY(${movingCursorPositon}px)`
-        }}
-      >
+          transform: `translateY(${movingCursorPositon}px)`,
+        }}>
         <button
           className={styled.top_btn}
           onMouseDown={handleDragStart}
@@ -109,32 +119,38 @@ export function ClassList({
           onMouseUp={handleDragEnd}
           onTouchStart={handleTouchStart}
           onTouchMove={throttle(handleTouchMove, 10)}
-          onTouchEnd={handleTouchEnd}
-        >
+          onTouchEnd={handleTouchEnd}>
           <div />
         </button>
         <div className={styled.info}>
           <span>{date.getDate()},</span>
-          <span className={`${styled.date} ${date.getDay() === 6 && styled.blue} ${date.getDay() === 0 && styled.red}`}>{WEEK_DAYS[date.getDay()]}</span>
+          <span
+            className={`${styled.date} ${date.getDay() === 6 && styled.blue} ${date.getDay() === 0 && styled.red}`}>
+            {WEEK_DAYS[date.getDay()]}
+          </span>
         </div>
         <div className={styled.list}>
-          {
-            scheduleInfo.length !== 0 ?
-            scheduleInfo.map(schedule => {
+          {scheduleInfo.length !== 0 ? (
+            scheduleInfo.map((schedule) => {
               return (
-                <ClassDetailItem
-                  key={randomId()}
-                  schedule={schedule}
-                  type={type}
-                />
-              )
-            }): 
+                <Link
+                  href={`/class/detail/${schedule.lectureId}`}
+                  key={schedule.lectureId}>
+                  <ClassDetailItem
+                    key={randomId()}
+                    schedule={schedule}
+                    type={type}
+                  />
+                </Link>
+              );
+            })
+          ) : (
             <div>
               <p>등록된 수업이 없습니다.</p>
             </div>
-          }
+          )}
         </div>
       </div>
     </Portal>
-  )
+  );
 }

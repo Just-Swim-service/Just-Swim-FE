@@ -69,14 +69,11 @@ export function ClassDetailItem({
                 {type === 'instructor' ? (
                   <div className={styled.student_info}>
                     {schedule.members?.map(
-                      (student: {
-                        memberUserId: string;
-                        memberProfileImage: string;
-                      }) => (
+                      (student: { userId: string; profileImage: string }) => (
                         <div key={randomId()} className={styled.student}>
                           <Image
-                            src={student?.memberProfileImage || NoProfile}
-                            alt={`${student?.memberUserId}`}
+                            src={student?.profileImage || NoProfile}
+                            alt={`${student?.userId}`}
                             width={20}
                             height={20}
                           />
