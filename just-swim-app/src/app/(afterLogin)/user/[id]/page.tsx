@@ -59,6 +59,9 @@ export default function User() {
       });
   }, [memberId]);
 
+  const evenLectures = member?.lectures.filter((_, index) => index % 2 === 0);
+  const oddLectures = member?.lectures.filter((_, index) => index % 2 !== 0);
+
   return (
     <>
       <Header title="회원 정보" />
@@ -113,122 +116,111 @@ export default function User() {
               {member.lectures && member.lectures.length > 0 && (
                 <>
                   <div className="left_content">
-                    {member.lectures.map(
-                      (item, index) =>
-                        index % 2 === 0 && (
-                          <div
-                            key={item.lectureId}
-                            className={styled.tab_content}
-                            style={{
-                              boxShadow: `0px -3px 0 0 ${item.lectureColor}`,
-                            }}>
-                            <div className={styled.lectureItem}>
-                              <Link href={`/class/detail/${item.lectureId}`}>
-                                <div className={styled.text_content}>
-                                  <p className={styled.name}>
-                                    {item.lectureTitle}
-                                  </p>
-                                  <p className={styled.target}>
-                                    {item.lectureContent}
-                                  </p>
-                                  <div className={styled.info}>
-                                    <p>
-                                      <span className={styled.icon}>
-                                        <IconLocation
-                                          width="18"
-                                          height="18"
-                                          fill="#5C5E62"
-                                        />
-                                      </span>
-                                      {item.lectureLocation}
-                                    </p>
-                                    <p>
-                                      <span className={styled.icon}>
-                                        <IconClock
-                                          width="18"
-                                          height="18"
-                                          fill="#5C5E62"
-                                        />
-                                      </span>
-                                      {item.lectureDays}
-                                    </p>
-                                    <p>
-                                      <span className={styled.icon}>
-                                        <IconRepeatTime
-                                          width="18"
-                                          height="18"
-                                          fill="#5C5E62"
-                                        />
-                                      </span>
-                                      {item.lectureTime}
-                                    </p>
-                                  </div>
-                                </div>
-                              </Link>
+                    {evenLectures?.map((item) => (
+                      <div
+                        key={item.lectureId}
+                        className={styled.tab_content}
+                        style={{
+                          boxShadow: `0px -3px 0 0 ${item.lectureColor}`,
+                        }}>
+                        <div className={styled.lectureItem}>
+                          <Link href={`/class/detail/${item.lectureId}`}>
+                            <div className={styled.text_content}>
+                              <p className={styled.name}>{item.lectureTitle}</p>
+                              <p className={styled.target}>
+                                {item.lectureContent}
+                              </p>
+                              <div className={styled.info}>
+                                <p>
+                                  <span className={styled.icon}>
+                                    <IconLocation
+                                      width="18"
+                                      height="18"
+                                      fill="#5C5E62"
+                                    />
+                                  </span>
+                                  {item.lectureLocation}
+                                </p>
+                                <p>
+                                  <span className={styled.icon}>
+                                    <IconClock
+                                      width="18"
+                                      height="18"
+                                      fill="#5C5E62"
+                                    />
+                                  </span>
+                                  {item.lectureDays}
+                                </p>
+                                <p>
+                                  <span className={styled.icon}>
+                                    <IconRepeatTime
+                                      width="18"
+                                      height="18"
+                                      fill="#5C5E62"
+                                    />
+                                  </span>
+                                  {item.lectureTime}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        ),
-                    )}
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="right_content">
-                    {member.lectures.map(
-                      (item) =>
-                        item.lectureId &&
-                        parseInt(item.lectureId, 10) % 2 !== 0 && (
-                          <div
-                            key={item.lectureId}
-                            className={styled.tab_content}
-                            style={{
-                              boxShadow: `0px -3px 0 0 ${item.lectureColor}`,
-                            }}>
-                            <div className={styled.lectureItem}>
-                              <Link href={`/class/detail/${item.lectureId}`}>
-                                <div className={styled.text_content}>
-                                  <p className={styled.name}>
-                                    {item.lectureTitle}
-                                  </p>
-                                  <p className={styled.target}>
-                                    {item.lectureContent}
-                                  </p>
-                                  <div className={styled.info}>
-                                    <p>
-                                      <span className={styled.icon}>
-                                        <IconLocation
-                                          width="18"
-                                          height="18"
-                                          fill="#5C5E62"
-                                        />
-                                      </span>
-                                      {item.lectureLocation}
-                                    </p>
-                                    <p>
-                                      <span className={styled.icon}>
-                                        <IconClock
-                                          width="18"
-                                          height="18"
-                                          fill="#5C5E62"
-                                        />
-                                      </span>
-                                      {item.lectureDays}
-                                    </p>
-                                    <p>
-                                      <span className={styled.icon}>
-                                        <IconRepeatTime
-                                          width="18"
-                                          height="18"
-                                          fill="#5C5E62"
-                                        />
-                                      </span>
-                                      {item.lectureTime}
-                                    </p>
-                                  </div>
-                                </div>
-                              </Link>
+                    {oddLectures?.map((item) => (
+                      <div
+                        key={item.lectureId}
+                        className={styled.tab_content}
+                        style={{
+                          boxShadow: `0px -3px 0 0 ${item.lectureColor}`,
+                        }}>
+                        <div className={styled.lectureItem}>
+                          <Link href={`/class/detail/${item.lectureId}`}>
+                            <div className={styled.text_content}>
+                              <p className={styled.name}>{item.lectureTitle}</p>
+                              <p className={styled.target}>
+                                {item.lectureContent}
+                              </p>
+                              <div className={styled.info}>
+                                <p>
+                                  <span className={styled.icon}>
+                                    <IconLocation
+                                      width="18"
+                                      height="18"
+                                      fill="#5C5E62"
+                                    />
+                                  </span>
+                                  {item.lectureLocation}
+                                </p>
+                                <p>
+                                  <span className={styled.icon}>
+                                    <IconClock
+                                      width="18"
+                                      height="18"
+                                      fill="#5C5E62"
+                                    />
+                                  </span>
+                                  {item.lectureDays}
+                                </p>
+                                <p>
+                                  <span className={styled.icon}>
+                                    <IconRepeatTime
+                                      width="18"
+                                      height="18"
+                                      fill="#5C5E62"
+                                    />
+                                  </span>
+                                  {item.lectureTime}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        ),
-                    )}
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </>
               )}
@@ -268,18 +260,22 @@ export default function User() {
                       <div>
                         <p className={styled.photo}>
                           <div>
-                            {item.images.map((image) => (
-                              <Image
-                                key={image.imageId}
-                                src={image.imagePath || IconGallery}
-                                alt="피드백 이미지"
-                                width={76}
-                                height={76}
-                                style={{
-                                  borderRadius: '9px',
-                                }}
-                              />
-                            ))}
+                            {item.images?.length > 0 ? (
+                              item.images.map((image) => (
+                                <Image
+                                  key={image.imageId}
+                                  src={image.imagePath || IconGallery}
+                                  alt="피드백 이미지"
+                                  width={76}
+                                  height={76}
+                                  style={{
+                                    borderRadius: '9px',
+                                  }}
+                                />
+                              ))
+                            ) : (
+                              <p> 이미지가 없습니다.</p>
+                            )}
                           </div>
                           + {item.images.length}장
                         </p>
@@ -302,7 +298,9 @@ export default function User() {
 
           <div className={styled.container}>
             <div className={styled.button_box}>
-              <button className={styled.feed_button}>피드백 남기기</button>
+              <Link href="/feedback/create/person">
+                <button className={styled.feed_button}>피드백 남기기</button>
+              </Link>
             </div>
           </div>
         </>
