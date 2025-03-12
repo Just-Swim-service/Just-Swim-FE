@@ -82,7 +82,7 @@ export const useUserStore = create(
     }),
     {
       name: 'user-store',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );
