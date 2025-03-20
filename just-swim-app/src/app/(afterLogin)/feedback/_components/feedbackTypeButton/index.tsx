@@ -9,43 +9,28 @@ import FeedbackTypeButtonPersonal from '@assets/feedback_type_button_personal.sv
 
 import styled from './feedbackTypeButton.module.scss';
 import { feedbackStore } from '@/_store/feedback';
-import { getMyProfile } from '@apis';
-import { trim } from 'lodash';
+import { getCachedMyProfile } from '@apis';
+
+type ProfileInfo = {
+  name: string;
+  profileImage: string;
+  userType: string;
+};
 
 export function FeedbackTypeButton({ token }: { token: string }) {
   const router = useRouter();
-  const { getUserType, getUser, setAddUserProfile, setAddUserToken } =
-    useUserStore();
   const { resetFeedbackFormData } = feedbackStore();
   const { resetClassData } = searchClassStore();
   const { resetMemberData } = searchUserStore();
-  const [type, setType] = useState<string>('');
-
-  const setUserData = useCallback(async () => {
-    try {
-      const { status, data } = await getMyProfile();
-      if (status === 406) {
-        setAddUserToken('');
-        return router.replace('/signin');
-      }
-      setAddUserProfile({ token: token, profile: data?.data });
-    } catch (error) {
-      setAddUserToken('');
-      return router.replace('/signin');
-    }
-  }, [setAddUserProfile, setAddUserToken, token, router]);
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo>();
 
   useEffect(() => {
-    const user = getUser();
-
-    if (Object.keys(user).length === 0 || !user) {
-      setUserData().then(() => {
-        setType(trim(getUserType(token)));
-      });
-    } else {
-      setType(trim(getUserType(token)));
-    }
-  }, [getUser, getUserType, setUserData, token]);
+    const fetchProfileInfo = async () => {
+      const response = await getCachedMyProfile();
+      setProfileInfo(response as ProfileInfo);
+    };
+    fetchProfileInfo();
+  }, []);
 
   const handleIndividualClick = (feedbackType: string) => {
     resetFeedbackFormData();
@@ -56,7 +41,7 @@ export function FeedbackTypeButton({ token }: { token: string }) {
 
   return (
     <>
-      {type === 'instructor' && (
+      {profileInfo?.userType === 'instructor' && (
         <div className={styled.button_box}>
           <button
             onClick={() => handleIndividualClick('person')}
