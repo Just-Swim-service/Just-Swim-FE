@@ -131,7 +131,7 @@ export default function ClassView() {
   }, [lectures, searchText]);
 
   const pastLectures = useMemo(() => {
-    return lectures.filter(
+    return (lectures || []).filter(
       (lecture) =>
         lecture.isPastLecture &&
         (searchText === '' ||
