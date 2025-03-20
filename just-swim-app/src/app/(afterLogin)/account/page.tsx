@@ -7,29 +7,23 @@ import { IconArrowRight, IconSetting } from '@assets';
 import { useEffect, useState } from 'react';
 import { ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
-import { URLImage, LogoutModal } from '@components';
+import { URLImage, LogoutModal, ProfileInfo } from '@components';
 import Link from 'next/link';
-import { postUserLogout } from '@apis';
+import { getCachedMyProfile, postUserLogout } from '@apis';
 import { removeTokenInCookies } from '@utils';
 
 export default function Account() {
   const router = useRouter();
-
-  const { getUserName, getToken, getUserImage, setResetUser } = useUserStore();
-
-  const [userName, setUserName] = useState('');
-  const [userImage, setUserImage] = useState('');
+  const { setResetUser } = useUserStore();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo>();
 
   useEffect(() => {
-    const userToken = getToken();
-    if (userToken) {
-      setUserName(getUserName(userToken));
-      setUserImage(getUserImage(userToken));
-    } else {
-      //   router.push(ROUTES.ONBOARDING.signin);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchProfileInfo = async () => {
+      const response = await getCachedMyProfile();
+      setProfileInfo(response as ProfileInfo);
+    };
+    fetchProfileInfo();
   }, []);
 
   const setUserLogout = async () => {
@@ -65,9 +59,12 @@ export default function Account() {
       <div className={styles.account_profile}>
         <div className={styles.account_image_wrapper}>
           <div className={styles.account_img}>
-            <URLImage imageURL={userImage} alt="profile image" />
+            <URLImage
+              imageURL={profileInfo?.profileImage || ''}
+              alt="profile image"
+            />
           </div>
-          <div suppressHydrationWarning>{userName}</div>
+          <div suppressHydrationWarning>{profileInfo?.name}</div>
         </div>
         <button
           className={styles.account_change_profile}
