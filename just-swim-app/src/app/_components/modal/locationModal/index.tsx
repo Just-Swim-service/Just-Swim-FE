@@ -101,59 +101,63 @@ export function LocationModal({
 }) {
   const [selected, setSelected] = useState('');
   const [input, setInput] = useState('');
+  const [debouncedInput, setDebouncedInput] = useState('');
   const [locationList, setLocationList] = useState<
     { name: string; location: string }[]
   >([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // 사용자가 입력할 때 디바운스 적용
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
-  };
-
-  const onClickBack = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    unshowModal();
-  };
-
-  const onClickButton = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    selectLocation(selected);
-    unshowModal();
-  };
-
-  useEffect(() => {
-    let isMounted = true;
 
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    timeoutRef.current = setTimeout(async () => {
-      if (input.trim() === '') {
-        setLocationList([]);
-        return;
-      }
+    timeoutRef.current = setTimeout(() => {
+      setDebouncedInput(event.target.value);
+    }, 500); // 500ms 후에 API 요청 실행
+  };
 
-      const locations = await getLocationList(input);
+  useEffect(() => {
+    let isMounted = true;
+
+    if (debouncedInput.trim() === '') {
+      setLocationList([]);
+      return;
+    }
+
+    (async () => {
+      const locations = await getLocationList(debouncedInput);
       if (isMounted) {
         setLocationList(locations);
       }
-    }, 300);
+    })();
 
     return () => {
       isMounted = false;
     };
-  }, [input]);
+  }, [debouncedInput]);
 
   useEffect(() => {
     if (location) {
       setSelected(location);
     }
   }, [location]);
+
+  const onClickBack = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    unshowModal();
+  };
+
+  const onClickButton = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    selectLocation(selected);
+    unshowModal();
+  };
 
   return (
     <Portal>
