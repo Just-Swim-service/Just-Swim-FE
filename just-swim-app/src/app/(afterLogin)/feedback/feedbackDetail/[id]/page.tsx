@@ -56,7 +56,7 @@ export default function FeedbackDetail() {
     <>
       <HistoryBackHeader
         title="피드백 상세 보기"
-        additionalLink="/"
+        additionalLink={`/feedback/edit/${id}`}
         additionalContent="수정하기"
       />
       <div className={styled.detail_container}>
