@@ -14,7 +14,7 @@ import {
 } from '@components';
 import { formSchema, FormType } from '@/_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getFeedbackPresignedURL } from '@apis';
+import { getFeedbackDetail, getFeedbackPresignedURL } from '@apis';
 import { feedbackStore } from '@/_store/feedback';
 
 import styled from './feedbackInfoEdit.module.scss';
@@ -33,46 +33,56 @@ export default function FeedbackInfoEdit() {
   const router = useRouter();
   const feedbackId = params.id as string;
 
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/feedback/${feedbackId}`;
-  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
-
   // react-hook-form 사용
   const {
     register,
     setValue,
+    reset,
     handleSubmit,
-    watch,
     formState: { errors, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
   });
 
-  console.log(watch());
-
   const [feedback, setFeedback] = useState<FeedbackInfo | null>(null);
   const { setFeedbackFormData } = feedbackStore();
 
   useEffect(() => {
-    fetch(API_URL, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: AUTHORIZATION_HEADER,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setFeedback(data.data);
+    const fetchData = async () => {
+      try {
+        const data: any = await getFeedbackDetail(feedbackId);
+        setFeedback(data);
 
-        setValue('target', data.data.target);
-        setValue('date', data.data.date);
-        setValue('link', data.data.link);
-        setValue('content', data.data.content);
-      })
-      .catch((error) => {
-        console.error('피드백 정보를 불러오는 중 오류가 발생했습니다:', error);
-      });
-  }, [feedbackId, setValue]);
+        if (data && data.feedback.length > 0) {
+          const feedback = data.feedback[0];
+          const target = data.feedbackTargetList[0];
+
+          if (target) {
+            setValue('target', target.memberUserId);
+          }
+
+          // if (feedback && feedback.feedbackDate) {
+          //   setValue('date', feedback.feedbackDate);
+          // }
+
+          reset({
+            date: feedback.feedbackDate || '',
+            content: feedback.feedbackContent || '',
+            link: feedback.feedbackLink || '',
+            target: target ? target.memberName : '',
+            file:
+              feedback.images.length > 0
+                ? feedback.images.map((img: any) => img.imagePath)
+                : [],
+          });
+        }
+      } catch (error) {
+        console.error('feedback 상세 정보 가져오던 중 에러 발생', error);
+      }
+    };
+    fetchData();
+  }, [feedbackId, reset]);
 
   const onSubmit = async (data: FormType) => {
     // 파일 업로드 처리
