@@ -25,6 +25,7 @@ function _FileInput(
     length = 4,
     size = 20,
     id = 'fileInput',
+    defaultImages = [], // 기존 이미지 URL 배열을 받음
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
     // @ts-ignore
     setValue,
@@ -34,76 +35,58 @@ function _FileInput(
   }: FileInputProps &
     InputHTMLAttributes<HTMLInputElement> & {
       onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+      defaultImages?: string[];
     },
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
-
+  const [previewImages, setPreviewImages] = useState<string[]>(defaultImages);
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
-    if (onDelete.current) {
-      return;
-    }
+    if (onDelete.current) return;
 
-    const {
-      target: { files },
-    } = event;
-
+    const { files } = event.target;
     if (!files) {
       alert('파일을 추가해주세요.');
-
       return;
     }
 
-    const step1 = [];
-    let step2 = [];
-    let flag = false;
+    let newFiles: File[] = [];
+    let hasInvalidFile = false;
 
     for (const file of Array.from(files)) {
       if (!file.type.startsWith('image')) {
-        flag = true;
-
+        hasInvalidFile = true;
         continue;
       }
-
-      step1.push(file);
-    }
-
-    if (flag) {
-      alert('이미지 파일만 추가할 수 있습니다.');
-
-      flag = false;
-    }
-
-    for (const file of step1) {
-      // if (file.size > size * 1000000) {
       if (file.size > size * 1024 * 1024) {
-        flag = true;
-
+        hasInvalidFile = true;
         continue;
       }
-
-      step2.push(file);
+      newFiles.push(file);
     }
 
-    if (flag) {
-      alert(`${size}MB 이하의 파일만 업로드할 수 있습니다.`);
-
-      flag = false;
+    if (hasInvalidFile) {
+      alert(
+        `이미지 파일만 추가할 수 있으며, ${size}MB 이하의 파일만 업로드할 수 있습니다.`,
+      );
     }
 
-    if (step2.length + uploadedImages.length > length) {
+    if (
+      newFiles.length + uploadedImages.length + defaultImages.length >
+      length
+    ) {
       alert(`${length}개 이하의 파일만 업로드할 수 있습니다.`);
-
-      step2 = step2.slice(0, length - uploadedImages.length);
+      newFiles = newFiles.slice(
+        0,
+        length - uploadedImages.length - defaultImages.length,
+      );
     }
 
-    const result = [...uploadedImages, ...step2];
+    const result = [...uploadedImages, ...newFiles];
     const store = new DataTransfer();
-
     result.forEach((file) => store.items.add(file));
 
     if (inputRef.current) {
@@ -116,37 +99,43 @@ function _FileInput(
   const deleteUploadedImage = (index: number) => {
     onDelete.current = true;
 
-    const newFiles = [
-      ...uploadedImages.slice(0, index),
-      ...uploadedImages.slice(index + 1),
-    ];
+    // 기존 이미지 삭제인지 새로운 업로드된 파일 삭제인지 확인
+    if (index < defaultImages.length) {
+      // 기존 이미지 삭제 (defaultImages에서 제거)
+      const newDefaultImages = [...defaultImages];
+      newDefaultImages.splice(index, 1);
+      setPreviewImages([
+        ...newDefaultImages,
+        ...uploadedImages.map((file) => URL.createObjectURL(file)),
+      ]);
+    } else {
+      // 새로 업로드한 파일 삭제
+      const newFiles = [
+        ...uploadedImages.slice(0, index - defaultImages.length),
+        ...uploadedImages.slice(index - defaultImages.length + 1),
+      ];
+      setUploadedImages(newFiles);
 
-    const store = new DataTransfer();
+      const store = new DataTransfer();
+      newFiles.forEach((file) => store.items.add(file));
 
-    newFiles.forEach((file) => store.items.add(file));
-
-    if (inputRef.current) {
-      inputRef.current.files = store.files;
-      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+      if (inputRef.current) {
+        inputRef.current.files = store.files;
+        inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     }
 
     onDelete.current = false;
-    setUploadedImages(newFiles);
   };
 
   useEffect(() => {
-    const result = [];
-
-    for (const image of uploadedImages) {
-      // console.log(URL.createObjectURL(image));
-      result.push(URL.createObjectURL(image));
-    }
-
-    setPreviewImages([...result]);
-    ConfirmModal;
-
+    const newPreviewImages = [
+      ...defaultImages,
+      ...uploadedImages.map((file) => URL.createObjectURL(file)),
+    ];
+    setPreviewImages(newPreviewImages);
     setValue(name, uploadedImages);
-  }, [uploadedImages, setValue]);
+  }, [uploadedImages, setValue, defaultImages]);
 
   // 캐러셀 관련
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -156,12 +145,9 @@ function _FileInput(
     if (selectedIndex >= previewImages.length && selectedIndex !== 0) {
       setSelectedIndex(previewImages.length - 1);
     }
-
     if (previewImages.length === 0) {
       setModal(false);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewImages]);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -173,34 +159,27 @@ function _FileInput(
     <>
       <div className={styled.input_wrapper}>
         <div className={styled.preview_wrapper}>
-          {previewImages.map((preview, index) => {
-            // console.log('preview',preview);
-            return (
-              <div
-                key={randomId()}
-                className={styled.preview_item}
-                style={{
-                  backgroundImage: `url(${preview})`,
-                }}
-                onClick={(event: MouseEvent<HTMLDivElement>) => {
+          {previewImages.map((preview, index) => (
+            <div
+              key={randomId()}
+              className={styled.preview_item}
+              style={{ backgroundImage: `url(${preview})` }}
+              onClick={(event: MouseEvent<HTMLDivElement>) => {
+                event.preventDefault();
+                setSelectedIndex(index);
+                showModal();
+              }}>
+              <button
+                className={styled.delete_button}
+                onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                  event.stopPropagation();
                   event.preventDefault();
-
-                  setSelectedIndex(index);
-                  showModal();
+                  deleteUploadedImage(index);
                 }}>
-                <button
-                  className={styled.delete_button}
-                  onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                    event.stopPropagation();
-                    event.preventDefault();
-
-                    deleteUploadedImage(index);
-                  }}>
-                  <IconCancelWhite width={14} height={14} />
-                </button>
-              </div>
-            );
-          })}
+                <IconCancelWhite width={14} height={14} />
+              </button>
+            </div>
+          ))}
         </div>
         <label htmlFor={id} className={styled.add_label}>
           <span>+</span>
@@ -217,9 +196,7 @@ function _FileInput(
           readOnly
           onChange={handleOnChange}
         />
-        {/* <span className={styled.error}>
-          {errors.map((error,index) => <li key={index}>{error}</li>) }
-        </span> */}
+
         {modal && (
           <ImageCarousel
             images={previewImages}
@@ -235,12 +212,4 @@ function _FileInput(
   );
 }
 
-/**
- * 상위 컴포넌트에서 FileInput 대한 className을 직접 설정하지 않도록 주의! (동작하지 않음)
- * @param {string} name input의 name
- * @param {number} length 입력받는 파일의 개수
- * @param {number} size 입력받는 파일의 크기
- * @param {import('react').MutableRefObject<HTMLInputElement>} ref input의 ref attribute에 연결할 target
- * @param {import('react').InputHTMLAttributes<HTMLInputElement>} attributes input에서 사용 가능한 모든 attributes
- */
 export const FileInput = forwardRef(_FileInput);

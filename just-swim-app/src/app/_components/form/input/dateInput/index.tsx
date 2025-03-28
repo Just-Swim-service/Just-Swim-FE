@@ -1,55 +1,72 @@
-"use client";
+'use client';
 
-import { ForwardedRef, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from "react";
+import {
+  ForwardedRef,
+  InputHTMLAttributes,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { DateInputProps } from "@types";
+import { DateInputProps } from '@types';
 import { DateModal } from '@components';
-import { useModal } from "@hooks";
-import { IconInputValid } from "@assets";
-import { mergeRefs, numberFormat } from "@utils";
+import { useModal } from '@hooks';
+import { IconInputValid } from '@assets';
+import { mergeRefs, numberFormat } from '@utils';
 
 import styled from './styles.module.scss';
 
 const formatDate = (date: string, suffix: string) => {
-  const [year, month, day] = date.split(".");
+  const [year, month, day] = date.split('.');
 
   return `${year}년 ${month}월 ${day}일 ${suffix}`;
-}
+};
 
 const checkDefaultValue = (defaultValue: string) => {
   const regexp = /\d{4}\.\d{2}\.\d{2}$/g;
 
   return regexp.test(defaultValue);
-}
+};
 
-function _DateInput({
-  name,
-  valid = true,
-  defaultValue = '',
-  suffix = '',
-  use = true,
-  renderIcon = () => {},
-  placeholder = '',
-  ...props
-}: DateInputProps & InputHTMLAttributes<HTMLInputElement>,
-ref: ForwardedRef<HTMLInputElement>) {
+function _DateInput(
+  {
+    name,
+    valid = true,
+    defaultValue,
+    suffix = '',
+    use = true,
+    renderIcon = () => {},
+    placeholder = '',
+    ...props
+  }: DateInputProps & InputHTMLAttributes<HTMLInputElement>,
+  ref: ForwardedRef<HTMLInputElement>,
+) {
   const inputRef = useRef<HTMLInputElement>(null);
   const today = new Date();
-  const todayValue = defaultValue || `${today.getFullYear()}.${numberFormat(today.getMonth() + 1)}.${numberFormat(today.getDate())}`;
+  const todayValue = `${today.getFullYear()}.${numberFormat(today.getMonth() + 1)}.${numberFormat(today.getDate())}`;
 
-  const [selectedDate, setSelectedDate] = useState<string>(use && checkDefaultValue(todayValue) ? todayValue : '');
+  const [selectedDate, setSelectedDate] = useState<string>(() =>
+    defaultValue && checkDefaultValue(defaultValue) ? defaultValue : todayValue,
+  );
+
+  useEffect(() => {
+    if (defaultValue && checkDefaultValue(defaultValue)) {
+      setSelectedDate(defaultValue);
+    }
+  }, [defaultValue]);
 
   const changeSelectedDate = (date: string) => {
     setSelectedDate(date);
-  }
-  
+  };
+
   const { modal, showModal, hideModal } = useModal();
 
   const onClickInput = () => {
     if (use) {
       showModal();
     }
-  }
+  };
 
   useEffect(() => {
     if (inputRef.current) {
@@ -58,47 +75,39 @@ ref: ForwardedRef<HTMLInputElement>) {
     }
   }, [selectedDate]);
 
-  useEffect(() => {
-    if (use) {
-      setSelectedDate(use && checkDefaultValue(todayValue) ? todayValue : '');
-    } else {
-      setSelectedDate('');
-    }
-  }, [use])
-  
   return (
     <div className={styled.input_wrapper}>
-      <div className={styled.icon_wrapper}>
-        {renderIcon()}
+      <div className={styled.icon_wrapper}>{renderIcon()}</div>
+      <div
+        className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`}
+        onClick={onClickInput}>
+        <span>
+          {selectedDate ? formatDate(selectedDate, suffix) : placeholder}
+        </span>
       </div>
-      <div className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`} onClick={onClickInput}>
-        <span>{selectedDate ? formatDate(selectedDate, suffix) : placeholder}</span>
-      </div>
-      {
-        valid && 
+      {valid && (
         <div className={styled.valid_warpper}>
           <IconInputValid width={18} height={18} />
         </div>
-      }
+      )}
       <input
         {...props}
         name={name}
         ref={mergeRefs(inputRef, ref)}
         placeholder={placeholder}
-        type='text'
+        type="text"
         readOnly
         hidden
       />
-      {
-        modal && 
+      {modal && (
         <DateModal
           initialDate={selectedDate}
           hideModal={hideModal}
           setDate={changeSelectedDate}
         />
-      }
+      )}
     </div>
-  )
+  );
 }
 
 /**

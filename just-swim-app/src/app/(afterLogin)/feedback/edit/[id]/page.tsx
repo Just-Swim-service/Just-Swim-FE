@@ -38,12 +38,15 @@ export default function FeedbackInfoEdit() {
     register,
     setValue,
     reset,
+    watch,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
   });
+
+  console.log(watch('target'));
 
   const [feedback, setFeedback] = useState<FeedbackInfo | null>(null);
   const { setFeedbackFormData } = feedbackStore();
@@ -52,29 +55,17 @@ export default function FeedbackInfoEdit() {
     const fetchData = async () => {
       try {
         const data: any = await getFeedbackDetail(feedbackId);
-        setFeedback(data);
 
         if (data && data.feedback.length > 0) {
           const feedback = data.feedback[0];
+          setFeedback(feedback);
           const target = data.feedbackTargetList[0];
-
-          if (target) {
-            setValue('target', target.memberUserId);
-          }
-
-          // if (feedback && feedback.feedbackDate) {
-          //   setValue('date', feedback.feedbackDate);
-          // }
 
           reset({
             date: feedback.feedbackDate || '',
             content: feedback.feedbackContent || '',
             link: feedback.feedbackLink || '',
             target: target ? target.memberName : '',
-            file:
-              feedback.images.length > 0
-                ? feedback.images.map((img: any) => img.imagePath)
-                : [],
           });
         }
       } catch (error) {
@@ -158,6 +149,7 @@ export default function FeedbackInfoEdit() {
                 renderIcon={() => <IconCalendar width={14} height={14} />}
                 placeholder="수업 일자를 선택해주세요"
                 {...register('date')}
+                defaultValue={feedback?.feedbackDate}
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
@@ -167,6 +159,9 @@ export default function FeedbackInfoEdit() {
               <div className={styled.title}>첨부 파일</div>
               <FileInput
                 {...register('file')}
+                defaultImages={
+                  feedback?.images?.map((img) => img.imagePath) || []
+                }
                 // @ts-ignore
                 setValue={setValue}
               />
