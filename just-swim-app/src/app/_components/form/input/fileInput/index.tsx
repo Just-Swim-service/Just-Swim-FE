@@ -133,7 +133,11 @@ function _FileInput(
       ...defaultImages,
       ...uploadedImages.map((file) => URL.createObjectURL(file)),
     ];
-    setPreviewImages(newPreviewImages);
+
+    if (JSON.stringify(newPreviewImages) !== JSON.stringify(previewImages)) {
+      setPreviewImages(newPreviewImages);
+    }
+
     setValue(name, uploadedImages);
   }, [uploadedImages, setValue, defaultImages]);
 

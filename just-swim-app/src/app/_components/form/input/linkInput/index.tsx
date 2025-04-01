@@ -7,6 +7,7 @@ import {
   InputHTMLAttributes,
   MouseEvent,
   forwardRef,
+  useEffect,
   useState,
 } from 'react';
 import Link from 'next/link';
@@ -21,6 +22,7 @@ function _LinkInput(
     name,
     // @ts-ignore
     errors = [],
+    value = '',
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
     ...props
   }: LinkInputProps &
@@ -29,8 +31,12 @@ function _LinkInput(
     },
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const [link, setLink] = useState<string>('');
+  const [link, setLink] = useState<string>(value as string);
   const [focus, setFocus] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLink(value as string);
+  }, [value]);
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setLink(event.target.value);
@@ -55,6 +61,14 @@ function _LinkInput(
     onChange(event);
   };
 
+  const isValidURL = (url: string) => {
+    try {
+      return Boolean(new URL(url));
+    } catch (e) {
+      return false;
+    }
+  };
+
   return (
     <div className={styled.input_wrapper}>
       <input
@@ -69,12 +83,12 @@ function _LinkInput(
         onBlur={onBlurInput}
       />
       {/* <span>{errors.map((error, index) => <li key={index}>{ error}</li>)}</span> */}
-      {!focus && (
-        <Link href={link} target="_blank" className={styled.link}>
-          {link}
+      {!value || !isValidURL(value as string) ? null : (
+        <Link href={value as string} target="_blank" className={styled.link}>
+          {value}
         </Link>
       )}
-      {link && (
+      {value && (
         <button className={styled.delete_button} onClick={onClickButton}>
           <IconTrash width={20} height={20} />
         </button>

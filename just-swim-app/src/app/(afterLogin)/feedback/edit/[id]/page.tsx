@@ -14,7 +14,7 @@ import {
 } from '@components';
 import { formSchema, FormType } from '@/_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getFeedbackDetail, getFeedbackPresignedURL } from '@apis';
+import { getClassList, getFeedbackDetail, getFeedbackPresignedURL } from '@apis';
 import { feedbackStore } from '@/_store/feedback';
 
 import styled from './feedbackInfoEdit.module.scss';
@@ -38,7 +38,6 @@ export default function FeedbackInfoEdit() {
     register,
     setValue,
     reset,
-    watch,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormType>({
@@ -46,9 +45,8 @@ export default function FeedbackInfoEdit() {
     mode: 'onChange',
   });
 
-  console.log(watch('target'));
-
   const [feedback, setFeedback] = useState<FeedbackInfo | null>(null);
+  const [members, setMembers] = useState<any>();
   const { setFeedbackFormData } = feedbackStore();
 
   useEffect(() => {
@@ -65,7 +63,18 @@ export default function FeedbackInfoEdit() {
             date: feedback.feedbackDate || '',
             content: feedback.feedbackContent || '',
             link: feedback.feedbackLink || '',
-            target: target ? target.memberName : '',
+            target: target
+              ? JSON.stringify([
+                  {
+                    memberId: target.memberId,
+                    lectureId: target.lectureId,
+                    userId: target.memberUserId,
+                    lectureTitle: target.lectureTitle,
+                    memberNickname: target.memberName,
+                    profileImage: target.memberProfileImage,
+                  },
+                ])
+              : '',
           });
         }
       } catch (error) {
@@ -74,6 +83,24 @@ export default function FeedbackInfoEdit() {
     };
     fetchData();
   }, [feedbackId, reset]);
+
+  useEffect(() => {
+    const getMembersData = async () => {
+      // 수강생 목록 조회 - 이름 순서, 반 순서
+      const data = await getClassList().then((res) => res.data);
+      if (data.success) {
+        // 반정보가 함께 저장해야한다.
+        const memberData: any = data.data.flatMap((d: any) =>
+          d.members.map((member: any) => ({
+            ...member,
+            lectureTitle: d.lectureTitle, // lectureTitle 추가
+          })),
+        );
+        setMembers(memberData);
+      }
+    };
+    getMembersData();
+  }, []);
 
   const onSubmit = async (data: FormType) => {
     // 파일 업로드 처리
@@ -131,6 +158,7 @@ export default function FeedbackInfoEdit() {
             </div>
             <SelectPersonInput
               {...register('target')}
+              members={members}
               setValue={setValue}
               errors={[errors.target?.message ?? '']}
             />
@@ -172,6 +200,7 @@ export default function FeedbackInfoEdit() {
               <LinkInput
                 placeholder="첨부하고자 하는 URL을 입력해주세요"
                 {...register('link')}
+                value={feedback?.feedbackLink}
                 // @ts-ignore
                 errors={[errors.link?.message ?? '']}
               />

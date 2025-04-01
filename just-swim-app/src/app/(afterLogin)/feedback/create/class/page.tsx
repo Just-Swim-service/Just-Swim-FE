@@ -86,7 +86,6 @@ export default function FeedbackWrite() {
       content: data.content,
       files: data.file,
     };
-    console.log('formDataObject', formDataObject);
     setFeedbackFormData(formDataObject, 'group');
     return router.push('/feedback/create/confirmClass');
   };

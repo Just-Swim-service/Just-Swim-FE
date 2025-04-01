@@ -77,11 +77,14 @@ export default function FeedbackWrite() {
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors, isValid, isDirty },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
   });
+
+  console.log(watch('target'));
 
   const onSubmit = async (data: FormType) => {
     for (const image of data.file) {
