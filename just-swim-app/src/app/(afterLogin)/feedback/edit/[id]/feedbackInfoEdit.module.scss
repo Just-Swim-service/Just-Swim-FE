@@ -1,6 +1,20 @@
 @import '@/globals.scss';
 
 .feedback_write {
+  .feedback_date {
+    @include Title5-M;
+    color: $--gray-600;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 16px;
+
+    .icon {
+      font-size: 18px;
+      margin-right: 4px;
+    }
+  }
+
   .title {
     @include Title3-M;
     span {
@@ -8,14 +22,44 @@
       color: $--Primary-blue;
     }
   }
-  .sub_title {
-    @include Body3-R;
+
+  .detail_title {
+    margin-bottom: 12px;
+    margin-left: 16px;
     color: $--gray-600;
-    margin-top: 2px;
+
+    p {
+      @include Title3-M;
+    }
   }
 
-  .inner {
-    padding: 22px 16px 0;
+  .detail_content {
+    height: 21px;
+    margin-bottom: 22px;
+    margin-top: 15.5px;
+    margin-left: 16px;
+    padding: 15px 16px 15px 0px;
+    border: 15px solid $--gray-50;
+    border-radius: 6px;
+    color: $--gray-600;
+    background-color: $--gray-50;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .detail_icon {
+      margin-right: 12px;
+    }
+
+    p {
+      @include Title5-M;
+    }
+
+    .arrow_icon {
+      position: absolute;
+      right: 0;
+    }
   }
   /* Hide the ugly default input */
   #chooseFile {
@@ -164,4 +208,69 @@
 
 .submit_btn:disabled {
   background-color: $--gray-300;
+}
+
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal_content {
+  width: 328px;
+  height: 158px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+
+  p {
+    @include Title3-SB;
+    margin-bottom: 8px;
+  }
+
+  span {
+    @include Body4-R;
+    margin-bottom: 20px;
+  }
+}
+
+.modal_button_box {
+  width: 296px;
+  height: 52px;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+
+  button {
+    width: 143px;
+    height: 52px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  button:first-of-type {
+    background-color: #ccc;
+  }
+
+  button:last-of-type {
+    background-color: #007bff;
+    color: white;
+  }
 }

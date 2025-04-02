@@ -1,29 +1,29 @@
 'use client';
 
+import styled from './feedbackInfoEdit.module.scss';
+import { IconCalendar } from '@assets';
+import Send from '@assets/send.svg';
+import UserTypeIndividual from '@assets/user_type_individual.svg';
+import UserTypeGroup from '@assets/user_type_group.svg';
+import { IconArrowRightSmall } from '@assets';
+
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Header } from '@components';
-import { FeedbackInfo } from '@/_types/typeFeedback';
-import {
-  SelectPersonInput,
-  DateInput,
-  FileInput,
-  LinkInput,
-  TextArea,
-} from '@components';
+import { FeedbackInfo, Members } from '@/_types/typeFeedback';
+import { DateInput, FileInput, LinkInput, TextArea } from '@components';
 import { formSchema, FormType } from '@/_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getClassList, getFeedbackDetail, getFeedbackPresignedURL } from '@apis';
+import { getFeedbackDetail, getFeedbackPresignedURL } from '@apis';
 import { feedbackStore } from '@/_store/feedback';
-
-import styled from './feedbackInfoEdit.module.scss';
-import { IconCalendar } from '@assets';
+import { useModal } from '@hooks';
+import { FeedbackTargetListModal } from '../../_components/feedbackTargetListModal';
 
 interface CustomFormData {
   date: string;
   files: File[] | null;
-  targets: string;
+  targets?: string;
   link: string | null | undefined;
   content: string;
 }
@@ -31,6 +31,7 @@ interface CustomFormData {
 export default function FeedbackInfoEdit() {
   const params = useParams();
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const feedbackId = params.id as string;
 
   // react-hook-form 사용
@@ -46,7 +47,9 @@ export default function FeedbackInfoEdit() {
   });
 
   const [feedback, setFeedback] = useState<FeedbackInfo | null>(null);
-  const [members, setMembers] = useState<any>();
+  const [feedbackTarget, setFeedbackTarget] = useState<Members[]>([]);
+  const [feedbackCreatedAt, setFeedbackCreatedAt] = useState<string>('');
+  const { modal, showModal, hideModal } = useModal();
   const { setFeedbackFormData } = feedbackStore();
 
   useEffect(() => {
@@ -57,24 +60,18 @@ export default function FeedbackInfoEdit() {
         if (data && data.feedback.length > 0) {
           const feedback = data.feedback[0];
           setFeedback(feedback);
-          const target = data.feedbackTargetList[0];
+          setFeedbackTarget(data?.feedbackTargetList);
+
+          const formattedDate = new Date(data?.feedback[0]?.feedbackCreatedAt)
+            .toISOString()
+            .slice(0, 10)
+            .replace(/-/g, '.');
+          setFeedbackCreatedAt(formattedDate);
 
           reset({
             date: feedback.feedbackDate || '',
             content: feedback.feedbackContent || '',
             link: feedback.feedbackLink || '',
-            target: target
-              ? JSON.stringify([
-                  {
-                    memberId: target.memberId,
-                    lectureId: target.lectureId,
-                    userId: target.memberUserId,
-                    lectureTitle: target.lectureTitle,
-                    memberNickname: target.memberName,
-                    profileImage: target.memberProfileImage,
-                  },
-                ])
-              : '',
           });
         }
       } catch (error) {
@@ -83,24 +80,6 @@ export default function FeedbackInfoEdit() {
     };
     fetchData();
   }, [feedbackId, reset]);
-
-  useEffect(() => {
-    const getMembersData = async () => {
-      // 수강생 목록 조회 - 이름 순서, 반 순서
-      const data = await getClassList().then((res) => res.data);
-      if (data.success) {
-        // 반정보가 함께 저장해야한다.
-        const memberData: any = data.data.flatMap((d: any) =>
-          d.members.map((member: any) => ({
-            ...member,
-            lectureTitle: d.lectureTitle, // lectureTitle 추가
-          })),
-        );
-        setMembers(memberData);
-      }
-    };
-    getMembersData();
-  }, []);
 
   const onSubmit = async (data: FormType) => {
     // 파일 업로드 처리
@@ -133,14 +112,18 @@ export default function FeedbackInfoEdit() {
     // 폼 데이터 객체 생성
     const formDataObject: CustomFormData = {
       date: data.date,
-      targets: data.target,
       link: data.link,
       content: data.content,
       files: data.file,
     };
 
     setFeedbackFormData(formDataObject, `${feedback?.feedbackType}`);
-    return router.push('/feedback/create/confirm');
+    setIsModalOpen(true);
+  };
+
+  const handleConfirm = () => {
+    setIsModalOpen(false);
+    router.push(`/feedbackDetail/${feedbackId}`);
   };
 
   return (
@@ -148,21 +131,37 @@ export default function FeedbackInfoEdit() {
       <Header title="피드백 수정하기" />
 
       <form onSubmit={handleSubmit(onSubmit)} className={styled.feedback_write}>
-        <div className={styled.inner}>
-          <div className={styled.select_customer}>
-            <div className={styled.title}>
-              수강생 선택하기 <span>(필수)</span>
-            </div>
-            <div className={styled.sub_title}>
-              피드백을 남길 수강생의 정보를 확인해주세요
-            </div>
-            <SelectPersonInput
-              {...register('target')}
-              members={members}
-              setValue={setValue}
-              errors={[errors.target?.message ?? '']}
+        <div className={styled.feedback_date}>
+          <span className={styled.icon}>
+            <Send />
+          </span>
+          <p>{feedbackCreatedAt} 전송된 피드백</p>
+        </div>
+        <div className={styled.detail_title}>
+          <p>피드백 대상</p>
+        </div>
+        <div className={styled.detail_content}>
+          <span className={styled.detail_icon}>
+            {feedbackTarget.length > 1 ? (
+              <UserTypeGroup />
+            ) : (
+              <UserTypeIndividual />
+            )}
+          </span>
+          <p>
+            {feedbackTarget.length > 1
+              ? `${feedbackTarget[0]?.memberName} 외 ${feedbackTarget.length - 1} 명`
+              : `${feedbackTarget[0]?.memberName}`}
+          </p>
+          <span onClick={showModal} className={styled.arrow_icon}>
+            <IconArrowRightSmall />
+          </span>
+          {modal && (
+            <FeedbackTargetListModal
+              feedbackTargetList={feedbackTarget}
+              hideModal={hideModal}
             />
-          </div>
+          )}
         </div>
 
         <div className={styled.divider}></div>
@@ -227,6 +226,19 @@ export default function FeedbackInfoEdit() {
           disabled={!isValid}>
           작성완료
         </button>
+
+        {isModalOpen && (
+          <div className={styled.modal_overlay}>
+            <div className={styled.modal_content}>
+              <p>피드백을 수정하시겠습니까?</p>
+              <span>작성된 내용이 수강생에게 전달됩니다.</span>
+              <div className={styled.modal_button_box}>
+                <button onClick={() => setIsModalOpen(false)}>취소</button>
+                <button onClick={handleConfirm}>확인</button>
+              </div>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   );

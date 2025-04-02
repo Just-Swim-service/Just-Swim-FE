@@ -15,7 +15,6 @@ const checkFileLength = (file: string) => file.length <= MAX_FILE_LENGTH;
 
 // zod 유효성 검사를 위한 schema 선언
 export const formSchema = z.object({
-  target: z.string().min(1),
   date: z.string().min(1),
   // file: z.any().optional(),
   file: z.any().optional(),
