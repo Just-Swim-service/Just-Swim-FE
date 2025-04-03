@@ -38,7 +38,7 @@ import { searchUserStore } from '@store';
 interface CustomFormData {
   date: string;
   files: File[] | null;
-  targets: string;
+  targets?: string;
   link: string | null | undefined;
   content: string;
 }

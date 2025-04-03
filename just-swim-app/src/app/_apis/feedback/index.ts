@@ -26,6 +26,13 @@ interface FeedbackValue {
   feedbackTarget: string;
   feedbackImage: string[];
 }
+
+interface UpdateFeedbackValue {
+  feedbackDate?: string;
+  feedbackLink?: string;
+  feedbackContent?: string;
+  feedbackImage?: string[];
+}
 // @ts-ignore
 async function postFeedback(data, target) {
   const value: FeedbackValue = {
@@ -38,6 +45,18 @@ async function postFeedback(data, target) {
   };
   return await api('/feedback', 'POST', {
     body: JSON.stringify(value),
+  });
+}
+// @ts-ignore
+async function updateFeedback(data, id) {
+  const updateValue: UpdateFeedbackValue = {
+    feedbackDate: data.date,
+    feedbackLink: data.link,
+    feedbackContent: data.content,
+    feedbackImage: data.files?.map((file: any) => file.fileURL),
+  };
+  return await api(`/feedback/${id}`, 'PATCH', {
+    body: JSON.stringify(updateValue),
   });
 }
 
@@ -114,4 +133,10 @@ async function getFeedbackDetail(id: string): Promise<FeedbackProps[] | null> {
   }
 }
 
-export { getFeedback, postFeedback, getSortedFeedback, getFeedbackDetail };
+export {
+  getFeedback,
+  postFeedback,
+  getSortedFeedback,
+  getFeedbackDetail,
+  updateFeedback,
+};

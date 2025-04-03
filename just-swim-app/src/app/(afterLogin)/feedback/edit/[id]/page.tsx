@@ -15,7 +15,11 @@ import { FeedbackInfo, Members } from '@/_types/typeFeedback';
 import { DateInput, FileInput, LinkInput, TextArea } from '@components';
 import { formSchema, FormType } from '@/_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getFeedbackDetail, getFeedbackPresignedURL } from '@apis';
+import {
+  getFeedbackDetail,
+  getFeedbackPresignedURL,
+  updateFeedback,
+} from '@apis';
 import { feedbackStore } from '@/_store/feedback';
 import { useModal } from '@hooks';
 import { FeedbackTargetListModal } from '../../_components/feedbackTargetListModal';
@@ -40,7 +44,7 @@ export default function FeedbackInfoEdit() {
     setValue,
     reset,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
@@ -50,7 +54,7 @@ export default function FeedbackInfoEdit() {
   const [feedbackTarget, setFeedbackTarget] = useState<Members[]>([]);
   const [feedbackCreatedAt, setFeedbackCreatedAt] = useState<string>('');
   const { modal, showModal, hideModal } = useModal();
-  const { setFeedbackFormData } = feedbackStore();
+  const { setFeedbackFormData, getFeedbackFormData } = feedbackStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,11 +72,14 @@ export default function FeedbackInfoEdit() {
             .replace(/-/g, '.');
           setFeedbackCreatedAt(formattedDate);
 
-          reset({
-            date: feedback.feedbackDate || '',
-            content: feedback.feedbackContent || '',
-            link: feedback.feedbackLink || '',
-          });
+          reset(
+            {
+              date: feedback.feedbackDate || '',
+              content: feedback.feedbackContent || '',
+              link: feedback.feedbackLink || '',
+            },
+            { keepDirtyValues: true },
+          );
         }
       } catch (error) {
         console.error('feedback 상세 정보 가져오던 중 에러 발생', error);
@@ -121,9 +128,20 @@ export default function FeedbackInfoEdit() {
     setIsModalOpen(true);
   };
 
-  const handleConfirm = () => {
-    setIsModalOpen(false);
-    router.push(`/feedbackDetail/${feedbackId}`);
+  const formDataState = getFeedbackFormData();
+
+  const handleConfirm = async () => {
+    try {
+      const response = await updateFeedback(formDataState, feedbackId);
+      if (response && response.status === 200) {
+        setIsModalOpen(false);
+        router.push(`/feedback/feedbackDetail/${feedbackId}`);
+      } else {
+        console.error('Feedback submission failed:', response);
+      }
+    } catch (error) {
+      console.error('Error processing feedback update response:', error);
+    }
   };
 
   return (
@@ -222,8 +240,8 @@ export default function FeedbackInfoEdit() {
 
         <button
           type="submit"
-          className={`${styled.submit_btn} ${!isValid ? styled.disabled : ''}`}
-          disabled={!isValid}>
+          className={`${styled.submit_btn} ${!isValid || !isDirty ? styled.disabled : ''}`}
+          disabled={!isValid || !isDirty}>
           작성완료
         </button>
 
