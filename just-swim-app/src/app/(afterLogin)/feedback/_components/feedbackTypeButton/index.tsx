@@ -63,7 +63,7 @@ export function FeedbackTypeButton({ token }: { token: string }) {
               <br />
               피드백 남기기
             </p>
-            <p className={styled.button_desc}>단체 작성에 유용합니다.</p>
+            <p className={styled.button_desc}>전체 작성에 유용합니다.</p>
           </button>
         </div>
       )}
