@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { ClassDetailItem } from '@components';
 import { LectureProps } from '@types';
@@ -10,6 +10,7 @@ import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
+import { getCachedMyProfile } from '@apis';
 
 function _ClassList({
   weeklyInfo,
@@ -20,11 +21,18 @@ function _ClassList({
   selectedDate: number;
   token: string;
 }) {
-  const { getUserType } = useUserStore();
-
-  const type = useRef<string>(getUserType(token));
   const todaySchedules = weeklyInfo[selectedDate].lectures;
   const todayDate = weeklyInfo[selectedDate].date.split('.')[2];
+
+  const [type, setType] = useState<string>('');
+
+  useEffect(() => {
+    const setUserType = async () => {
+      const data = await getCachedMyProfile();
+      setType(data.userType);
+    };
+    setUserType();
+  }, []);
 
   return (
     <div className={styled.container}>
@@ -50,7 +58,7 @@ function _ClassList({
                   <ClassDetailItem
                     key={randomId()}
                     schedule={schedule}
-                    type={type.current}
+                    type={type}
                   />
                 </Link>
               );
