@@ -84,8 +84,6 @@ export default function FeedbackWrite() {
     mode: 'onChange',
   });
 
-  console.log(watch('target'));
-
   const onSubmit = async (data: FormType) => {
     for (const image of data.file) {
       try {
@@ -109,9 +107,6 @@ export default function FeedbackWrite() {
         return null;
       }
     }
-    // console.log('data', data);
-
-    // console.log('presignedURLs', presignedURLs);
 
     const formDataObject: CustomFormData = {
       date: data.date,
