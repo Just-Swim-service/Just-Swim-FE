@@ -141,6 +141,8 @@ export default function ClassView() {
     );
   }, [lectures, searchText]);
 
+  console.log(ongoingLectures);
+
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
@@ -148,42 +150,30 @@ export default function ClassView() {
   return (
     <>
       <Header title="수업 정보" />
-      <div className={styled.search}>
-        <IconSearch className={styled.search_icon} />
-        <input
-          type="text"
-          placeholder="수강생 검색하기"
-          value={searchText}
-          onChange={handleSearch}
-        />
-      </div>
-
-      <p className={styled.title}>진행 중인 수업</p>
-      <div className={styled.tab_list}>
-        <div className="left_content">
-          {ongoingLectures?.map(
-            (item, index) =>
-              index % 2 === 0 && (
-                <ClassList key={item.lectureId} item={item} index={index} />
-              ),
-          )}
+      <div className={styled.container}>
+        <div className={styled.search}>
+          <IconSearch className={styled.search_icon} />
+          <input
+            type="text"
+            placeholder="수강생 검색하기"
+            value={searchText}
+            onChange={handleSearch}
+          />
         </div>
-        <div className="right_content">
-          {ongoingLectures?.map(
-            (item, index) =>
-              index % 2 !== 0 && (
-                <ClassList key={item.lectureId} item={item} index={index} />
-              ),
-          )}
+
+        <p className={styled.title}>진행 중인 수업</p>
+        <div className={styled.tab_list}>
+          {ongoingLectures?.map((item, index) => (
+            <ClassList key={item.lectureId} item={item} index={index} />
+          ))}
         </div>
-      </div>
 
-      <div className={styled.bar}></div>
+        <div className={styled.bar}></div>
 
-      <p className={styled.title}>지난 수업</p>
+        <p className={styled.title}>지난 수업</p>
 
-      <div className={styled.tab_list}>
-        {/* <div className="left_content">
+        <div className={styled.tab_list}>
+          {/* <div className="left_content">
           {pastLectures.map((item: LectureViewProps, index: number) => (
             <div key={item.lectureId}>{index % 2 === 0 && <ClassList item={item} index={index} />}</div>
           ))}
@@ -194,9 +184,10 @@ export default function ClassView() {
             <>{index % 2 !== 0 && <ClassList item={item} index={index} />}</>
           ))}
         </div> */}
-        {pastLectures?.map((item: LectureViewProps, index: number) => (
-          <ClassList key={item.lectureId} item={item} index={index} />
-        ))}
+          {pastLectures?.map((item: LectureViewProps, index: number) => (
+            <ClassList key={item.lectureId} item={item} index={index} />
+          ))}
+        </div>
       </div>
       <BottomNav />
     </>

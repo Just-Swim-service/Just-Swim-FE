@@ -10,5 +10,5 @@ export interface ProfileProps {
 
 export interface InstructorProfileProps {
   name: string;
-  image: string;
+  image?: string;
 }

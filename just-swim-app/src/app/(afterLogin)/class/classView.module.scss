@@ -1,5 +1,10 @@
 @import '@/globals.scss';
 
+.container {
+  padding-bottom: 72px;
+  box-sizing: border-box;
+}
+
 .search {
   position: relative;
   width: 100%;
@@ -37,10 +42,6 @@
 }
 
 .tab_list {
-  // display: flex;
-  // flex-wrap: wrap;
-  // justify-content: space-between;
-  // flex: 1;
   display: grid;
   grid-template-columns: repeat(2, minmax(150px, 1fr));
   gap: 12px;

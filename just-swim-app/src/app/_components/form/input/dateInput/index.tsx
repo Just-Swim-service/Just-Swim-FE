@@ -46,9 +46,12 @@ function _DateInput(
   const today = new Date();
   const todayValue = `${today.getFullYear()}.${numberFormat(today.getMonth() + 1)}.${numberFormat(today.getDate())}`;
 
-  const [selectedDate, setSelectedDate] = useState<string>(() =>
-    defaultValue && checkDefaultValue(defaultValue) ? defaultValue : todayValue,
-  );
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    if (!use) return '';
+    return defaultValue && checkDefaultValue(defaultValue)
+      ? defaultValue
+      : todayValue;
+  });
 
   useEffect(() => {
     if (defaultValue && checkDefaultValue(defaultValue)) {
@@ -82,7 +85,7 @@ function _DateInput(
         className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`}
         onClick={onClickInput}>
         <span>
-          {selectedDate ? formatDate(selectedDate, suffix) : placeholder}
+          {use && selectedDate ? formatDate(selectedDate, suffix) : placeholder}
         </span>
       </div>
       {valid && (
