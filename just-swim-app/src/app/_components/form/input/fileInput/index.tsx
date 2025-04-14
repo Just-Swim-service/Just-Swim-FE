@@ -40,8 +40,15 @@ function _FileInput(
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-  const [initialDefaultImages] = useState<string[]>(defaultImages);
+  const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
+
   const [previewImages, setPreviewImages] = useState<string[]>(defaultImages);
+
+  useEffect(() => {
+    if (defaultImages.length > 0) {
+      setInitialDefaultImages(defaultImages);
+    }
+  }, [defaultImages]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
@@ -138,7 +145,7 @@ function _FileInput(
 
     setPreviewImages(newPreviewImages);
     setValue(name, uploadedImages);
-  }, [uploadedImages]);
+  }, [initialDefaultImages, uploadedImages]);
 
   // 캐러셀 관련
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
