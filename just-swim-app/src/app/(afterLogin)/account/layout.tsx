@@ -4,23 +4,30 @@ import { usePathname, useRouter } from 'next/navigation';
 import styles from './layout.module.scss';
 
 import { IconArrowLeft } from '@assets';
-import React, { useState } from 'react';
-import { patchUserEdit } from '@apis';
+import React, { useEffect, useState } from 'react';
+import { patchUserEdit, revalidateMyProfile } from '@apis';
 import { HTTP_STATUS, ROUTES, TEXT } from '@data';
-import { useUserStore } from '@store';
 import { ProfileEditCompleteToast } from '@components';
 import { AccountContext } from './_context/context';
+import { getTokenInCookies } from '@utils';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const param = usePathname();
 
-  const { getToken, setAddUserProfile } = useUserStore();
-  const userToken = getToken();
+  const [token, setToken] = useState<string | boolean>();
   const [show, setShow] = useState<boolean>(false);
   const [editable, setEditable] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
+
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await getTokenInCookies();
+      setToken(token);
+    };
+    getToken();
+  }, []);
 
   const showToast = () => {
     setShow(true);
@@ -31,19 +38,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const handleEditProfile = async () => {
-    const { status } = await patchUserEdit({
+    const data = await patchUserEdit({
       profileImage: profileImage,
       name: userName,
     });
 
-    if (status === HTTP_STATUS.OK) {
-      await setAddUserProfile({
-        token: userToken,
-        profile: {
-          name: userName,
-          profileImage: profileImage,
-        },
-      });
+    if (data.status === HTTP_STATUS.OK) {
+      await revalidateMyProfile();
       setEditable(false);
       showToast();
       router.replace(ROUTES.ACCOUNT.root);
@@ -82,7 +83,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <AccountContext.Provider
         value={{
-          userToken: userToken,
+          userToken: token ?? false,
           editable: editable,
           userName: userName,
           profileImage: profileImage,

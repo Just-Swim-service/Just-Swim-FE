@@ -8,6 +8,7 @@ import {
   PatchUserEditReq,
   PostUserLoginReq,
 } from '@types';
+import { revalidateTag } from 'next/cache';
 
 const USER_API_PATH = '/user';
 const OAUTH_API_PATH = 'Oauth';
@@ -48,6 +49,10 @@ export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
     body: formData,
   });
 };
+
+export async function revalidateMyProfile() {
+  revalidateTag('my-profile');
+}
 
 export const postUserLogout = async () => {
   return await api(`${USER_API_PATH}/logout`, HTTP_METHODS.POST);

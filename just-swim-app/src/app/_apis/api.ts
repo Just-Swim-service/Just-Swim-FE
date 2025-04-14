@@ -28,7 +28,9 @@ const api = async <T>(
     headers: {
       Authorization: authorizationToken ? `Bearer ${authorizationToken}` : '',
       ...options?.headers,
-      'Content-Type': 'application/json',
+      ...(options?.body
+        ? { 'Content-Type': 'multipart/form-data' }
+        : { 'Content-Type': 'application/json' }),
     },
     credentials: 'include',
   };

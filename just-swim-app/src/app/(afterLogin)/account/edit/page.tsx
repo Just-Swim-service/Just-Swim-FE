@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 
 import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
-import { useUserStore } from '@store';
 import { ROUTES, TEXT } from '@data';
 import { AccountContext } from '../_context/context';
+import { getCachedMyProfile } from '@apis';
 
 export default function Account() {
   const router = useRouter();
@@ -23,17 +23,15 @@ export default function Account() {
     setUserName,
     setProfileImage,
   } = accountContextData;
-  const { getUserName, getUserImage } = useUserStore();
-  const initUserName = getUserName(userToken);
-  const initUserImage = getUserImage(userToken);
 
   useEffect(() => {
     const init = async () => {
       if (!userToken) {
         router.push(ROUTES.ONBOARDING.signin);
       } else {
-        await setUserName(initUserName);
-        await setProfileImage(initUserImage);
+        const profile = await getCachedMyProfile();
+        setUserName(profile.name);
+        setProfileImage(profile.profileImage);
       }
     };
     init();

@@ -1,7 +1,7 @@
 import React, { SetStateAction } from 'react';
 
 type ContextProps = {
-  userToken: string;
+  userToken: string | boolean;
   editable: boolean;
   userName: string;
   profileImage: string;
