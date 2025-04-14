@@ -3,7 +3,7 @@ import { Provider, UserEntity, UserType } from '@types';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type User = {
-  token: string;
+  token: string | boolean;
   profile: Partial<UserEntity>;
 };
 
@@ -14,7 +14,7 @@ type UserStoreType = {
   getProvider: (token: Provider) => string;
   getUserEmail: (token: string) => string;
   getUserName: (token: string) => string;
-  getUserType: (token: string) => UserType;
+  getUserType: (token: string | boolean) => UserType;
   getUserImage: (token: string) => string;
   setAddUserToken: (token: string) => void;
   setAddUserProfile: ({ token, profile }: User) => void;
@@ -38,7 +38,8 @@ export const useUserStore = create(
       getUserName: (token: string) => {
         return get().user[token]?.profile?.name || '';
       },
-      getUserType: (token: string) => {
+      getUserType: (token: string | boolean) => {
+        if (typeof token !== 'string') return '' as UserType;
         return (get().user[token]?.profile?.userType || '') as UserType;
       },
       getUserImage: (token: string) => {
@@ -59,6 +60,7 @@ export const useUserStore = create(
       },
       setAddUserProfile: ({ token, profile }: User) => {
         set((state: UserStoreType) => {
+          if (typeof token !== 'string') return state;
           const prevUser = state.user[token] || { profile: {} };
           const overWriteUser = {
             ...state.user,
