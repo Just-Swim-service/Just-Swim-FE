@@ -45,18 +45,18 @@ export const getMyProfile = async (): Promise<GetUserProfileRes> => {
 
 export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
   const authorizationToken = cookies().get('token')?.value;
-  const formData = new FormData();
 
-  formData.append('editUserDto', JSON.stringify(data));
-
+  const value = JSON.stringify(data);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}${USER_API_PATH}/edit`,
     {
       method: HTTP_METHODS.PATCH,
       headers: {
         Authorization: `Bearer ${authorizationToken}`,
+        'Content-Type': 'application/json',
       },
-      body: formData,
+      body: value,
+      credentials: 'include',
     },
   );
   const json = await res.json();
