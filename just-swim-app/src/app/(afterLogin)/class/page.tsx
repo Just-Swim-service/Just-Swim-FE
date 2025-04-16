@@ -141,8 +141,6 @@ export default function ClassView() {
     );
   }, [lectures, searchText]);
 
-  console.log(ongoingLectures);
-
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
