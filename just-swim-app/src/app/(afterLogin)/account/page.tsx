@@ -9,7 +9,7 @@ import { ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
 import { URLImage, LogoutModal, ProfileInfo } from '@components';
 import Link from 'next/link';
-import { getCachedMyProfile, postUserLogout } from '@apis';
+import { getCachedMyProfile, postUserLogout, revalidateMyProfile } from '@apis';
 import { removeTokenInCookies } from '@utils';
 
 export default function Account() {
@@ -28,6 +28,7 @@ export default function Account() {
 
   const setUserLogout = async () => {
     await postUserLogout();
+    await revalidateMyProfile();
     removeTokenInCookies();
     setResetUser();
     router.replace(ROUTES.ONBOARDING.root);

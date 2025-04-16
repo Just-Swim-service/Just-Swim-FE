@@ -68,7 +68,7 @@ export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
 };
 
 export async function revalidateMyProfile() {
-  revalidateTag('my-profile');
+  await revalidateTag('my-profile');
 }
 
 export const postUserLogout = async () => {

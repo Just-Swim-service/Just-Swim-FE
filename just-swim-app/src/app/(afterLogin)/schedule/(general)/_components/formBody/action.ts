@@ -56,8 +56,8 @@ export async function formAction(
     const result = await updateLecture(data, id);
 
     if (result.success) {
-      revalidateTag('schedule');
-      revalidateTag(`lecture-detail`);
+      await revalidateTag('schedule');
+      await revalidateTag(`lecture-detail`);
       redirect(`/schedule`);
     } else {
       return notFound();
@@ -66,7 +66,7 @@ export async function formAction(
     const result = await createLecture(data);
 
     if (result.success) {
-      revalidateTag('schedule');
+      await revalidateTag('schedule');
       redirect(`/schedule/add/complete/${result.data.lectureId}`);
     } else {
       return notFound();
