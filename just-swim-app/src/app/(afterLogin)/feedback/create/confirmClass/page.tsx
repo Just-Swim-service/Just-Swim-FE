@@ -33,7 +33,6 @@ export default function ClassFeedbackConfirm() {
       const members = await getLectureMembers(lectureId[i]).then(
         (res) => res.data,
       );
-      console.log(members);
       target_users.push({
         lectureId: lectureId[i],
         userIds: members?.map((item: any) => item.userId),
@@ -41,6 +40,7 @@ export default function ClassFeedbackConfirm() {
     }
     try {
       const response = await postFeedback(formDataState, target_users);
+
       if (response && response.status === 200) {
         resetClassData();
         router.push('/feedback');

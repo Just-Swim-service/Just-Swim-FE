@@ -34,7 +34,6 @@ const api = async <T>(
     credentials: 'include',
   };
   const finalOptions = { ...defaultOptions, ...options };
-  //   console.log('finalOptions', finalOptions);
   try {
     const response = await fetch(URL, finalOptions);
     const data = await response.json();

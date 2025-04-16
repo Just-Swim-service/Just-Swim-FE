@@ -19,7 +19,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [show, setShow] = useState<boolean>(false);
   const [editable, setEditable] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
-  const [profileImage, setProfileImage] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<{
+    fileName?: string | undefined;
+    fileType?: string | undefined;
+    fileURL?: string | undefined;
+  }>({ fileName: undefined, fileType: undefined, fileURL: undefined });
 
   useEffect(() => {
     const getToken = async () => {
@@ -39,10 +43,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const handleEditProfile = async () => {
     const data = await patchUserEdit({
-      profileImage: profileImage,
+      profileImage: profileImage.fileURL,
       name: userName,
     });
-
     if (data.status === HTTP_STATUS.OK) {
       await revalidateMyProfile();
       setEditable(false);
@@ -86,7 +89,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           userToken: token ?? false,
           editable: editable,
           userName: userName,
-          profileImage: profileImage,
+          profileImage: profileImage ?? {
+            fileName: undefined,
+            fileType: undefined,
+            fileURL: undefined,
+          },
           setEditable: setEditable,
           setUserName: setUserName,
           setProfileImage: setProfileImage,

@@ -9,6 +9,8 @@ import {
   PostUserLoginReq,
 } from '@types';
 import { revalidateTag } from 'next/cache';
+import { Fetch } from '@utils';
+import { cookies } from 'next/headers';
 
 const USER_API_PATH = '/user';
 const OAUTH_API_PATH = 'Oauth';
@@ -42,12 +44,27 @@ export const getMyProfile = async (): Promise<GetUserProfileRes> => {
 };
 
 export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
+  const authorizationToken = cookies().get('token')?.value;
   const formData = new FormData();
 
   formData.append('editUserDto', JSON.stringify(data));
-  return await api(`${USER_API_PATH}/edit`, HTTP_METHODS.PATCH, {
-    body: formData,
-  });
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}${USER_API_PATH}/edit`,
+    {
+      method: HTTP_METHODS.PATCH,
+      headers: {
+        Authorization: `Bearer ${authorizationToken}`,
+      },
+      body: formData,
+    },
+  );
+  const json = await res.json();
+
+  return {
+    status: res.status,
+    data: json,
+  };
 };
 
 export async function revalidateMyProfile() {

@@ -12,6 +12,7 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
     header: {
       token: true,
       credential: true,
+      json: true,
     },
     body: {
       profileImage: name,

@@ -8,7 +8,7 @@ import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
 import { ROUTES, TEXT } from '@data';
 import { AccountContext } from '../_context/context';
-import { getCachedMyProfile } from '@apis';
+import { getCachedMyProfile, getProfilePresignedURL } from '@apis';
 
 export default function Account() {
   const router = useRouter();
@@ -31,7 +31,7 @@ export default function Account() {
       } else {
         const profile = await getCachedMyProfile();
         setUserName(profile.name);
-        setProfileImage(profile.profileImage);
+        setProfileImage({ fileURL: profile.profileImage });
       }
     };
     init();
@@ -43,16 +43,36 @@ export default function Account() {
     handleSetEditableTrue();
   };
 
-  const handleProfileImage = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
+  const handleProfileImage = async (
+    evt: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = evt.target.files?.[0];
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setProfileImage(reader.result as string);
-      };
-      handleSetEditableTrue();
+    const presignedURL = await getProfilePresignedURL(file?.name as string);
+    if (!presignedURL) {
+      throw new Error('Presigned URL을 가져오지 못했습니다.');
     }
+
+    const response = await fetch(presignedURL as any, {
+      method: 'PUT',
+      body: file,
+      headers: file?.type
+        ? {
+            'Content-Type': file.type,
+          }
+        : undefined,
+    });
+    if (!response.ok) {
+      throw new Error('파일 업로드 실패');
+    }
+
+    const imageData = {
+      fileURL: presignedURL.toString().split('?')[0], // URL에서 쿼리스트링 제거
+      fileName: file?.name,
+      fileType: file?.type,
+    };
+
+    setProfileImage(imageData as any); // 타입 강제 캐스팅 불필요
+    handleSetEditableTrue();
   };
 
   const handleSetEditableTrue = () => {
@@ -66,7 +86,10 @@ export default function Account() {
       <div className={styles.account_section}>
         <div className={styles.account_image_wrapper}>
           <div className={styles.account_img}>
-            <URLImage imageURL={profileImage} alt="profile image" />
+            <URLImage
+              imageURL={profileImage.fileURL ?? ''}
+              alt="profile image"
+            />
           </div>
           <label htmlFor="select_image" className={styles.image_button}>
             <IconGallery />
