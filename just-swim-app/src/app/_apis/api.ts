@@ -28,10 +28,9 @@ const api = async <T>(
     headers: {
       Authorization: authorizationToken ? `Bearer ${authorizationToken}` : '',
       ...options?.headers,
-      ...(options?.body
-        ? { 'Content-Type': 'multipart/form-data' }
-        : { 'Content-Type': 'application/json' }),
+      'Content-Type': 'application/json',
     },
+    body: options?.body,
     credentials: 'include',
   };
   const finalOptions = { ...defaultOptions, ...options };
