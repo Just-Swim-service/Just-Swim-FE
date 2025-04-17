@@ -16,6 +16,11 @@
       @include Title3-M;
     }
   }
+
+  .title_customer {
+    @include Title3-M;
+    color: $--Black;
+  }
 }
 .feedback_item {
   width: 100%;

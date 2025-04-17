@@ -31,7 +31,7 @@ export function FeedbackCard({ feedback }: { feedback: FeedbackProps }) {
           {selectedMember?.memberProfileImage ? (
             <Image
               src={selectedMember.memberProfileImage}
-              alt={`${selectedMember.memberNickname} 프로필 이미지`}
+              alt={`${selectedMember.memberName} 프로필 이미지`}
               width={22}
               height={22}
             />
@@ -49,7 +49,7 @@ export function FeedbackCard({ feedback }: { feedback: FeedbackProps }) {
             <p>
               <span>
                 {!!selectedMember
-                  ? `${selectedMember.memberNickname}님`
+                  ? `${selectedMember.memberName}님`
                   : '선택된 사용자가 없습니다.'}
               </span>
               <span>{`${feedback.members.length > 1 ? ` 외 ${feedback.members.length - 1}명` : ''}`}</span>

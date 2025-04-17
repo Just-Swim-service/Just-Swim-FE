@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import styled from './styles.module.scss';
-import { useUserStore } from '@store';
 import { FeedbackProps } from '@types';
 import { FeedbackCard } from '../feedbackCard';
 
@@ -21,7 +20,7 @@ export function List({
   token,
 }: {
   feedback: FeedbackProps[] | [];
-  token: string;
+  token: string | false;
 }) {
   const [type, setType] = useState<string>('');
   const [page, setPage] = useState<number>(0);
@@ -72,36 +71,69 @@ export function List({
 
   return (
     <div className={styled.wrap}>
-      {type === 'instructor' && (
-        <div className={styled.text}>
-          <div className={styled.title}>이전 기록</div>
-          <div>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</div>
-        </div>
+      {type === 'instructor' ? (
+        <>
+          <div className={styled.text}>
+            <div className={styled.title}>이전 기록</div>
+            <div>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</div>
+          </div>
+          <div className={styled.container}>
+            <div className={styled.list}>
+              {feedback
+                .slice(page * itemsToShow, (page + 1) * itemsToShow)
+                .map((item, idx) => (
+                  <div key={idx}>
+                    <FeedbackCard feedback={item} />
+                  </div>
+                ))}
+            </div>
+            <div className={styled.page}>
+              {pagination > 0 && (
+                <button className={styled.move_button} onClick={onClickPrev}>
+                  {'<'}
+                </button>
+              )}
+              {paginationButtons}
+              {pagination < maxPagination && (
+                <button className={styled.move_button} onClick={onClickNext}>
+                  {'>'}
+                </button>
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={styled.text}>
+            <div className={styled.title_customer}>피드백 기록</div>
+            <div>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</div>
+          </div>
+          <div className={styled.container}>
+            <div className={styled.list}>
+              {feedback
+                .slice(page * itemsToShow, (page + 1) * itemsToShow)
+                .map((item, idx) => (
+                  <div key={idx}>
+                    <CutomerFeedbackCard feedback={item} />
+                  </div>
+                ))}
+            </div>
+            <div className={styled.page}>
+              {pagination > 0 && (
+                <button className={styled.move_button} onClick={onClickPrev}>
+                  {'<'}
+                </button>
+              )}
+              {paginationButtons}
+              {pagination < maxPagination && (
+                <button className={styled.move_button} onClick={onClickNext}>
+                  {'>'}
+                </button>
+              )}
+            </div>
+          </div>
+        </>
       )}
-      <div className={styled.container}>
-        <div className={styled.list}>
-          {feedback
-            .slice(page * itemsToShow, (page + 1) * itemsToShow)
-            .map((item, idx) => (
-              <div key={idx}>
-                <FeedbackCard feedback={item} />
-              </div>
-            ))}
-        </div>
-        <div className={styled.page}>
-          {pagination > 0 && (
-            <button className={styled.move_button} onClick={onClickPrev}>
-              {'<'}
-            </button>
-          )}
-          {paginationButtons}
-          {pagination < maxPagination && (
-            <button className={styled.move_button} onClick={onClickNext}>
-              {'>'}
-            </button>
-          )}
-        </div>
-      </div>
     </div>
   );
 }

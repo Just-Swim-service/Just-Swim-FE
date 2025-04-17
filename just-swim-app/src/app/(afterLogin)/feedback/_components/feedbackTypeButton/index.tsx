@@ -17,7 +17,7 @@ type ProfileInfo = {
   userType: string;
 };
 
-export function FeedbackTypeButton({ token }: { token: string }) {
+export function FeedbackTypeButton({ token }: { token: string | false }) {
   const router = useRouter();
   const { resetFeedbackFormData } = feedbackStore();
   const { resetClassData } = searchClassStore();

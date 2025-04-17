@@ -6,13 +6,11 @@ import { useRouter } from 'next/navigation';
 
 import { FeedbackProps } from '@types';
 import { getFeedbackDetail } from '@apis';
-import { COLOR_LIST } from '@data';
 
 import NoProfile from '@/_assets/images/no_profile.png';
 import Send from '@/_assets/svg/send.svg';
-import Calendar from '@/_assets/svg/calendar_small.svg';
-import Profile from '@/_assets/svg/profile.svg';
 import Person from '@/_assets/svg/person.svg';
+import Class from '@/_assets/svg/class.svg';
 
 import styled from './styles.module.scss';
 
@@ -41,19 +39,15 @@ export function CutomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) {
       className={styled.container}
       onClick={() => goToFeedbackDetail(feedback.feedbackId)}
       style={{
-        boxShadow: `0 3px 0 0 ${COLOR_LIST[Math.floor(Math.random() * COLOR_LIST.length)].color} inset`,
+        boxShadow: `0 3px 0 0 ${feedback.lectureColor} inset`,
       }}>
       <div className={styled.header}>
         <p>{feedback.lectureTitle}</p>
         <div className={styled.instructor_info}>
-          <div className={styled.instructor_name}>
-            {/* @ts-ignore */}
-            <p>{`${feedbackDetail?.instructor?.instructorName} 강사`}</p>
-          </div>
           <div className={styled.instructor_image}>
             <Image
-              // @ts-ignore
               src={
+                // @ts-ignore
                 feedbackDetail?.instructor?.instructorProfileImage || NoProfile
               }
               // @ts-ignore
@@ -61,6 +55,10 @@ export function CutomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) {
               width={20}
               height={20}
             />
+          </div>
+          <div className={styled.instructor_name}>
+            {/* @ts-ignore */}
+            <p>{`${feedback?.instructor?.instructorName} 강사`}</p>
           </div>
         </div>
       </div>
@@ -96,19 +94,25 @@ export function CutomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) {
             <div className={styled.divider} />
             <div className={styled.date}>
               <Send />
-              <p>{feedback.feedbackCreatedAt} 전송됨</p>
+              <p>
+                {`${parseInt(feedback.feedbackDate.split('.')[0])}년 ${parseInt(feedback.feedbackDate.split('.')[1])}월 ${parseInt(feedback.feedbackDate.split('.')[2])}일`}{' '}
+                전송됨
+              </p>
             </div>
           </div>
         ) : (
           <div className={styled.extra_container}>
-            <div className={styled.date}>
-              <Calendar />
-              <p>{feedback.feedbackCreatedAt} 수업</p>
+            <div className={styled.type}>
+              <Class />
+              <p>단체 메시지</p>
             </div>
             <div className={styled.divider} />
-            <div className={styled.type}>
-              <Profile />
-              <p>단체 메시지</p>
+            <div className={styled.date}>
+              <Send />
+              <p>
+                {`${parseInt(feedback.feedbackDate.split('.')[0])}년 ${parseInt(feedback.feedbackDate.split('.')[1])}월 ${parseInt(feedback.feedbackDate.split('.')[2])}일`}{' '}
+                전송됨
+              </p>
             </div>
           </div>
         )}

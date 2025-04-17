@@ -18,6 +18,7 @@ import { LectureViewProps } from '@types';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
+import { getCachedMyProfile } from '@apis';
 
 import dayjs from 'dayjs';
 import styled from './classDetail.module.scss';
@@ -86,6 +87,16 @@ export default function ClassDetail() {
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
+  const [type, setType] = useState<string>('');
+
+  useEffect(() => {
+    const setUserType = async () => {
+      const data = await getCachedMyProfile();
+      setType(data.userType);
+    };
+    setUserType();
+  }, []);
+
   useEffect(() => {
     fetch(API_URL, {
       headers: {
@@ -136,11 +147,12 @@ export default function ClassDetail() {
 
   return (
     <div>
-      <Header title="수업 정보" editURL={`/class/edit/${lectureId}`} />
+      <Header
+        title="수업 정보"
+        editURL={type === 'instructor' ? `/class/edit/${lectureId}` : undefined}
+      />
 
       <div className={styled.qr}>
-        <h2>{lecture.lectureTitle}</h2>
-        <div className={styled.desc}>{lecture.lectureContent}</div>
         {lecture?.instructor && (
           <QRCode
             lectureData={{
@@ -160,49 +172,51 @@ export default function ClassDetail() {
         )}
       </div>
 
-      <div className={styled.invite}>
-        <h3>수강생 목록</h3>
-        <div className={styled.student}>
-          <div className={styled.count_box}>
-            <p className={styled.personnel}>현재 인원</p>
-            <p className={styled.count}>
-              {lecture.members?.length ? `${lecture.members.length}명` : '0명'}
-            </p>
+      {type === 'instructor' && (
+        <div className={styled.invite}>
+          <h3>수강생 목록</h3>
+          <div className={styled.student}>
+            <div className={styled.count_box}>
+              <p className={styled.personnel}>현재 인원</p>
+              <p className={styled.count}>
+                {lecture.members?.length ? `${lecture.members.length}명` : '0명'}
+              </p>
+            </div>
+            <Link
+              className={`${styled.profile} ${styled.box}`}
+              href={`/class/detail/${lectureId}/members`}>
+              {lecture.members && lecture.members.length > 0 ? (
+                <>
+                  <div className={styled.profile_position}>
+                    {lecture.members.slice(-7).map((member, index) => (
+                      <Image
+                        key={index}
+                        src={member?.profileImage || NoProfile}
+                        alt="회원 프로필 사진"
+                        width={32}
+                        height={32}
+                        style={{
+                          borderRadius: '32px',
+                          verticalAlign: 'middle',
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <div className={styled.arrow_box}>
+                    <IconArrowRight width={20} height={20} fill="black" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className={styled.profile_no}>
+                    QR(수업 정보)을 공유해주세요!
+                  </p>
+                </>
+              )}
+            </Link>
           </div>
-          <Link
-            className={`${styled.profile} ${styled.box}`}
-            href={`/class/detail/${lectureId}/members`}>
-            {lecture.members && lecture.members.length > 0 ? (
-              <>
-                <div className={styled.profile_position}>
-                  {lecture.members.slice(-7).map((member, index) => (
-                    <Image
-                      key={index}
-                      src={member?.profileImage || NoProfile}
-                      alt="회원 프로필 사진"
-                      width={32}
-                      height={32}
-                      style={{
-                        borderRadius: '32px',
-                        verticalAlign: 'middle',
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className={styled.arrow_box}>
-                  <IconArrowRight width={20} height={20} fill="black" />
-                </div>
-              </>
-            ) : (
-              <>
-                <p className={styled.profile_no}>
-                  QR(수업 정보)을 공유해주세요!
-                </p>
-              </>
-            )}
-          </Link>
         </div>
-      </div>
+      )}
 
       <div className={styled.class}>
         <h3>수업 정보</h3>
@@ -273,12 +287,15 @@ export default function ClassDetail() {
         </div>
       </div>
       <div className={styled.button_box}>
-        <button
-          className={styled.delete}
-          onClick={() => setShowConfirmModal(true)}>
-          <IconTrashcan width={24} height={24} fill="#FF4D4D" />
-          수업 삭제
-        </button>
+        {type === 'instructor' && (
+          <button
+            className={styled.delete}
+            onClick={() => setShowConfirmModal(true)}>
+            <IconTrashcan width={24} height={24} fill="#FF4D4D" />
+            수업 삭제
+          </button>
+        )}
+
         {showConfirmModal && (
           <ConfirmModal
             isOpen={showConfirmModal}

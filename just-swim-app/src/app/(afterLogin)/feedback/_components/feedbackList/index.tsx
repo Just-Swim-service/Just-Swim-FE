@@ -17,7 +17,6 @@ export async function FeedbackList() {
         const data = await getFeedback();
         let map = new Map();
 
-        // console.log(data);
         // feedbackId가 같다면 피드백 정보가 담긴 obj를 배열로 담아준다.
         data?.forEach((el) => {
           if (!map.has(el.feedbackId)) {

@@ -16,17 +16,15 @@ import React from 'react';
 import { getCachedMyProfile } from '@apis';
 
 const ClassList = React.memo(
-  ({ item, index }: { item: LectureViewProps; index: number }) => {
-    const [type, setType] = useState<string>('');
-
-    useEffect(() => {
-      const setUserType = async () => {
-        const data = await getCachedMyProfile();
-        setType(data.userType);
-      };
-      setUserType();
-    }, []);
-
+  ({
+    item,
+    index,
+    type,
+  }: {
+    item: LectureViewProps;
+    index: number;
+    type: string;
+  }) => {
     return (
       <div
         key={item.lectureId}
@@ -121,6 +119,16 @@ export default function ClassView() {
   const [lectures, setLectures] = useState<LectureViewProps[]>([]);
   const [searchText, setSearchText] = useState('');
 
+  const [type, setType] = useState<string>('');
+
+  useEffect(() => {
+    const setUserType = async () => {
+      const data = await getCachedMyProfile();
+      setType(data.userType);
+    };
+    setUserType();
+  }, []);
+
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
   const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
@@ -183,20 +191,27 @@ export default function ClassView() {
     <>
       <Header title="수업 정보" />
       <div className={styled.container}>
-        <div className={styled.search}>
-          <IconSearch className={styled.search_icon} />
-          <input
-            type="text"
-            placeholder="수강생 검색하기"
-            value={searchText}
-            onChange={handleSearch}
-          />
-        </div>
+        {type === 'instructor' && (
+          <div className={styled.search}>
+            <IconSearch className={styled.search_icon} />
+            <input
+              type="text"
+              placeholder="수강생 검색하기"
+              value={searchText}
+              onChange={handleSearch}
+            />
+          </div>
+        )}
 
         <p className={styled.title}>진행 중인 수업</p>
         <div className={styled.tab_list}>
           {ongoingLectures?.map((item, index) => (
-            <ClassList key={item.lectureId} item={item} index={index} />
+            <ClassList
+              key={item.lectureId}
+              item={item}
+              index={index}
+              type={type}
+            />
           ))}
         </div>
 
@@ -217,7 +232,12 @@ export default function ClassView() {
           ))}
         </div> */}
           {pastLectures?.map((item: LectureViewProps, index: number) => (
-            <ClassList key={item.lectureId} item={item} index={index} />
+            <ClassList
+              key={item.lectureId}
+              item={item}
+              index={index}
+              type={type}
+            />
           ))}
         </div>
       </div>

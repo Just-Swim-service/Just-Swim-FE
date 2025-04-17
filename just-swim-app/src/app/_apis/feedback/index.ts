@@ -116,7 +116,7 @@ async function getSortedFeedback(): Promise<FeedbackProps[] | null> {
 // );
 
 // 피드백 상세
-async function getFeedbackDetail(id: string): Promise<FeedbackProps[] | null> {
+async function getFeedbackDetail(id: string): Promise<FeedbackProps[]> {
   const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
     url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
     header: {

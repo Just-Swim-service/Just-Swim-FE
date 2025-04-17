@@ -4,6 +4,7 @@ export interface FeedbackProps {
   feedbackDate: string;
   feedbackContent: string;
   lectureTitle: string;
+  lectureColor: string;
   feedbackCreatedAt: string;
   instructor: {
     instructorUserId: string;
