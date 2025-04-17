@@ -13,9 +13,20 @@ import NoProfile from '@/_assets/images/no_profile.png';
 import { LectureViewProps } from '@types';
 
 import React from 'react';
+import { getCachedMyProfile } from '@apis';
 
 const ClassList = React.memo(
   ({ item, index }: { item: LectureViewProps; index: number }) => {
+    const [type, setType] = useState<string>('');
+
+    useEffect(() => {
+      const setUserType = async () => {
+        const data = await getCachedMyProfile();
+        setType(data.userType);
+      };
+      setUserType();
+    }, []);
+
     return (
       <div
         key={item.lectureId}
@@ -47,31 +58,54 @@ const ClassList = React.memo(
                 </p>
               </div>
               <div className={styled.profile_box}>
-                <div className={styled.photo_list}>
-                  {item.members && item.members.length > 0 && (
-                    <>
-                      {item.members.slice(-4).map((member, index) => (
-                        <Image
-                          key={index}
-                          //  @ts-ignore
-                          src={member.profileImage || NoProfile}
-                          alt="회원 프로필 사진"
-                          width={28}
-                          height={28}
-                          style={{
-                            borderRadius: '28px',
-                            verticalAlign: 'middle',
-                          }}
-                        />
-                      ))}
-                    </>
-                  )}
-                </div>
-                <p className={styled.count}>
-                  {item.members && item.members.length > 0
-                    ? `${item.members.length}명`
-                    : '0명'}
-                </p>
+                {type === 'instructor' ? (
+                  <div>
+                    <div className={styled.photo_list}>
+                      {item.members && item.members.length > 0 && (
+                        <>
+                          {item.members.slice(-4).map((member, index) => (
+                            <Image
+                              key={index}
+                              // @ts-ignore
+                              src={member.profileImage || NoProfile}
+                              alt="회원 프로필 사진"
+                              width={28}
+                              height={28}
+                              style={{
+                                borderRadius: '28px',
+                                verticalAlign: 'middle',
+                              }}
+                            />
+                          ))}
+                        </>
+                      )}
+                    </div>
+                    <p className={styled.count}>
+                      {item.members && item.members.length > 0
+                        ? `${item.members.length}명`
+                        : '0명'}
+                    </p>
+                  </div>
+                ) : (
+                  <div className={styled.instructor_info}>
+                    <div className={styled.photo_list}>
+                      <Image
+                        // @ts-ignore
+                        src={item.instructorProfileImage || NoProfile}
+                        alt={`${item.instructor.instructorName} 강사`}
+                        width={28}
+                        height={28}
+                        style={{
+                          borderRadius: '28px',
+                          verticalAlign: 'middle',
+                        }}
+                      />
+                    </div>
+                    <div className={styled.instructor_name}>
+                      <p>{item.instructor.instructorName} 강사</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </Link>

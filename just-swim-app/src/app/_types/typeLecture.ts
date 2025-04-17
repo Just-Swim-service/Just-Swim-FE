@@ -40,7 +40,7 @@ export interface LectureViewProps extends LectureBasicProps {
   instructor: {
     instructorName: string;
     instructorProfileImage: string;
-  }[];
+  };
 }
 
 export interface ScheduleSummary {

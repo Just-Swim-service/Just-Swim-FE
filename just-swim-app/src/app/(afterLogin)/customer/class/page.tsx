@@ -110,7 +110,7 @@ export default function ClassView() {
         lecture.isPastLecture === isPast &&
         (searchText === '' ||
           lecture.members?.some((member) =>
-            member.memberName.toLowerCase().includes(searchText.toLowerCase()),
+            member.name.toLowerCase().includes(searchText.toLowerCase()),
           )),
     );
   };

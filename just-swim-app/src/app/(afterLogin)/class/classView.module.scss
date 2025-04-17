@@ -104,6 +104,17 @@
           @include Title5-SB;
           float: right;
         }
+
+        .instructor_info {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+
+        .instructor_name {
+          margin-top: 4px;
+          @include Title5-SB;
+        }
       }
     }
   }
