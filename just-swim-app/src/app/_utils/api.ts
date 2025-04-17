@@ -33,10 +33,12 @@ export async function Fetch<T>({
     const response = await fetch(url, {
       method,
       headers: {
-        'Content-Type': header.json ? 'application/json' : header.formData ? 'multipart/form-data' : '',
-        Authorization: header.token
-          ? `Bearer ${token}`
-          : '',
+        'Content-Type': header.json
+          ? 'application/json'
+          : header.formData
+            ? 'multipart/form-data'
+            : '',
+        Authorization: header.token ? `Bearer ${token}` : '',
         credentials: header.credential ? 'include' : '',
       },
       body: body && JSON.stringify(body),
@@ -46,6 +48,6 @@ export async function Fetch<T>({
 
     return result;
   } catch (error) {
-    return notFound();
+    throw new Error('Error fetching data');
   }
 }

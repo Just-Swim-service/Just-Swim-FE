@@ -30,10 +30,10 @@ const api = async <T>(
       ...options?.headers,
       'Content-Type': 'application/json',
     },
+    body: options?.body,
     credentials: 'include',
   };
   const finalOptions = { ...defaultOptions, ...options };
-  //   console.log('finalOptions', finalOptions);
   try {
     const response = await fetch(URL, finalOptions);
     const data = await response.json();

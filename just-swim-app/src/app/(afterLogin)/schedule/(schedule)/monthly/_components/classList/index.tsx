@@ -18,6 +18,7 @@ import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
+import { getCachedMyProfile } from '@apis';
 
 export function ClassList({
   selectedDate,
@@ -30,8 +31,6 @@ export function ClassList({
   itemHeight: number;
   unshowClass: () => void;
 }) {
-  const { getUserType } = useUserStore();
-
   const [type, setType] = useState<string>('');
   const date = new Date(selectedDate);
 
@@ -95,14 +94,12 @@ export function ClassList({
   };
 
   useEffect(() => {
-    const getToken = async () => {
-      const token = await getTokenInCookies();
-
-      setType(getUserType(token));
+    const setUserType = async () => {
+      const data = await getCachedMyProfile();
+      setType(data.userType);
     };
-
-    getToken();
-  }, [getUserType]);
+    setUserType();
+  }, []);
 
   return (
     <Portal>

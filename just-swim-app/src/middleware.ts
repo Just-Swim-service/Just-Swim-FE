@@ -11,6 +11,12 @@ export async function middleware(req: NextRequest) {
   if (!hasToken) {
     const pathname = req.nextUrl.pathname;
     if (pathname === '/schedule') {
+      const token = req.nextUrl.searchParams.get('token');
+      if (token) {
+        const res = NextResponse.next();
+        res.cookies.set('token', token);
+        return res;
+      }
       return NextResponse.next();
     } else if (pathname !== '/signin') {
       return NextResponse.redirect(new URL('/signin', req.url));
