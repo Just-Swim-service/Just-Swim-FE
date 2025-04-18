@@ -19,7 +19,7 @@ function _ClassList({
 }: {
   weeklyInfo: { date: string; day: string; lectures: LectureProps[] }[];
   selectedDate: number;
-  token: string;
+  token: string | false;
 }) {
   const todaySchedules = weeklyInfo[selectedDate].lectures;
   const todayDate = weeklyInfo[selectedDate].date.split('.')[2];

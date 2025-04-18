@@ -34,7 +34,7 @@ export function List({
     setUserType();
   }, []);
 
-  const maxPage = Math.floor(feedback.length / itemsToShow);
+  const maxPage = Math.ceil(feedback.length / itemsToShow) - 1;
   const maxPagination = Math.floor(maxPage / pagesToShow);
 
   const onClickPage = (page: number) => {

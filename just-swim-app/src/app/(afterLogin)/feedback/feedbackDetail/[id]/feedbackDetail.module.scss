@@ -62,4 +62,86 @@
       background-color: $--gray-100;
     }
   }
+  .feedback_divider {
+    width: 328px;
+    height: 1px;
+    background-color: $--gray-200;
+  }
+
+  .detail_customer_feedback {
+    height: 95px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    gap: 106px;
+
+    .detail_customer_feedback_title {
+      flex-direction: row;
+      .class_title {
+        @include Title2-SB;
+      }
+
+      .feedback_type {
+        @include Body4-R;
+        background-color: #e9f3ff;
+        color: $--Primary-blue;
+      }
+    }
+
+    .instructor_info {
+      width: 156px;
+      height: 40px;
+      padding: 8px 14px;
+      box-sizing: border-box;
+      background-color: $--gray-50;
+      border-radius: 10px;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+
+      .instructor_image {
+        width: 24px;
+        height: 24px;
+
+        border-radius: 50%;
+
+        overflow: hidden;
+      }
+
+      .instructor_name {
+        @include Title4-M;
+      }
+    }
+  }
+
+  .detail_customer_feedback_info {
+    width: 100vw;
+    margin-top: 22px;
+    @include Title5-M;
+
+    .feedback_customer_date {
+      p {
+        margin-bottom: 6px;
+      }
+
+      .feedback_customer_date_info {
+        height: 51px;
+        width: 328px;
+        box-sizing: border-box;
+        background-color: $--gray-50;
+        border-radius: 6px;
+
+        display: flex;
+        align-items: center;
+
+        .date_info_icon {
+          margin-top: 3px;
+          margin-left: 16px;
+          margin-right: 14px;
+        }
+      }
+    }
+  }
 }

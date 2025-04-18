@@ -28,6 +28,7 @@ export interface FeedbackInfo {
   feedbackType: string;
   feedbackCreatedAt: string;
   feedbackLink: string;
+  lectureTitle: string;
   images: [{ imagePath: string }];
   instructor: {
     instructorName: string;

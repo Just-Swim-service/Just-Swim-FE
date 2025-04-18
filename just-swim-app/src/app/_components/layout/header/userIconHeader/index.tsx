@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { getCachedMyProfile } from '@apis';
+import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
 import { useEffect, useState } from 'react';
@@ -37,7 +38,7 @@ export function UserIconHeader({ title }: { title: string }) {
       <Link href={`/account`}>
         <div className={styled.profile_image}>
           <Image
-            src={profileInfo?.profileImage || ''}
+            src={profileInfo?.profileImage || NoProfile}
             alt={profileInfo?.name || ''}
             width={34}
             height={34}

@@ -12,7 +12,7 @@ export function WeekWrapper({
   token,
 }: {
   weeklyInfo: { date: string; day: string; lectures: LectureProps[] }[];
-  token: string;
+  token: string | false;
 }) {
   const [selectedDate, setSelectedDate] = useState<number>(new Date().getDay());
 
