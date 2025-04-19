@@ -202,44 +202,35 @@ export default function ClassView() {
             />
           </div>
         )}
+        {type && (
+          <>
+            <p className={styled.title}>진행 중인 수업</p>
+            <div className={styled.tab_list}>
+              {ongoingLectures?.map((item, index) => (
+                <ClassList
+                  key={item.lectureId}
+                  item={item}
+                  index={index}
+                  type={type}
+                />
+              ))}
+            </div>
 
-        <p className={styled.title}>진행 중인 수업</p>
-        <div className={styled.tab_list}>
-          {ongoingLectures?.map((item, index) => (
-            <ClassList
-              key={item.lectureId}
-              item={item}
-              index={index}
-              type={type}
-            />
-          ))}
-        </div>
+            <div className={styled.bar}></div>
 
-        <div className={styled.bar}></div>
-
-        <p className={styled.title}>지난 수업</p>
-
-        <div className={styled.tab_list}>
-          {/* <div className="left_content">
-          {pastLectures.map((item: LectureViewProps, index: number) => (
-            <div key={item.lectureId}>{index % 2 === 0 && <ClassList item={item} index={index} />}</div>
-          ))}
-        </div>
-
-        <div className="right_content">
-          {pastLectures.map((item: LectureViewProps, index: number) => (
-            <>{index % 2 !== 0 && <ClassList item={item} index={index} />}</>
-          ))}
-        </div> */}
-          {pastLectures?.map((item: LectureViewProps, index: number) => (
-            <ClassList
-              key={item.lectureId}
-              item={item}
-              index={index}
-              type={type}
-            />
-          ))}
-        </div>
+            <p className={styled.title}>지난 수업</p>
+            <div className={styled.tab_list}>
+              {pastLectures?.map((item: LectureViewProps, index: number) => (
+                <ClassList
+                  key={item.lectureId}
+                  item={item}
+                  index={index}
+                  type={type}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <BottomNav />
     </>
