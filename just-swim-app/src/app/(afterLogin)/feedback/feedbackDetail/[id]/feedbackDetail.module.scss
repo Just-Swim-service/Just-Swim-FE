@@ -95,11 +95,12 @@
       box-sizing: border-box;
       background-color: $--gray-50;
       border-radius: 10px;
+      border: 1px solid $--gray-200;
 
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
 
       .instructor_image {
         width: 24px;
@@ -122,7 +123,9 @@
     @include Title5-M;
 
     .feedback_customer_date {
+      margin-bottom: 22px;
       p {
+        @include Title3-M;
         margin-bottom: 6px;
       }
 

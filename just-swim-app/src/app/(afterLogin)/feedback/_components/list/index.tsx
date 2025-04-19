@@ -5,7 +5,7 @@ import styled from './styles.module.scss';
 import { FeedbackProps } from '@types';
 import { FeedbackCard } from '../feedbackCard';
 
-import { CutomerFeedbackCard } from '@components';
+import { CustomerFeedbackCard } from '../customerFeedbackCard';
 import { get } from 'http';
 import { getCachedMyProfile } from '@apis';
 
@@ -114,7 +114,7 @@ export function List({
                 .slice(page * itemsToShow, (page + 1) * itemsToShow)
                 .map((item, idx) => (
                   <div key={idx}>
-                    <CutomerFeedbackCard feedback={item} />
+                    <CustomerFeedbackCard feedback={item} />
                   </div>
                 ))}
             </div>

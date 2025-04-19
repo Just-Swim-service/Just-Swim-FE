@@ -14,7 +14,7 @@ import Class from '@/_assets/svg/class.svg';
 
 import styled from './styles.module.scss';
 
-export function CutomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) {
+export function CustomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) {
   const router = useRouter();
 
   const goToFeedbackDetail = (feedbackId: string) => {

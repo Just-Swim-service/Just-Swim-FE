@@ -212,6 +212,51 @@ export default function FeedbackDetail() {
                     : ''}
                 </div>
               </div>
+              <div>
+                {feedbackInfo?.images && feedbackInfo.images.length > 0 && (
+                  <div className={styled.detail_title}>
+                    <p>첨부 파일</p>
+                    <div className={styled.detail_photo}>
+                      {/* TODO: 이미지 클릭 시 확대 처리 */}
+                      {(feedbackInfo?.images || []).map((image, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className={styled.preview_item}
+                            style={{
+                              backgroundImage: image.imagePath
+                                ? `url(${image.imagePath.trim()})`
+                                : IconDefaultProfile,
+                              width: '100px',
+                              height: '100px',
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                            }}></div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+              {feedbackInfo?.feedbackLink && (
+                <div>
+                  <div className={styled.detail_title}>
+                    <p>첨부 링크</p>
+                  </div>
+                  <div className={styled.detail_content}>
+                    <span className={styled.detail_icon}>
+                      <Link />
+                    </span>
+                    <p>{feedbackInfo?.feedbackLink}</p>
+                  </div>
+                </div>
+              )}
+              <div className={styled.detail_title}>
+                <p>피드백</p>
+              </div>
+              <div className={styled.detail_content}>
+                <p>{feedbackInfo?.feedbackContent}</p>
+              </div>
             </div>
           </div>
         </>
