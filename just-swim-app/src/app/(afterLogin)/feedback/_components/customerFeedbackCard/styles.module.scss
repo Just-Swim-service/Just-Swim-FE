@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
 
-    padding: 14px 22px;
+    padding: 14px 22px 12px;
 
     .instructor_info {
       display: flex;
@@ -46,7 +46,7 @@
   }
 
   .content {
-    padding: 17px 22px 0;
+    padding: 0 22px 0;
 
     // background-color: $--gray-50;
 
@@ -54,6 +54,7 @@
 
     .main_content {
       display: flex;
+      justify-content: space-between;
 
       padding-bottom: 16px;
 
@@ -96,27 +97,27 @@
       display: flex;
       align-items: center;
 
+      gap: 14px;
+
       .type {
         display: flex;
         align-items: center;
 
-        gap: 7px;
+        gap: 5px;
       }
 
-      .date {
+      .class {
         display: flex;
         align-items: center;
 
-        gap: 7px;
+        gap: 5px;
       }
 
-      .divider {
-        width: 1px;
-        height: 8px;
+      .feedback_date {
+        display: flex;
+        align-items: center;
 
-        background-color: $--gray-400;
-
-        margin: 0 10px;
+        gap: 5px;
       }
     }
 

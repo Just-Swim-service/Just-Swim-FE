@@ -8,9 +8,10 @@ import { FeedbackProps } from '@types';
 import { getFeedbackDetail } from '@apis';
 
 import NoProfile from '@/_assets/images/no_profile.png';
-import Send from '@/_assets/svg/send.svg';
 import Person from '@/_assets/svg/person.svg';
 import Class from '@/_assets/svg/class.svg';
+import Group from '@/_assets/svg/group.svg';
+import { IconCalendar } from '@assets';
 
 import styled from './styles.module.scss';
 
@@ -37,12 +38,8 @@ export function CustomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) 
   return (
     <div
       className={styled.container}
-      onClick={() => goToFeedbackDetail(feedback.feedbackId)}
-      style={{
-        boxShadow: `0 3px 0 0 ${feedback.lectureColor} inset`,
-      }}>
+      onClick={() => goToFeedbackDetail(feedback.feedbackId)}>
       <div className={styled.header}>
-        <p>{feedback.lectureTitle}</p>
         <div className={styled.instructor_info}>
           <div className={styled.instructor_image}>
             <Image
@@ -87,32 +84,32 @@ export function CustomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) 
       <div className={styled.extra}>
         {feedback.feedbackType === 'personal' ? (
           <div className={styled.extra_container}>
-            <div className={styled.type}>
-              <Person />
-              <p>개별 메시지</p>
+            <div className={styled.class}>
+              <Class width={16} height={16} fill={'#5c5e62'} />
+              <p>{feedback.lectureTitle}</p>
             </div>
-            <div className={styled.divider} />
-            <div className={styled.date}>
-              <Send />
-              <p>
-                {`${parseInt(feedback.feedbackDate.split('.')[0])}년 ${parseInt(feedback.feedbackDate.split('.')[1])}월 ${parseInt(feedback.feedbackDate.split('.')[2])}일`}{' '}
-                전송됨
-              </p>
+            <div className={styled.feedback_date}>
+              <IconCalendar width={16} height={16} fill={'#5c5e62'} />
+              <p>{`${parseInt(feedback.feedbackDate.split('.')[1])}월 ${parseInt(feedback.feedbackDate.split('.')[2])}일`}</p>
+            </div>
+            <div className={styled.type}>
+              <Person width={16} height={16} fill={'#5c5e62'} />
+              <p>개별 메시지</p>
             </div>
           </div>
         ) : (
           <div className={styled.extra_container}>
-            <div className={styled.type}>
-              <Class />
-              <p>단체 메시지</p>
+            <div className={styled.class}>
+              <Class width={16} height={16} fill={'#5c5e62'} />
+              <p>{feedback.lectureTitle}</p>
             </div>
-            <div className={styled.divider} />
-            <div className={styled.date}>
-              <Send />
-              <p>
-                {`${parseInt(feedback.feedbackDate.split('.')[0])}년 ${parseInt(feedback.feedbackDate.split('.')[1])}월 ${parseInt(feedback.feedbackDate.split('.')[2])}일`}{' '}
-                전송됨
-              </p>
+            <div className={styled.feedback_date}>
+              <IconCalendar width={16} height={16} fill={'#5c5e62'} />
+              <p>{`${parseInt(feedback.feedbackDate.split('.')[1])}월 ${parseInt(feedback.feedbackDate.split('.')[2])}일`}</p>
+            </div>
+            <div className={styled.type}>
+              <Group width={16} height={16} fill={'#5c5e62'} />
+              <p>단체 메시지</p>
             </div>
           </div>
         )}
