@@ -1,35 +1,30 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { Suspense, useLayoutEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
 import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
-import { patchUserEdit } from '@apis';
-import { useUserStore } from '@store';
-import { UserType } from '@types';
+import { getCachedMyProfile, patchUserEdit } from '@apis';
 
 export default function Profile() {
   const router = useRouter();
-
-  const { getUserName, getUserType, getToken, getUserImage, setAddUserProfile } =
-    useUserStore();
-  const userToken = getToken();
-  const [type, setType] = useState<UserType>();
+  const [type, setType] = useState<string>();
   const [valid, setValid] = useState<boolean>(false);
   const [inputName, setInputName] = useState<string>('');
   const [inputImage, setInputImage] = useState<string>('');
 
-  useLayoutEffect(() => {
-    if (!userToken) {
-      router.push(ROUTES.ONBOARDING.signin);
-    } else {
-      setType(getUserType(userToken));
-      setInputName(getUserName(userToken));
-      setInputImage(getUserImage(userToken));
-    }
+  useEffect(() => {
+    const fetchProfileInfo = async () => {
+      const response = await getCachedMyProfile();
+
+      setType(response.userType);
+      setInputName(response.name);
+      setInputImage(response.profileImage);
+    };
+    fetchProfileInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,13 +35,6 @@ export default function Profile() {
     });
 
     if (status === HTTP_STATUS.OK) {
-      setAddUserProfile({
-        token: userToken,
-        profile: {
-          name: inputName,
-          profileImage: inputImage,
-        },
-      });
       router.push(ROUTES.ONBOARDING.complete);
     }
   };

@@ -1,32 +1,32 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { URLImage } from '@components';
-import { useUserStore } from '@store';
 import { TEXT, ROUTES } from '@data';
+import { getCachedMyProfile } from '@apis';
+import { ProfileProps } from '@types';
 
 export default function Complete() {
   const router = useRouter();
 
-  const { getUserImage, getToken, getUserType } = useUserStore();
-  const userToken = getToken();
-  const [userImage, setUserImage] = useState<string>();
+  const [userProfile, setUserProfile] = useState<ProfileProps>();
 
-  useLayoutEffect(() => {
-    if (!userToken) {
-      router.push(ROUTES.ONBOARDING.signin);
-    } else {
-      const image = getUserImage(userToken);
-      setUserImage(image);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const fetchProfileInfo = async () => {
+      const response = await getCachedMyProfile();
+      setUserProfile(response);
+    };
+    fetchProfileInfo();
   }, []);
 
   const handleRoute = () => {
-    const userType = getUserType(userToken);
-    if (!userType) {
+    if (!userProfile?.userType) {
+      console.log(
+        'User의 Type이 없습니다. 로그인 페이지로 돌아갑니다. Code: signup/complete',
+      );
+      router.push(ROUTES.ONBOARDING.signin);
       return;
     }
     router.push(ROUTES.SCHEDULE.root);
@@ -41,7 +41,10 @@ export default function Complete() {
       </div>
       <div className={styles.complete_section}>
         <div className={styles.profile_img}>
-          <URLImage imageURL={userImage as string} alt="profile image" />
+          <URLImage
+            imageURL={userProfile?.profileImage as string}
+            alt="profile image"
+          />
         </div>
       </div>
       <div className={styles.complete_footer}>
