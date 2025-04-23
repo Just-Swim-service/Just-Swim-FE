@@ -7,4 +7,6 @@ export default function Page() {
   useEffect(() => {
     router.replace('/schedule/weekly');
   }, [router]);
+
+  return <div>Redirecting...</div>;
 }

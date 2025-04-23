@@ -24,6 +24,8 @@ export interface UserFeedbackProps {
   feedbackDate: string;
   feedbackType: string;
   feedbackContent: string;
+  feedbackLink: string;
+
   images: ImageProps[];
 }
 

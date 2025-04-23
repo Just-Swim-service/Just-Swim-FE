@@ -141,6 +141,7 @@
   .feed_content {
     display: flex;
     gap: 15px;
+    justify-content: space-between;
 
     .content {
       @include Body2-R;
@@ -159,11 +160,7 @@
     text-align: center;
     display: flex;
     padding: 6px 10px;
-
-    span {
-      margin-right: 6px;
-      vertical-align: middle;
-    }
+    gap: 6px;
 
     a {
       color: $--gray-600;

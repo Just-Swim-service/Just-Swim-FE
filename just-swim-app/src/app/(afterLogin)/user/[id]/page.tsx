@@ -31,6 +31,7 @@ export default function User() {
   const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [member, setMember] = useState<MemberProps | null>(null);
+  console.log(member);
 
   useEffect(() => {
     fetch(API_URL, {
@@ -282,11 +283,13 @@ export default function User() {
                       </div>
                     </div>
                     <div className={styled.feed_link}>
-                      <span>
-                        <IconLink width={16} height={16} fill="#3689FF" />
-                      </span>
-                      <Link
-                        href={`/feedback/feedbackDetail/${item.feedbackId}`}></Link>
+                      <IconLink width={16} height={16} fill="#3689FF" />
+                      <a
+                        href={item.feedbackLink}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        {item.feedbackLink}
+                      </a>
                     </div>
                   </div>
                 ))}
