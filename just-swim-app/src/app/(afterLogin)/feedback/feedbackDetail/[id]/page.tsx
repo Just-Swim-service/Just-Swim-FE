@@ -11,7 +11,7 @@ import UserTypeGroup from '@assets/user_type_group.svg';
 import { IconArrowRightSmall, IconDefaultProfile } from '@assets';
 import Link from '@assets/link.svg';
 
-import { HistoryBackHeader } from '@components';
+import { HistoryBackHeader, ImageFocusModal } from '@components';
 import { useEffect, useState } from 'react';
 import { getCachedMyProfile, getFeedbackDetail } from '@apis';
 import { FeedbackInfo, Members } from '@/_types/typeFeedback';
@@ -28,6 +28,9 @@ export default function FeedbackDetail() {
   const [feedbackTarget, setFeedbackTarget] = useState<Members[]>([]);
   const [feedbackCreatedAt, setFeedbackCreatedAt] = useState<string>('');
   const { modal, showModal, hideModal } = useModal();
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   useEffect(() => {
     const setUserType = async () => {
@@ -62,9 +65,16 @@ export default function FeedbackDetail() {
     fetchData();
   }, [id]);
 
-  const feedbackDate = formatDate(feedbackInfo?.feedbackDate);
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowImageModal(true);
+  };
 
-  console.log(feedbackInfo);
+  const handleCloseModal = () => {
+    setShowImageModal(false);
+  };
+
+  const feedbackDate = formatDate(feedbackInfo?.feedbackDate);
 
   return (
     <>
@@ -122,24 +132,34 @@ export default function FeedbackDetail() {
                 <div className={styled.detail_title}>
                   <p>첨부 파일</p>
                   <div className={styled.detail_photo}>
-                    {/* TODO: 이미지 클릭 시 확대 처리 */}
-                    {(feedbackInfo?.images || []).map((image, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className={styled.preview_item}
-                          style={{
-                            backgroundImage: image.imagePath
-                              ? `url(${image.imagePath.trim()})`
-                              : IconDefaultProfile,
-                            width: '100px',
-                            height: '100px',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                          }}></div>
-                      );
-                    })}
+                    {feedbackInfo?.images.map((image, index) => (
+                      <div
+                        key={index}
+                        className={styled.preview_item}
+                        onClick={() => handleImageClick(index)}
+                        style={{
+                          backgroundImage: `url(${image.imagePath.trim()})`,
+                          width: '100px',
+                          height: '100px',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          cursor: 'pointer',
+                        }}
+                      />
+                    ))}
                   </div>
+                  {showImageModal && feedbackInfo?.images && (
+                    <ImageFocusModal
+                      imageUrl={
+                        feedbackInfo?.images[selectedImageIndex]?.imagePath
+                      }
+                      images={feedbackInfo.images.map(
+                        (image) => image.imagePath,
+                      )}
+                      currentIndex={selectedImageIndex}
+                      onClose={handleCloseModal}
+                    />
+                  )}
                 </div>
               )}
             </div>

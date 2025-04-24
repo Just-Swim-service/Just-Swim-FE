@@ -46,3 +46,10 @@ export interface MonthModalProps extends ModalBodyProps {
 export interface FeedbackTargetListModalProps extends ModalBodyProps {
   feedbackTargetList: Members[];
 }
+
+export interface ImageFocusModalProps {
+  imageUrl: string;
+  onClose: () => void;
+  images: string[];
+  currentIndex: number;
+}
