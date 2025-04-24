@@ -31,6 +31,9 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'just-swim-bucket.s3.ap-northeast-2.amazonaws.com',
       },
+      {
+        hostname: 'phinf.pstatic.net',
+      },
     ],
   },
   // async rewrites() {

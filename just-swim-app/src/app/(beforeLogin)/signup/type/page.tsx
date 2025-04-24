@@ -2,11 +2,10 @@
 
 import styles from './pages.module.scss';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { getTokenInCookies, setTokenInCookies, setUserType } from '@utils';
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
-import { useUserStore } from '@store';
-import { getMyProfile } from '@apis';
+import { getCachedMyProfile } from '@apis';
 import { UserType } from '@types';
 
 export default function Type() {
@@ -16,25 +15,21 @@ export default function Type() {
   const [type, setType] = useState<UserType>();
   const [token, setToken] = useState<string | boolean>();
 
-  const { setAddUserToken, setAddUserProfile, getUserType } = useUserStore();
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     const checkToken = async () => {
       if (params) {
         const newToken = await setTokenInCookies(params);
-        setAddUserToken(newToken);
 
-        const { data } = await getMyProfile();
-        setAddUserProfile({ token: newToken, profile: data.data });
-        if (data.data.userType) {
+        const data = await getCachedMyProfile();
+        if (data.userType) {
           return router.push(ROUTES.SCHEDULE.root);
         }
         setToken(newToken);
       } else {
         const authorizationToken = await getTokenInCookies();
-        const userType = getUserType(authorizationToken);
+        const data = await getCachedMyProfile();
 
-        if (userType) {
+        if (data.userType) {
           return router.replace(ROUTES.SCHEDULE.root);
         }
         setToken(authorizationToken);
@@ -51,10 +46,6 @@ export default function Type() {
       const { status } = await setUserType({ userType: type as UserType });
 
       if (status === HTTP_STATUS.OK) {
-        setAddUserProfile({
-          token: token,
-          profile: { userType: type },
-        });
         return router.push(ROUTES.ONBOARDING.profile);
       }
     }
