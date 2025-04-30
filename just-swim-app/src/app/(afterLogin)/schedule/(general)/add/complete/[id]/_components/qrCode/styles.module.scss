@@ -21,8 +21,8 @@
     cursor: pointer;
 
     .icon_wrapper {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -35,10 +35,8 @@
 }
 
 .line {
-  width: 100vw;
-  height: 1px;
-  background-color: $--gray-200;
-  margin: 12px 0;
+  width: 100%;
+  border: 1px solid $--gray-200;
 }
 
 .divider {
