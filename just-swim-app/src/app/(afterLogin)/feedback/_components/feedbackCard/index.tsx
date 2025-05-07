@@ -52,7 +52,12 @@ export function FeedbackCard({ feedback }: { feedback: FeedbackProps }) {
                   ? `${selectedMember.memberName}님`
                   : '선택된 사용자가 없습니다.'}
               </span>
-              <span>{`${feedback.members.length > 1 ? ` 외 ${feedback.members.length - 1}명` : ''}`}</span>
+              <span>
+                {Array.isArray(feedback.members) && feedback.members.length > 1
+                  ? ` 외 ${feedback.members.length - 1}명`
+                  : ''}
+              </span>
+
               <span>에게</span>
             </p>
           )}

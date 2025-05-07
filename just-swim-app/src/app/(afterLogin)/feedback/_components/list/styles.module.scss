@@ -160,3 +160,18 @@
     }
   }
 }
+
+.empty_wrap {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+.empty_text {
+  text-align: center;
+  color: $--gray-300;
+  font-size: 14px;
+  line-height: 20px;
+}

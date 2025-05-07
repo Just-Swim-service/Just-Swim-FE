@@ -206,28 +206,40 @@ export default function ClassView() {
           <>
             <p className={styled.title}>진행 중인 수업</p>
             <div className={styled.tab_list}>
-              {ongoingLectures?.map((item, index) => (
-                <ClassList
-                  key={item.lectureId}
-                  item={item}
-                  index={index}
-                  type={type}
-                />
-              ))}
+              {ongoingLectures.length > 0 ? (
+                ongoingLectures.map((item, index) => (
+                  <ClassList
+                    key={item.lectureId}
+                    item={item}
+                    index={index}
+                    type={type}
+                  />
+                ))
+              ) : (
+                <p className={styled.empty_text}>
+                  수강 중인 수업이 없습니다.
+                  <br />
+                  강사님께 QR코드를 요청해 보세요!
+                </p>
+              )}
             </div>
 
             <div className={styled.bar}></div>
 
             <p className={styled.title}>지난 수업</p>
             <div className={styled.tab_list}>
-              {pastLectures?.map((item: LectureViewProps, index: number) => (
-                <ClassList
-                  key={item.lectureId}
-                  item={item}
-                  index={index}
-                  type={type}
-                />
-              ))}
+              {pastLectures.length > 0 ? (
+                pastLectures.map((item, index) => (
+                  <ClassList
+                    key={item.lectureId}
+                    item={item}
+                    index={index}
+                    type={type}
+                  />
+                ))
+              ) : (
+                <p className={styled.empty_text}>지난 수업 기록이 없습니다.</p>
+              )}
             </div>
           </>
         )}

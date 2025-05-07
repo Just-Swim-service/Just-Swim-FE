@@ -125,3 +125,13 @@
   height: 8px;
   background-color: $--gray-50;
 }
+
+.empty_text {
+  text-align: center;
+  color: $--gray-400;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 90px 16px;
+  grid-column: 1 / -1;
+  white-space: pre-line;
+}

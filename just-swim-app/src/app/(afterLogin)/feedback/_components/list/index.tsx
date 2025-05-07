@@ -4,15 +4,10 @@ import { useEffect, useState } from 'react';
 import styled from './styles.module.scss';
 import { FeedbackProps } from '@types';
 import { FeedbackCard } from '../feedbackCard';
-
 import { CustomerFeedbackCard } from '../customerFeedbackCard';
-import { get } from 'http';
 import { getCachedMyProfile } from '@apis';
 
-// TODO 추후 수정 요망
-// 한 페이지에 몇 개의 아이템을 보여줄지 여부
 const itemsToShow = 5;
-// 몇 개의 페이지 선택 버튼을 보여줄지 여부
 const pagesToShow = 5;
 
 export function List({
@@ -104,33 +99,43 @@ export function List({
         </>
       ) : (
         <>
-          <div className={styled.text}>
-            <div className={styled.title_customer}>피드백 기록</div>
-            <div>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</div>
-          </div>
+          {feedback.length > 0 && (
+            <div className={styled.text}>
+              <div className={styled.title_customer}>피드백 기록</div>
+              <div>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</div>
+            </div>
+          )}
           <div className={styled.container}>
-            <div className={styled.list}>
-              {feedback
-                .slice(page * itemsToShow, (page + 1) * itemsToShow)
-                .map((item, idx) => (
-                  <div key={idx}>
-                    <CustomerFeedbackCard feedback={item} />
-                  </div>
-                ))}
-            </div>
-            <div className={styled.page}>
-              {pagination > 0 && (
-                <button className={styled.move_button} onClick={onClickPrev}>
-                  {'<'}
-                </button>
-              )}
-              {paginationButtons}
-              {pagination < maxPagination && (
-                <button className={styled.move_button} onClick={onClickNext}>
-                  {'>'}
-                </button>
-              )}
-            </div>
+            {feedback.length === 0 ? (
+              <div className={styled.empty_wrap}>
+                <p className={styled.empty_text}>이전 기록이 없습니다</p>
+              </div>
+            ) : (
+              <>
+                <div className={styled.list}>
+                  {feedback
+                    .slice(page * itemsToShow, (page + 1) * itemsToShow)
+                    .map((item, idx) => (
+                      <div key={idx}>
+                        <CustomerFeedbackCard feedback={item} />
+                      </div>
+                    ))}
+                </div>
+                <div className={styled.page}>
+                  {pagination > 0 && (
+                    <button className={styled.move_button} onClick={onClickPrev}>
+                      {'<'}
+                    </button>
+                  )}
+                  {paginationButtons}
+                  {pagination < maxPagination && (
+                    <button className={styled.move_button} onClick={onClickNext}>
+                      {'>'}
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </>
       )}
