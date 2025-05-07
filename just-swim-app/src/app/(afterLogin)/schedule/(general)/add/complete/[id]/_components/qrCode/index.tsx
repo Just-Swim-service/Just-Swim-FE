@@ -60,6 +60,7 @@ export function QRCode({
 
   return (
     <>
+      <div className={styled.line} />
       <div className={styled.qr_button_wrapper}>
         <button className={styled.qr_button} onClick={handleDownload}>
           <div className={styled.icon_wrapper}>
