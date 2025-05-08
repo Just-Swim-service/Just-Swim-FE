@@ -28,16 +28,16 @@ export default function User() {
 
   const memberId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/member/${memberId}`;
-  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [member, setMember] = useState<MemberProps | null>(null);
   console.log(member);
 
   useEffect(() => {
     fetch(API_URL, {
+      method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: AUTHORIZATION_HEADER,
       },
     })
       .then((response) => response.json())

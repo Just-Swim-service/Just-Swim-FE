@@ -28,10 +28,11 @@ export default function ClassDetail() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`,
         {
+          method: 'GET',
+          credentials: 'include',
           //  @ts-ignore
           headers: {
             'Content-Type': 'application/json',
-            Authorization: process.env.NEXT_PUBLIC_TOKEN,
           },
         },
       );

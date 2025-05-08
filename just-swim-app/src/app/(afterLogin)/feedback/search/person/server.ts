@@ -26,7 +26,7 @@ async function Fetch<T>({
   body = null,
 }: {
   url: string;
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELsETE';
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   header?: {
     token?: boolean;
     json?: boolean;
@@ -35,16 +35,17 @@ async function Fetch<T>({
   body?: Object | null;
 }): Promise<T> {
   try {
+    const headers: HeadersInit = {};
+
+    if (header.json) {
+      headers['Content-Type'] = 'application/json';
+    }
+
     const response = await fetch(url, {
       method,
-      headers: {
-        'Content-Type': header.json ? 'application/json' : '',
-        Authorization: header.token
-          ? `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-          : '',
-        credentials: header.credential ? 'include' : '',
-      },
-      body: body && JSON.stringify(body),
+      headers,
+      credentials: header.credential ? 'include' : 'same-origin',
+      body: body ? JSON.stringify(body) : null,
     });
 
     const result = await response.json();

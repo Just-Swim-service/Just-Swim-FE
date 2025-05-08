@@ -21,12 +21,10 @@ const api = async <T>(
   options?: RequestInit,
 ): Promise<Response<T>> => {
   const base = `${process.env.NEXT_PUBLIC_API_URL}`;
-  const authorizationToken = cookies().get('token')?.value;
   const URL = `${base}${url}`;
   const defaultOptions: RequestInit = {
     method: method,
     headers: {
-      Authorization: authorizationToken ? `Bearer ${authorizationToken}` : '',
       ...options?.headers,
       'Content-Type': 'application/json',
     },

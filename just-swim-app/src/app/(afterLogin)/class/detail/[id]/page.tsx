@@ -82,7 +82,6 @@ export default function ClassDetail() {
 
   const lectureId = params.id;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
-  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -99,9 +98,10 @@ export default function ClassDetail() {
 
   useEffect(() => {
     fetch(API_URL, {
+      method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: AUTHORIZATION_HEADER,
       },
     })
       .then((response) => response.json())
@@ -124,9 +124,9 @@ export default function ClassDetail() {
     try {
       const response = await fetch(`${API_URL}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: AUTHORIZATION_HEADER,
         },
       });
 

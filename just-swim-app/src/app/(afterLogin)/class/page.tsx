@@ -130,13 +130,13 @@ export default function ClassView() {
   }, []);
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
-  const AUTHORIZATION_HEADER = `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`;
 
   useEffect(() => {
     fetch(API_URL, {
+      method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: AUTHORIZATION_HEADER,
       },
     })
       .then((response) => response.json())
@@ -156,7 +156,7 @@ export default function ClassView() {
         );
         setLectures(processedLectures);
       });
-  }, [API_URL, AUTHORIZATION_HEADER]);
+  }, [API_URL]);
 
   const ongoingLectures = useMemo(() => {
     return (

@@ -75,15 +75,15 @@ export default function ClassView() {
   const [searchText, setSearchText] = useState('');
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL + '/lecture/schedule';
-  const AUTHORIZATION_HEADER = process.env.NEXT_PUBLIC_TOKEN;
 
   useEffect(() => {
     const fetchLectures = async () => {
       const response = await fetch(API_URL, {
+        method: 'GET',
+        credentials: 'include',
         //  @ts-ignore
         headers: {
           'Content-Type': 'application/json',
-          Authorization: AUTHORIZATION_HEADER,
         },
       });
       const data = await response.json();
@@ -102,7 +102,7 @@ export default function ClassView() {
     };
 
     fetchLectures();
-  }, [API_URL, AUTHORIZATION_HEADER]);
+  }, [API_URL]);
 
   const filteredLectures = (isPast: boolean) => {
     return lectures.filter(
