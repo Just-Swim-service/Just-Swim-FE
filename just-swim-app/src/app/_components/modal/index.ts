@@ -1,4 +1,4 @@
-export * from './classModal';
+// export * from './classModal';
 export * from './colorModal';
 export * from './dayModal';
 export * from './dateModal';
