@@ -13,8 +13,9 @@ export default function PersonalFeedbackConfirm() {
   // @ts-ignore
   const { resetMemberData } = searchUserStore();
   const { getFeedbackFormData } = feedbackStore();
-  const formDataState = getFeedbackFormData();
-  const target = JSON.parse(formDataState.targets || '[]');
+  const rawFormData = getFeedbackFormData();
+  const formDataState = rawFormData || {};
+  const target = JSON.parse(formDataState.targets ?? '[]');
   const [checked, setChecked] = useState(false);
   const router = useRouter();
 

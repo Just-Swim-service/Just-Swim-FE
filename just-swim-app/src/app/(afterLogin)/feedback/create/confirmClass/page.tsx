@@ -13,13 +13,12 @@ import { getLectureMembers } from '@/_apis/lecture/getLectureMembers';
 export default function ClassFeedbackConfirm() {
   // @ts-ignore
   const { resetClassData } = searchClassStore();
-  const { formDataState } = feedbackStore();
-  const target = JSON.parse(formDataState.targets || '[]');
+  const { formDataState = {} } = feedbackStore();
+  const target = JSON.parse(formDataState?.targets ?? '[]');
 
-  const totalMembersCount = target.reduce(
-    (acc: any, cur: any) => acc + (cur.members?.length || 0),
-    0,
-  );
+  const totalMembersCount = Array.isArray(target)
+    ? target.reduce((acc, cur) => acc + (cur?.members?.length || 0), 0)
+    : 0;
   const [checked, setChecked] = useState(false);
 
   const router = useRouter();
