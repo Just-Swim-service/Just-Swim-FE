@@ -1,14 +1,13 @@
 'use server';
 
-import { unstable_cache } from 'next/cache';
+import { notFound } from 'next/navigation';
 
 import { ProfileProps } from '@types';
 import { Fetch } from '@utils';
-import { notFound } from 'next/navigation';
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/user`;
 
-async function getMyProfile(): Promise<ProfileProps> {
+export async function getMyProfile(): Promise<ProfileProps> {
   const result = await Fetch<{ success: boolean; data: ProfileProps }>({
     url: `${URL}/myProfile`,
     header: {
@@ -22,7 +21,3 @@ async function getMyProfile(): Promise<ProfileProps> {
     return notFound();
   }
 }
-
-export const getCachedMyProfile = unstable_cache(getMyProfile, ['my-profile'], {
-  tags: ['my-profile'],
-});

@@ -13,7 +13,7 @@ import NoProfile from '@/_assets/images/no_profile.png';
 import { LectureViewProps } from '@types';
 
 import React from 'react';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 
 const ClassList = React.memo(
   ({
@@ -123,7 +123,7 @@ export default function ClassView() {
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getCachedMyProfile();
+      const data = await getMyProfile();
       setType(data.userType);
     };
     setUserType();

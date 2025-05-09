@@ -12,13 +12,12 @@ import {
 
 import { LectureProps } from '@types';
 import { ClassDetailItem, Portal } from '@components';
-import { getTokenInCookies, randomId, throttle } from '@utils';
+import { randomId, throttle } from '@utils';
 import { WEEK_DAYS } from '@data';
-import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 
 export function ClassList({
   selectedDate,
@@ -95,7 +94,7 @@ export function ClassList({
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getCachedMyProfile();
+      const data = await getMyProfile();
       setType(data.userType);
     };
     setUserType();

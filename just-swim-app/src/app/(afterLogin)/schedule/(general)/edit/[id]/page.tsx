@@ -1,20 +1,19 @@
-import { getCachedLectureDetail } from "@apis";
+import { getLectureDetail } from '@apis';
 
-import { FormBody } from "../../_components";
+import { FormBody } from '../../_components';
 
 export default async function ScheduleEditPage({
-  params
+  params,
 }: {
-  params: { id: string }
+  params: { id: string };
 }) {
-  const lectureDetail = await getCachedLectureDetail(parseInt(params.id));
-  
+  const lectureDetail = await getLectureDetail(parseInt(params.id));
+
   return (
     <>
-      {
-        lectureDetail &&
+      {lectureDetail && (
         <FormBody type="modify" id={params.id} lecture={lectureDetail} />
-      }
+      )}
     </>
-  )
+  );
 }

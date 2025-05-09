@@ -1,13 +1,8 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
 import { notFound, redirect } from 'next/navigation';
 
-import {
-  createLecture,
-  getCachedInProgressSchedule,
-  updateLecture,
-} from '@apis';
+import { getInProgressSchedule, createLecture, updateLecture } from '@apis';
 import { LectureBasicProps } from '@types';
 
 export async function formAction(
@@ -15,13 +10,14 @@ export async function formAction(
   type: 'add' | 'modify',
   id: string,
 ) {
-  const schedules = (await getCachedInProgressSchedule()) || [];
+  const schedules = (await getInProgressSchedule()) || [];
 
   const errors = {
     title: '',
     duplicate: '',
   };
   let valid = true;
+
   const [inputStart, inputEnd] = data.lectureTime
     .split('~')
     .map((t) => parseInt(t.split(':').join('')));
@@ -56,8 +52,6 @@ export async function formAction(
     const result = await updateLecture(data, id);
 
     if (result.success) {
-      await revalidateTag('schedule');
-      await revalidateTag(`lecture-detail`);
       redirect(`/schedule`);
     } else {
       return notFound();
@@ -66,7 +60,6 @@ export async function formAction(
     const result = await createLecture(data);
 
     if (result.success) {
-      await revalidateTag('schedule');
       redirect(`/schedule/add/complete/${result.data.lectureId}`);
     } else {
       return notFound();

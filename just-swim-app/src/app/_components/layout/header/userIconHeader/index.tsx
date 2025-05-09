@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
@@ -24,7 +24,7 @@ export function UserIconHeader({ title }: { title: string }) {
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>();
   useEffect(() => {
     const fetchProfileInfo = async () => {
-      const response = await getCachedMyProfile();
+      const response = await getMyProfile();
       setProfileInfo(response as ProfileInfo);
     };
     fetchProfileInfo();

@@ -8,7 +8,7 @@ import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
 import { ROUTES, TEXT } from '@data';
 import { AccountContext } from '../_context/context';
-import { getCachedMyProfile, getProfilePresignedURL } from '@apis';
+import { getMyProfile, getProfilePresignedURL } from '@apis';
 
 export default function Account() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function Account() {
       if (!userToken) {
         router.push(ROUTES.ONBOARDING.signin);
       } else {
-        const profile = await getCachedMyProfile();
+        const profile = await getMyProfile();
         setUserName(profile.name);
         setProfileImage({ fileURL: profile.profileImage });
       }

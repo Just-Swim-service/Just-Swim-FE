@@ -10,7 +10,7 @@ import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 
 function _ClassList({
   weeklyInfo,
@@ -26,7 +26,7 @@ function _ClassList({
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getCachedMyProfile();
+      const data = await getMyProfile();
       setType(data.userType);
     };
     setUserType();

@@ -1,6 +1,5 @@
 'use server';
 
-import { unstable_cache } from 'next/cache';
 import { notFound } from 'next/navigation';
 
 import { LectureDetailProps } from '@types';
@@ -22,13 +21,4 @@ export async function getLectureDetail(
   } else {
     return notFound();
   }
-}
-
-export async function getCachedLectureDetail(lectureId: number) {
-  const cachedResult = unstable_cache(getLectureDetail, ['lecture-detail'], {
-    tags: [`lecture-detail`],
-    revalidate: 60,
-  });
-
-  return cachedResult(lectureId);
 }

@@ -5,7 +5,7 @@ import styled from './styles.module.scss';
 import { FeedbackProps } from '@types';
 import { FeedbackCard } from '../feedbackCard';
 import { CustomerFeedbackCard } from '../customerFeedbackCard';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 
 const itemsToShow = 5;
 const pagesToShow = 5;
@@ -23,7 +23,7 @@ export function List({
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getCachedMyProfile();
+      const data = await getMyProfile();
       setType(data.userType);
     };
     setUserType();

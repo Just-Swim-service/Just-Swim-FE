@@ -9,7 +9,7 @@ import FeedbackTypeButtonPersonal from '@assets/feedback_type_button_personal.sv
 
 import styled from './feedbackTypeButton.module.scss';
 import { feedbackStore } from '@/_store/feedback';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 
 type ProfileInfo = {
   name: string;
@@ -26,7 +26,7 @@ export function FeedbackTypeButton({ token }: { token: string | false }) {
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
-      const response = await getCachedMyProfile();
+      const response = await getMyProfile();
       setProfileInfo(response as ProfileInfo);
     };
     fetchProfileInfo();

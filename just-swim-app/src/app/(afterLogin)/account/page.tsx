@@ -9,7 +9,7 @@ import { ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
 import { URLImage, LogoutModal, ProfileInfo } from '@components';
 import Link from 'next/link';
-import { getCachedMyProfile, postUserLogout, revalidateMyProfile } from '@apis';
+import { getMyProfile, postUserLogout, revalidateMyProfile } from '@apis';
 import { removeTokenInCookies } from '@utils';
 
 export default function Account() {
@@ -20,7 +20,7 @@ export default function Account() {
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
-      const response = await getCachedMyProfile();
+      const response = await getMyProfile();
       setProfileInfo(response as ProfileInfo);
     };
     fetchProfileInfo();

@@ -4,7 +4,7 @@ import styled from './styles.module.scss';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { IconAdd } from '@assets';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 import { useRouter } from 'next/navigation';
 import { isEmpty } from 'lodash';
 
@@ -20,7 +20,7 @@ export function ScheduleAddButton() {
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
-      const response = await getCachedMyProfile();
+      const response = await getMyProfile();
       if (isEmpty(response)) {
         return router.replace('/signin');
       }

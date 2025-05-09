@@ -1,8 +1,6 @@
 'use server';
 
-import { unstable_cache } from 'next/cache';
-
-import { getCachedInProgressSchedule } from '@apis';
+import { getInProgressSchedule } from '@apis';
 import { sortSchedule } from '@utils';
 import { ScheduleSummary } from '@types';
 import { WEEK_DAYS } from '@data';
@@ -14,11 +12,10 @@ import {
   getToday,
 } from './getDateInfo';
 
-async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
-  const result = [];
-
+export async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
+  const result: ScheduleSummary[] = [];
   const thisWeekInfo = getThisWeek();
-  const scheduleInfo = (await getCachedInProgressSchedule()) || [];
+  const scheduleInfo = (await getInProgressSchedule()) || [];
 
   for (let i = 0; i < thisWeekInfo.length; i++) {
     const nowInfo: ScheduleSummary = {
@@ -49,22 +46,12 @@ async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
   return result;
 }
 
-export const getCachedWeeklyScheduleInfo = unstable_cache(
-  getWeeklyScheduleInfo,
-  ['weekly-schedule'],
-  {
-    tags: ['schedule'],
-    revalidate: 60,
-  },
-);
-
-async function getMonthlyScheduleInfo(
+export async function getMonthlyScheduleInfo(
   month: string,
 ): Promise<ScheduleSummary[] | []> {
-  const result = [];
-
+  const result: ScheduleSummary[] = [];
   const thisMonthInfo = getMonth(convertKoreanTime(new Date(month)));
-  const scheduleInfo = (await getCachedInProgressSchedule()) || [];
+  const scheduleInfo = (await getInProgressSchedule()) || [];
 
   for (let i = 0; i < thisMonthInfo.length; i++) {
     const nowInfo: ScheduleSummary = {
@@ -95,23 +82,8 @@ async function getMonthlyScheduleInfo(
   return result;
 }
 
-export async function getCachedMonthlyScheduleInfo(month: string) {
-  const cachedData = unstable_cache(
-    getMonthlyScheduleInfo,
-    ['monthly-schedule'],
-    {
-      tags: ['schedule', `schedule-${month}`],
-      revalidate: 60,
-    },
-  );
-
-  return cachedData(month);
-}
-
-export async function getTodayScheduleCount() {
+export async function getTodayScheduleCount(): Promise<number> {
   const scheduleInfo = await getWeeklyScheduleInfo();
-
   const today = getToday();
-
-  return scheduleInfo[today.getDay()].lectures.length;
+  return scheduleInfo[today.getDay()]?.lectures.length || 0;
 }

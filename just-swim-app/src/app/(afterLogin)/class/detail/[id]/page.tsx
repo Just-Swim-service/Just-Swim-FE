@@ -18,7 +18,7 @@ import { LectureViewProps } from '@types';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 
 import dayjs from 'dayjs';
 import styled from './classDetail.module.scss';
@@ -90,7 +90,7 @@ export default function ClassDetail() {
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getCachedMyProfile();
+      const data = await getMyProfile();
       setType(data.userType);
     };
     setUserType();

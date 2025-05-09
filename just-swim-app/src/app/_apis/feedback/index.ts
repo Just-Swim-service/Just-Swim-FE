@@ -4,8 +4,6 @@ import { FeedbackProps } from '@types';
 import { Fetch } from '@utils';
 import api from '../api';
 
-// import { unstable_cache } from 'next/cache';
-
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/feedback`;
 
 interface FeedbackValue {
@@ -66,11 +64,6 @@ async function getFeedback(): Promise<FeedbackProps[] | null> {
   }
 }
 
-// const getCachedFeedback = unstable_cache(getFeedback, ['feedback-list'], {
-//   tags: ['feedback'],
-//   revalidate: 60,
-// });
-
 // _utils 폴더 내부로 이동
 // 최신순으로 정렬, 날짜가 같을 경우 id 역순으로 정렬
 function sortFeedback(a: FeedbackProps, b: FeedbackProps) {
@@ -94,15 +87,6 @@ async function getSortedFeedback(): Promise<FeedbackProps[] | null> {
   result.sort(sortFeedback);
   return result;
 }
-
-// const getCachedSortedFeedback = unstable_cache(
-//   getSortedFeedback,
-//   ['sorted-feedback-list'],
-//   {
-//     tags: ['feedback'],
-//     revalidate: 60,
-//   },
-// );
 
 // 피드백 상세
 async function getFeedbackDetail(id: string): Promise<FeedbackProps[]> {

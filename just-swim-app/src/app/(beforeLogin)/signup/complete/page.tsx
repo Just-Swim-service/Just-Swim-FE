@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { URLImage } from '@components';
 import { TEXT, ROUTES } from '@data';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 import { ProfileProps } from '@types';
 
 export default function Complete() {
@@ -15,7 +15,7 @@ export default function Complete() {
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
-      const response = await getCachedMyProfile();
+      const response = await getMyProfile();
       setUserProfile(response);
     };
     fetchProfileInfo();

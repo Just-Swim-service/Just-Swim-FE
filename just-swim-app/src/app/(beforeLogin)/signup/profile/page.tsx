@@ -1,13 +1,13 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
 import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
-import { getCachedMyProfile, patchUserEdit } from '@apis';
+import { getMyProfile, patchUserEdit } from '@apis';
 
 export default function Profile() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
-      const response = await getCachedMyProfile();
+      const response = await getMyProfile();
 
       setType(response.userType);
       setInputName(response.name);

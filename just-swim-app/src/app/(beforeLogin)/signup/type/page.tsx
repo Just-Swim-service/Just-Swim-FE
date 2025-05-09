@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { setUserType } from '@utils';
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
-import { getCachedMyProfile } from '@apis';
+import { getMyProfile } from '@apis';
 import { UserType } from '@types';
 
 export default function Type() {
@@ -15,7 +15,7 @@ export default function Type() {
   useEffect(() => {
     const checkUserType = async () => {
       try {
-        const data = await getCachedMyProfile();
+        const data = await getMyProfile();
 
         if (data?.userType) {
           return router.replace(ROUTES.SCHEDULE.root);

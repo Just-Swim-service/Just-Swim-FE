@@ -13,7 +13,7 @@ import Link from '@assets/link.svg';
 
 import { HistoryBackHeader, ImageFocusModal } from '@components';
 import { useEffect, useState } from 'react';
-import { getCachedMyProfile, getFeedbackDetail } from '@apis';
+import { getMyProfile, getFeedbackDetail } from '@apis';
 import { FeedbackInfo, Members } from '@/_types/typeFeedback';
 import { useParams } from 'next/navigation';
 import { useModal } from '@hooks';
@@ -34,7 +34,7 @@ export default function FeedbackDetail() {
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getCachedMyProfile();
+      const data = await getMyProfile();
       setType(data.userType);
     };
     setUserType();
