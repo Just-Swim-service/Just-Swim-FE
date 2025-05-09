@@ -8,13 +8,12 @@ import { notFound } from 'next/navigation';
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/user`;
 
-async function getMyProfile(): Promise<ProfileProps> { 
+async function getMyProfile(): Promise<ProfileProps> {
   const result = await Fetch<{ success: boolean; data: ProfileProps }>({
     url: `${URL}/myProfile`,
     header: {
-      token: true,
       credential: true,
-    }
+    },
   });
 
   if (result.success) {

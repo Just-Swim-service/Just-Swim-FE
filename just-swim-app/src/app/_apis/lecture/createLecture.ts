@@ -14,7 +14,6 @@ export async function createLecture(
     url: `${process.env.NEXT_PUBLIC_API_URL}/lecture`,
     method: 'POST',
     header: {
-      token: true,
       json: true,
       credential: true,
     },

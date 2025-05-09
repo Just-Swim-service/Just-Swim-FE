@@ -10,7 +10,6 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
     url: `${URL}/user/profileImage/presignedUrl`,
     method: 'POST',
     header: {
-      token: true,
       credential: true,
       json: true,
     },
@@ -36,7 +35,6 @@ export async function getFeedbackPresignedURL(
     url: `${URL}/feedback/feedbackImage/presignedUrl`,
     method: 'POST',
     header: {
-      token: true,
       credential: true,
       json: true,
     },

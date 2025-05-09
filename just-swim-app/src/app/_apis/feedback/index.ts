@@ -8,16 +8,6 @@ import api from '../api';
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/feedback`;
 
-// async function getFeedback() {
-//   const response = await fetch(URL, {
-//     headers: {
-//       Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-//     },
-//   });
-//   const json = await response.json();
-//   return json.data;
-// }
-
 interface FeedbackValue {
   feedbackType: string;
   feedbackDate: string;
@@ -65,7 +55,6 @@ async function getFeedback(): Promise<FeedbackProps[] | null> {
   const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
     url: `${process.env.NEXT_PUBLIC_API_URL}/feedback`,
     header: {
-      token: true,
       json: true,
       credential: true,
     },
@@ -120,7 +109,6 @@ async function getFeedbackDetail(id: string): Promise<FeedbackProps[]> {
   const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
     url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
     header: {
-      token: true,
       json: true,
       credential: true,
     },

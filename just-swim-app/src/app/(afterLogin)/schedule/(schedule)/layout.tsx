@@ -2,9 +2,7 @@
 
 import { BottomNav, UserIconHeader } from '@components';
 import { ScheduleAddButton, ScheduleCommonLayout } from './_components';
-import { Suspense, useEffect, useState } from 'react';
-import { getTokenInCookies, setTokenInCookies } from '@utils';
-import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

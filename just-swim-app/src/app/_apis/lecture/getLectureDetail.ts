@@ -12,7 +12,6 @@ export async function getLectureDetail(
   const result = await Fetch<{ success: boolean; data: LectureDetailProps }>({
     url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`,
     header: {
-      token: true,
       json: true,
       credential: true,
     },

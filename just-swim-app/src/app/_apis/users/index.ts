@@ -9,8 +9,6 @@ import {
   PostUserLoginReq,
 } from '@types';
 import { revalidateTag } from 'next/cache';
-import { Fetch } from '@utils';
-import { cookies } from 'next/headers';
 
 const USER_API_PATH = '/user';
 const OAUTH_API_PATH = 'Oauth';

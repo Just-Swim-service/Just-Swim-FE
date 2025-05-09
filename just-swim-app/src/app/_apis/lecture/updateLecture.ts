@@ -15,7 +15,6 @@ export async function updateLecture(
     url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/${id}`,
     method: 'PATCH',
     header: {
-      token: true,
       json: true,
       credential: true,
     },

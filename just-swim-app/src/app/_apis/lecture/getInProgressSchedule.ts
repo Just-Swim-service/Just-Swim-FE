@@ -10,7 +10,6 @@ async function getInProgressSchedule(): Promise<LectureProps[] | null> {
   const result = await Fetch<{ success: boolean; data: LectureProps[] }>({
     url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`,
     header: {
-      token: true,
       json: true,
       credential: true,
     },

@@ -1,12 +1,9 @@
-import { notFound, redirect } from 'next/navigation';
-
-import { getTokenInCookies } from '@utils';
+import { redirect } from 'next/navigation';
 
 export async function Fetch<T>({
   url,
   method = 'GET',
   header = {
-    token: false,
     json: false,
     credential: false,
     formData: false,
@@ -16,38 +13,38 @@ export async function Fetch<T>({
   url: string;
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   header?: {
-    token?: boolean;
     json?: boolean;
     credential?: boolean;
     formData?: boolean;
   };
   body?: Object | null;
 }): Promise<T> {
-  const token = await getTokenInCookies();
-
-  if (!token) {
-    redirect('/signin');
-  }
-
   try {
+    const headers: Record<string, string> = {};
+
+    if (header.json) {
+      headers['Content-Type'] = 'application/json';
+    }
+
     const response = await fetch(url, {
       method,
-      headers: {
-        'Content-Type': header.json
-          ? 'application/json'
-          : header.formData
-            ? 'multipart/form-data'
-            : '',
-        Authorization: header.token ? `Bearer ${token}` : '',
-        credentials: header.credential ? 'include' : '',
-      },
-      body: body && JSON.stringify(body),
+      headers,
+      credentials: header.credential ? 'include' : 'same-origin',
+      body: body ? JSON.stringify(body) : null,
     });
 
-    const result = await response.json();
+    if (response.status === 401) {
+      redirect('/signin');
+    }
 
+    if (!response.ok) {
+      throw new Error(`API 요청 실패: ${response.status}`);
+    }
+
+    const result = await response.json();
     return result;
   } catch (error) {
+    console.error('Fetch 실패:', error);
     throw new Error('Error fetching data');
   }
 }
