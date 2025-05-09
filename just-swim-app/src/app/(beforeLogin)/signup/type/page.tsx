@@ -10,12 +10,13 @@ import { UserType } from '@types';
 
 export default function Type() {
   const router = useRouter();
-  const params = useSearchParams().get('token');
+  const searchParams = useSearchParams();
 
   const [type, setType] = useState<UserType>();
   const [token, setToken] = useState<string | boolean>();
 
   useEffect(() => {
+    const params = searchParams.get('token');
     const checkToken = async () => {
       if (params) {
         const newToken = await setTokenInCookies(params);

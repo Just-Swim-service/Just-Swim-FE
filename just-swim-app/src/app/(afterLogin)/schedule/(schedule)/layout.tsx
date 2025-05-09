@@ -7,10 +7,11 @@ import { getTokenInCookies, setTokenInCookies } from '@utils';
 import { useSearchParams } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const params = useSearchParams().get('token');
+  const searchParams = useSearchParams();
   const [token, setToken] = useState<string>('');
 
   useEffect(() => {
+    const params = searchParams.get('token');
     const fetchToken = async () => {
       if (params) {
         setTokenInCookies(params);
@@ -21,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     };
 
     fetchToken();
-  }, [params]);
+  }, [searchParams]);
 
   return (
     <>
