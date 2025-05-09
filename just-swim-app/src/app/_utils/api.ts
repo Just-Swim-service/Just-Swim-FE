@@ -19,32 +19,33 @@ export async function Fetch<T>({
   };
   body?: Object | null;
 }): Promise<T> {
+  const headers: Record<string, string> = {};
+
+  if (header.json) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  const response = await fetch(url, {
+    method,
+    headers,
+    credentials: header.credential ? 'include' : 'same-origin',
+    body: body ? JSON.stringify(body) : null,
+  });
+
+  if (response.status === 401) {
+    redirect('/signin');
+  }
+
+  if (!response.ok) {
+    console.error(` API 응답 실패: ${response.status}`);
+    throw new Error(`API 요청 실패: ${response.status}`);
+  }
+
   try {
-    const headers: Record<string, string> = {};
-
-    if (header.json) {
-      headers['Content-Type'] = 'application/json';
-    }
-
-    const response = await fetch(url, {
-      method,
-      headers,
-      credentials: header.credential ? 'include' : 'same-origin',
-      body: body ? JSON.stringify(body) : null,
-    });
-
-    if (response.status === 401) {
-      redirect('/signin');
-    }
-
-    if (!response.ok) {
-      throw new Error(`API 요청 실패: ${response.status}`);
-    }
-
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Fetch 실패:', error);
-    throw new Error('Error fetching data');
+    console.error('🔥 JSON 파싱 실패:', error);
+    throw new Error('Error parsing response');
   }
 }
