@@ -1,54 +1,39 @@
 'use client';
 
 import styles from './pages.module.scss';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { getTokenInCookies, setTokenInCookies, setUserType } from '@utils';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { setUserType } from '@utils';
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
 import { getCachedMyProfile } from '@apis';
 import { UserType } from '@types';
 
 export default function Type() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
   const [type, setType] = useState<UserType>();
-  const [token, setToken] = useState<string | boolean>();
 
   useEffect(() => {
-    const params = searchParams.get('token');
-    const checkToken = async () => {
-      if (params) {
-        const newToken = await setTokenInCookies(params);
-
-        const data = await getCachedMyProfile();
-        if (data.userType) {
-          return router.push(ROUTES.SCHEDULE.root);
-        }
-        setToken(newToken);
-      } else {
-        const authorizationToken = await getTokenInCookies();
+    const checkUserType = async () => {
+      try {
         const data = await getCachedMyProfile();
 
-        if (data.userType) {
+        if (data?.userType) {
           return router.replace(ROUTES.SCHEDULE.root);
         }
-        setToken(authorizationToken);
+      } catch (err) {
+        return router.replace(ROUTES.ONBOARDING.signin);
       }
     };
-    checkToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    checkUserType();
+  }, [router]);
 
   const handleSetType = async () => {
-    if (!token) {
-      router.replace(ROUTES.ONBOARDING.signin);
-    } else {
-      const { status } = await setUserType({ userType: type as UserType });
+    if (!type) return;
 
-      if (status === HTTP_STATUS.OK) {
-        return router.push(ROUTES.ONBOARDING.profile);
-      }
+    const { status } = await setUserType({ userType: type });
+    if (status === HTTP_STATUS.OK) {
+      router.push(ROUTES.ONBOARDING.profile);
     }
   };
 
@@ -66,37 +51,33 @@ export default function Type() {
           <p>{TEXT.TYPE_SELECT_PAGE.helper.first}</p>
         </div>
       </div>
+
       <div className={styles.select_type_section}>
-        {Object.values(USER_TYPE).map((data) => {
-          return (
-            <div className={styles.type_button_wrapper} key={data}>
-              <button
-                className={`${styles.type_button} ${styles[`${data === type ? 'active' : ''}`]}`}
-                onClick={() => setType(data)}>
-                <div className={styles.type_button_img}>
-                  <div></div>
-                </div>
-                <div className={styles.type_button_info}>
-                  <div>
-                    <h3>{TEXT.TYPE_SELECT_PAGE.type[data]}</h3>
-                  </div>
-                  <div>
-                    <p>
-                      {TEXT.TYPE_SELECT_PAGE.helper[data].first}
-                      <br />
-                      {TEXT.TYPE_SELECT_PAGE.helper[data].second}
-                    </p>
-                  </div>
-                </div>
-              </button>
-            </div>
-          );
-        })}
+        {Object.values(USER_TYPE).map((data) => (
+          <div className={styles.type_button_wrapper} key={data}>
+            <button
+              className={`${styles.type_button} ${type === data ? styles.active : ''}`}
+              onClick={() => setType(data)}>
+              <div className={styles.type_button_img}>
+                <div></div>
+              </div>
+              <div className={styles.type_button_info}>
+                <h3>{TEXT.TYPE_SELECT_PAGE.type[data]}</h3>
+                <p>
+                  {TEXT.TYPE_SELECT_PAGE.helper[data].first}
+                  <br />
+                  {TEXT.TYPE_SELECT_PAGE.helper[data].second}
+                </p>
+              </div>
+            </button>
+          </div>
+        ))}
       </div>
+
       <div className={styles.select_type_footer}>
         <button
           type="button"
-          className={`${styles.select_button} ${styles[type ? 'active' : '']}`}
+          className={`${styles.select_button} ${type ? styles.active : ''}`}
           onClick={handleSetType}>
           {TEXT.COMMON.select}
         </button>

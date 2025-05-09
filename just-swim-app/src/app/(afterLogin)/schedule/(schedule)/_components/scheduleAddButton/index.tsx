@@ -14,7 +14,7 @@ type ProfileInfo = {
   userType: string;
 };
 
-export function ScheduleAddButton({ token }: { token: string }) {
+export function ScheduleAddButton() {
   const router = useRouter();
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>();
 
