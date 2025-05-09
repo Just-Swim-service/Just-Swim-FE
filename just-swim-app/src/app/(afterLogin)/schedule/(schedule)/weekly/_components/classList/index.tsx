@@ -15,11 +15,9 @@ import { getCachedMyProfile } from '@apis';
 function _ClassList({
   weeklyInfo,
   selectedDate,
-  token,
 }: {
   weeklyInfo: { date: string; day: string; lectures: LectureProps[] }[];
   selectedDate: number;
-  token: string | false;
 }) {
   const todaySchedules = weeklyInfo[selectedDate].lectures;
   const todayDate = weeklyInfo[selectedDate].date.split('.')[2];

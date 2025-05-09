@@ -9,10 +9,8 @@ import { ClassList } from '../classList';
 
 export function WeekWrapper({
   weeklyInfo,
-  token,
 }: {
   weeklyInfo: { date: string; day: string; lectures: LectureProps[] }[];
-  token: string | false;
 }) {
   const [selectedDate, setSelectedDate] = useState<number>(new Date().getDay());
 
@@ -24,11 +22,7 @@ export function WeekWrapper({
         setSelectedDate={setSelectedDate}
       />
       <Suspense fallback={<>loading...</>}>
-        <ClassList
-          weeklyInfo={weeklyInfo}
-          selectedDate={selectedDate}
-          token={token}
-        />
+        <ClassList weeklyInfo={weeklyInfo} selectedDate={selectedDate} />
       </Suspense>
     </>
   );
