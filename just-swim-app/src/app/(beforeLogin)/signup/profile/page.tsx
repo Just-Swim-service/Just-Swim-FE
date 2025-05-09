@@ -19,10 +19,11 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfileInfo = async () => {
       const response = await getMyProfile();
+      const data = response.data.data;
 
-      setType(response.userType);
-      setInputName(response.name);
-      setInputImage(response.profileImage);
+      setType(data.userType);
+      setInputName(data.name);
+      setInputImage(data.profileImage);
     };
     fetchProfileInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps

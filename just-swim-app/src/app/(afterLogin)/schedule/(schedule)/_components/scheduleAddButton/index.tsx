@@ -24,7 +24,7 @@ export function ScheduleAddButton() {
       if (isEmpty(response)) {
         return router.replace('/signin');
       }
-      setProfileInfo(response as ProfileInfo);
+      setProfileInfo(response.data.data as ProfileInfo);
     };
     fetchProfileInfo();
   }, [router]);

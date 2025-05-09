@@ -17,7 +17,7 @@ export default function Type() {
       try {
         const data = await getMyProfile();
 
-        if (data?.userType) {
+        if (data?.data.data.userType) {
           return router.replace(ROUTES.SCHEDULE.root);
         }
       } catch (err) {

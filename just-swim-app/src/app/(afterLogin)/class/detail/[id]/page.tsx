@@ -91,7 +91,7 @@ export default function ClassDetail() {
   useEffect(() => {
     const setUserType = async () => {
       const data = await getMyProfile();
-      setType(data.userType);
+      setType(data.data.data.userType);
     };
     setUserType();
   }, []);

@@ -16,7 +16,10 @@ export default async function Complete({ params }: { params: { id: string } }) {
             <p>수업 등록이 완료되었습니다.</p>
             <p>생성된 QR을 수강생에게 전달해주세요!</p>
           </div>
-          <QRCode lectureData={lectureDetail} instructorData={profileInfo!} />
+          <QRCode
+            lectureData={lectureDetail}
+            instructorData={profileInfo.data.data!}
+          />
           <ButtonWrapper id={params.id} />
         </div>
       )}

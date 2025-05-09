@@ -29,7 +29,8 @@ export default function Account() {
       if (!userToken) {
         router.push(ROUTES.ONBOARDING.signin);
       } else {
-        const profile = await getMyProfile();
+        const data = await getMyProfile();
+        const profile = data.data.data;
         setUserName(profile.name);
         setProfileImage({ fileURL: profile.profileImage });
       }

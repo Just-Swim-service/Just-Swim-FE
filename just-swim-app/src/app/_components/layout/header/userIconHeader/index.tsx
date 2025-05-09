@@ -25,7 +25,7 @@ export function UserIconHeader({ title }: { title: string }) {
   useEffect(() => {
     const fetchProfileInfo = async () => {
       const response = await getMyProfile();
-      setProfileInfo(response as ProfileInfo);
+      setProfileInfo(response.data.data as ProfileInfo);
     };
     fetchProfileInfo();
   }, []);

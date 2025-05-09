@@ -16,7 +16,7 @@ export default function Complete() {
   useEffect(() => {
     const fetchProfileInfo = async () => {
       const response = await getMyProfile();
-      setUserProfile(response);
+      setUserProfile(response.data.data);
     };
     fetchProfileInfo();
   }, []);

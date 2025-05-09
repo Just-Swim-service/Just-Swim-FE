@@ -27,7 +27,7 @@ function _ClassList({
   useEffect(() => {
     const setUserType = async () => {
       const data = await getMyProfile();
-      setType(data.userType);
+      setType(data.data.data.userType);
     };
     setUserType();
   }, []);
