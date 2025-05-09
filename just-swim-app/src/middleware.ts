@@ -1,27 +1,17 @@
-import { getTokenInCookies } from '@utils';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function middleware(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  const hasToken = await getTokenInCookies();
+  const token = req.cookies.get('authorization')?.value;
 
-  if (hasToken && (pathname === '/signin' || pathname === '/')) {
+  if (token && (pathname === '/signin' || pathname === '/')) {
     return NextResponse.redirect(new URL('/schedule', req.url));
   }
-  if (!hasToken) {
-    const pathname = req.nextUrl.pathname;
-    if (pathname === '/schedule') {
-      const token = req.nextUrl.searchParams.get('token');
-      if (token) {
-        const res = NextResponse.next();
-        res.cookies.set('token', token);
-        return res;
-      }
-      return NextResponse.next();
-    } else if (pathname !== '/signin') {
-      return NextResponse.redirect(new URL('/signin', req.url));
-    }
+
+  if (!token && pathname.startsWith('/schedule')) {
+    return NextResponse.redirect(new URL('/signin', req.url));
   }
+
   return NextResponse.next();
 }
 
