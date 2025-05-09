@@ -6,6 +6,9 @@ import { Suspense } from 'react';
 export const metadata: Metadata = {
   title: 'Just Swim',
   description: 'VIP Swimming Feedback Service',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 type Props = {
