@@ -22,42 +22,45 @@ import NoProfile from '@assets/no_profile.png';
 import { MemberProps } from '@types';
 import Link from 'next/link';
 import dayjs from 'dayjs';
+import { fetchJson } from '@utils';
 
 export default function User() {
   const params = useParams();
 
   const memberId = params.id;
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/member/${memberId}`;
 
   const [member, setMember] = useState<MemberProps | null>(null);
-  console.log(member);
 
   useEffect(() => {
-    fetch(API_URL, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const filteredFeedback = (data.data.feedback || []).filter(
-          (item: any) => item.feedbackId !== null,
+    if (!memberId) return;
+
+    const fetchMember = async () => {
+      try {
+        const res = await fetchJson<{ data: MemberProps }>(
+          `/member/${memberId}`,
         );
 
-        const filteredLectures = (data.data.lectures || []).filter(
-          (item: any) => item.lectureId !== null,
+        const filteredFeedback = (res.data.feedback || []).filter(
+          (item) => item.feedbackId !== null,
+        );
+
+        const filteredLectures = (res.data.lectures || []).filter(
+          (item) => item.lectureId !== null,
         );
 
         const normalizedData = {
-          ...data.data,
+          ...res.data,
           feedback: filteredFeedback,
           lectures: filteredLectures,
         };
 
         setMember(normalizedData);
-      });
+      } catch (error) {
+        console.error('회원 정보 가져오기 실패:', error);
+      }
+    };
+
+    fetchMember();
   }, [memberId]);
 
   const evenLectures = member?.lectures.filter((_, index) => index % 2 === 0);
