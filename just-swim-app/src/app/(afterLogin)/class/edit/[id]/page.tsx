@@ -15,13 +15,13 @@ import {
 
 import styled from './classInfoEdit.module.scss';
 import { LectureViewProps } from '@types';
+import { fetchJson } from '@utils';
 
 export default function ClassInfoEdit() {
   const params = useParams();
   const router = useRouter();
 
   const lectureId = params.id;
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [formData, setFormData] = useState({});
@@ -34,16 +34,14 @@ export default function ClassInfoEdit() {
   };
 
   useEffect(() => {
-    fetch(API_URL, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setLecture(data.data);
+    if (!lectureId) return;
+
+    fetchJson<{ data: LectureViewProps }>(`/lecture/${lectureId}`)
+      .then((res) => {
+        setLecture(res.data);
+      })
+      .catch((err) => {
+        console.error('수업 정보 조회 실패:', err.message);
       });
   }, [lectureId]);
 
@@ -64,20 +62,16 @@ export default function ClassInfoEdit() {
 
   const handleEdit = async (lectureId: number) => {
     try {
-      const response = await fetch(API_URL, {
+      await fetchJson(`/lecture/${lectureId}`, {
         method: 'PATCH',
-        credentials: 'include',
+        body: JSON.stringify(formData),
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
-      const updatedLectureData = await response.json();
-      setLecture(updatedLectureData);
-      if (response.ok) {
-        alert('수정되었습니다.');
-        router.push(`/class/detail/${lectureId}`);
-      }
+
+      alert('수정되었습니다.');
+      router.push(`/class/detail/${lectureId}`);
     } catch (error) {
       alert('수정 중 오류가 발생했습니다.');
     }

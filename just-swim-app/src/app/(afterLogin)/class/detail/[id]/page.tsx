@@ -82,7 +82,6 @@ export default function ClassDetail() {
   const router = useRouter();
 
   const lectureId = params.id;
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);

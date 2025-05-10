@@ -8,6 +8,7 @@ import styled from './classView.module.scss';
 import { IconRepeatTime, IconLocation, IconClock } from '@assets';
 import { LectureViewProps } from '@types';
 import React from 'react';
+import { fetchJson } from '@utils';
 
 const ClassList = React.memo(({ item }: { item: LectureViewProps }) => {
   return (
@@ -74,35 +75,27 @@ export default function ClassView() {
   const [lectures, setLectures] = useState<LectureViewProps[]>([]);
   const [searchText, setSearchText] = useState('');
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL + '/lecture/schedule';
-
   useEffect(() => {
     const fetchLectures = async () => {
-      const response = await fetch(API_URL, {
-        method: 'GET',
-        credentials: 'include',
-        //  @ts-ignore
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      const processedLectures = processLectureData(data.data);
-      setLectures(processedLectures);
-    };
-
-    const processLectureData = (data: any[]) => {
-      return data.map((lecture) => {
-        const lectureEndDate = new Date(
-          lecture.lectureEndDate.replace(/\./g, '-'),
+      try {
+        const data = await fetchJson<{ data: LectureViewProps[] }>(
+          '/lecture/schedule',
         );
-        const isPastLecture = lectureEndDate < new Date();
-        return { ...lecture, isPastLecture };
-      });
+        const processedLectures = data.data.map((lecture) => {
+          const lectureEndDate = new Date(
+            lecture.lectureEndDate.replace(/\./g, '-'),
+          );
+          const isPastLecture = lectureEndDate < new Date();
+          return { ...lecture, isPastLecture };
+        });
+        setLectures(processedLectures);
+      } catch (error) {
+        console.error('수업 목록 불러오기 실패:', error);
+      }
     };
 
     fetchLectures();
-  }, [API_URL]);
+  }, []);
 
   const filteredLectures = (isPast: boolean) => {
     return lectures.filter(

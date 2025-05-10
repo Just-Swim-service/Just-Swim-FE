@@ -16,6 +16,7 @@ import { LectureViewProps } from '@types';
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
 import dayjs from 'dayjs';
 import styled from './classDetail.module.scss';
+import { fetchJson } from '@utils';
 
 export default function ClassDetail() {
   const params = useParams();
@@ -25,22 +26,11 @@ export default function ClassDetail() {
 
   const fetchLectureData = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}`,
-        {
-          method: 'GET',
-          credentials: 'include',
-          //  @ts-ignore
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
+      const res = await fetchJson<{ data: LectureViewProps }>(
+        `/lecture/${lectureId}`,
       );
-      const data = await response.json();
-      if (data.data) {
-        const lectureTime = data.data.lectureTime?.split('-') || [];
-        setLecture({ ...data.data, lectureTime });
-      }
+      const lectureTime = res.data.lectureTime?.split('-') || [];
+      setLecture(res.data);
     } catch (error) {
       console.error('Failed to fetch lecture data', error);
     }
@@ -55,7 +45,11 @@ export default function ClassDetail() {
   }
 
   //  @ts-ignore
-  const [startTime, endTime] = lecture.lectureTime || ['', ''];
+  const [startTime, endTime] =
+    typeof lecture.lectureTime === 'string'
+      ? lecture.lectureTime.split('-')
+      : ['', ''];
+
   const lectureDayString = lecture.lectureDays.replace(/(.)(?=.)/g, '$1, ');
 
   return (

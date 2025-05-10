@@ -10,28 +10,28 @@ import { useParams } from 'next/navigation';
 import { LectureMembersProps } from '@types';
 import { IconArrowDown, IconArrowRightSmall, IconSearch } from '@assets';
 import NoProfile from '@/_assets/images/no_profile.png';
+import { fetchJson } from '@utils';
 
 export default function Members() {
   const params = useParams();
 
   const lectureId = params.id;
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId}`;
 
   const [members, setMembers] = useState<LectureMembersProps[]>([]);
   const [searchText, setSearchText] = useState('');
   const [sortOrder, setSortOrder] = useState<'none' | 'asc'>('none');
 
   useEffect(() => {
-    fetch(API_URL, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
+    if (!lectureId) return;
+
+    fetchJson<{ data: LectureMembersProps[] }>(
+      `/lecture/memberList/${lectureId}`,
+    )
       .then((data) => {
-        setMembers(data.data || []);
+        setMembers(data.data ?? []);
+      })
+      .catch((err) => {
+        console.error('수강생 목록 불러오기 실패:', err.message);
       });
   }, [lectureId]);
 
