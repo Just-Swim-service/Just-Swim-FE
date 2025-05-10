@@ -132,7 +132,7 @@ export default function ClassView() {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
 
   useEffect(() => {
-    fetch(API_URL, {
+    fetch('/lecture/schedule', {
       method: 'GET',
       credentials: 'include',
       headers: {
