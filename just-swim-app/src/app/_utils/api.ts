@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function Fetch<T>({
@@ -23,6 +24,11 @@ export async function Fetch<T>({
 
   if (header.json) {
     headers['Content-Type'] = 'application/json';
+  }
+
+  const token = cookies().get('authorization')?.value;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   const response = await fetch(url, {
