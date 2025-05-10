@@ -36,14 +36,14 @@ const nextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/lecture/schedule',
-        destination: 'https://api.just-swim.kr/api/lecture/schedule',
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: 'http://localhost:3000',
+  //       destination: "https://just-swim-bucket.s3.ap-northeast-2.amazonaws.com",
+  //     },
+  //   ];
+  // }
 };
 
 module.exports = nextConfig;

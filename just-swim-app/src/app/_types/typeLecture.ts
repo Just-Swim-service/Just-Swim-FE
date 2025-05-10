@@ -31,7 +31,7 @@ export interface LectureDetailProps extends LectureProps {
 
 export interface LectureViewProps extends LectureBasicProps {
   lectureId: string;
-  isPastLecture: boolean;
+  isPastLecture?: boolean;
   members?: {
     userId: number;
     name: string;

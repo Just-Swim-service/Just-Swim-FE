@@ -7,3 +7,4 @@ export * from './refs';
 export * from './sort';
 export * from './token';
 export * from './server';
+export * from './fetchJson';

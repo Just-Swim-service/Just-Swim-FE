@@ -22,6 +22,7 @@ import { getMyProfile } from '@apis';
 
 import dayjs from 'dayjs';
 import styled from './classDetail.module.scss';
+import { fetchJson } from '@utils';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -97,22 +98,15 @@ export default function ClassDetail() {
   }, []);
 
   useEffect(() => {
-    fetch(API_URL, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    if (!lectureId) return;
+
+    fetchJson<{ data: LectureViewProps }>(`/lecture/${lectureId}`).then(
+      (data) => {
         if (data.data) {
-          const lectureTime = data.data.lectureTime
-            ? data.data.lectureTime.split('-')
-            : [];
-          setLecture({ ...data.data, lectureTime });
+          setLecture(data.data);
         }
-      });
+      },
+    );
   }, [lectureId]);
 
   //  @ts-ignore
@@ -122,12 +116,8 @@ export default function ClassDetail() {
 
   const DeleteHandler = async () => {
     try {
-      const response = await fetch(`${API_URL}`, {
+      const response = await fetchJson(`/lecture/${lectureId}`, {
         method: 'DELETE',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
 
       if (!response.ok) {
@@ -143,7 +133,10 @@ export default function ClassDetail() {
     }
   };
 
-  const lectureTime = lecture.lectureTime || ['', ''];
+  const [timeStart, timeEnd] =
+    typeof lecture.lectureTime === 'string'
+      ? lecture.lectureTime.split('-')
+      : ['', ''];
 
   return (
     <div>
@@ -230,14 +223,14 @@ export default function ClassDetail() {
               <span className={styled.twelve}>
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
-              {lectureTime[0]}
+              {timeStart}
             </div>
             <span className={styled.wave}>~</span>
             <div>
               <span className={styled.twelve}>
                 {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
               </span>
-              {lectureTime[1]}
+              {timeEnd}
             </div>
           </div>
 

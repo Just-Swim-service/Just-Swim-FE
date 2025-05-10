@@ -14,6 +14,7 @@ import { LectureViewProps } from '@types';
 
 import React from 'react';
 import { getMyProfile } from '@apis';
+import { fetchJson } from '@utils';
 
 const ClassList = React.memo(
   ({
@@ -129,34 +130,21 @@ export default function ClassView() {
     setUserType();
   }, []);
 
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/schedule`;
-
   useEffect(() => {
-    fetch('/lecture/schedule', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const processedLectures = data.data?.map(
-          (lecture: { lectureEndDate: string }) => {
-            const lectureEndDate = new Date(
-              lecture.lectureEndDate.replace(/\./g, '-'),
-            );
-            const isPastLecture = lectureEndDate < new Date();
-
-            return {
-              ...lecture,
-              isPastLecture,
-            };
-          },
-        );
-        setLectures(processedLectures);
-      });
-  }, [API_URL]);
+    fetchJson<{ data: LectureViewProps[] }>('/lecture/schedule').then((data) => {
+      const processedLectures =
+        data.data?.map((lecture) => {
+          const lectureEndDate = new Date(
+            lecture.lectureEndDate.replace(/\./g, '-'),
+          );
+          return {
+            ...lecture,
+            isPastLecture: lectureEndDate < new Date(),
+          };
+        }) ?? [];
+      setLectures(processedLectures);
+    });
+  }, []);
 
   const ongoingLectures = useMemo(() => {
     return (
