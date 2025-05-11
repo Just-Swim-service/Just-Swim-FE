@@ -119,8 +119,8 @@ export default function ClassDetail() {
         method: 'DELETE',
       });
 
-      if (!response.ok) {
-        throw new Error('수업 삭제 실패');
+      if (!response.success) {
+        throw new Error(response.message || '수업 삭제 실패');
       }
 
       alert('수업 삭제 성공');
