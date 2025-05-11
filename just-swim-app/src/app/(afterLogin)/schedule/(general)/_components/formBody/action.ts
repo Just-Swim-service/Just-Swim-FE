@@ -10,7 +10,10 @@ export async function formAction(
   type: 'add' | 'modify',
   id: string,
 ) {
-  const schedules = (await getInProgressSchedule()) || [];
+  const schedules =
+    (await getInProgressSchedule())?.filter(
+      (s) => !(type === 'modify' && s.lectureId === id),
+    ) || [];
 
   const errors = {
     title: '',
@@ -32,12 +35,10 @@ export async function formAction(
       .split('-')
       .map((t) => parseInt(t.split(':').join('')));
 
+    const isOverlapping = !(inputEnd <= targetStart || inputStart >= targetEnd);
+
     for (const day of data.lectureDays) {
-      if (
-        schedule.lectureDays.includes(day) &&
-        ((inputStart >= targetStart && inputStart <= targetEnd) ||
-          (inputEnd >= targetStart && inputEnd <= targetEnd))
-      ) {
+      if (schedule.lectureDays.includes(day) && isOverlapping) {
         valid = false;
         errors.duplicate = '같은 일정으로 등록된 수업이 있습니다.';
       }
