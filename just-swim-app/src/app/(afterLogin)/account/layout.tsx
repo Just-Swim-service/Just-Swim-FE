@@ -9,7 +9,7 @@ import { patchUserEdit, revalidateMyProfile } from '@apis';
 import { HTTP_STATUS, ROUTES, TEXT } from '@data';
 import { ProfileEditCompleteToast } from '@components';
 import { AccountContext } from './_context/context';
-import { getTokenInCookies } from '@utils';
+import Cookies from 'js-cookie';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const getToken = async () => {
-      const token = await getTokenInCookies();
+      const token = Cookies.get('authorization');
       setToken(token);
     };
     getToken();

@@ -10,13 +10,7 @@ import { getMyProfile } from '@apis';
 const itemsToShow = 5;
 const pagesToShow = 5;
 
-export function List({
-  feedback = [],
-  token,
-}: {
-  feedback: FeedbackProps[] | [];
-  token: string | false;
-}) {
+export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
   const [type, setType] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [pagination, setPagination] = useState<number>(0);

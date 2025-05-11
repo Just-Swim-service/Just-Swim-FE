@@ -15,6 +15,7 @@ export default function Account() {
 
   const accountContextData = React.useContext(AccountContext);
   const {
+    userToken,
     editable,
     userName,
     profileImage,
@@ -25,13 +26,13 @@ export default function Account() {
 
   useEffect(() => {
     const init = async () => {
-      try {
+      if (!userToken) {
+        router.push(ROUTES.ONBOARDING.signin);
+      } else {
         const data = await getMyProfile();
         const profile = data.data.data;
         setUserName(profile.name);
         setProfileImage({ fileURL: profile.profileImage });
-      } catch (error) {
-        router.push(ROUTES.ONBOARDING.signin);
       }
     };
     init();
