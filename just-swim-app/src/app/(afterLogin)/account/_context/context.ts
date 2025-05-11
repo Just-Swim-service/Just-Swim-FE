@@ -1,7 +1,6 @@
 import React, { SetStateAction } from 'react';
 
 type ContextProps = {
-  userToken: string | boolean;
   editable: boolean;
   userName: string;
   profileImage: {
@@ -21,7 +20,6 @@ type ContextProps = {
 };
 
 export const AccountContext = React.createContext<ContextProps>({
-  userToken: '',
   editable: false,
   userName: '',
   profileImage: {},
