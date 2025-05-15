@@ -1,13 +1,22 @@
+'use server';
+
+import { cookies } from 'next/headers';
+
 export async function fetchJson<T = any>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
+  const accessToken = cookies().get('authorization')?.value || '';
+  const refreshToken = cookies().get('refreshToken')?.value || '';
+  const cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
+
   const doRequest = async (): Promise<Response> => {
     return await fetch(endpoint, {
       method: 'GET',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
+        Cookie: cookieHeader,
         ...(options.headers || {}),
       },
       ...options,
@@ -23,12 +32,15 @@ export async function fetchJson<T = any>(
         {
           method: 'POST',
           credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie: cookieHeader,
+          },
         },
       );
 
       if (!refresh.ok) {
         throw new Error('로그인이 필요합니다.');
-        // 또는: redirect('/signin');
       }
 
       // refresh 성공 후 원래 요청 재시도

@@ -16,12 +16,14 @@ const api = async <T>(
   method: HTTP_METHODS_TYPE,
   options?: RequestInit,
 ): Promise<Response<T>> => {
-  const authorization = cookies().get('authorization')?.value;
-  const refreshToken = cookies().get('refreshToken')?.value;
+  const authorization = cookies().get('authorization')?.value || '';
+  const refreshToken = cookies().get('refreshToken')?.value || '';
+
+  const cookieHeader = `authorization=${authorization}; refreshToken=${refreshToken}`;
 
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
-    Cookie: `authorization=${authorization}; refreshToken=${refreshToken}`,
+    Cookie: cookieHeader,
     ...(options?.headers || {}),
   };
 
@@ -38,26 +40,26 @@ const api = async <T>(
     return { status: response.status, data };
   };
 
-  const res = await requestOnce();
+  let res = await requestOnce();
 
   if (res.status === 401) {
     try {
-      // 1. refresh 요청
       const refreshRes = await fetch(`${base}/auth/refresh`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: cookieHeader,
+        },
         credentials: 'include',
       });
 
-      // 2. refresh 실패 → 로그아웃 or 리디렉션
       if (!refreshRes.ok) {
-        redirect('/signin'); // refreshToken도 만료된 경우
+        redirect('/signin');
       }
 
-      // 3. refresh 성공 → 원래 요청 재시도
-      const retriedRes = await requestOnce();
-      return retriedRes;
+      res = await requestOnce(); // 재요청
     } catch (err) {
-      redirect('/signin'); // 예외 발생 시에도 로그인 페이지로
+      redirect('/signin');
     }
   }
 

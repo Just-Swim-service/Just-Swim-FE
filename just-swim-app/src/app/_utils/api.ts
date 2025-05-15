@@ -29,10 +29,8 @@ export async function Fetch<T>({
 
   const buildHeaders = (): Record<string, string> => {
     const headers: Record<string, string> = {};
-
     if (header.json) headers['Content-Type'] = 'application/json';
     headers['Cookie'] = cookieHeader;
-
     return headers;
   };
 
@@ -53,6 +51,10 @@ export async function Fetch<T>({
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
         {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie: cookieHeader,
+          },
           credentials: 'include',
         },
       );
@@ -61,22 +63,20 @@ export async function Fetch<T>({
         redirect('/signin');
       }
 
-      // 새 accessToken이 쿠키에 설정되었다고 가정하고 재요청
-      response = await doRequest();
+      response = await doRequest(); // accessToken 갱신 후 재요청
     } catch (e) {
-      console.error(' refreshToken 만료 또는 네트워크 오류:', e);
+      console.error('refreshToken 만료 또는 네트워크 오류:', e);
       redirect('/signin');
     }
   }
 
   if (!response.ok) {
-    console.error(` API 응답 실패: ${response.status}`);
+    console.error(`API 응답 실패: ${response.status}`);
     throw new Error(`API 요청 실패: ${response.status}`);
   }
 
   try {
-    const result = await response.json();
-    return result;
+    return await response.json();
   } catch (error) {
     console.error('🔥 JSON 파싱 실패:', error);
     throw new Error('Error parsing response');
