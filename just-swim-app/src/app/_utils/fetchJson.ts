@@ -16,7 +16,7 @@ export async function fetchJson<T = any>(
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        Cookie: cookieHeader,
         ...(options.headers || {}),
       },
       ...options,
@@ -34,7 +34,7 @@ export async function fetchJson<T = any>(
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
+            Cookie: cookieHeader,
           },
         },
       );
