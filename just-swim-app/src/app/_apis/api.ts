@@ -16,11 +16,12 @@ const api = async <T>(
   method: HTTP_METHODS_TYPE,
   options?: RequestInit,
 ): Promise<Response<T>> => {
-  const token = cookies().get('authorization')?.value;
+  const authorization = cookies().get('authorization')?.value;
+  const refreshToken = cookies().get('refreshToken')?.value;
 
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    Cookie: `authorization=${authorization}; refreshToken=${refreshToken}`,
     ...(options?.headers || {}),
   };
 

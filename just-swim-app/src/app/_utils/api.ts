@@ -22,13 +22,16 @@ export async function Fetch<T>({
   };
   body?: Object | null;
 }): Promise<T> {
-  const token = cookies().get('authorization')?.value;
+  const accessToken = cookies().get('authorization')?.value;
+  const refreshToken = cookies().get('refreshToken')?.value;
+
+  const cookieHeader = `authorization=${accessToken || ''}; refreshToken=${refreshToken || ''}`;
 
   const buildHeaders = (): Record<string, string> => {
     const headers: Record<string, string> = {};
 
     if (header.json) headers['Content-Type'] = 'application/json';
-    if (token) headers['Authorization'] = `Bearer ${token}`;
+    headers['Cookie'] = cookieHeader;
 
     return headers;
   };
