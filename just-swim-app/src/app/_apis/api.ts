@@ -23,7 +23,7 @@ const api = async <T>(
 
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
-    Cookie: cookieHeader,
+    ...(authorization ? { Authorization: `Bearer ${authorization}` } : {}),
     ...(options?.headers || {}),
   };
 
@@ -48,7 +48,7 @@ const api = async <T>(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Cookie: cookieHeader,
+          ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
         },
         credentials: 'include',
       });

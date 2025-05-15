@@ -54,7 +54,7 @@ export async function Fetch<T>({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookieHeader,
+            ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
           },
           credentials: 'include',
         },
