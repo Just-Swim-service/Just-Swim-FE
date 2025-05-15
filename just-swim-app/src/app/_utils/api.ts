@@ -25,6 +25,7 @@ export async function Fetch<T>({
   const accessToken = cookies().get('authorization')?.value;
   const refreshToken = cookies().get('refreshToken')?.value;
 
+  // token 처리
   const cookieHeader = `authorization=${accessToken || ''}; refreshToken=${refreshToken || ''}`;
 
   const buildHeaders = (): Record<string, string> => {
