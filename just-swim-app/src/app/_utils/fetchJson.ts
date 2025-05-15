@@ -6,9 +6,8 @@ export async function fetchJson<T = any>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const accessToken = cookies().get('authorization')?.value || '';
+  const authorization = cookies().get('authorization')?.value || '';
   const refreshToken = cookies().get('refreshToken')?.value || '';
-  const cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
 
   const doRequest = async (): Promise<Response> => {
     return await fetch(endpoint, {
@@ -16,7 +15,7 @@ export async function fetchJson<T = any>(
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Cookie: cookieHeader,
+        ...(authorization ? { Authorization: `Bearer ${authorization}` } : {}),
         ...(options.headers || {}),
       },
       ...options,
@@ -34,7 +33,7 @@ export async function fetchJson<T = any>(
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookieHeader,
+            ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
           },
         },
       );
