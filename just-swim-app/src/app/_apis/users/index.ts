@@ -43,26 +43,9 @@ export const getMyProfile = async (): Promise<GetUserProfileRes> => {
 };
 
 export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
-  const value = JSON.stringify(data);
-  const token = cookies().get('authorization')?.value;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}${USER_API_PATH}/edit`,
-    {
-      method: HTTP_METHODS.PATCH,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Cookie: `authorization=${token}` } : {}),
-      },
-      body: value,
-      credentials: 'include',
-    },
-  );
-  const json = await res.json();
-
-  return {
-    status: res.status,
-    data: json,
-  };
+  return await api(`${USER_API_PATH}/edit`, HTTP_METHODS.PATCH, {
+    body: JSON.stringify(data),
+  });
 };
 
 export async function revalidateMyProfile() {

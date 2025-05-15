@@ -22,26 +22,48 @@ export async function Fetch<T>({
   };
   body?: Object | null;
 }): Promise<T> {
-  const headers: Record<string, string> = {};
-
-  if (header.json) {
-    headers['Content-Type'] = 'application/json';
-  }
-
   const token = cookies().get('authorization')?.value;
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
 
-  const response = await fetch(url, {
-    method,
-    headers,
-    credentials: header.credential ? 'include' : 'same-origin',
-    body: body ? JSON.stringify(body) : null,
-  });
+  const buildHeaders = (): Record<string, string> => {
+    const headers: Record<string, string> = {};
+
+    if (header.json) headers['Content-Type'] = 'application/json';
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    return headers;
+  };
+
+  const doRequest = async (): Promise<Response> => {
+    return await fetch(url, {
+      method,
+      headers: buildHeaders(),
+      credentials: header.credential ? 'include' : 'same-origin',
+      body: body ? JSON.stringify(body) : null,
+    });
+  };
+
+  let response = await doRequest();
 
   if (response.status === 401) {
-    redirect('/signin');
+    try {
+      const refreshRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+        {
+          method: 'POST',
+          credentials: 'include',
+        },
+      );
+
+      if (!refreshRes.ok) {
+        redirect('/signin');
+      }
+
+      // 새 accessToken이 쿠키에 설정되었다고 가정하고 재요청
+      response = await doRequest();
+    } catch (e) {
+      console.error(' refreshToken 만료 또는 네트워크 오류:', e);
+      redirect('/signin');
+    }
   }
 
   if (!response.ok) {
