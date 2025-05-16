@@ -35,7 +35,7 @@ export async function formAction(
       .split('-')
       .map((t) => parseInt(t.split(':').join('')));
 
-    const isOverlapping = !(inputEnd <= targetStart || inputStart >= targetEnd);
+    const isOverlapping = inputStart < targetEnd && inputEnd > targetStart;
 
     for (const day of data.lectureDays) {
       if (schedule.lectureDays.includes(day) && isOverlapping) {
