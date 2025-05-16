@@ -6,18 +6,20 @@ export async function fetchJson<T = any>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const authorization = cookies().get('authorization')?.value || '';
+  const accessToken = cookies().get('authorization')?.value || '';
   const refreshToken = cookies().get('refreshToken')?.value || '';
+
+  const cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
 
   const doRequest = async (): Promise<Response> => {
     return await fetch(endpoint, {
       method: 'GET',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        ...(authorization ? { Authorization: `Bearer ${authorization}` } : {}),
+        Cookie: cookieHeader,
         ...(options.headers || {}),
       },
+      credentials: 'include',
       ...options,
     });
   };
@@ -26,23 +28,23 @@ export async function fetchJson<T = any>(
 
   if (res.status === 401) {
     try {
-      const refresh = await fetch(
+      const refreshRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
         {
           method: 'POST',
-          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
+            Cookie: cookieHeader,
           },
+          credentials: 'include',
         },
       );
 
-      if (!refresh.ok) {
+      if (!refreshRes.ok) {
         throw new Error('로그인이 필요합니다.');
       }
 
-      // refresh 성공 후 원래 요청 재시도
+      // refresh 후 다시 쿠키로 요청
       res = await doRequest();
     } catch (err) {
       throw new Error('로그인이 필요합니다.');
