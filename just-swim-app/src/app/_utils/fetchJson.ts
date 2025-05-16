@@ -33,37 +33,25 @@ export async function fetchJson<T = any>(
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
+            ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
           },
         },
       );
 
       if (!refresh.ok) {
-        console.error('[fetchJson] Refresh 실패');
-        throw new Error('로그인 세션이 만료되었습니다. 다시 로그인 해주세요.');
+        throw new Error('로그인이 필요합니다.');
       }
 
       // refresh 성공 후 원래 요청 재시도
       res = await doRequest();
-
-      if (res.status === 401) {
-        console.error('[fetchJson] Refresh 후에도 401 발생');
-        throw new Error('다시 로그인 해주세요.');
-      }
     } catch (err) {
-      throw new Error('로그인 세션이 만료되었습니다. 다시 로그인 해주세요.');
+      throw new Error('로그인이 필요합니다.');
     }
   }
 
   if (!res.ok) {
-    let errorMessage = `API 요청 실패: ${res.status} ${endpoint}`;
-    try {
-      const errorData = await res.json();
-      errorMessage = errorData.message || errorMessage;
-    } catch {
-      // ignore parse error
-    }
-    console.error('[fetchJson Error]', errorMessage);
-    throw new Error(errorMessage);
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.message || 'API 요청 실패');
   }
 
   return res.json();
