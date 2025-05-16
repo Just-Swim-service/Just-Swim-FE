@@ -12,7 +12,7 @@ export async function fetchJson<T = any>(
   const cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
 
   const doRequest = async (): Promise<Response> => {
-    return await fetch(endpoint, {
+    const response = await fetch(endpoint, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -22,6 +22,11 @@ export async function fetchJson<T = any>(
       credentials: 'include',
       ...options,
     });
+
+    console.log('✅ doRequest response status:', response.status);
+    console.log('✅ doRequest response:', response);
+
+    return response;
   };
 
   let res = await doRequest();
