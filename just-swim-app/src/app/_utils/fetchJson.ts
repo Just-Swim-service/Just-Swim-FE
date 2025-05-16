@@ -9,7 +9,9 @@ export async function fetchJson<T = any>(
   const accessToken = cookies().get('authorization')?.value || '';
   const refreshToken = cookies().get('refreshToken')?.value || '';
 
-  const cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
+  console.log(accessToken, refreshToken);
+
+  const cookieHeader = `authorization=${accessToken || ''}; refreshToken=${refreshToken || ''}`;
 
   const doRequest = async (): Promise<Response> => {
     const response = await fetch(endpoint, {
