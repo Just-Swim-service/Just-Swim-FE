@@ -4,7 +4,12 @@ export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const token = req.cookies.get('authorization')?.value;
 
-  if (token && (pathname === '/signin' || pathname === '/')) {
+  // ✅ signin에서는 절대 redirect 안되도록 예외 처리
+  if (pathname === '/signin' || pathname === '/qr-entry') {
+    return NextResponse.next();
+  }
+
+  if (token && pathname === '/') {
     return NextResponse.redirect(new URL('/schedule', req.url));
   }
 
@@ -16,5 +21,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|signup).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };
