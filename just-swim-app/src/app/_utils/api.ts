@@ -60,6 +60,8 @@ export async function Fetch<T>({
         },
       );
 
+      console.log(refreshRes);
+
       if (!refreshRes.ok) {
         redirect('/signin');
       }
