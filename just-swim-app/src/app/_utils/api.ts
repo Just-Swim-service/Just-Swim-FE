@@ -6,45 +6,34 @@ import { redirect } from 'next/navigation';
 export async function Fetch<T>({
   url,
   method = 'GET',
-  header = {
-    json: false,
-    credential: false,
-    formData: false,
-  },
+  header = { json: false },
   body = null,
 }: {
   url: string;
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
-  header?: {
-    json?: boolean;
-    credential?: boolean;
-    formData?: boolean;
-  };
+  header?: { json?: boolean };
   body?: Object | null;
 }): Promise<T> {
-  const accessToken = cookies().get('authorization')?.value;
-  const refreshToken = cookies().get('refreshToken')?.value;
+  const accessToken = cookies().get('authorization')?.value || '';
+  const refreshToken = cookies().get('refreshToken')?.value || '';
 
-  // token 처리
-  const cookieHeader = `authorization=${accessToken || ''}; refreshToken=${refreshToken || ''}`;
+  if (!refreshToken) {
+    return redirect('/signin');
+  }
 
-  const buildHeaders = (): Record<string, string> => {
-    const headers: Record<string, string> = {};
-    if (header.json) headers['Content-Type'] = 'application/json';
-    headers['Cookie'] = cookieHeader;
-    return headers;
-  };
-
-  const doRequest = async (): Promise<Response> => {
+  const doRequest = async (token: string): Promise<Response> => {
     return await fetch(url, {
       method,
-      headers: buildHeaders(),
-      credentials: header.credential ? 'include' : 'same-origin',
+      headers: {
+        ...(header.json ? { 'Content-Type': 'application/json' } : {}),
+        Cookie: `authorization=${token}; refreshToken=${refreshToken}`,
+      },
+      credentials: 'include',
       body: body ? JSON.stringify(body) : null,
     });
   };
 
-  let response = await doRequest();
+  let response = await doRequest(accessToken);
 
   if (response.status === 401) {
     try {
@@ -54,20 +43,26 @@ export async function Fetch<T>({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookieHeader,
+            Cookie: `refreshToken=${refreshToken}`,
           },
           credentials: 'include',
         },
       );
 
       if (!refreshRes.ok) {
-        redirect('/signin');
+        return redirect('/signin');
       }
 
-      response = await doRequest(); // accessToken 갱신 후 재요청
+      const refreshData = await refreshRes.json();
+      const newAccessToken = refreshData?.accessToken;
+      if (!newAccessToken) {
+        return redirect('/signin');
+      }
+
+      response = await doRequest(newAccessToken);
     } catch (e) {
-      console.error('refreshToken 만료 또는 네트워크 오류:', e);
-      redirect('/signin');
+      console.error('refresh 실패:', e);
+      return redirect('/signin');
     }
   }
 
