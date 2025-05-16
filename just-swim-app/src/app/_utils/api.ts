@@ -22,11 +22,11 @@ export async function Fetch<T>({
   };
   body?: Object | null;
 }): Promise<T> {
-  const accessToken = cookies().get('authorization')?.value;
-  const refreshToken = cookies().get('refreshToken')?.value;
+  const accessToken = cookies().get('authorization')?.value || '';
+  const refreshToken = cookies().get('refreshToken')?.value || '';
 
-  // token 처리
-  const cookieHeader = `authorization=${accessToken || ''}; refreshToken=${refreshToken || ''}`;
+  // 최초 cookie header
+  let cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
 
   const buildHeaders = (): Record<string, string> => {
     const headers: Record<string, string> = {};
@@ -54,19 +54,26 @@ export async function Fetch<T>({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookieHeader,
+            Cookie: `refreshToken=${refreshToken}`,
           },
           credentials: 'include',
         },
       );
 
-      console.log(refreshRes);
-
       if (!refreshRes.ok) {
         redirect('/signin');
       }
 
-      response = await doRequest(); // accessToken 갱신 후 재요청
+      const refreshData = await refreshRes.json();
+      const newAccessToken = refreshData?.accessToken;
+      if (!newAccessToken) {
+        redirect('/signin');
+      }
+
+      // 새 토큰으로 header 교체
+      cookieHeader = `authorization=${newAccessToken}; refreshToken=${refreshToken}`;
+
+      response = await doRequest(); // 새 토큰으로 재시도
     } catch (e) {
       console.error('refreshToken 만료 또는 네트워크 오류:', e);
       redirect('/signin');
