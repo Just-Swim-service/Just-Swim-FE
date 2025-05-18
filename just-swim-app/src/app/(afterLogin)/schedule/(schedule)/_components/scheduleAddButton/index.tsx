@@ -68,11 +68,12 @@ export function ScheduleAddButton() {
           { facingMode: 'environment' },
           { fps: 10, qrbox: 250 },
           (decodedText) => {
-            scanner.stop().then(() => {
-              handleQrScan(decodedText);
-            });
+            console.log('✅ QR 인식됨:', decodedText);
+            scanner.stop().then(() => handleQrScan(decodedText));
           },
-          () => {},
+          (errorMessage) => {
+            console.log('❌ QR 인식 실패:', errorMessage); // 빈번하게 호출되니 확인만
+          },
         );
       } catch (err) {
         alert('카메라 접근에 실패했습니다. 설정에서 권한을 허용해주세요.');
