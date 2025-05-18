@@ -44,15 +44,33 @@ export function ScheduleAddButton() {
         return;
       }
 
-      await fetchJson(`/api/member/qr-code?lectureId=${lectureId}`, {
-        method: 'GET',
-      });
+      const response = await fetchJson(
+        `/api/member/qr-code?lectureId=${lectureId}`,
+      );
 
-      alert('수업 등록 완료! 스케줄로 이동합니다.');
-      setShowScanner(false);
+      alert('✅ 수업 등록 완료! 스케줄로 이동합니다.');
       router.push('/schedule');
-    } catch (e) {
-      console.error('QR 코드 처리 중 오류:', e);
+    } catch (error: any) {
+      console.error('QR 코드 처리 중 오류:', error);
+
+      if (error?.status === 409) {
+        alert('⚠️ 이미 등록된 수업입니다.');
+      } else if (error?.status === 403) {
+        alert('❌ 수업 등록 권한이 없습니다.');
+      } else {
+        alert('❌ 수업 등록에 실패했습니다.');
+      }
+    } finally {
+      // 무조건 스캐너 종료
+      if (qrRef.current) {
+        try {
+          await qrRef.current.stop();
+          await qrRef.current.clear();
+        } catch (e) {
+          console.error('스캐너 정리 실패:', e);
+        }
+      }
+      setShowScanner(false);
     }
   };
 
@@ -66,13 +84,13 @@ export function ScheduleAddButton() {
       try {
         await scanner.start(
           { facingMode: 'environment' },
-          { fps: 10, qrbox: 250 },
+          { fps: 10, aspectRatio: 1.7777778 },
           (decodedText) => {
             console.log('✅ QR 인식됨:', decodedText);
             scanner.stop().then(() => handleQrScan(decodedText));
           },
           (errorMessage) => {
-            console.log('❌ QR 인식 실패:', errorMessage); // 빈번하게 호출되니 확인만
+            console.log('❌ QR 인식 실패:', errorMessage);
           },
         );
       } catch (err) {
