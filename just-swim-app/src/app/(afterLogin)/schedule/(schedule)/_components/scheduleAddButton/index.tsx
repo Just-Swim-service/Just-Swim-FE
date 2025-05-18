@@ -92,7 +92,12 @@ export function ScheduleAddButton() {
       )}
 
       {profileInfo?.userType === 'customer' && !showScanner && (
-        <button className={styled.link} onClick={() => setShowScanner(true)}>
+        <button
+          className={styled.link}
+          onClick={() => {
+            console.log('✅ 버튼 클릭됨');
+            setShowScanner(true);
+          }}>
           <IconQRScan />
         </button>
       )}
