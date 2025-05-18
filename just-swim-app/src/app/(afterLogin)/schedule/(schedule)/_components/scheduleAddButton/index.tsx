@@ -44,9 +44,7 @@ export function ScheduleAddButton() {
         return;
       }
 
-      const response = await fetchJson(
-        `/api/member/qr-code?lectureId=${lectureId}`,
-      );
+      const response = await fetchJson(`/member/qr-code?lectureId=${lectureId}`);
 
       alert('✅ 수업 등록 완료! 스케줄로 이동합니다.');
       router.push('/schedule');
