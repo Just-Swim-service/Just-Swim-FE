@@ -41,6 +41,7 @@ import IconArrowDown from './icon_arrow_down.svg';
 import IconDefaultProfile from './icon_default_profile.svg';
 import IconIndividual from './individual.svg';
 import IconGroup from './group.svg';
+import IconQRScan from './icon_qr_scan.svg';
 
 export {
   IconArrowRight,
@@ -86,4 +87,5 @@ export {
   IconDefaultProfile,
   IconIndividual,
   IconGroup,
+  IconQRScan,
 };
