@@ -7,7 +7,7 @@ import { IconAdd, IconQRScan } from '@assets';
 import { getMyProfile } from '@apis';
 import { useRouter } from 'next/navigation';
 import { isEmpty } from 'lodash';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { fetchJson } from '@utils';
 
 type ProfileInfo = {
@@ -20,7 +20,7 @@ export function ScheduleAddButton() {
   const router = useRouter();
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>();
   const [showScanner, setShowScanner] = useState(false);
-  const scannerRef = useRef<any>(null);
+  const qrRef = useRef<Html5Qrcode | null>(null);
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
@@ -58,30 +58,43 @@ export function ScheduleAddButton() {
 
   // QR 스캐너 시작
   useEffect(() => {
+    const startScanner = async () => {
+      const qrRegionId = 'qr-reader';
+      const scanner = new Html5Qrcode(qrRegionId);
+      qrRef.current = scanner;
+
+      try {
+        await scanner.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: 250 },
+          (decodedText) => {
+            scanner.stop().then(() => {
+              handleQrScan(decodedText);
+            });
+          },
+          () => {},
+        );
+      } catch (err) {
+        alert('카메라 접근에 실패했습니다. 설정에서 권한을 허용해주세요.');
+        setShowScanner(false);
+      }
+    };
+
     if (showScanner && profileInfo?.userType === 'customer') {
-      const scanner = new Html5QrcodeScanner(
-        'qr-reader',
-        { fps: 10, qrbox: 250 },
-        false,
-      );
-
-      scanner.render(
-        (result) => {
-          scanner.clear();
-          handleQrScan(result);
-        },
-        (error) => {
-          console.warn('스캔 실패:', error);
-        },
-      );
-
-      scannerRef.current = scanner;
+      setTimeout(() => {
+        startScanner(); // DOM 보장 후 실행
+      }, 200);
     }
 
-    return () => {
-      scannerRef.current?.clear?.().catch(() => {});
-    };
-  }, [profileInfo]);
+    if (qrRef.current) {
+      try {
+        qrRef.current.stop();
+        qrRef.current.clear();
+      } catch (e) {
+        console.error('스캐너 정리 중 오류:', e);
+      }
+    }
+  }, [showScanner, profileInfo]);
 
   return (
     <>
@@ -92,14 +105,20 @@ export function ScheduleAddButton() {
       )}
 
       {profileInfo?.userType === 'customer' && !showScanner && (
-        <button
-          className={styled.link}
-          onClick={() => {
-            console.log('✅ 버튼 클릭됨');
-            setShowScanner(true);
-          }}>
+        <button className={styled.link} onClick={() => setShowScanner(true)}>
           <IconQRScan />
         </button>
+      )}
+
+      {showScanner && (
+        <div className={styled.fullscreenOverlay}>
+          <button
+            className={styled.closeButton}
+            onClick={() => setShowScanner(false)}>
+            ✕
+          </button>
+          <div id="qr-reader" className={styled.fullscreenScanner} />
+        </div>
       )}
     </>
   );
