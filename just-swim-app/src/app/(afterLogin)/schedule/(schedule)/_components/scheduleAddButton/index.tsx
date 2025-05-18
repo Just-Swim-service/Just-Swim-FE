@@ -58,7 +58,7 @@ export function ScheduleAddButton() {
       } else if (error?.status === 403) {
         alert('❌ 수업 등록 권한이 없습니다.');
       } else {
-        alert(`❌ 수업 등록에 실패했습니다. ${error}`);
+        alert(`❌ 수업 등록에 실패했습니다.\n${error.message}`);
       }
     } finally {
       // 무조건 스캐너 종료

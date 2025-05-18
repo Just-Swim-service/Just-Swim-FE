@@ -38,8 +38,11 @@ export async function fetchJson<T = any>(
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || 'API 요청 실패');
+      const errorBody = await response.json().catch(() => ({}));
+      const error = new Error(errorBody.message || 'API 요청 실패') as any;
+      error.status = response.status; // ✅ 추가
+      error.body = errorBody; // ✅ 선택 사항 (상세 디버깅 시 유용)
+      throw error;
     }
 
     return response.json();
