@@ -82,13 +82,13 @@ export default function Account() {
         <div className={styles.app_setting}>
           {/* <Link
             className={styles.app_setting_menu}
-            href={EXTERNAL_LINKS.POLICY_AND_TERMS}>
+            href={ROUTES.ONBOARDING.root}>
             <span>계정 / 정보 관리</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
           </Link> */}
           <Link
             className={styles.app_setting_menu}
-            href={ROUTES.ONBOARDING.root}>
+            href={EXTERNAL_LINKS.POLICY_AND_TERMS}>
             <span>약관 및 운영정책</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
           </Link>
