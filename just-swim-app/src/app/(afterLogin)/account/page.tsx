@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { IconArrowRight, IconSetting } from '@assets';
 
 import { useEffect, useState } from 'react';
-import { ROUTES, TEXT } from '@data';
+import { EXTERNAL_LINKS, ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
 import { URLImage, LogoutModal, ProfileInfo } from '@components';
 import Link from 'next/link';
@@ -80,24 +80,24 @@ export default function Account() {
         </div>
         {/* 디자인 정해지면 구현 예정 */}
         <div className={styles.app_setting}>
-          <Link
+          {/* <Link
             className={styles.app_setting_menu}
-            href={ROUTES.ONBOARDING.root}>
+            href={EXTERNAL_LINKS.POLICY_AND_TERMS}>
             <span>계정 / 정보 관리</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
-          </Link>
+          </Link> */}
           <Link
             className={styles.app_setting_menu}
             href={ROUTES.ONBOARDING.root}>
             <span>약관 및 운영정책</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
           </Link>
-          <Link
+          {/* <Link
             className={styles.app_setting_menu}
             href={ROUTES.ONBOARDING.root}>
             <span>의견 보내기</span>
             <IconArrowRight width={12} height={12} fill="#000000" />
-          </Link>
+          </Link> */}
         </div>
         <div className={styles.app_version}>
           <div>

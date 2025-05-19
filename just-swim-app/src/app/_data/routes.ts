@@ -22,3 +22,8 @@ export const ROUTES = {
   SCHEDULE: { ...SCHEDULE_ROUTE },
   ACCOUNT: { ...ACCOUNT_ROUTE },
 } as const;
+
+export const EXTERNAL_LINKS = {
+  POLICY_AND_TERMS:
+    'https://just-swim-privacy.notion.site/1f71b2086631808188d0ece71a8f3fde',
+} as const;
