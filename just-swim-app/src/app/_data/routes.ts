@@ -24,6 +24,5 @@ export const ROUTES = {
 } as const;
 
 export const EXTERNAL_LINKS = {
-  POLICY_AND_TERMS:
-    'https://just-swim-privacy.notion.site/1f71b2086631808188d0ece71a8f3fde',
+  POLICY_AND_TERMS: '/privacy',
 } as const;
