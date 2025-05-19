@@ -61,7 +61,8 @@ export async function Fetch<T>({
       );
 
       if (!refreshRes.ok) {
-        redirect('/signin');
+        console.log('aa');
+        // redirect('/signin');
       }
 
       const refreshData = await refreshRes.json();
