@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './privacy.module.scss';
+import styles from './page.module.scss';
 
 export default function PrivacyPolicyPage() {
   return (
