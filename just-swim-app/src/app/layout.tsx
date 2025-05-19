@@ -19,9 +19,11 @@ export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html>
       <body>
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        <div id="modal-portal" />
-        <div id="toast-portal" />
+        <div className="app_layout">
+          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          <div id="modal-portal" />
+          <div id="toast-portal" />
+        </div>
       </body>
     </html>
   );

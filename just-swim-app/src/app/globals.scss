@@ -137,3 +137,11 @@ $--gray-100: #f5f5f6;
 $--gray-50: #f8f9fa;
 
 $--line-height: 150%;
+
+.app_layout {
+  padding-bottom: calc(
+    78px + env(safe-area-inset-bottom)
+  ); // ✅ BottomNav 높이 포함
+  min-height: 100dvh;
+  background-color: white;
+}
