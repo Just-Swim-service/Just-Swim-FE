@@ -51,7 +51,13 @@ const TimeBlock = ({
         </span>
         <span>
           {selectedTime
-            ? `${numberFormat(hourValue % 12)}:${minuteValue}`
+            ? `${numberFormat(
+                hourValue >= 12
+                  ? hourValue === 12
+                    ? 12
+                    : hourValue - 12
+                  : hourValue,
+              )}:${minuteValue}`
             : placeholder}
         </span>
       </div>

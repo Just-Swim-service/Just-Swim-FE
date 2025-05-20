@@ -12,34 +12,35 @@ const itemHeight = 60;
 const itemsToShow = 3;
 
 const generateMeridiemItems = () => {
-  return ["AM", "PM"];
-}
+  return ['AM', 'PM'];
+};
 
-const generateHourItems = () => {
-  return new Array(12).fill(0).map((_, index) => {
-    return numberFormat(index);
-  })
-}
+const generateHourItems = (meridiem: string) => {
+  if (meridiem === 'AM') {
+    return Array.from({ length: 12 }, (_, i) => numberFormat(i)); // 0 ~ 11
+  }
+  return [
+    numberFormat(12),
+    ...Array.from({ length: 11 }, (_, i) => numberFormat(i + 1)),
+  ]; // 12, 1 ~ 11
+};
 
 const generateMinuteItems = () => {
   return new Array(60).fill(0).map((_, index) => {
     return numberFormat(index);
-  })
-}
+  });
+};
 
-export function TimePicker({
-  value,
-  updateValue,
-}: TimePickerProps) {
+export function TimePicker({ value, updateValue }: TimePickerProps) {
   const hourValue = parseInt(value.slice(0, 2));
   const minuteValue = value.slice(3, 6);
 
-  const [meridiem, setMeridiem] = useState(hourValue >= 12 ? "PM" : "AM");
+  const [meridiem, setMeridiem] = useState(hourValue >= 12 ? 'PM' : 'AM');
   const [hour, setHour] = useState<string>(numberFormat(hourValue % 12));
   const [minute, setMinute] = useState<string>(minuteValue);
-  
+
   useEffect(() => {
-    const meridiemValue = meridiem === "PM" ? 12 : 0;
+    const meridiemValue = meridiem === 'PM' ? 12 : 0;
 
     updateValue(`${numberFormat(meridiemValue + parseInt(hour))}:${minute}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,19 +50,19 @@ export function TimePicker({
 
   const updateMeridiem = (medium: string) => {
     setMeridiem(medium);
-  }
+  };
 
-  const hourList = useMemo(() => generateHourItems(), []);
+  const hourList = useMemo(() => generateHourItems(meridiem), [meridiem]);
 
   const updateHour = (hour: string) => {
     setHour(hour);
-  }
+  };
 
   const minuteList = useMemo(() => generateMinuteItems(), []);
 
   const updateMinute = (minute: string) => {
     setMinute(minute);
-  }
+  };
 
   return (
     <div className={styled.container}>
@@ -90,5 +91,5 @@ export function TimePicker({
         useBorder={true}
       />
     </div>
-  )
+  );
 }
