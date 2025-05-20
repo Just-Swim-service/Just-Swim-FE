@@ -40,9 +40,15 @@ export function TimePicker({ value, updateValue }: TimePickerProps) {
   const [minute, setMinute] = useState<string>(minuteValue);
 
   useEffect(() => {
-    const meridiemValue = meridiem === 'PM' ? 12 : 0;
+    let realHour = parseInt(hour, 10);
 
-    updateValue(`${numberFormat(meridiemValue + parseInt(hour))}:${minute}`);
+    if (meridiem === 'AM') {
+      realHour = realHour === 12 ? 0 : realHour; // AM 12시 → 00시
+    } else {
+      realHour = realHour === 12 ? 12 : realHour + 12; // PM 12시 유지, PM 1~11시 → 13~23
+    }
+
+    updateValue(`${numberFormat(realHour)}:${minute}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meridiem, hour, minute]);
 
