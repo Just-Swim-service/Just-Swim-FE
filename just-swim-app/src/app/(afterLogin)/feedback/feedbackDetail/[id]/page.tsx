@@ -21,29 +21,17 @@ import { FeedbackTargetListModal } from '../../_components/feedbackTargetListMod
 import Image from 'next/image';
 
 export default function FeedbackDetail() {
-  const rawId = useParams().id;
-  const id =
-    typeof rawId === 'string'
-      ? rawId.split('/').pop()
-      : Array.isArray(rawId)
-        ? rawId.at(-1)
-        : null;
+  const { id } = useParams();
+  console.log(id);
 
   const [type, setType] = useState<string>('');
   const [feedbackInfo, setFeedbackInfo] = useState<FeedbackInfo>();
   const [feedbackTarget, setFeedbackTarget] = useState<Members[]>([]);
   const [feedbackCreatedAt, setFeedbackCreatedAt] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   const { modal, showModal, hideModal } = useModal();
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [showImageModal, setShowImageModal] = useState(false);
-
-  useEffect(() => {
-    if (!id) {
-      setError('잘못된 접근입니다. 피드백 ID가 없습니다.');
-    }
-  }, [id]);
 
   useEffect(() => {
     const setUserType = async () => {
