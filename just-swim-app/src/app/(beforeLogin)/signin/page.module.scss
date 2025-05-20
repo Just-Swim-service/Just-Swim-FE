@@ -47,4 +47,10 @@
 
     color: $--gray-500;
   }
+
+  a {
+    color: $--gray-400;
+    font-size: 12px;
+    text-decoration: underline;
+  }
 }
