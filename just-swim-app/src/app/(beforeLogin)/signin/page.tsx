@@ -35,6 +35,15 @@ export default function SignIn() {
         <p className={styles.footer_info}>
           {TEXT.SIGNUP_PAGE.helper.first} <br /> {TEXT.SIGNUP_PAGE.helper.second}
         </p>
+
+        <p className={styles.privacy_link}>
+          <a
+            href="https://just-swim.kr/privacy"
+            target="_blank"
+            rel="noopener noreferrer">
+            개인정보처리방침
+          </a>
+        </p>
       </div>
     </>
   );
