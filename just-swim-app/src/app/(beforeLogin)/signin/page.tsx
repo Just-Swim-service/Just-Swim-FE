@@ -34,9 +34,7 @@ export default function SignIn() {
       <div className={styles.footer}>
         <p className={styles.footer_info}>
           {TEXT.SIGNUP_PAGE.helper.first} <br /> {TEXT.SIGNUP_PAGE.helper.second}
-        </p>
-
-        <p className={styles.privacy_link}>
+          <br />
           <a
             href="https://just-swim.kr/privacy"
             target="_blank"
