@@ -1,7 +1,7 @@
 @import '@/globals.scss';
 
 .container {
-  padding-bottom: 72px;
+  padding-bottom: calc(78px + env(safe-area-inset-bottom));
   box-sizing: border-box;
 }
 
