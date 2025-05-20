@@ -71,3 +71,26 @@ li {
   height: 51px;
   border-style: none;
 }
+
+/* ✅ Safari 자동 링크 감지 방지 (전역 스타일) */
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  text-decoration: none;
+  -webkit-text-decoration-skip: none;
+  -webkit-touch-callout: none;
+  color: inherit;
+}
+
+/* ✅ 입력창에서는 선택 가능하도록 예외 처리 */
+input,
+textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* ✅ iOS 탭 하이라이트 제거 */
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
