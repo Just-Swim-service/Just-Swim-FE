@@ -37,12 +37,18 @@ export async function formAction(
 
     const isOverlapping = inputStart < targetEnd && inputEnd > targetStart;
 
-    for (const day of data.lectureDays) {
-      if (schedule.lectureDays.includes(day) && isOverlapping) {
-        valid = false;
-        errors.duplicate = '같은 일정으로 등록된 수업이 있습니다.';
-      }
+    // 문자열을 문자 배열로 변환
+    const inputDays = data.lectureDays.split('');
+    const targetDays = schedule.lectureDays.split('');
+
+    const hasOverlappingDay = inputDays.some((day) => targetDays.includes(day));
+
+    if (hasOverlappingDay && isOverlapping) {
+      valid = false;
+      errors.duplicate = '같은 일정으로 등록된 수업이 있습니다.';
     }
+
+    if (!valid) break;
   }
 
   if (!valid) {
