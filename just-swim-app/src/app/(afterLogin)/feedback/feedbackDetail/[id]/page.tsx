@@ -21,10 +21,8 @@ import { FeedbackTargetListModal } from '../../_components/feedbackTargetListMod
 import Image from 'next/image';
 
 export default function FeedbackDetail() {
-  console.log('🟢 FeedbackDetail 렌더 시작됨'); // 여기에
-
-  const id = useParams();
-  console.log('params:', id);
+  const { id } = useParams();
+  console.log(id);
 
   const [type, setType] = useState<string>('');
   const [feedbackInfo, setFeedbackInfo] = useState<FeedbackInfo>();
@@ -54,7 +52,7 @@ export default function FeedbackDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data: any = await getFeedbackDetail(id.id as string);
+        const data: any = await getFeedbackDetail(id as string);
         setFeedbackInfo(data?.feedback[0]);
         setFeedbackTarget(data?.feedbackTargetList);
 
@@ -63,9 +61,7 @@ export default function FeedbackDetail() {
           .slice(0, 10)
           .replace(/-/g, '.');
         setFeedbackCreatedAt(formattedDate);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch {}
     };
     fetchData();
   }, [id]);

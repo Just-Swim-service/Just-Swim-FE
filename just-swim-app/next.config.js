@@ -46,10 +46,6 @@ const nextConfig = {
         source: '/member/:path*',
         destination: 'https://api.just-swim.kr/api/member/:path*',
       },
-      {
-        source: '/feedback/:path*',
-        destination: 'https://api.just-swim.kr/api/feedback/:path*',
-      },
     ];
   },
 };
