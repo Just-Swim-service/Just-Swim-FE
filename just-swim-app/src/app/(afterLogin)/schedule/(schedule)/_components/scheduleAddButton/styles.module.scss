@@ -2,16 +2,12 @@
 
 .link {
   position: fixed;
-
   bottom: 92px;
   right: 16px;
-
   width: 48px;
   height: 48px;
-
   border-radius: 50%;
   background-color: $--Primary-blue;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,7 +16,7 @@
 .fullscreenOverlay {
   position: fixed;
   inset: 0;
-  background: black;
+  background: rgba(0, 0, 0, 0.85); // 반투명하게 수정
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -29,20 +25,39 @@
 }
 
 .fullscreenScanner {
-  width: 100%;
-  height: 100%;
+  width: 90vw;
+  max-width: 320px;
+  aspect-ratio: 1;
+  border: 2px dashed rgba(255, 255, 255, 0.3); // 흰색 점선
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 20px;
+  right: 20px;
   z-index: 1001;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
-  font-size: 2rem;
-  padding: 0.5rem 0.75rem;
+  font-size: 1.5rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 50%;
   cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+}
+
+.scannerText {
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  text-align: center;
 }

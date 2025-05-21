@@ -22,7 +22,6 @@ import Image from 'next/image';
 
 export default function FeedbackDetail() {
   const { id } = useParams();
-  console.log(id);
 
   const [type, setType] = useState<string>('');
   const [feedbackInfo, setFeedbackInfo] = useState<FeedbackInfo>();

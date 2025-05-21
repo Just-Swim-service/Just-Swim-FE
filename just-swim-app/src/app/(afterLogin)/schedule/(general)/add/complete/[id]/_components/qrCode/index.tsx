@@ -22,11 +22,29 @@ export function QRCode({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const waitForImagesToLoad = (element: HTMLElement) => {
+    const images = Array.from(element.getElementsByTagName('img'));
+    return Promise.all(
+      images.map(
+        (img) =>
+          new Promise((resolve) => {
+            if (img.complete) {
+              resolve(true);
+            } else {
+              img.onload = () => resolve(true);
+              img.onerror = () => resolve(true); // 실패해도 계속
+            }
+          }),
+      ),
+    );
+  };
+
   const handleDownload = async () => {
     if (!containerRef.current) return;
     const div = containerRef.current;
 
     try {
+      await waitForImagesToLoad(div);
       const dataUrl = await toPng(div, { cacheBust: true });
       const byteCharacters = atob(dataUrl.split(',')[1]);
       const byteArrays = new Uint8Array(byteCharacters.length);
@@ -42,9 +60,10 @@ export function QRCode({
 
   const handleShare = async () => {
     if (!containerRef.current) return;
+    const div = containerRef.current;
 
     try {
-      const div = containerRef.current;
+      await waitForImagesToLoad(div);
       const dataUrl = await toPng(div, { cacheBust: true });
       const byteCharacters = atob(dataUrl.split(',')[1]);
       const byteArrays = new Uint8Array(byteCharacters.length);

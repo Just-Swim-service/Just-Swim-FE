@@ -135,6 +135,7 @@ export function ScheduleAddButton() {
             ✕
           </button>
           <div id="qr-reader" className={styled.fullscreenScanner} />
+          <p className={styled.scannerText}>QR 코드를 중앙에 맞춰주세요</p>
         </div>
       )}
     </>
