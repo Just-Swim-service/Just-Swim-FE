@@ -37,22 +37,37 @@
 
 .closeButton {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  left: 16px;
   z-index: 1001;
-  background: rgba(255, 255, 255, 0.2);
+
+  width: 20px;
+  height: 20px;
+
+  background: rgba(255, 255, 255, 0.15);
   border: none;
-  color: white;
-  font-size: 1.5rem;
-  padding: 0.25rem 0.5rem;
   border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   cursor: pointer;
+  transition: background 0.2s ease;
   backdrop-filter: blur(4px);
-  transition: background 0.2s;
+
+  svg {
+    stroke: white;
+  }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.3);
   }
+}
+
+.closeText {
+  color: white;
+  font-size: 14px;
 }
 
 .scannerText {

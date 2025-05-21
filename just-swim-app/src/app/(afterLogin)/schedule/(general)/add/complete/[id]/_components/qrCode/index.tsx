@@ -107,11 +107,12 @@ export function QRCode({
         </div>
 
         <div className={styled.instructor}>
-          <Image
-            src={instructorData.image || NoProfile}
+          <img
+            src={instructorData.image || NoProfile.src}
             alt={`${instructorData.name}`}
             width={24}
             height={24}
+            style={{ borderRadius: '50%' }}
           />
           <p>
             <span>{instructorData.name}</span> 강사님 수업
@@ -119,8 +120,8 @@ export function QRCode({
         </div>
 
         <div className={styled.qr_code}>
-          <Image
-            src={lectureData.lectureQRCode || ImageQRCode}
+          <img
+            src={lectureData.lectureQRCode || ImageQRCode.src}
             alt="QR 코드 이미지"
             width={114}
             height={114}

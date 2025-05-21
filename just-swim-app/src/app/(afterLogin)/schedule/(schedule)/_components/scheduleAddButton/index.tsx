@@ -3,7 +3,7 @@
 import styled from './styles.module.scss';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { IconAdd, IconQRScan } from '@assets';
+import { IconAdd, IconQRScan, IconArrowLeft } from '@assets';
 import { getMyProfile } from '@apis';
 import { useRouter } from 'next/navigation';
 import { isEmpty } from 'lodash';
@@ -132,7 +132,8 @@ export function ScheduleAddButton() {
           <button
             className={styled.closeButton}
             onClick={() => setShowScanner(false)}>
-            ✕
+            <IconArrowLeft width={24} height={24} />
+            <span className={styled.closeText}>스캐너 끄기</span>
           </button>
           <div id="qr-reader" className={styled.fullscreenScanner} />
           <p className={styled.scannerText}>QR 코드를 중앙에 맞춰주세요</p>
