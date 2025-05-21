@@ -22,7 +22,8 @@ export async function formAction(
   let valid = true;
 
   const [inputStart, inputEnd] = data.lectureTime
-    .split('~')
+    .replace('~', '-')
+    .split('-')
     .map((t) => parseInt(t.split(':').join('')));
 
   for (const schedule of schedules) {
