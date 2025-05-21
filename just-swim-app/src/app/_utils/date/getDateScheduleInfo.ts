@@ -32,6 +32,10 @@ export async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
         continue;
       }
 
+      if (new Date(thisWeekInfo[i]) < new Date(schedule.lectureCreatedAt)) {
+        continue;
+      }
+
       if (!schedule.lectureDays.includes(WEEK_DAYS[i])) {
         continue;
       }
@@ -65,6 +69,10 @@ export async function getMonthlyScheduleInfo(
         schedule.lectureEndDate &&
         new Date(thisMonthInfo[i]) > new Date(schedule.lectureEndDate)
       ) {
+        continue;
+      }
+
+      if (new Date(thisMonthInfo[i]) < new Date(schedule.lectureCreatedAt)) {
         continue;
       }
 

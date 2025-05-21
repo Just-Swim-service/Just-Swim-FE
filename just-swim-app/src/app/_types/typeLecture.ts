@@ -11,6 +11,7 @@ export interface LectureBasicProps {
 
 export interface LectureProps extends LectureBasicProps {
   lectureId: string;
+  lectureCreatedAt: string;
   members?: {
     userId: string;
     name: string;
