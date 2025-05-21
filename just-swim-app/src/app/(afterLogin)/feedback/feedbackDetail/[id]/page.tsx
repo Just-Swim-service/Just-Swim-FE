@@ -21,8 +21,10 @@ import { FeedbackTargetListModal } from '../../_components/feedbackTargetListMod
 import Image from 'next/image';
 
 export default function FeedbackDetail() {
+  console.log('🟢 FeedbackDetail 렌더 시작됨'); // 여기에
+
   const id = useParams();
-  console.log(id);
+  console.log('params:', id);
 
   const [type, setType] = useState<string>('');
   const [feedbackInfo, setFeedbackInfo] = useState<FeedbackInfo>();
