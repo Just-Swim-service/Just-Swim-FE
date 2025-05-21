@@ -21,7 +21,7 @@ import { FeedbackTargetListModal } from '../../_components/feedbackTargetListMod
 import Image from 'next/image';
 
 export default function FeedbackDetail() {
-  const { id } = useParams();
+  const id = useParams();
   console.log(id);
 
   const [type, setType] = useState<string>('');
@@ -52,7 +52,7 @@ export default function FeedbackDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data: any = await getFeedbackDetail(id as string);
+        const data: any = await getFeedbackDetail(id.id as string);
         setFeedbackInfo(data?.feedback[0]);
         setFeedbackTarget(data?.feedbackTargetList);
 
