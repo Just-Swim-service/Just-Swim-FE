@@ -61,7 +61,9 @@ export default function FeedbackDetail() {
           .slice(0, 10)
           .replace(/-/g, '.');
         setFeedbackCreatedAt(formattedDate);
-      } catch {}
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchData();
   }, [id]);
