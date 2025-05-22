@@ -39,6 +39,7 @@ const api = async <T>(
   };
 
   let res = await requestOnce();
+  console.log(res);
 
   if (res.status === 401) {
     try {
