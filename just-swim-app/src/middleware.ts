@@ -13,10 +13,6 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/schedule', req.url));
   }
 
-  if (!token && pathname.startsWith('/schedule')) {
-    return NextResponse.redirect(new URL('/signin', req.url));
-  }
-
   return NextResponse.next();
 }
 
