@@ -4,8 +4,9 @@ import { HTTP_METHODS_TYPE } from '@types';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-type Response<T> = {
+type ApiResponse<T> = {
   status: number;
+  ok: boolean;
   data: T;
 };
 
@@ -15,40 +16,42 @@ const api = async <T>(
   url: string,
   method: HTTP_METHODS_TYPE,
   options?: RequestInit,
-): Promise<Response<T>> => {
-  const authorization = cookies().get('authorization')?.value || '';
-  const refreshToken = cookies().get('refreshToken')?.value || '';
+): Promise<ApiResponse<T>> => {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('authorization')?.value || '';
+  const refreshToken = cookieStore.get('refreshToken')?.value || '';
 
-  const defaultHeaders: HeadersInit = {
+  const buildHeaders = (token: string): HeadersInit => ({
     'Content-Type': 'application/json',
-    ...(authorization ? { Authorization: `Bearer ${authorization}` } : {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options?.headers || {}),
-  };
+  });
 
-  const defaultOptions: RequestInit = {
-    method,
-    headers: defaultHeaders,
-    body: options?.body,
-    credentials: 'include',
-  };
+  const doRequest = async (token: string): Promise<ApiResponse<T>> => {
+    const response = await fetch(`${base}${url}`, {
+      method,
+      headers: buildHeaders(token),
+      body: options?.body,
+      credentials: 'include',
+    });
 
-  const requestOnce = async (): Promise<Response<T>> => {
-    const response = await fetch(`${base}${url}`, defaultOptions);
     const data = await response.json();
-    return { status: response.status, data };
+    return { status: response.status, ok: response.ok, data };
   };
 
-  let res = await requestOnce();
-  console.log(res);
+  let res = await doRequest(accessToken);
 
-  if (res.status === 401) {
+  const isUnauthorized =
+    res.status === 401 ||
+    (typeof res.data === 'object' &&
+      (res.data as any)?.success === false &&
+      (res.data as any)?.message?.includes('로그인이 필요한 기능입니다.'));
+
+  if (isUnauthorized) {
     try {
-      const refreshRes = await fetch(`${base}/auth/refresh`, {
+      const refreshRes = await fetch('/auth/refresh', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
       });
 
@@ -56,8 +59,16 @@ const api = async <T>(
         redirect('/signin');
       }
 
-      res = await requestOnce(); // 재요청
-    } catch (err) {
+      const refreshData = await refreshRes.json();
+      const newAccessToken = refreshData?.accessToken;
+      if (!newAccessToken) {
+        redirect('/signin');
+      }
+
+      // 재요청
+      res = await doRequest(newAccessToken);
+    } catch (e) {
+      console.error('❌ refreshToken 실패 또는 네트워크 오류:', e);
       redirect('/signin');
     }
   }
