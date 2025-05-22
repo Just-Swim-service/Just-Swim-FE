@@ -45,9 +45,10 @@ export async function Fetch<T>({
   };
 
   let response = await doRequest();
-
+  console.log(response);
   if (response.status === 401) {
     try {
+      console.log('aa1');
       const refreshRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
         {
@@ -61,7 +62,7 @@ export async function Fetch<T>({
       );
 
       if (!refreshRes.ok) {
-        console.log('aa');
+        console.log('aa2');
         // redirect('/signin');
       }
 
