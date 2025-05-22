@@ -35,34 +35,42 @@ export async function Fetch<T>({
     return headers;
   };
 
-  const doRequest = async (): Promise<Response> => {
-    return await fetch(url, {
+  const doRequest = async (): Promise<{
+    status: number;
+    ok: boolean;
+    data: T;
+  }> => {
+    const res = await fetch(url, {
       method,
       headers: buildHeaders(),
       credentials: header.credential ? 'include' : 'same-origin',
       body: body ? JSON.stringify(body) : null,
     });
+
+    const json = await res.json();
+    return { status: res.status, ok: res.ok, data: json };
   };
 
   let response = await doRequest();
 
-  if (response.status === 401) {
+  const isUnauthorized =
+    response.status === 401 ||
+    (typeof response.data === 'object' &&
+      (response.data as any)?.success === false &&
+      (response.data as any)?.message?.includes('로그인이 필요한 기능입니다.'));
+
+  if (isUnauthorized) {
     try {
-      const refreshRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Cookie: `refreshToken=${refreshToken}`,
-          },
-          credentials: 'include',
+      const refreshRes = await fetch('/auth/refresh', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        credentials: 'include',
+      });
 
       if (!refreshRes.ok) {
-        console.log('aa');
-        // redirect('/signin');
+        redirect('/signin');
       }
 
       const refreshData = await refreshRes.json();
@@ -74,22 +82,14 @@ export async function Fetch<T>({
       // 새 토큰으로 header 교체
       cookieHeader = `authorization=${newAccessToken}; refreshToken=${refreshToken}`;
 
-      response = await doRequest(); // 새 토큰으로 재시도
-    } catch (e) {
-      console.error('refreshToken 만료 또는 네트워크 오류:', e);
+      // 새 토큰으로 재요청
+      response = await doRequest();
+    } catch (err) {
+      console.error('❌ refresh 실패 또는 네트워크 오류:', err);
       redirect('/signin');
     }
   }
 
-  if (!response.ok) {
-    console.error(`API 응답 실패: ${response.status}`);
-    throw new Error(`API 요청 실패: ${response.status}`);
-  }
-
-  try {
-    return await response.json();
-  } catch (error) {
-    console.error('🔥 JSON 파싱 실패:', error);
-    throw new Error('Error parsing response');
-  }
+  // 이 시점까지 왔다면 성공한 응답
+  return response.data;
 }
