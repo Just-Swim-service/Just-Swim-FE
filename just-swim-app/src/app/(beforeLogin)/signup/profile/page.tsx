@@ -148,7 +148,7 @@ export default function Profile() {
           value={inputBirth}
           onChange={handleInputBirth}
           inputMode="numeric"
-          placeholder="생년월일 (예: 1995.09.13)"
+          placeholder="생년월일 ex) 1995.09.13"
           className={styles.input}
         />
 
@@ -157,7 +157,7 @@ export default function Profile() {
           value={inputPhoneNumber}
           onChange={handleInputPhoneNumber}
           inputMode="numeric"
-          placeholder="전화번호 (예: 010-1234-5678)"
+          placeholder="전화번호 ex) 010-1234-5678"
           className={styles.input}
         />
       </div>
