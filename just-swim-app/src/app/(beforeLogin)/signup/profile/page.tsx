@@ -143,23 +143,26 @@ export default function Profile() {
           />
           {valid && <IconInputValid width={18} height={18} />}
         </div>
-        <input
-          type="text"
-          value={inputBirth}
-          onChange={handleInputBirth}
-          inputMode="numeric"
-          placeholder="생년월일 ex) 1995.09.13"
-          className={styles.input}
-        />
-
-        <input
-          type="tel"
-          value={inputPhoneNumber}
-          onChange={handleInputPhoneNumber}
-          inputMode="numeric"
-          placeholder="전화번호 ex) 010-1234-5678"
-          className={styles.input}
-        />
+        <div className={styles.input_wrapper}>
+          <input
+            type="text"
+            value={inputBirth}
+            onChange={handleInputBirth}
+            inputMode="numeric"
+            placeholder="생년월일 ex) 1995.09.13"
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.input_wrapper}>
+          <input
+            type="tel"
+            value={inputPhoneNumber}
+            onChange={handleInputPhoneNumber}
+            inputMode="numeric"
+            placeholder="전화번호 ex) 010-1234-5678"
+            className={styles.input}
+          />
+        </div>
       </div>
       <div className={styles.profile_setting_footer}>
         <div className={styles.button_wrapper}>
