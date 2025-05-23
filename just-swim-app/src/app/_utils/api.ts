@@ -69,27 +69,19 @@ export async function Fetch<T>({
         credentials: 'include',
       });
 
-      if (!refreshRes.ok) {
-        redirect('/signin');
-      }
-
       const refreshData = await refreshRes.json();
       const newAccessToken = refreshData?.accessToken;
-      if (!newAccessToken) {
+
+      if (!refreshRes.ok || !newAccessToken) {
         redirect('/signin');
       }
 
-      // 새 토큰으로 header 교체
-      cookieHeader = `authorization=${newAccessToken}; refreshToken=${refreshToken}`;
-
-      // 새 토큰으로 재요청
-      response = await doRequest();
+      redirect('/');
     } catch (err) {
-      console.error('❌ refresh 실패 또는 네트워크 오류:', err);
+      console.error('❌ refreshToken 실패 또는 네트워크 오류:', err);
       redirect('/signin');
     }
   }
 
-  // 이 시점까지 왔다면 성공한 응답
   return response.data;
 }

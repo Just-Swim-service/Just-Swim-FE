@@ -19,7 +19,6 @@ export async function fetchJson<T = any>(
     let res = await doRequest();
 
     if (res.status === 401) {
-      // accessToken 만료 → refresh 시도
       const refresh = await fetch('/auth/refresh', {
         method: 'POST',
         credentials: 'include',
@@ -30,7 +29,7 @@ export async function fetchJson<T = any>(
         throw new Error('세션이 만료되었습니다');
       }
 
-      res = await doRequest(); // 새 토큰으로 재요청
+      res = await doRequest();
     }
 
     if (!res.ok) {
@@ -42,6 +41,8 @@ export async function fetchJson<T = any>(
   } else {
     // ✅ SSR
     const { cookies } = await import('next/headers');
+    const { redirect } = await import('next/navigation');
+
     const accessToken = cookies().get('authorization')?.value || '';
     const refreshToken = cookies().get('refreshToken')?.value || '';
     let cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
@@ -62,30 +63,29 @@ export async function fetchJson<T = any>(
 
     let { res, json } = await doSSRRequest();
 
-    if (
+    const isUnauthorized =
       res.status === 401 ||
-      (json?.success === false && json?.message?.includes('로그인이'))
-    ) {
-      const refresh = await fetch('/auth/refresh', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      (json?.success === false && json?.message?.includes('로그인이'));
 
-      if (!refresh.ok) {
-        const { redirect } = await import('next/navigation');
+    if (isUnauthorized) {
+      try {
+        const refresh = await fetch('/auth/refresh', {
+          method: 'POST',
+          credentials: 'include',
+        });
+
+        const refreshed = await refresh.json();
+        const newAccessToken = refreshed?.accessToken;
+
+        if (!refresh.ok || !newAccessToken) {
+          redirect('/signin');
+        }
+
+        redirect('/');
+      } catch (err) {
+        console.error('❌ refresh 실패:', err);
         redirect('/signin');
       }
-
-      const refreshed = await refresh.json();
-      const newAccessToken = refreshed?.accessToken;
-      if (!newAccessToken) {
-        const { redirect } = await import('next/navigation');
-        redirect('/signin');
-      }
-
-      // 새 토큰으로 헤더 교체
-      cookieHeader = `authorization=${newAccessToken}; refreshToken=${refreshToken}`;
-      ({ res, json } = await doSSRRequest());
     }
 
     if (!res.ok) {
