@@ -54,23 +54,22 @@ const api = async <T>(
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
       });
-      console.log(refreshRes);
 
       if (!refreshRes.ok) {
-        // redirect('/signin');
+        redirect('/signin');
       }
 
       const refreshData = await refreshRes.json();
       const newAccessToken = refreshData?.accessToken;
       if (!newAccessToken) {
-        // redirect('/signin');
+        redirect('/signin');
       }
 
       // 재요청
       res = await doRequest(newAccessToken);
     } catch (e) {
       console.error('❌ refreshToken 실패 또는 네트워크 오류:', e);
-      // redirect('/signin');
+      redirect('/signin');
     }
   }
 
