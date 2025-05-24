@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
 import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
-import { getMyProfile, patchUserEdit } from '@apis';
+import { getMyProfile, getProfilePresignedURL, patchUserEdit } from '@apis';
 
 export default function Profile() {
   const router = useRouter();
@@ -34,9 +34,9 @@ export default function Profile() {
   useEffect(() => {
     const isValid =
       inputName.trim().length > 0 &&
-      inputImage.trim().length > 0 &&
       inputBirth.length === 10 &&
-      inputPhoneNumber.length === 13;
+      inputPhoneNumber.length === 13 &&
+      inputImage !== null;
 
     setValid(isValid);
   }, [inputName, inputImage, inputBirth, inputPhoneNumber]);
@@ -58,15 +58,35 @@ export default function Profile() {
     setInputName(evt.target.value);
   };
 
-  const handleInputImage = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
+  const handleInputImage = async (evt: React.ChangeEvent<HTMLInputElement>) => {
     const file = evt.target.files?.[0];
+    if (!file) return;
 
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setInputImage(reader.result as string);
-      };
+    try {
+      const presignedURL = await getProfilePresignedURL(file.name);
+      if (!presignedURL) {
+        throw new Error('Presigned URL을 가져오지 못했습니다.');
+      }
+
+      const response = await fetch(presignedURL as any, {
+        method: 'PUT',
+        body: file,
+        headers: file?.type
+          ? {
+              'Content-Type': file.type,
+            }
+          : undefined,
+      });
+
+      if (!response.ok) {
+        throw new Error('파일 업로드 실패');
+      }
+
+      // 쿼리 스트링 제거된 URL만 저장
+      const uploadedImageURL = presignedURL.toString().split('?')[0];
+      setInputImage(uploadedImageURL);
+    } catch (error) {
+      console.error('이미지 업로드 중 오류 발생:', error);
     }
   };
 
@@ -119,7 +139,10 @@ export default function Profile() {
       <div className={styles.profile_setting_section}>
         <div className={styles.profile_image_wrapper}>
           <div className={styles.profile_img}>
-            <URLImage imageURL={inputImage} alt="profile image" />
+            <URLImage
+              imageURL={inputImage || '/default_profile.png'}
+              alt="profile image"
+            />
           </div>
           <label htmlFor="select_image" className={styles.image_button}>
             <IconGallery />
