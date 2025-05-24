@@ -93,15 +93,6 @@ export default function FeedbackDetail() {
               <p>{feedbackCreatedAt} 전송된 피드백</p>
             </div>
             <div className={styled.detail_title}>
-              <p>피드백 기준일</p>
-            </div>
-            <div className={styled.detail_content}>
-              <span className={styled.detail_icon}>
-                <Calendar />
-              </span>
-              <p>{feedbackDate}</p>
-            </div>
-            <div className={styled.detail_title}>
               <p>피드백 대상</p>
             </div>
             <div className={styled.detail_content}>
@@ -127,6 +118,16 @@ export default function FeedbackDetail() {
                 />
               )}
             </div>
+            <div className={styled.detail_title}>
+              <p>피드백 기준일</p>
+            </div>
+            <div className={styled.detail_content}>
+              <span className={styled.detail_icon}>
+                <Calendar />
+              </span>
+              <p>{feedbackDate}</p>
+            </div>
+
             <div>
               {feedbackInfo?.images && feedbackInfo.images.length > 0 && (
                 <div className={styled.detail_title}>

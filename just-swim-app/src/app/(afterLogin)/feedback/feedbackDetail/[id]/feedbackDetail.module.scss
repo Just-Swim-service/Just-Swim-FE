@@ -28,16 +28,15 @@
   }
 
   .detail_content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
     padding: 16px;
     border-radius: 8px;
     background-color: $--gray-50;
-    display: flex;
-    flex-direction: column; // 핵심
-    align-items: flex-start;
-    gap: 12px;
     margin-bottom: 22px;
-    position: relative;
-    word-break: break-word;
+    word-break: keep-all;
 
     .detail_icon {
       margin-right: 12px;
@@ -46,7 +45,6 @@
     p {
       @include Title5-M;
       line-height: 1.5;
-      word-break: keep-all;
     }
 
     .arrow_icon {
@@ -92,7 +90,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 0;
       flex-wrap: nowrap;
 
       .class_title {
@@ -105,12 +102,12 @@
         color: $--Primary-blue;
         padding: 4px 10px;
         border-radius: 8px;
-        height: 26px;
-        line-height: 1;
+        height: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
         white-space: nowrap;
+        font-size: 12px;
       }
     }
 
@@ -155,10 +152,10 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        height: 51px;
         background-color: $--gray-50;
         border-radius: 6px;
         padding: 0 16px;
+        min-height: 51px;
 
         .date_info_icon {
           margin-right: 4px;
@@ -180,15 +177,15 @@
     }
 
     .detail_content {
-      padding: 16px;
-      border-radius: 8px;
-      background-color: $--gray-50;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 12px;
+      gap: 8px;
+      padding: 16px;
+      border-radius: 8px;
+      background-color: $--gray-50;
       margin-bottom: 22px;
-      word-break: break-word;
+      word-break: keep-all;
 
       .detail_icon {
         margin-right: 12px;
@@ -197,7 +194,6 @@
       p {
         @include Title5-M;
         line-height: 1.5;
-        word-break: keep-all;
       }
     }
 
