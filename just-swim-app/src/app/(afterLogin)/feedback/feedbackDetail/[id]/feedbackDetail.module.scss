@@ -29,7 +29,7 @@
 
   .detail_content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     gap: 8px;
     padding: 16px;
@@ -74,21 +74,21 @@
     width: 100%;
     height: 1px;
     background-color: $--gray-200;
-    margin: 22px 0;
   }
 
   /* ---------------- 고객 상단 정보 ---------------- */
   .detail_customer_feedback {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+
     gap: 12px;
-    padding: 0 16px 22px;
-    background-color: $--gray-50;
+    padding: 25px 0px 30px 0px;
     border-radius: 6px;
 
     .detail_customer_feedback_title {
       display: flex;
       align-items: center;
+      flex-direction: row;
       gap: 8px;
       flex-wrap: nowrap;
 
@@ -149,9 +149,11 @@
       }
 
       .feedback_customer_date_info {
+        @include Title5-M;
+
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 14px;
         background-color: $--gray-50;
         border-radius: 6px;
         padding: 0 16px;
@@ -170,6 +172,7 @@
 
     .detail_title {
       margin-bottom: 12px;
+      gap: 6px;
 
       p {
         @include Title3-M;
@@ -178,7 +181,7 @@
 
     .detail_content {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: flex-start;
       gap: 8px;
       padding: 16px;
@@ -199,6 +202,7 @@
 
     .detail_photo {
       display: flex;
+      flex-direction: row;
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 22px;
