@@ -1,8 +1,9 @@
 @import '@/globals.scss';
 
 .detail_container {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
 
   .feedback_date {
     @include Title5-M;
@@ -31,7 +32,8 @@
     border-radius: 8px;
     background-color: $--gray-50;
     display: flex;
-    align-items: center;
+    flex-direction: column; // 핵심
+    align-items: flex-start;
     gap: 12px;
     margin-bottom: 22px;
     position: relative;
@@ -44,6 +46,7 @@
     p {
       @include Title5-M;
       line-height: 1.5;
+      word-break: keep-all;
     }
 
     .arrow_icon {
@@ -81,15 +84,16 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding-bottom: 22px;
+    padding: 0 16px 22px;
     background-color: $--gray-50;
     border-radius: 6px;
 
     .detail_customer_feedback_title {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 0 16px;
+      gap: 8px;
+      padding: 0;
+      flex-wrap: nowrap;
 
       .class_title {
         @include Title2-SB;
@@ -112,7 +116,6 @@
 
     .instructor_info {
       margin-top: 12px;
-      margin-left: 16px;
       padding: 6px 14px;
       background-color: $--gray-50;
       border: 1px solid $--gray-200;
@@ -151,18 +154,18 @@
       .feedback_customer_date_info {
         display: flex;
         align-items: center;
+        gap: 8px;
         height: 51px;
         background-color: $--gray-50;
         border-radius: 6px;
         padding: 0 16px;
 
         .date_info_icon {
-          margin-right: 14px;
+          margin-right: 4px;
         }
 
         p {
           @include Title5-M;
-          margin-left: 4px;
           word-break: keep-all;
         }
       }
@@ -181,7 +184,8 @@
       border-radius: 8px;
       background-color: $--gray-50;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 12px;
       margin-bottom: 22px;
       word-break: break-word;
@@ -193,6 +197,7 @@
       p {
         @include Title5-M;
         line-height: 1.5;
+        word-break: keep-all;
       }
     }
 
