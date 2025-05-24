@@ -10,6 +10,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-bottom: 22px;
 
     .icon {
       font-size: 18px;
@@ -26,15 +27,13 @@
   }
 
   .detail_content {
-    height: 21px;
-    margin-bottom: 22px;
-    margin-top: 15.5px;
-    padding: 15px 16px 15px 0px;
-    border: 15px solid $--gray-50;
+    padding: 15px 16px;
     border-radius: 6px;
     background-color: $--gray-50;
     display: flex;
     align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
     position: relative;
 
     .detail_icon {
@@ -47,36 +46,48 @@
 
     .arrow_icon {
       position: absolute;
-      right: 0;
+      right: 16px;
     }
   }
 
   .detail_photo {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 22px;
 
-    .photo {
-      width: 76px;
-      height: 76px;
+    .preview_item {
+      width: 100px;
+      height: 100px;
       background-color: $--gray-100;
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      cursor: pointer;
     }
   }
+
   .feedback_divider {
-    width: 328px;
+    width: 100%;
     height: 1px;
     background-color: $--gray-200;
+    margin: 22px 0;
   }
 
   .detail_customer_feedback {
-    height: 95px;
-    width: 100vw;
     display: flex;
-    align-items: center;
-    gap: 106px;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 22px;
+    background-color: $--gray-50;
+    border-radius: 6px;
 
     .detail_customer_feedback_title {
-      flex-direction: row;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+
       .class_title {
         @include Title2-SB;
       }
@@ -85,29 +96,32 @@
         @include Body4-R;
         background-color: #e9f3ff;
         color: $--Primary-blue;
+        padding: 4px 10px;
+        border-radius: 4px;
+        height: 26px;
+        line-height: 18px;
+        display: flex;
+        align-items: center;
       }
     }
 
     .instructor_info {
-      width: 156px;
-      height: 40px;
+      margin-top: 12px;
+      margin-left: 16px;
+      width: fit-content;
       padding: 8px 14px;
-      box-sizing: border-box;
       background-color: $--gray-50;
-      border-radius: 10px;
       border: 1px solid $--gray-200;
+      border-radius: 10px;
 
       display: flex;
-      flex-direction: row;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
 
       .instructor_image {
         width: 24px;
         height: 24px;
-
         border-radius: 50%;
-
         overflow: hidden;
       }
 
@@ -118,32 +132,70 @@
   }
 
   .detail_customer_feedback_info {
-    width: 100vw;
-    margin-top: 22px;
-    @include Title5-M;
+    width: 100%;
+    padding: 0 16px;
 
     .feedback_customer_date {
       margin-bottom: 22px;
+
       p {
         @include Title3-M;
         margin-bottom: 6px;
       }
 
       .feedback_customer_date_info {
-        height: 51px;
-        width: 328px;
-        box-sizing: border-box;
-        background-color: $--gray-50;
-        border-radius: 6px;
-
         display: flex;
         align-items: center;
+        height: 51px;
+        background-color: $--gray-50;
+        border-radius: 6px;
+        padding: 0 16px;
 
         .date_info_icon {
-          margin-top: 3px;
-          margin-left: 16px;
           margin-right: 14px;
         }
+      }
+    }
+
+    .detail_title {
+      margin-bottom: 12px;
+
+      p {
+        @include Title3-M;
+      }
+    }
+
+    .detail_content {
+      padding: 15px 16px;
+      border-radius: 6px;
+      background-color: $--gray-50;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+
+      .detail_icon {
+        margin-right: 12px;
+      }
+
+      p {
+        @include Title5-M;
+      }
+    }
+
+    .detail_photo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+
+      .preview_item {
+        width: 100px;
+        height: 100px;
+        background-color: $--gray-100;
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
       }
     }
   }
