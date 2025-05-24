@@ -129,8 +129,11 @@ export default function FeedbackDetail() {
             </div>
             <div>
               {feedbackInfo?.images && feedbackInfo.images.length > 0 && (
-                <div className={styled.detail_title}>
-                  <p>첨부 파일</p>
+                <>
+                  <div className={styled.detail_title}>
+                    <p>첨부 파일</p>
+                  </div>
+
                   <div className={styled.detail_photo}>
                     {feedbackInfo?.images.map((image, index) => (
                       <div
@@ -148,6 +151,7 @@ export default function FeedbackDetail() {
                       />
                     ))}
                   </div>
+
                   {showImageModal && feedbackInfo?.images && (
                     <ImageFocusModal
                       imageUrl={
@@ -160,9 +164,10 @@ export default function FeedbackDetail() {
                       onClose={handleCloseModal}
                     />
                   )}
-                </div>
+                </>
               )}
             </div>
+
             {feedbackInfo?.feedbackLink && (
               <div>
                 <div className={styled.detail_title}>
@@ -232,32 +237,47 @@ export default function FeedbackDetail() {
                     : ''}
                 </div>
               </div>
-              <>
+              <div>
                 {feedbackInfo?.images && feedbackInfo.images.length > 0 && (
-                  <div className={styled.detail_title}>
-                    <p>첨부 파일</p>
-                    <div className={styled.detail_photo}>
-                      {/* TODO: 이미지 클릭 시 확대 처리 */}
-                      {(feedbackInfo?.images || []).map((image, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className={styled.preview_item}
-                            style={{
-                              backgroundImage: image.imagePath
-                                ? `url(${image.imagePath.trim()})`
-                                : IconDefaultProfile,
-                              width: '100px',
-                              height: '100px',
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
-                            }}></div>
-                        );
-                      })}
+                  <>
+                    <div className={styled.detail_title}>
+                      <p>첨부 파일</p>
                     </div>
-                  </div>
+
+                    <div className={styled.detail_photo}>
+                      {feedbackInfo?.images.map((image, index) => (
+                        <div
+                          key={index}
+                          className={styled.preview_item}
+                          onClick={() => handleImageClick(index)}
+                          style={{
+                            backgroundImage: `url(${image.imagePath.trim()})`,
+                            width: '100px',
+                            height: '100px',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            cursor: 'pointer',
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    {showImageModal && feedbackInfo?.images && (
+                      <ImageFocusModal
+                        imageUrl={
+                          feedbackInfo?.images[selectedImageIndex]?.imagePath
+                        }
+                        images={feedbackInfo.images.map(
+                          (image) => image.imagePath,
+                        )}
+                        currentIndex={selectedImageIndex}
+                        onClose={handleCloseModal}
+                      />
+                    )}
+                  </>
                 )}
-              </>
+              </div>
+
               {feedbackInfo?.feedbackLink && (
                 <div>
                   <div className={styled.detail_title}>
