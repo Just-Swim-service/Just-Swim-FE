@@ -232,7 +232,7 @@ export default function FeedbackDetail() {
                     : ''}
                 </div>
               </div>
-              <div>
+              <>
                 {feedbackInfo?.images && feedbackInfo.images.length > 0 && (
                   <div className={styled.detail_title}>
                     <p>첨부 파일</p>
@@ -257,7 +257,7 @@ export default function FeedbackDetail() {
                     </div>
                   </div>
                 )}
-              </div>
+              </>
               {feedbackInfo?.feedbackLink && (
                 <div>
                   <div className={styled.detail_title}>
