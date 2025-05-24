@@ -27,14 +27,15 @@
   }
 
   .detail_content {
-    padding: 15px 16px;
-    border-radius: 6px;
+    padding: 16px;
+    border-radius: 8px;
     background-color: $--gray-50;
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 22px;
     position: relative;
+    word-break: break-word;
 
     .detail_icon {
       margin-right: 12px;
@@ -42,6 +43,7 @@
 
     p {
       @include Title5-M;
+      line-height: 1.5;
     }
 
     .arrow_icon {
@@ -57,8 +59,8 @@
     margin-bottom: 22px;
 
     .preview_item {
-      width: 100px;
-      height: 100px;
+      width: 84px;
+      height: 84px;
       background-color: $--gray-100;
       background-size: cover;
       background-position: center;
@@ -74,6 +76,7 @@
     margin: 22px 0;
   }
 
+  /* ---------------- 고객 상단 정보 ---------------- */
   .detail_customer_feedback {
     display: flex;
     flex-direction: column;
@@ -97,26 +100,27 @@
         background-color: #e9f3ff;
         color: $--Primary-blue;
         padding: 4px 10px;
-        border-radius: 4px;
+        border-radius: 8px;
         height: 26px;
-        line-height: 18px;
+        line-height: 1;
         display: flex;
         align-items: center;
+        justify-content: center;
+        white-space: nowrap;
       }
     }
 
     .instructor_info {
       margin-top: 12px;
       margin-left: 16px;
-      width: fit-content;
-      padding: 8px 14px;
+      padding: 6px 14px;
       background-color: $--gray-50;
       border: 1px solid $--gray-200;
-      border-radius: 10px;
-
+      border-radius: 9999px;
       display: flex;
       align-items: center;
       gap: 8px;
+      width: fit-content;
 
       .instructor_image {
         width: 24px;
@@ -131,6 +135,7 @@
     }
   }
 
+  /* ---------------- 고객 상세 정보 ---------------- */
   .detail_customer_feedback_info {
     width: 100%;
     padding: 0 16px;
@@ -154,6 +159,12 @@
         .date_info_icon {
           margin-right: 14px;
         }
+
+        p {
+          @include Title5-M;
+          margin-left: 4px;
+          word-break: keep-all;
+        }
       }
     }
 
@@ -166,13 +177,14 @@
     }
 
     .detail_content {
-      padding: 15px 16px;
-      border-radius: 6px;
+      padding: 16px;
+      border-radius: 8px;
       background-color: $--gray-50;
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 22px;
+      word-break: break-word;
 
       .detail_icon {
         margin-right: 12px;
@@ -180,6 +192,7 @@
 
       p {
         @include Title5-M;
+        line-height: 1.5;
       }
     }
 
@@ -190,12 +203,13 @@
       margin-bottom: 22px;
 
       .preview_item {
-        width: 100px;
-        height: 100px;
+        width: 84px;
+        height: 84px;
         background-color: $--gray-100;
         background-size: cover;
         background-position: center;
         border-radius: 8px;
+        cursor: pointer;
       }
     }
   }
