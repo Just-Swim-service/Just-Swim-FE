@@ -18,29 +18,30 @@ export async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
   const scheduleInfo = (await getInProgressSchedule()) || [];
 
   for (let i = 0; i < thisWeekInfo.length; i++) {
+    const currentDate = new Date(thisWeekInfo[i]);
+    const currentDateString = currentDate.toISOString().split('T')[0];
+    const currentDay = WEEK_DAYS[i];
+
     const nowInfo: ScheduleSummary = {
       date: thisWeekInfo[i],
-      day: WEEK_DAYS[i],
+      day: currentDay,
       lectures: [],
     };
 
     for (const schedule of scheduleInfo) {
-      if (
-        schedule.lectureEndDate &&
-        new Date(thisWeekInfo[i]) > new Date(schedule.lectureEndDate)
-      ) {
-        continue;
-      }
+      const createdDate = new Date(schedule.lectureCreatedAt);
+      const endDate = schedule.lectureEndDate
+        ? new Date(schedule.lectureEndDate)
+        : null;
 
-      if (new Date(thisWeekInfo[i]) < new Date(schedule.lectureCreatedAt)) {
-        continue;
-      }
+      const isOngoing =
+        (!endDate || currentDate <= endDate) && currentDate >= createdDate;
 
-      if (!schedule.lectureDays.includes(WEEK_DAYS[i])) {
-        continue;
-      }
+      const isCorrectDay = schedule.lectureDays.includes(currentDay);
 
-      nowInfo.lectures.push(schedule);
+      if (isOngoing && isCorrectDay) {
+        nowInfo.lectures.push(schedule);
+      }
     }
 
     nowInfo.lectures.sort(sortSchedule);
