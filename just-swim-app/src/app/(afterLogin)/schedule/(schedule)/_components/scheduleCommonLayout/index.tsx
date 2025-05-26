@@ -1,11 +1,12 @@
 'use client';
 
 import { getTodayScheduleCount } from '@utils';
+
 import { ScheduleCommon } from '../scheduleCommon';
 import { useEffect, useState } from 'react';
 
 export function ScheduleCommonLayout() {
-  const [todayCount, setTodayCount] = useState<number | null>(null);
+  const [todayCount, setTodayCount] = useState<number | null>(0);
 
   useEffect(() => {
     const fetchTodayCount = async () => {
@@ -15,9 +16,9 @@ export function ScheduleCommonLayout() {
     fetchTodayCount();
   }, []);
 
-  if (todayCount === null) {
-    return <div>로딩 중...</div>;
-  }
-
-  return <ScheduleCommon count={todayCount} />;
+  return (
+    <>
+      <ScheduleCommon count={todayCount || 0} />
+    </>
+  );
 }
