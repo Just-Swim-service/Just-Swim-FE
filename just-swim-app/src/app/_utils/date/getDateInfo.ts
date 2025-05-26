@@ -1,24 +1,21 @@
 import { numberFormat } from '@utils';
 
 export function getToday() {
-  const date = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth(),
-    new Date().getDate(),
+  const todayInKST = new Date(
+    new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }),
   );
-  const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-  const kstGap = 9 * 60 * 60 * 1000;
-  const today = new Date(utc + kstGap);
-
-  return today;
+  return new Date(
+    todayInKST.getFullYear(),
+    todayInKST.getMonth(),
+    todayInKST.getDate(),
+  );
 }
 
 export function convertKoreanTime(date: Date) {
-  const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-  const kstGap = 9 * 60 * 60 * 1000;
-  const newDate = new Date(utc + kstGap);
-
-  return newDate;
+  const kstDate = new Date(
+    new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Seoul' }),
+  );
+  return kstDate;
 }
 
 export function getThisWeek() {
@@ -122,7 +119,11 @@ export function getMonth(date = new Date()) {
 export function getWeekNumber(targetDate: Date) {
   const date = targetDate;
   const currentDate = date.getDate();
-  const startOfMonth = new Date(date.setDate(1));
+  const startOfMonth = new Date(
+    targetDate.getFullYear(),
+    targetDate.getMonth(),
+    1,
+  );
 
   const weekDay = startOfMonth.getDay();
 
