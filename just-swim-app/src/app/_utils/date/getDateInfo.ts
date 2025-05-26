@@ -1,9 +1,16 @@
 import { numberFormat } from '@utils';
 
 export function getToday() {
-  return new Date(
-    new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+  const date = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate(),
   );
+  const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
+  const kstGap = 9 * 60 * 60 * 1000;
+  const today = new Date(utc + kstGap);
+
+  return today;
 }
 
 export function convertKoreanTime(date: Date) {

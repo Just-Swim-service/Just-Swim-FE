@@ -18,29 +18,29 @@ export async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
   const scheduleInfo = (await getInProgressSchedule()) || [];
 
   for (let i = 0; i < thisWeekInfo.length; i++) {
-    const currentDate = new Date(thisWeekInfo[i]);
-    const currentDay = WEEK_DAYS[i];
-
     const nowInfo: ScheduleSummary = {
       date: thisWeekInfo[i],
-      day: currentDay,
+      day: WEEK_DAYS[i],
       lectures: [],
     };
 
     for (const schedule of scheduleInfo) {
-      const createdDate = new Date(schedule.lectureCreatedAt);
-      const endDate = schedule.lectureEndDate
-        ? new Date(schedule.lectureEndDate)
-        : null;
-
-      const isOngoing =
-        (!endDate || currentDate <= endDate) && currentDate >= createdDate;
-
-      const isCorrectDay = schedule.lectureDays.includes(currentDay);
-
-      if (isOngoing && isCorrectDay) {
-        nowInfo.lectures.push(schedule);
+      if (
+        schedule.lectureEndDate &&
+        new Date(thisWeekInfo[i]) > new Date(schedule.lectureEndDate)
+      ) {
+        continue;
       }
+
+      if (new Date(thisWeekInfo[i]) < new Date(schedule.lectureCreatedAt)) {
+        continue;
+      }
+
+      if (!schedule.lectureDays.includes(WEEK_DAYS[i])) {
+        continue;
+      }
+
+      nowInfo.lectures.push(schedule);
     }
 
     nowInfo.lectures.sort(sortSchedule);
@@ -58,29 +58,29 @@ export async function getMonthlyScheduleInfo(
   const scheduleInfo = (await getInProgressSchedule()) || [];
 
   for (let i = 0; i < thisMonthInfo.length; i++) {
-    const currentDate = new Date(thisMonthInfo[i]);
-    const currentDay = WEEK_DAYS[currentDate.getDay()];
-
     const nowInfo: ScheduleSummary = {
       date: thisMonthInfo[i],
-      day: currentDay,
+      day: WEEK_DAYS[i % 7],
       lectures: [],
     };
 
     for (const schedule of scheduleInfo) {
-      const createdDate = new Date(schedule.lectureCreatedAt);
-      const endDate = schedule.lectureEndDate
-        ? new Date(schedule.lectureEndDate)
-        : null;
-
-      const isOngoing =
-        (!endDate || currentDate <= endDate) && currentDate >= createdDate;
-
-      const isCorrectDay = schedule.lectureDays.includes(currentDay);
-
-      if (isOngoing && isCorrectDay) {
-        nowInfo.lectures.push(schedule);
+      if (
+        schedule.lectureEndDate &&
+        new Date(thisMonthInfo[i]) > new Date(schedule.lectureEndDate)
+      ) {
+        continue;
       }
+
+      if (new Date(thisMonthInfo[i]) < new Date(schedule.lectureCreatedAt)) {
+        continue;
+      }
+
+      if (!schedule.lectureDays.includes(WEEK_DAYS[i % 7])) {
+        continue;
+      }
+
+      nowInfo.lectures.push(schedule);
     }
 
     nowInfo.lectures.sort(sortSchedule);
@@ -93,11 +93,5 @@ export async function getMonthlyScheduleInfo(
 export async function getTodayScheduleCount(): Promise<number> {
   const scheduleInfo = await getWeeklyScheduleInfo();
   const today = getToday();
-  const todayString = `${today.getFullYear()}.${(today.getMonth() + 1)
-    .toString()
-    .padStart(2, '0')}.${today.getDate().toString().padStart(2, '0')}`;
-
-  const todaySchedule = scheduleInfo.find((s) => s.date === todayString);
-
-  return todaySchedule?.lectures.length || 0;
+  return scheduleInfo[today.getDay()]?.lectures.length || 0;
 }
