@@ -87,13 +87,13 @@ export default function User() {
                 />
               </div>
               <p className={styled.name}>{member.name}</p>
-              <div className={styled.user_info}>
+              {/* <div className={styled.user_info}>
                 <span className={styled.icon}>
                   <IconCalendarBirth width={20} height={20} fill="black" />
                 </span>
                 <p>{member.birth}</p>
-              </div>
-              <div className={styled.user_info}>
+              </div> */}
+              {/* <div className={styled.user_info}>
                 <span className={styled.icon}>
                   <IconEmail width={20} height={20} fill="black" />
                 </span>
@@ -104,7 +104,7 @@ export default function User() {
                   <IconPhone width={20} height={20} fill="black" />
                 </span>
                 <p>{member.phoneNumber}</p>
-              </div>
+              </div> */}
             </div>
           </div>
 
