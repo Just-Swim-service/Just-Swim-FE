@@ -38,6 +38,36 @@
     margin-bottom: 22px;
     word-break: keep-all;
 
+    .customer_image {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 8px;
+    }
+
+    .customer_name {
+      @include Title5-M;
+      line-height: 1.5;
+    }
+
+    .feedback_class_title {
+      @include Body4-R;
+      background-color: #e9f3ff;
+      color: $--Primary-blue;
+      padding: 1px 6px;
+      border-radius: 11px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      font-size: 12px;
+      position: absolute;
+      right: 16px;
+      margin-right: 16px;
+    }
+
     .detail_icon {
       margin-right: 8px;
     }

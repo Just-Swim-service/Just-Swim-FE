@@ -104,29 +104,41 @@ export default function FeedbackDetail() {
             <div className={styled.detail_title}>
               <p>피드백 대상</p>
             </div>
-            <div className={styled.detail_content}>
-              <span className={styled.detail_icon}>
-                {feedbackTarget.length > 1 ? (
+            {feedbackTarget.length === 1 ? (
+              <div className={styled.detail_content}>
+                <div className={styled.customer_image}>
+                  <Image
+                    src={feedbackTarget[0]?.memberProfileImage || NoProfile}
+                    alt={feedbackTarget[0]?.memberName}
+                    width={24}
+                    height={24}
+                  />
+                </div>
+                <p>{feedbackTarget[0]?.memberName}</p>
+                <div className={styled.feedback_class_title}>
+                  {feedbackInfo?.lectureTitle}
+                </div>
+              </div>
+            ) : (
+              <div className={styled.detail_content}>
+                <span className={styled.detail_icon}>
                   <UserTypeGroup />
-                ) : (
-                  <UserTypeIndividual />
+                </span>
+                <p>
+                  {feedbackTarget[0]?.memberName} 외 {feedbackTarget.length - 1}{' '}
+                  명
+                </p>
+                <span onClick={showModal} className={styled.arrow_icon}>
+                  <IconArrowRightSmall fill="black" />
+                </span>
+                {modal && (
+                  <FeedbackTargetListModal
+                    feedbackTargetList={feedbackTarget}
+                    hideModal={hideModal}
+                  />
                 )}
-              </span>
-              <p>
-                {feedbackTarget.length > 1
-                  ? `${feedbackTarget[0]?.memberName} 외 ${feedbackTarget.length - 1} 명`
-                  : `${feedbackTarget[0]?.memberName}`}
-              </p>
-              <span onClick={showModal} className={styled.arrow_icon}>
-                <IconArrowRightSmall fill="black" />
-              </span>
-              {modal && (
-                <FeedbackTargetListModal
-                  feedbackTargetList={feedbackTarget}
-                  hideModal={hideModal}
-                />
-              )}
-            </div>
+              </div>
+            )}
             <div>
               {feedbackInfo?.images && feedbackInfo.images.length > 0 && (
                 <>
