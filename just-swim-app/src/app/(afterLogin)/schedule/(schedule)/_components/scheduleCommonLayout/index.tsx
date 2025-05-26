@@ -6,7 +6,7 @@ import { ScheduleCommon } from '../scheduleCommon';
 import { useEffect, useState } from 'react';
 
 export function ScheduleCommonLayout() {
-  const [todayCount, setTodayCount] = useState<number | null>(0);
+  const [todayCount, setTodayCount] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchTodayCount = async () => {
@@ -15,6 +15,10 @@ export function ScheduleCommonLayout() {
     };
     fetchTodayCount();
   }, []);
+
+  if (todayCount === null) {
+    return null;
+  }
 
   return (
     <>
