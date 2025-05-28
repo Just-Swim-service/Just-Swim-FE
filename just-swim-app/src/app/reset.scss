@@ -16,6 +16,7 @@ body {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  overscroll-behavior-y: contain;
   &::-webkit-scrollbar {
     display: none;
   }
