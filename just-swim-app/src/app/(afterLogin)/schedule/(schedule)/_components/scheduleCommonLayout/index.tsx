@@ -12,6 +12,7 @@ export function ScheduleCommonLayout() {
   useEffect(() => {
     const fetchTodayCount = async () => {
       const todayCount = await getTodayScheduleCount();
+      console.log('🎯 todayCount (client):', todayCount);
       setTodayCount(todayCount);
     };
     fetchTodayCount();
