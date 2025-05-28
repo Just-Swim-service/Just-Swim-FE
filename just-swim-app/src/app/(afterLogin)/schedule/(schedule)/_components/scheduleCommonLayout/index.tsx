@@ -4,6 +4,7 @@ import { getTodayScheduleCount } from '@utils';
 
 import { ScheduleCommon } from '../scheduleCommon';
 import { useEffect, useState } from 'react';
+import { ScheduleCommonSkeleton } from '../skeleton';
 
 export function ScheduleCommonLayout() {
   const [todayCount, setTodayCount] = useState<number | null>(0);
@@ -16,9 +17,7 @@ export function ScheduleCommonLayout() {
     fetchTodayCount();
   }, []);
 
-  return (
-    <>
-      <ScheduleCommon count={todayCount || 0} />
-    </>
-  );
+  if (todayCount === null) return <ScheduleCommonSkeleton />;
+
+  return <ScheduleCommon count={todayCount} />;
 }
