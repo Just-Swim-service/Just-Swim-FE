@@ -1,4 +1,5 @@
 'use client';
+import { FullPageLoader } from '@/_components/common/loading';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -12,5 +13,5 @@ export default function Page() {
     }
   }, [router, pathname]);
 
-  return <div>Redirecting...</div>;
+  return <FullPageLoader />;
 }
