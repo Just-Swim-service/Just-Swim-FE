@@ -93,5 +93,11 @@ export async function getMonthlyScheduleInfo(
 export async function getTodayScheduleCount(): Promise<number> {
   const scheduleInfo = await getWeeklyScheduleInfo();
   const today = getToday();
-  return scheduleInfo[today.getDay()]?.lectures.length || 0;
+  console.log('📆 오늘:', today, '📚 요일 인덱스:', today.getDay());
+  console.log('📊 주간 스케줄:', scheduleInfo);
+
+  const count = scheduleInfo[today.getDay()]?.lectures.length || 0;
+  console.log('🎯 todayCount:', count);
+
+  return count;
 }
