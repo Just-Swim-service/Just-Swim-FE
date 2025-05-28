@@ -6,4 +6,4 @@ export * from './urlImage';
 export * from './slider';
 export * from './switch';
 export * from './toast';
-
+export * from './skeleton';
