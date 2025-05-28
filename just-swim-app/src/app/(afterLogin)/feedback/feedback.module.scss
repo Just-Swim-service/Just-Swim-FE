@@ -1,5 +1,5 @@
 .layout {
-  height: calc(100vh - 72px);
+  min-height: 100vh;
   padding-bottom: calc(78px + env(safe-area-inset-bottom));
 
   display: flex;

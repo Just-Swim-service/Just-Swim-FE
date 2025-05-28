@@ -134,7 +134,11 @@
     display: flex;
     justify-content: center;
     gap: 4px;
-    margin-bottom: calc(78px + env(safe-area-inset-bottom));
+    margin-bottom: 16px;
+
+    @media screen and (min-width: 768px) {
+      margin-bottom: 48px;
+    }
 
     .button {
       @include Body4-R;
