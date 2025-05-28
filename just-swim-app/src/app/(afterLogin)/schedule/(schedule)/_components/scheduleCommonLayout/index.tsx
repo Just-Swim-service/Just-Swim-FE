@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { ScheduleCommonSkeleton } from '../skeleton';
 
 export function ScheduleCommonLayout() {
-  const [todayCount, setTodayCount] = useState<number | null>(0);
+  const [todayCount, setTodayCount] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchTodayCount = async () => {
