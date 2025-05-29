@@ -11,6 +11,7 @@ import { useUserStore } from '@store';
 import styled from './styles.module.scss';
 import Link from 'next/link';
 import { getMyProfile } from '@apis';
+import { ClassListSkeleton } from '../skeleton';
 
 function _ClassList({
   weeklyInfo,
@@ -31,6 +32,10 @@ function _ClassList({
     };
     setUserType();
   }, []);
+
+  if (!type) {
+    return <ClassListSkeleton />;
+  }
 
   return (
     <div className={styled.container}>

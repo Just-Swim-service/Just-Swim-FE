@@ -6,6 +6,7 @@ import { LectureProps } from '@types';
 
 import { WeekInfo } from '../weekInfo';
 import { ClassList } from '../classList';
+import { SkeletonFallback } from '@components';
 
 export function WeekWrapper({
   weeklyInfo,
@@ -21,7 +22,7 @@ export function WeekWrapper({
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
-      <Suspense fallback={<>loading...</>}>
+      <Suspense fallback={<SkeletonFallback />}>
         <ClassList weeklyInfo={weeklyInfo} selectedDate={selectedDate} />
       </Suspense>
     </>
