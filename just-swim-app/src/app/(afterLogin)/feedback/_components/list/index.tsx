@@ -6,6 +6,7 @@ import { FeedbackProps } from '@types';
 import { FeedbackCard } from '../feedbackCard';
 import { CustomerFeedbackCard } from '../customerFeedbackCard';
 import { getMyProfile } from '@apis';
+import { FeedbackListSkeleton } from '../skeleton';
 
 const itemsToShow = 5;
 const pagesToShow = 5;
@@ -22,6 +23,8 @@ export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
     };
     setUserType();
   }, []);
+
+  if (!type) return <FeedbackListSkeleton />;
 
   const maxPage = Math.ceil(feedback.length / itemsToShow) - 1;
   const maxPagination = Math.floor(maxPage / pagesToShow);

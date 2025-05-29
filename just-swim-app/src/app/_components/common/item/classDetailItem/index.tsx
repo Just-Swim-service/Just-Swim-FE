@@ -41,6 +41,8 @@ export function ClassDetailItem({
     getDetail();
   }, [schedule.lectureId]);
 
+  if (!mounted) return null;
+
   return (
     <div className={styled.container}>
       <div className={styled.time_info}>
@@ -63,53 +65,47 @@ export function ClassDetailItem({
               <p className={styled.class_info}>{schedule.lectureContent}</p>
             )}
           </div>
-          <>
-            {mounted && (
-              <>
-                {type === 'instructor' ? (
-                  <div className={styled.student_info}>
-                    {schedule.members?.map(
-                      (student: { userId: string; profileImage: string }) => (
-                        <div key={randomId()} className={styled.student}>
-                          <Image
-                            src={student?.profileImage || NoProfile}
-                            alt={`${student?.userId}`}
-                            width={20}
-                            height={20}
-                          />
-                        </div>
-                      ),
-                    )}
-                    {schedule.members && schedule.members.length !== 0 ? (
-                      <div
-                        className={styled.student_count}
-                        style={{ color: `${schedule.lectureColor}` }}>
-                        <p>{schedule.members.length}명</p>
-                      </div>
-                    ) : (
-                      <div className={styled.empty_student}>
-                        <p>초대된 수강생이 없습니다</p>
-                      </div>
-                    )}
+          {type === 'instructor' ? (
+            <div className={styled.student_info}>
+              {schedule.members?.map(
+                (student: { userId: string; profileImage: string }) => (
+                  <div key={randomId()} className={styled.student}>
+                    <Image
+                      src={student?.profileImage || NoProfile}
+                      alt={`${student?.userId}`}
+                      width={20}
+                      height={20}
+                    />
                   </div>
-                ) : (
-                  <div className={styled.student_info}>
-                    <div className={styled.instructor_name}>
-                      <p>{`${instructor?.instructorName} 강사`}</p>
-                    </div>
-                    <div className={styled.instructor_image}>
-                      <Image
-                        src={instructor?.instructorProfileImage || NoProfile}
-                        alt={`${instructor?.instructorName}`}
-                        width={20}
-                        height={20}
-                      />
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </>
+                ),
+              )}
+              {schedule.members && schedule.members.length !== 0 ? (
+                <div
+                  className={styled.student_count}
+                  style={{ color: `${schedule.lectureColor}` }}>
+                  <p>{schedule.members.length}명</p>
+                </div>
+              ) : (
+                <div className={styled.empty_student}>
+                  <p>초대된 수강생이 없습니다</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className={styled.student_info}>
+              <div className={styled.instructor_name}>
+                <p>{`${instructor?.instructorName} 강사`}</p>
+              </div>
+              <div className={styled.instructor_image}>
+                <Image
+                  src={instructor?.instructorProfileImage || NoProfile}
+                  alt={`${instructor?.instructorName}`}
+                  width={20}
+                  height={20}
+                />
+              </div>
+            </div>
+          )}
         </div>
         <div className={styled.extra_info}>
           <p className={styled.class_day}>
