@@ -24,8 +24,6 @@ export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
     setUserType();
   }, []);
 
-  if (!type) return <FeedbackListSkeleton />;
-
   const maxPage = Math.ceil(feedback.length / itemsToShow) - 1;
   const maxPagination = Math.floor(maxPage / pagesToShow);
 
@@ -44,6 +42,10 @@ export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
   useEffect(() => {
     setPage(pagination * itemsToShow);
   }, [pagination]);
+
+  if (!type) {
+    return <FeedbackListSkeleton />;
+  }
 
   const paginationButtons = Array.from({ length: pagesToShow }, (_, idx) => {
     const nowPage = pagination * pagesToShow + idx;
