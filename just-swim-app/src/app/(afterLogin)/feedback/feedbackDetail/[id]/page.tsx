@@ -6,9 +6,8 @@ import Send from '@assets/send.svg';
 import Calendar from '@assets/calendar.svg';
 import FeedbackCalendar from '@/_assets/svg/feedback_calendar.svg';
 import NoProfile from '@/_assets/images/no_profile.png';
-import UserTypeIndividual from '@assets/user_type_individual.svg';
 import UserTypeGroup from '@assets/user_type_group.svg';
-import { IconArrowRightSmall, IconDefaultProfile } from '@assets';
+import { IconArrowRightSmall } from '@assets';
 import Link from '@assets/link.svg';
 
 import { HistoryBackHeader, ImageFocusModal } from '@components';
@@ -19,6 +18,7 @@ import { useParams } from 'next/navigation';
 import { useModal } from '@hooks';
 import { FeedbackTargetListModal } from '../../_components/feedbackTargetListModal';
 import Image from 'next/image';
+import { FeedbackDetailSkeleton } from '../../_components/skeleton';
 
 export default function FeedbackDetail() {
   const { id } = useParams();
@@ -75,6 +75,10 @@ export default function FeedbackDetail() {
   };
 
   const feedbackDate = formatDate(feedbackInfo?.feedbackDate);
+
+  if (!type || !feedbackInfo) {
+    return <FeedbackDetailSkeleton />;
+  }
 
   return (
     <>
