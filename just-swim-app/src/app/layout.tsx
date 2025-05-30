@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.scss';
 import '@/reset.scss';
 import { Suspense } from 'react';
-import { SkeletonFallback } from '@components';
+import { SigninCheck, SkeletonFallback } from '@components';
 
 export const metadata: Metadata = {
   title: 'Just Swim',
@@ -20,6 +20,7 @@ export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html>
       <body>
+        <SigninCheck />
         <div className="app_layout">
           <Suspense fallback={<SkeletonFallback />}>{children}</Suspense>
           <div id="modal-portal" />

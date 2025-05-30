@@ -7,3 +7,4 @@ export * from './slider';
 export * from './switch';
 export * from './toast';
 export * from './skeleton';
+export * from './signinCheck';
