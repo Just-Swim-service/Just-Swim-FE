@@ -1,4 +1,4 @@
-import styles from './feedbackDetail.module.scss';
+import styles from './styles.module.scss';
 
 export function FeedbackDetailSkeleton() {
   return (
