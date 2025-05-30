@@ -141,6 +141,7 @@ export default function ClassDetail() {
     <div>
       <Header
         title="수업 정보"
+        routerBackUrl="/schedule/weekly"
         editURL={type === 'instructor' ? `/class/edit/${lectureId}` : undefined}
       />
 

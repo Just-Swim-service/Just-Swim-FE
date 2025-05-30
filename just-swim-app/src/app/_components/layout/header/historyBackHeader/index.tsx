@@ -1,11 +1,11 @@
 'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-import { ImageArrowBack } from "@assets";
-import { HistoryBackHeaerProps } from "@types";
+import arrowBackIcon from '@assets/icon_arrow_back.png';
+import { HistoryBackHeaerProps } from '@types';
 
 import styled from './styles.module.scss';
 
@@ -17,29 +17,32 @@ import styled from './styles.module.scss';
  */
 export function HistoryBackHeader({
   title,
+  routerBackUrl,
   additionalLink = '',
   additionalContent = '',
 }: HistoryBackHeaerProps) {
   const router = useRouter();
 
-  const historyBack = () => {
+  const goBack = () => {
+    if (routerBackUrl) {
+      return router.replace(routerBackUrl);
+    }
     router.back();
   };
 
   return (
     <header className={styled.header}>
       <div className={styled.title_wrapper}>
-        <Link href='/' onClick={historyBack}>
-          <Image src={ImageArrowBack} alt="뒤로가기" />
-        </Link>
+        <Image src={arrowBackIcon} alt="뒤로가기" onClick={() => goBack()} />
         <h1>{title}</h1>
       </div>
-      {
-        additionalLink &&
+      {additionalLink ? (
         <Link href={additionalLink}>
           <span className={styled.additional}>{additionalContent}</span>
         </Link>
-      }
+      ) : (
+        <></>
+      )}
     </header>
   );
 }

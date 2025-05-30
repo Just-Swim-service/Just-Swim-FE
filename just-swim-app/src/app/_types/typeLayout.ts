@@ -1,5 +1,6 @@
 export interface HistoryBackHeaerProps {
-  title: string,
-  additionalLink?: string,
-  additionalContent?: string,
+  title: string;
+  routerBackUrl?: string;
+  additionalLink?: string;
+  additionalContent?: string;
 }
