@@ -40,15 +40,15 @@ const nextConfig = {
     return [
       {
         source: '/lecture/:path*',
-        destination: 'https://just-swim.kr/api/lecture/:path*',
+        destination: 'https://api.just-swim.kr/api/lecture/:path*',
       },
       {
         source: '/member/:path*',
-        destination: 'https://just-swim.kr/api/member/:path*',
+        destination: 'https://api.just-swim.kr/api/member/:path*',
       },
       {
         source: '/auth/:path*',
-        destination: 'https://just-swim.kr/api/auth/:path*',
+        destination: 'https://api.just-swim.kr/api/auth/:path*',
       },
     ];
   },
