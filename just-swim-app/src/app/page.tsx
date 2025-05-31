@@ -1,15 +1,15 @@
+import { redirect } from 'next/navigation';
+import { ROUTES } from '@data';
 import { cookies } from 'next/headers';
-import { SigninCheck } from '@components';
-import { MainContent } from './_components/common/signinCheck/mainContent';
 
 export default function Page() {
   const cookieStore = cookies();
-  const accessToken = cookieStore.get('authorization')?.value;
+  const refreshToken = cookieStore.get('refreshToken')?.value;
 
-  return (
-    <>
-      <SigninCheck />
-      <MainContent />
-    </>
-  );
+  if (refreshToken) {
+    redirect(ROUTES.SCHEDULE.root);
+  } else {
+    // 없으면 로그인 페이지로
+    redirect(ROUTES.ONBOARDING.signin);
+  }
 }
