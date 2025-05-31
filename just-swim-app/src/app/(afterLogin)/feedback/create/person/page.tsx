@@ -75,14 +75,15 @@ export default function FeedbackWrite() {
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     defaultValues: {
-      target: getFeedbackFormData?.targets ?? '',
-      date: getFeedbackFormData?.date ?? '',
-      file: getFeedbackFormData?.files ?? [],
-      link: getFeedbackFormData?.link ?? '',
-      content: getFeedbackFormData?.content ?? '',
+      target: getFeedbackFormData()?.targets ?? '',
+      date: getFeedbackFormData()?.date ?? '',
+      file: getFeedbackFormData()?.files ?? [],
+      link: getFeedbackFormData()?.link ?? '',
+      content: getFeedbackFormData()?.content ?? '',
     },
   });
-
+  console.log('getFeedbackFormData: ', getFeedbackFormData);
+  console.log('getFeedbackFormData(): ', getFeedbackFormData());
   const targetValue = watch();
 
   const [feedbackData, setFeedbackData] = useState({
