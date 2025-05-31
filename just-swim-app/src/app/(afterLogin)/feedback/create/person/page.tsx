@@ -39,7 +39,8 @@ export default function FeedbackWrite() {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const { setFeedbackFormData, resetFeedbackFormData } = feedbackStore();
+  const { setFeedbackFormData, resetFeedbackFormData, getFeedbackFormData } =
+    feedbackStore();
   const { resetMemberData } = searchUserStore();
   const [members, setMembers] = useState<any>();
   const [images, setImages] = useState<string[]>([]);
@@ -73,6 +74,13 @@ export default function FeedbackWrite() {
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
+    defaultValues: {
+      target: getFeedbackFormData?.targets ?? '',
+      date: getFeedbackFormData?.date ?? '',
+      file: getFeedbackFormData?.files ?? [],
+      link: getFeedbackFormData?.link ?? '',
+      content: getFeedbackFormData?.content ?? '',
+    },
   });
 
   const targetValue = watch();
