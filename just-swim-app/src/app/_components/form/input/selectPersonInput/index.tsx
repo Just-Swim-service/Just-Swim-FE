@@ -21,13 +21,22 @@ import { searchUserStore } from '@store';
 import { UseFormSetValue } from 'react-hook-form';
 
 interface SelectPersonInputProps extends SelectInputProps {
+  setFeedbackFormData: any;
   setValue: UseFormSetValue<any>;
+  feedbackData: any;
   errors: string[];
 }
 
 function _SelectPersonInput(
   // @ts-ignore
-  { name, setValue, members, ...props }: SelectPersonInputProps,
+  {
+    name,
+    setValue,
+    members,
+    setFeedbackFormData,
+    feedbackData,
+    ...props
+  }: SelectPersonInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const {
@@ -64,7 +73,9 @@ function _SelectPersonInput(
         multiple
         readOnly
       />
-      <div className={styled.input_inner_wrapper}>
+      <div
+        className={styled.input_inner_wrapper}
+        onClick={setFeedbackFormData(feedbackData)}>
         <Link href={'/feedback/search/person'} className={styled.select_user}>
           <div className={styled.icon_wrapper}>
             <IconSelectUser width={30} height={30} />

@@ -1,19 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-
-import addIcon from '@assets/add.png';
-import profile from '@assets/profile1.png';
-import deleteButton from '@assets/delete_button.png';
 
 import styled from './feedbackWrite.module.scss';
 import {
   Header,
   DateInput,
   FileInput,
-  TextInput,
   TextArea,
   SelectPersonInput,
   LinkInput,
@@ -27,12 +20,10 @@ import { getClassList, getFeedbackPresignedURL } from '@apis';
 import { useForm, Controller } from 'react-hook-form';
 // RHF에서 zod 사용을 위한 resolver
 import { zodResolver } from '@hookform/resolvers/zod';
-import { submitForm } from './action';
 import { FormType, formSchema } from '@/_schema/index';
 
 import { useRouter } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
-import { Fetch } from '@utils';
 import { searchUserStore } from '@store';
 
 interface CustomFormData {
@@ -83,6 +74,20 @@ export default function FeedbackWrite() {
     resolver: zodResolver(formSchema),
     mode: 'onChange',
   });
+
+  const targetValue = watch();
+
+  const [feedbackData, setFeedbackData] = useState({});
+
+  useEffect(() => {
+    setFeedbackData({
+      date: targetValue?.date,
+      target: targetValue?.target,
+      link: targetValue?.link,
+      content: targetValue?.content,
+      files: targetValue?.file,
+    });
+  }, [targetValue]);
 
   const onSubmit = async (data: FormType) => {
     for (const image of data.file) {
@@ -162,6 +167,8 @@ export default function FeedbackWrite() {
             <SelectPersonInput
               {...register('target')}
               // @ts-ignore
+              setFeedbackFormData={setFeedbackFormData}
+              feedbackData={feedbackData}
               members={members}
               setValue={setValue}
               errors={[errors.target?.message ?? '']}
