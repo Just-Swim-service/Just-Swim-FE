@@ -84,24 +84,49 @@ export default function FeedbackWrite() {
   });
   console.log('getFeedbackFormData: ', getFeedbackFormData);
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
-  const targetValue = watch();
+  const targetValue: FormType = watch();
 
   const [feedbackData, setFeedbackData] = useState({
     date: targetValue.date || '',
-    target: targetValue.target || undefined,
+    targets: targetValue.target || undefined,
     link: targetValue.link,
     content: targetValue.content || '',
     files: targetValue.file ?? null,
   });
 
   useEffect(() => {
-    setFeedbackData({
-      date: targetValue?.date,
-      target: targetValue?.target,
-      link: targetValue?.link,
-      content: targetValue?.content,
-      files: targetValue?.file,
-    });
+    const setFeedback = async () => {
+      for (const image of targetValue.file) {
+        try {
+          const presignedURL = await getFeedbackPresignedURL([image.name]);
+          if (!presignedURL) {
+            throw new Error('Presigned URL을 가져오지 못했습니다.');
+          }
+          const response = await fetch(presignedURL[0].presignedUrl, {
+            method: 'PUT',
+            body: image,
+            headers: {
+              'Content-Type': image.type, // 올리는 파일의 타입
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('파일 업로드 실패');
+          }
+          image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
+        } catch (error) {
+          return null;
+        }
+      }
+      setFeedbackData({
+        date: targetValue.date,
+        targets: targetValue.target,
+        link: targetValue.link,
+        content: targetValue.content,
+        files: targetValue.file,
+      });
+    };
+    setFeedback();
   }, [
     targetValue.date,
     targetValue.target,
