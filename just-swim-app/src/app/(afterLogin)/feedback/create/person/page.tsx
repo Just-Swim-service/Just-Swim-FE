@@ -77,7 +77,13 @@ export default function FeedbackWrite() {
 
   const targetValue = watch();
 
-  const [feedbackData, setFeedbackData] = useState({});
+  const [feedbackData, setFeedbackData] = useState({
+    date: targetValue.date || '',
+    target: targetValue.target || undefined,
+    link: targetValue.link,
+    content: targetValue.content || '',
+    files: targetValue.file ?? null,
+  });
 
   useEffect(() => {
     setFeedbackData({
