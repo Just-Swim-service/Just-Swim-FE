@@ -87,7 +87,13 @@ export default function FeedbackWrite() {
       content: targetValue?.content,
       files: targetValue?.file,
     });
-  }, [targetValue]);
+  }, [
+    targetValue.date,
+    targetValue.target,
+    targetValue.link,
+    targetValue.content,
+    targetValue.file,
+  ]);
 
   const onSubmit = async (data: FormType) => {
     for (const image of data.file) {
