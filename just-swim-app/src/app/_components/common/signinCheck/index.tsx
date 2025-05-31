@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 
 export function SigninCheck() {
   useEffect(() => {
-    const REFRESH_INTERVAL = 1000 * 60 * 110;
+    const REFRESH_INTERVAL = 1000 * 60 * 110; // 110분
 
-    const interval = setInterval(async () => {
+    const refreshAccessToken = async () => {
       try {
-        console.log('주기적으로 accessToken 갱신 시도');
+        console.log('accessToken 갱신 시도');
         const refreshRes = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
           {
@@ -27,9 +27,14 @@ export function SigninCheck() {
         console.error('Silent Refresh 에러:', err);
         window.location.href = '/signin';
       }
-    }, REFRESH_INTERVAL);
+    };
 
-    // 컴포넌트 언마운트 시 clear
+    // ✅ 초기 진입 시 1번 바로 Refresh 시도
+    refreshAccessToken();
+
+    // ✅ 이후 주기적으로 Refresh
+    const interval = setInterval(refreshAccessToken, REFRESH_INTERVAL);
+
     return () => clearInterval(interval);
   }, []);
 
