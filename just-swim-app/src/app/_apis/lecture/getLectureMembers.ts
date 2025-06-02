@@ -16,7 +16,7 @@ export async function getLectureMembers(
         'Content-Type': 'application/json',
         token: 'true',
       },
-      cache: 'no-store', // 최신 데이터를 가져오도록 설정
+      cache: 'no-store',
     });
 
     if (!response.ok) {

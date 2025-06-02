@@ -25,11 +25,11 @@ export async function fetchJson<T = any>(
       });
 
       if (!refresh.ok) {
-        window.location.href = '/signin';
+        window.location.href = '/signin'; // ✅ 이건 브라우저니까 redirect OK
         throw new Error('세션이 만료되었습니다');
       }
 
-      res = await doRequest();
+      res = await doRequest(); // refresh 성공했으면 재요청
     }
 
     if (!res.ok) {
@@ -41,53 +41,25 @@ export async function fetchJson<T = any>(
   } else {
     // ✅ SSR
     const { cookies } = await import('next/headers');
-    const { redirect } = await import('next/navigation');
 
     const accessToken = cookies().get('authorization')?.value || '';
     const refreshToken = cookies().get('refreshToken')?.value || '';
-    let cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
+    const cookieHeader = `authorization=${accessToken}; refreshToken=${refreshToken}`;
 
-    const doSSRRequest = async (): Promise<{ res: Response; json: any }> => {
-      const res = await fetch(endpoint, {
-        method: options.method || 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: cookieHeader,
-          ...(options.headers || {}),
-        },
-        ...options,
-      });
-      const json = await res.json().catch(() => ({}));
-      return { res, json };
-    };
+    const res = await fetch(endpoint, {
+      method: options.method || 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: cookieHeader,
+        ...(options.headers || {}),
+      },
+      ...options,
+    });
 
-    let { res, json } = await doSSRRequest();
+    const json = await res.json().catch(() => ({}));
 
-    const isUnauthorized =
-      res.status === 401 ||
-      (json?.success === false && json?.message?.includes('로그인이'));
-
-    if (isUnauthorized) {
-      try {
-        const refresh = await fetch('/auth/refresh', {
-          method: 'POST',
-          credentials: 'include',
-        });
-
-        const refreshed = await refresh.json();
-        const newAccessToken = refreshed?.accessToken;
-
-        if (!refresh.ok || !newAccessToken) {
-          redirect('/signin');
-        }
-
-        redirect('/');
-      } catch (err) {
-        console.error('❌ refresh 실패:', err);
-        redirect('/signin');
-      }
-    }
-
+    // ❌ SSR에서는 Silent Refresh 안 한다
+    // 그냥 에러를 던져서 클라이언트에서 처리하게 한다
     if (!res.ok) {
       const error = new Error(json?.message || 'API 요청 실패') as any;
       error.status = res.status;
