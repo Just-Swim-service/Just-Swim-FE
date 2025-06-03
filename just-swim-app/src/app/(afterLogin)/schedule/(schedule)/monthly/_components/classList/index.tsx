@@ -18,7 +18,6 @@ import { WEEK_DAYS } from '@data';
 import styled from './styles.module.scss';
 import Link from 'next/link';
 import { getMyProfile } from '@apis';
-import dayjs from 'dayjs';
 
 export function ClassList({
   selectedDate,
@@ -32,8 +31,8 @@ export function ClassList({
   unshowClass: () => void;
 }) {
   const [type, setType] = useState<string>('');
-  console.log(selectedDate);
-  const date = dayjs(selectedDate).toDate();
+  const [year, month, day] = selectedDate.split('.').map(Number);
+  const date = new Date(year, month - 1, day);
 
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
   const startCursorPosition = useRef<number>(0);
