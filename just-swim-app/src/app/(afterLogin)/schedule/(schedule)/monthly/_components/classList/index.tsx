@@ -32,7 +32,8 @@ export function ClassList({
   unshowClass: () => void;
 }) {
   const [type, setType] = useState<string>('');
-  const date = dayjs(selectedDate).toDate();
+  const [year, month, day] = selectedDate.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
 
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
   const startCursorPosition = useRef<number>(0);
