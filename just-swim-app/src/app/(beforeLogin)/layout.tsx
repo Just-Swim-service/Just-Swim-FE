@@ -16,8 +16,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         });
 
         if (res.ok) {
-          console.log('✅ Refresh 성공, /schedule 이동');
-          router.replace('/schedule');
+          const userInfoRes = await fetch('/user/myProfile', {
+            method: 'GET',
+            credentials: 'include',
+          });
+          if (userInfoRes.ok) {
+            const userInfo = await userInfoRes.json();
+
+            if (userInfo?.data?.userType) {
+              router.replace('/schedule');
+            } else {
+              router.replace('/type');
+            }
+          } else {
+            router.replace('/signin');
+          }
         } else {
           console.log('❌ Refresh 실패, 로그인 폼 유지');
         }
