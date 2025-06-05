@@ -104,38 +104,36 @@ export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
               <div>시간 순으로 수강생에게 남긴 기록을 확인할 수 있습니다.</div>
             </div>
           )}
-          <div className={styled.container}>
-            {feedback.length === 0 ? (
-              <div className={styled.empty_wrap}>
-                <p className={styled.empty_text}>이전 기록이 없습니다</p>
+          {feedback.length === 0 ? (
+            <div className={styled.empty_wrap}>
+              <p className={styled.empty_text}>이전 기록이 없습니다</p>
+            </div>
+          ) : (
+            <div className={styled.container}>
+              <div className={styled.list}>
+                {feedback
+                  .slice(page * itemsToShow, (page + 1) * itemsToShow)
+                  .map((item, idx) => (
+                    <div key={idx}>
+                      <CustomerFeedbackCard feedback={item} />
+                    </div>
+                  ))}
               </div>
-            ) : (
-              <>
-                <div className={styled.list}>
-                  {feedback
-                    .slice(page * itemsToShow, (page + 1) * itemsToShow)
-                    .map((item, idx) => (
-                      <div key={idx}>
-                        <CustomerFeedbackCard feedback={item} />
-                      </div>
-                    ))}
-                </div>
-                <div className={styled.page}>
-                  {pagination > 0 && (
-                    <button className={styled.move_button} onClick={onClickPrev}>
-                      {'<'}
-                    </button>
-                  )}
-                  {paginationButtons}
-                  {pagination < maxPagination && (
-                    <button className={styled.move_button} onClick={onClickNext}>
-                      {'>'}
-                    </button>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
+              <div className={styled.page}>
+                {pagination > 0 && (
+                  <button className={styled.move_button} onClick={onClickPrev}>
+                    {'<'}
+                  </button>
+                )}
+                {paginationButtons}
+                {pagination < maxPagination && (
+                  <button className={styled.move_button} onClick={onClickNext}>
+                    {'>'}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
