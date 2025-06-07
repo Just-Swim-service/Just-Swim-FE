@@ -45,6 +45,8 @@ export default function FeedbackWrite() {
   const [members, setMembers] = useState<any>();
   const [images, setImages] = useState<string[]>([]);
 
+  const initialFeedbackData = getFeedbackFormData();
+
   useEffect(() => {
     const getMembersData = async () => {
       // 수강생 목록 조회 - 이름 순서, 반 순서
@@ -67,19 +69,20 @@ export default function FeedbackWrite() {
   const {
     register,
     handleSubmit,
+    getValues,
     control,
     setValue,
     watch,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     defaultValues: {
-      target: getFeedbackFormData()?.targets ?? '',
-      date: getFeedbackFormData()?.date ?? '',
-      file: getFeedbackFormData()?.files ?? [],
-      link: getFeedbackFormData()?.link ?? '',
-      content: getFeedbackFormData()?.content ?? '',
+      target: initialFeedbackData?.targets ?? '',
+      date: initialFeedbackData?.date ?? '',
+      file: initialFeedbackData?.files ?? [],
+      link: initialFeedbackData?.link ?? '',
+      content: initialFeedbackData?.content ?? '',
     },
   });
   console.log('getFeedbackFormData: ', getFeedbackFormData);
@@ -95,45 +98,18 @@ export default function FeedbackWrite() {
   });
 
   useEffect(() => {
-    const setFeedback = async () => {
-      for (const image of targetValue.file) {
-        try {
-          const presignedURL = await getFeedbackPresignedURL([image.name]);
-          if (!presignedURL) {
-            throw new Error('Presigned URL을 가져오지 못했습니다.');
-          }
-          const response = await fetch(presignedURL[0].presignedUrl, {
-            method: 'PUT',
-            body: image,
-            headers: {
-              'Content-Type': image.type, // 올리는 파일의 타입
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error('파일 업로드 실패');
-          }
-          image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
-        } catch (error) {
-          return null;
-        }
-      }
-      setFeedbackData({
-        date: targetValue.date,
-        targets: targetValue.target,
-        link: targetValue.link,
-        content: targetValue.content,
-        files: targetValue.file,
-      });
+    return () => {
+      const data = getValues();
+      const formDataObject: CustomFormData = {
+        date: data.date,
+        targets: data.target,
+        link: data.link,
+        content: data.content,
+        files: data.file,
+      };
+      setFeedbackFormData(formDataObject, 'personal');
     };
-    setFeedback();
-  }, [
-    targetValue.date,
-    targetValue.target,
-    targetValue.link,
-    targetValue.content,
-    targetValue.file,
-  ]);
+  }, []);
 
   const onSubmit = async (data: FormType) => {
     for (const image of data.file) {
@@ -146,7 +122,7 @@ export default function FeedbackWrite() {
           method: 'PUT',
           body: image,
           headers: {
-            'Content-Type': image.type, // 올리는 파일의 타입
+            'Content-Type': image.type,
           },
         });
 
