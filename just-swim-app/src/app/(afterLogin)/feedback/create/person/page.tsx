@@ -77,14 +77,8 @@ export default function FeedbackWrite() {
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
-    defaultValues: {
-      target: initialFeedbackData?.targets ?? '',
-      date: initialFeedbackData?.date ?? '',
-      file: initialFeedbackData?.files ?? [],
-      link: initialFeedbackData?.link ?? '',
-      content: initialFeedbackData?.content ?? '',
-    },
   });
+
   console.log('getFeedbackFormData: ', getFeedbackFormData);
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
   const targetValue: FormType = watch();
