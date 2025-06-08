@@ -209,7 +209,7 @@ export default function FeedbackWrite() {
                 placeholder="수업 일자를 선택해주세요"
                 suffix="종료"
                 {...register('date')}
-                defaultValue={initialFeedbackData?.feedbackDate}
+                defaultValue={initialFeedbackData?.date}
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
@@ -236,7 +236,7 @@ export default function FeedbackWrite() {
               <LinkInput
                 placeholder="첨부하고자 하는 URL을 입력해주세요"
                 {...register('link')}
-                value={initialFeedbackData?.feedbackLink}
+                value={initialFeedbackData?.link}
                 // @ts-ignore
                 errors={[errors.link?.message ?? '']}
               />
