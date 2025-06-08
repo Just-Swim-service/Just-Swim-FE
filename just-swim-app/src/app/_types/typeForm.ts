@@ -1,5 +1,7 @@
 import { ChangeEvent } from 'react';
 import { LectureProps } from './typeLecture';
+import { FormType } from '@/_schema';
+import { UseFormSetValue } from 'react-hook-form';
 
 export interface TextInputProps {
   name: string;
@@ -30,7 +32,10 @@ export interface DayInputProps {
 }
 
 export interface FileInputProps {
-  name: string;
+  name: keyof FormType;
+  setValue: UseFormSetValue<FormType>;
+  defaultImages?: string[];
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   length?: number;
   size?: number;
 }

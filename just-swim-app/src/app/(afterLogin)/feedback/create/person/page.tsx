@@ -217,6 +217,7 @@ export default function FeedbackWrite() {
                     URL.createObjectURL(file),
                   ) || []
                 }
+                setValue={setValue}
               />
             </div>
 

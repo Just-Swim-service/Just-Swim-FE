@@ -19,7 +19,7 @@ import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 
-function _FileInput<T extends Record<string, any>>(
+function _FileInput(
   {
     name,
     length = 4,
@@ -27,11 +27,10 @@ function _FileInput<T extends Record<string, any>>(
     id = 'fileInput',
     defaultImages = [], // 기존 이미지 URL 배열을 받음
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
-    // @ts-ignore
     setValue,
     // @ts-ignore
     errors = [],
-    ...props
+    ...inputProps
   }: FileInputProps &
     InputHTMLAttributes<HTMLInputElement> & {
       onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -207,7 +206,7 @@ function _FileInput<T extends Record<string, any>>(
         </label>
 
         <input
-          {...props}
+          {...inputProps}
           name={name}
           id={id}
           ref={mergeRefs(inputRef, ref)}
