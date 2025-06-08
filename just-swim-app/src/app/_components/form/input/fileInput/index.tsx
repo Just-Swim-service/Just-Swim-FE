@@ -144,7 +144,7 @@ function _FileInput(
     ];
 
     setPreviewImages(newPreviewImages);
-    setValue(name, uploadedImages);
+    setValue(name as 'file', uploadedImages);
   }, [initialDefaultImages, uploadedImages]);
 
   // 캐러셀 관련

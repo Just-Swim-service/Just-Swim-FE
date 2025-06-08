@@ -213,14 +213,13 @@ export default function FeedbackWrite() {
               </div>
 
               <FileInput
-                {...register('file')}
+                name="file"
                 onChange={handleChange}
                 defaultImages={
                   initialFeedbackData?.files?.map(
                     (img: any) => img.previewURL,
                   ) || []
                 }
-                // @ts-ignore
                 setValue={setValue}
               />
             </div>

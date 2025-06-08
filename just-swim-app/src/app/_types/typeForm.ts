@@ -1,5 +1,7 @@
 import { ChangeEvent } from 'react';
 import { LectureProps } from './typeLecture';
+import { UseFormSetValue } from 'react-hook-form';
+import { FormType } from '@/_schema';
 
 export interface TextInputProps {
   name: string;
@@ -33,6 +35,7 @@ export interface FileInputProps {
   name: string;
   length?: number;
   size?: number;
+  setValue: UseFormSetValue<FormType>;
 }
 
 export interface LocationInputPros {
