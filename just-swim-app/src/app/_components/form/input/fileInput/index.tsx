@@ -138,13 +138,16 @@ function _FileInput(
   };
 
   useEffect(() => {
-    const newPreviewImages = [
-      ...initialDefaultImages,
-      ...uploadedImages.map((file) => URL.createObjectURL(file)),
-    ];
+    const objectUrls = uploadedImages.map((file) => URL.createObjectURL(file));
 
+    const newPreviewImages = [...initialDefaultImages, ...objectUrls];
     setPreviewImages(newPreviewImages);
+
     setValue(name as 'file', uploadedImages);
+
+    return () => {
+      objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
   }, [initialDefaultImages, uploadedImages]);
 
   // 캐러셀 관련

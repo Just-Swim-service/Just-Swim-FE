@@ -47,10 +47,7 @@ export default function FeedbackWrite() {
 
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
-    files: initialFeedbackDataRaw?.files?.map((fileObj: any) => ({
-      file: fileObj.file,
-      previewURL: fileObj.dataUrl,
-    })),
+    files: initialFeedbackDataRaw?.files || [],
   };
 
   console.log(initialFeedbackData);
