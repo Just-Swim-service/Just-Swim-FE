@@ -27,11 +27,11 @@ export function ImageCarousel({
   const endDrag = () => {
     if (startCapture.current) {
       if (movingCursorPositon < -100 && index < images.length - 1) {
-        setIndex(i => i + 1);
+        setIndex((i) => i + 1);
       }
 
       if (movingCursorPositon > 100 && index > 0) {
-        setIndex(i => i - 1);
+        setIndex((i) => i - 1);
       }
 
       startCapture.current = false;
@@ -64,7 +64,9 @@ export function ImageCarousel({
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     if (startCapture.current) {
       if (movingCursorPositon < 100 && movingCursorPositon > -100) {
-        setMovingCursorPosition(event.targetTouches[0].pageX - startCursorPosition.current);
+        setMovingCursorPosition(
+          event.targetTouches[0].pageX - startCursorPosition.current,
+        );
       }
     }
   };
@@ -72,15 +74,15 @@ export function ImageCarousel({
   const handleMouseLeave = (event: MouseEvent<HTMLDivElement>) => {
     endDrag();
   };
-  
+
   const handleTouchCancle = (event: TouchEvent<HTMLDivElement>) => {
     endDrag();
   };
-  
+
   const handleMouseUp = (event: MouseEvent<HTMLDivElement>) => {
     endDrag();
   };
-  
+
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     endDrag();
   };
@@ -90,7 +92,7 @@ export function ImageCarousel({
       <button className={styled.close_button} onClick={hideModal}>
         <IconCancelWhite width={14} height={14} />
       </button>
-      <div 
+      <div
         className={styled.slider_wrapper}
         ref={containerRef}
         onMouseDown={handleMouseDown}
@@ -100,47 +102,48 @@ export function ImageCarousel({
         onTouchStart={handleTouchStart}
         onTouchMove={throttle(handleTouchMove, 20)}
         onTouchCancel={handleTouchCancle}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div 
-          className={styled.slider} 
+        onTouchEnd={handleTouchEnd}>
+        <div
+          className={styled.slider}
           style={{
-            transform: `translateX(calc(${-100 * index}% + ${movingCursorPositon}px))`
-          }}
-        >
-          {
-            images.map(image => {
-              return (
-                <div key={randomId()} className={styled.slider_item}>
-                  <div className={styled.image_wrapper}>
-                    <Image src={image} alt='image' fill />
-                  </div>
+            transform: `translateX(calc(${-100 * index}% + ${movingCursorPositon}px))`,
+          }}>
+          {images
+            .filter((image) => typeof image === 'string' && image.length > 0)
+            .map((image) => (
+              <div key={randomId()} className={styled.slider_item}>
+                <div className={styled.image_wrapper}>
+                  <Image src={image} alt="image" fill />
                 </div>
-              )
-            })
-          }
+              </div>
+            ))}
         </div>
       </div>
       <div className={styled.index_list}>
-        {
-          images.map((_, idx) => {
-            return (
-              <div key={randomId()} className={`${styled.normal} ${index === idx ? styled.selected : ''}`} onClick={() => {setIndex(idx)}} />
-            )
-          })
-        }
+        {images.map((_, idx) => {
+          return (
+            <div
+              key={randomId()}
+              className={`${styled.normal} ${index === idx ? styled.selected : ''}`}
+              onClick={() => {
+                setIndex(idx);
+              }}
+            />
+          );
+        })}
       </div>
-      {
-        useDeleteButton &&
-        <button className={styled.delete_button} onClick={(event: MouseEvent<HTMLButtonElement>) => {
-          event.preventDefault();
-  
-          deleteImage(index);
-        }}>
+      {useDeleteButton && (
+        <button
+          className={styled.delete_button}
+          onClick={(event: MouseEvent<HTMLButtonElement>) => {
+            event.preventDefault();
+
+            deleteImage(index);
+          }}>
           <IconDelete width={40} height={40} />
           <span>삭제하기</span>
         </button>
-      }
+      )}
     </div>
-  )
+  );
 }

@@ -27,7 +27,6 @@ function _FileInput<T extends Record<string, any>>(
     id = 'fileInput',
     defaultImages = [], // 기존 이미지 URL 배열을 받음
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
-    // @ts-ignore
     setValue,
     // @ts-ignore
     errors = [],
