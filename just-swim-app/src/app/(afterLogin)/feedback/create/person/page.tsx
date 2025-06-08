@@ -97,23 +97,19 @@ export default function FeedbackWrite() {
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
 
   useEffect(() => {
-    return () => {
-      const data = getValues();
-      const formattedDate = new Date(data?.date[0])
-        .toISOString()
-        .slice(0, 10)
-        .replace(/-/g, '.');
-
+    const subscription = watch((data) => {
       const formDataObject: CustomFormData = {
-        date: formattedDate,
+        date: data.date ?? '',
         targets: data.target,
         link: data.link,
-        content: data.content,
+        content: data.content ?? '',
         files: data.file,
       };
       setFeedbackFormData(formDataObject, 'personal');
-    };
-  }, []);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   const onSubmit = async (data: FormType) => {
     for (const image of data.file) {
@@ -216,7 +212,7 @@ export default function FeedbackWrite() {
                 placeholder="수업 일자를 선택해주세요"
                 suffix="종료"
                 {...register('date')}
-                defaultValue={initialFeedbackData?.date}
+                defaultValue={initialFeedbackData.date}
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
