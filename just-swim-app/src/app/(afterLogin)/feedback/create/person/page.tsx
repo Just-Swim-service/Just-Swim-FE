@@ -17,7 +17,7 @@ import { getClassList, getFeedbackPresignedURL } from '@apis';
 
 // test
 // RHF 사용을 위한 커스텀 훅
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 // RHF에서 zod 사용을 위한 resolver
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormType, formSchema } from '@/_schema/index';
@@ -25,7 +25,6 @@ import { FormType, formSchema } from '@/_schema/index';
 import { useRouter } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
 import { searchUserStore } from '@store';
-import { FileInputValue } from '@types';
 
 interface CustomFormData {
   date: string;
@@ -38,26 +37,16 @@ interface CustomFormData {
 ///////////////////////////
 export default function FeedbackWrite() {
   const router = useRouter();
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const { setFeedbackFormData, resetFeedbackFormData, getFeedbackFormData } =
     feedbackStore();
   const { resetMemberData } = searchUserStore();
   const [members, setMembers] = useState<any>();
-  const [images, setImages] = useState<string[]>([]);
 
   const initialFeedbackDataRaw = getFeedbackFormData();
 
-  const formattedDate = initialFeedbackDataRaw?.date
-    ? new Date(initialFeedbackDataRaw.date)
-        .toISOString()
-        .slice(0, 10)
-        .replace(/-/g, '.')
-    : '';
-
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
-    date: formattedDate,
     files: Array.isArray(initialFeedbackDataRaw?.files)
       ? initialFeedbackDataRaw.files
       : [],
@@ -86,7 +75,6 @@ export default function FeedbackWrite() {
     register,
     handleSubmit,
     getValues,
-    control,
     setValue,
     watch,
     formState: { errors, isValid },

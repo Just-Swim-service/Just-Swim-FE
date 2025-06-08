@@ -34,13 +34,17 @@ function _FileInput(
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const [uploadedImages, setUploadedImages] = useState<File[]>(
-    defaultNewFiles || [],
-  );
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
 
   const [previewImages, setPreviewImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (defaultNewFiles.length > 0) {
+      setUploadedImages(defaultNewFiles);
+    }
+  }, [defaultNewFiles]);
 
   useEffect(() => {
     if (defaultImages.length > 0) {
