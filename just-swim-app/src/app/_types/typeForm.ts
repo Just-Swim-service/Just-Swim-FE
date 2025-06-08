@@ -1,7 +1,5 @@
 import { ChangeEvent } from 'react';
 import { LectureProps } from './typeLecture';
-import { FieldPath, UseFormSetValue } from 'react-hook-form';
-import { FormType } from '@/_schema';
 
 export interface TextInputProps {
   name: string;
@@ -31,11 +29,10 @@ export interface DayInputProps {
   defaultValue?: string;
 }
 
-export interface FileInputProps<T extends Record<string, any> = FormType> {
-  name: FieldPath<T>;
+export interface FileInputProps {
+  name: string;
   length?: number;
   size?: number;
-  setValue: UseFormSetValue<FormType>;
 }
 
 export interface LocationInputPros {

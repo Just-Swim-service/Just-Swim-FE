@@ -27,11 +27,12 @@ function _FileInput<T extends Record<string, any>>(
     id = 'fileInput',
     defaultImages = [], // 기존 이미지 URL 배열을 받음
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
+    // @ts-ignore
     setValue,
     // @ts-ignore
     errors = [],
     ...props
-  }: FileInputProps<T> &
+  }: FileInputProps &
     InputHTMLAttributes<HTMLInputElement> & {
       onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
       defaultImages?: string[];
