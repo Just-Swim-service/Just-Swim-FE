@@ -108,15 +108,19 @@ export function ImageCarousel({
           style={{
             transform: `translateX(calc(${-100 * index}% + ${movingCursorPositon}px))`,
           }}>
-          {images
-            .filter((image) => typeof image === 'string' && image.length > 0)
-            .map((image) => (
+          {images.map((image) => {
+            return (
               <div key={randomId()} className={styled.slider_item}>
                 <div className={styled.image_wrapper}>
-                  <Image src={image} alt="image" fill />
+                  <img
+                    src={image}
+                    alt="image"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
                 </div>
               </div>
-            ))}
+            );
+          })}
         </div>
       </div>
       <div className={styled.index_list}>
