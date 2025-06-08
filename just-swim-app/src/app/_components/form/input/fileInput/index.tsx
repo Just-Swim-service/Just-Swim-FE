@@ -168,6 +168,8 @@ function _FileInput(
     onChange(event);
   };
 
+  console.log('previewImages:', previewImages);
+
   return (
     <>
       <div className={styled.input_wrapper}>
