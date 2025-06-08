@@ -17,7 +17,7 @@ import { getClassList, getFeedbackPresignedURL } from '@apis';
 
 // test
 // RHF 사용을 위한 커스텀 훅
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 // RHF에서 zod 사용을 위한 resolver
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormType, formSchema } from '@/_schema/index';
@@ -37,15 +37,21 @@ interface CustomFormData {
 ///////////////////////////
 export default function FeedbackWrite() {
   const router = useRouter();
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const { setFeedbackFormData, resetFeedbackFormData, getFeedbackFormData } =
     feedbackStore();
   const { resetMemberData } = searchUserStore();
   const [members, setMembers] = useState<any>();
-  const [images, setImages] = useState<string[]>([]);
 
-  const initialFeedbackData = getFeedbackFormData();
+  const initialFeedbackDataRaw = getFeedbackFormData();
+
+  const initialFeedbackData = {
+    ...initialFeedbackDataRaw,
+    files: initialFeedbackDataRaw?.files?.map((fileObj: any) => ({
+      file: fileObj.file,
+      previewURL: fileObj.dataUrl,
+    })),
+  };
 
   useEffect(() => {
     const getMembersData = async () => {
@@ -70,26 +76,23 @@ export default function FeedbackWrite() {
     register,
     handleSubmit,
     getValues,
-    control,
     setValue,
     watch,
     formState: { errors, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
+    defaultValues: {
+      target: initialFeedbackData?.targets ?? '',
+      date: initialFeedbackData?.date ?? '',
+      file: initialFeedbackData?.files ?? [],
+      link: initialFeedbackData?.link ?? '',
+      content: initialFeedbackData?.content ?? '',
+    },
   });
 
   console.log('getFeedbackFormData: ', getFeedbackFormData);
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
-  const targetValue: FormType = watch();
-
-  const [feedbackData, setFeedbackData] = useState({
-    date: targetValue.date || '',
-    targets: targetValue.target || undefined,
-    link: targetValue.link,
-    content: targetValue.content || '',
-    files: targetValue.file ?? null,
-  });
 
   useEffect(() => {
     return () => {
@@ -185,7 +188,7 @@ export default function FeedbackWrite() {
               {...register('target')}
               // @ts-ignore
               setFeedbackFormData={setFeedbackFormData}
-              feedbackData={feedbackData}
+              feedbackData={watch()}
               members={members}
               setValue={setValue}
               errors={[errors.target?.message ?? '']}
