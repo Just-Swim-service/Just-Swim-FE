@@ -216,10 +216,9 @@ export default function FeedbackWrite() {
                 {...register('file')}
                 onChange={handleChange}
                 defaultImages={
-                  initialFeedbackData?.files?.map((img: any) => ({
-                    file: img.file,
-                    previewURL: img.previewURL,
-                  })) || []
+                  initialFeedbackData?.files?.map(
+                    (img: any) => img.previewURL,
+                  ) || []
                 }
                 // @ts-ignore
                 setValue={setValue}
