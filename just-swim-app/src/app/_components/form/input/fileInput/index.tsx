@@ -19,7 +19,7 @@ import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 
-function _FileInput(
+function _FileInput<T extends Record<string, any>>(
   {
     name,
     length = 4,
@@ -32,7 +32,7 @@ function _FileInput(
     // @ts-ignore
     errors = [],
     ...props
-  }: FileInputProps &
+  }: FileInputProps<T> &
     InputHTMLAttributes<HTMLInputElement> & {
       onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
       defaultImages?: string[];
