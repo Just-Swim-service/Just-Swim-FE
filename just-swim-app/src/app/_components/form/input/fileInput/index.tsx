@@ -137,7 +137,9 @@ function _FileInput(
   };
 
   useEffect(() => {
-    const objectUrls = uploadedImages.map((file) => URL.createObjectURL(file));
+    const objectUrls = uploadedImages
+      .filter((file): file is File => file instanceof File)
+      .map((file) => URL.createObjectURL(file));
 
     const newPreviewImages = [...initialDefaultImages, ...objectUrls];
     setPreviewImages(newPreviewImages);
