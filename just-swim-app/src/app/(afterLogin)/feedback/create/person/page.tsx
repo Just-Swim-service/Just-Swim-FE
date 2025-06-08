@@ -58,10 +58,9 @@ export default function FeedbackWrite() {
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
     date: formattedDate,
-    files: initialFeedbackDataRaw?.files?.map((fileObj: any) => ({
-      file: fileObj.file,
-      previewURL: fileObj.dataUrl, // base64로 저장되어 있음
-    })),
+    files: Array.isArray(initialFeedbackDataRaw?.files)
+      ? initialFeedbackDataRaw.files
+      : [],
   };
 
   useEffect(() => {
@@ -217,7 +216,9 @@ export default function FeedbackWrite() {
               <FileInput
                 {...register('file')}
                 defaultImages={
-                  initialFeedbackData?.files?.map((f: any) => f.previewURL) || []
+                  Array.isArray(initialFeedbackData?.files)
+                    ? initialFeedbackData.files
+                    : []
                 }
                 setValue={setValue}
               />
