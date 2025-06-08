@@ -204,10 +204,9 @@ export default function FeedbackInfoEdit() {
               <div className={styled.title}>첨부 파일</div>
               <FileInput
                 {...register('file')}
-                defaultImages={
+                defaultPreviewImages={
                   feedback?.images?.map((img) => img.imagePath) || []
                 }
-                // @ts-ignore
                 setValue={setValue}
               />
             </div>

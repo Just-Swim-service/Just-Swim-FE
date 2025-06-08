@@ -27,7 +27,8 @@ function _FileInput(
     length = 4,
     size = 20,
     id = 'fileInput',
-    defaultFiles = [], // File[]
+    defaultFiles = [],
+    defaultPreviewImages = [],
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
     setValue,
     ...inputProps
@@ -43,6 +44,12 @@ function _FileInput(
 
   const { modal, setModal, showModal, hideModal } = useModal();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  useEffect(() => {
+    if (defaultPreviewImages && defaultPreviewImages.length > 0) {
+      setInitialDefaultImages(defaultPreviewImages);
+    }
+  }, [defaultPreviewImages]);
 
   // 초기 defaultFiles -> URL
   useEffect(() => {
