@@ -38,8 +38,12 @@ function _DateInput(
     use = true,
     renderIcon = () => {},
     placeholder = '',
+    setFormValue,
     ...props
-  }: DateInputProps & InputHTMLAttributes<HTMLInputElement>,
+  }: DateInputProps &
+    InputHTMLAttributes<HTMLInputElement> & {
+      setFormValue?: (value: string) => void;
+    },
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +65,7 @@ function _DateInput(
 
   const changeSelectedDate = (date: string) => {
     setSelectedDate(date);
+    setFormValue?.(date);
   };
 
   const { modal, showModal, hideModal } = useModal();

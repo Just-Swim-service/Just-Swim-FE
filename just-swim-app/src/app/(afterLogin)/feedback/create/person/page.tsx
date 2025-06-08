@@ -213,6 +213,9 @@ export default function FeedbackWrite() {
                 suffix="종료"
                 {...register('date')}
                 defaultValue={initialFeedbackData.date}
+                setFormValue={(value: string) =>
+                  setValue('date', value, { shouldValidate: true })
+                }
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
