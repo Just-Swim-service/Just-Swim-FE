@@ -34,7 +34,6 @@ function _DateInput(
     name,
     valid = true,
     defaultValue,
-    value,
     suffix = '',
     use = true,
     renderIcon = () => {},
@@ -47,29 +46,21 @@ function _DateInput(
   const today = new Date();
   const todayValue = `${today.getFullYear()}.${numberFormat(today.getMonth() + 1)}.${numberFormat(today.getDate())}`;
 
-  const [internalDate, setInternalDate] = useState<string>(() => {
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
     if (!use) return '';
     return defaultValue && checkDefaultValue(defaultValue)
       ? defaultValue
       : todayValue;
   });
 
-  const selectedDate = value ?? internalDate;
-
   useEffect(() => {
     if (defaultValue && checkDefaultValue(defaultValue)) {
-      setInternalDate(defaultValue);
+      setSelectedDate(defaultValue);
     }
   }, [defaultValue]);
 
   const changeSelectedDate = (date: string) => {
-    if (value === undefined) {
-      setInternalDate(date);
-    }
-    if (inputRef.current) {
-      inputRef.current.value = date;
-      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
-    }
+    setSelectedDate(date);
   };
 
   const { modal, showModal, hideModal } = useModal();
@@ -80,7 +71,14 @@ function _DateInput(
     }
   };
 
-  const selectedDateValue = String(selectedDate);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('value', selectedDate);
+      inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, [selectedDate]);
+
+  console.log(selectedDate);
 
   return (
     <div className={styled.input_wrapper}>
@@ -89,9 +87,7 @@ function _DateInput(
         className={`${styled.date_input} ${selectedDate ? '' : styled.empty}`}
         onClick={onClickInput}>
         <span>
-          {use && selectedDate
-            ? formatDate(selectedDateValue, suffix)
-            : placeholder}
+          {use && selectedDate ? formatDate(selectedDate, suffix) : placeholder}
         </span>
       </div>
       {valid && (
@@ -110,7 +106,7 @@ function _DateInput(
       />
       {modal && (
         <DateModal
-          initialDate={selectedDateValue}
+          initialDate={selectedDate}
           hideModal={hideModal}
           setDate={changeSelectedDate}
         />
