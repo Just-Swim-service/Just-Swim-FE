@@ -209,7 +209,7 @@ export default function FeedbackWrite() {
                 placeholder="수업 일자를 선택해주세요"
                 suffix="종료"
                 {...register('date')}
-                defaultValue={initialFeedbackData?.date}
+                value={watch('date')}
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
