@@ -174,27 +174,33 @@ function _FileInput(
     <>
       <div className={styled.input_wrapper}>
         <div className={styled.preview_wrapper}>
-          {previewImages.map((preview, index) => (
-            <div
-              key={`${preview}-${index}`}
-              className={styled.preview_item}
-              style={{ backgroundImage: `url(${preview})` }}
-              onClick={(event: MouseEvent<HTMLDivElement>) => {
-                event.preventDefault();
-                setSelectedIndex(index);
-                showModal();
-              }}>
-              <button
-                className={styled.delete_button}
-                onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                  event.stopPropagation();
+          {previewImages
+            .filter(
+              (preview) => typeof preview === 'string' && preview.length > 0,
+            ) // 안전 필터
+            .map((preview, index) => (
+              <div
+                key={`${preview}-${index}`}
+                className={styled.preview_item}
+                style={{
+                  backgroundImage: preview ? `url("${preview}")` : 'none',
+                }}
+                onClick={(event: MouseEvent<HTMLDivElement>) => {
                   event.preventDefault();
-                  deleteUploadedImage(index);
+                  setSelectedIndex(index);
+                  showModal();
                 }}>
-                <IconCancelWhite width={14} height={14} />
-              </button>
-            </div>
-          ))}
+                <button
+                  className={styled.delete_button}
+                  onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    deleteUploadedImage(index);
+                  }}>
+                  <IconCancelWhite width={14} height={14} />
+                </button>
+              </div>
+            ))}
         </div>
         <label htmlFor={id} className={styled.add_label}>
           <span>+</span>
