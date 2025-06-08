@@ -1,6 +1,5 @@
 import { ChangeEvent } from 'react';
 import { LectureProps } from './typeLecture';
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
 export interface TextInputProps {
   name: string;
@@ -21,8 +20,6 @@ export interface DateInputProps {
   use?: boolean;
   renderIcon?: Function;
   suffix?: string;
-  onChange?: (date: string) => void;
-  errors?: string[];
 }
 
 export interface DayInputProps {
@@ -32,14 +29,10 @@ export interface DayInputProps {
   defaultValue?: string;
 }
 
-export interface FileInputProps<T extends FieldValues = any> {
+export interface FileInputProps {
   name: string;
   length?: number;
   size?: number;
-  defaultImages?: string[];
-  defaultNewFiles?: File[];
-  setValue: UseFormSetValue<T>;
-  errors?: string[];
 }
 
 export interface LocationInputPros {
@@ -78,9 +71,3 @@ export interface SelectInputProps {
   lectures?: LectureProps;
   members?: any;
 }
-
-export type FileInputValue = {
-  existing: string[];
-  deleted: string[];
-  newFiles: { name: string; dataUrl: string }[];
-};

@@ -11,9 +11,9 @@ import {
   useState,
 } from 'react';
 
-import { FileInputProps, FileInputValue } from '@types';
+import { FileInputProps } from '@types';
 import { mergeRefs, randomId } from '@utils';
-import { ImageCarousel } from '@components';
+import { ConfirmModal, ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
 
 import styled from './styles.module.scss';
@@ -25,30 +25,28 @@ function _FileInput(
     length = 4,
     size = 20,
     id = 'fileInput',
-    defaultImages = [],
+    defaultImages = [], // 기존 이미지 URL 배열을 받음
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
-    defaultNewFiles = [],
+    // @ts-ignore
     setValue,
+    // @ts-ignore
     errors = [],
     ...props
-  }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
+  }: FileInputProps &
+    InputHTMLAttributes<HTMLInputElement> & {
+      onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+      defaultImages?: string[];
+    },
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-  const [existingImages, setExistingImages] = useState<string[]>([]);
-  const [deletedImages, setDeletedImages] = useState<string[]>([]);
+  const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
 
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (defaultNewFiles.length > 0) {
-      setUploadedImages(defaultNewFiles);
-    }
-  }, [defaultNewFiles]);
+  const [previewImages, setPreviewImages] = useState<string[]>(defaultImages);
 
   useEffect(() => {
     if (defaultImages.length > 0) {
-      setExistingImages(defaultImages);
+      setInitialDefaultImages(defaultImages);
     }
   }, [defaultImages]);
 
@@ -113,15 +111,17 @@ function _FileInput(
     // 기존 이미지 삭제인지 새로운 업로드된 파일 삭제인지 확인
     if (index < defaultImages.length) {
       // 기존 이미지 삭제 (defaultImages에서 제거)
-      const deletedImage = existingImages[index];
-      setDeletedImages((prev) => [...prev, deletedImage]);
-      setExistingImages((prev) => prev.filter((_, i) => i !== index));
+      const newDefaultImages = [...defaultImages];
+      newDefaultImages.splice(index, 1);
+      setPreviewImages([
+        ...newDefaultImages,
+        ...uploadedImages.map((file) => URL.createObjectURL(file)),
+      ]);
     } else {
       // 새로 업로드한 파일 삭제
-      const fileIndex = index - existingImages.length;
       const newFiles = [
-        ...uploadedImages.slice(0, fileIndex),
-        ...uploadedImages.slice(fileIndex + 1),
+        ...uploadedImages.slice(0, index - defaultImages.length),
+        ...uploadedImages.slice(index - defaultImages.length + 1),
       ];
       setUploadedImages(newFiles);
 
@@ -139,19 +139,13 @@ function _FileInput(
 
   useEffect(() => {
     const newPreviewImages = [
-      ...existingImages,
+      ...initialDefaultImages,
       ...uploadedImages.map((file) => URL.createObjectURL(file)),
     ];
 
     setPreviewImages(newPreviewImages);
-    const fileInputValue = {
-      existing: existingImages,
-      deleted: deletedImages,
-      newFiles: uploadedImages,
-    };
-
-    setValue(name, fileInputValue);
-  }, [existingImages, deletedImages, uploadedImages]);
+    setValue(name, uploadedImages);
+  }, [initialDefaultImages, uploadedImages]);
 
   // 캐러셀 관련
   const [selectedIndex, setSelectedIndex] = useState<number>(0);

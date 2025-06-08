@@ -4,11 +4,7 @@ import { persist } from 'zustand/middleware';
 
 interface FeedbackFormData {
   date: string;
-  files: {
-    existing: string[];
-    deleted: string[];
-    newFiles: { name: string; dataUrl: string }[];
-  };
+  files: File[] | null;
   targets: string[];
   link: string | null;
   content: string;
@@ -24,11 +20,7 @@ interface FeedbackStoreState {
 
 const initialFormData: FeedbackFormData = {
   date: '',
-  files: {
-    existing: [],
-    deleted: [],
-    newFiles: [],
-  },
+  files: null,
   targets: [],
   link: null,
   content: '',

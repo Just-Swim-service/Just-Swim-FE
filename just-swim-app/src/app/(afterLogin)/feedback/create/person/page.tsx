@@ -28,7 +28,7 @@ import { searchUserStore } from '@store';
 
 interface CustomFormData {
   date: string;
-  files: string[];
+  files: File[] | null;
   targets?: string;
   link: string | null | undefined;
   content: string;
@@ -37,20 +37,15 @@ interface CustomFormData {
 ///////////////////////////
 export default function FeedbackWrite() {
   const router = useRouter();
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const { setFeedbackFormData, resetFeedbackFormData, getFeedbackFormData } =
     feedbackStore();
   const { resetMemberData } = searchUserStore();
   const [members, setMembers] = useState<any>();
+  const [images, setImages] = useState<string[]>([]);
 
-  const initialFeedbackDataRaw = getFeedbackFormData();
-
-  const initialFeedbackData = {
-    ...initialFeedbackDataRaw,
-    files: Array.isArray(initialFeedbackDataRaw?.files)
-      ? initialFeedbackDataRaw.files
-      : [],
-  };
+  const initialFeedbackData = getFeedbackFormData();
 
   useEffect(() => {
     const getMembersData = async () => {
@@ -74,44 +69,44 @@ export default function FeedbackWrite() {
   const {
     register,
     handleSubmit,
-    setValue,
+    getValues,
     control,
+    setValue,
     watch,
     formState: { errors, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
-    defaultValues: {
-      target: initialFeedbackData?.targets ?? '',
-      date: initialFeedbackData?.date ?? '',
-      file: initialFeedbackData?.files ?? [],
-      link: initialFeedbackData?.link ?? '',
-      content: initialFeedbackData?.content ?? '',
-    },
   });
 
   console.log('getFeedbackFormData: ', getFeedbackFormData);
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
+  const targetValue: FormType = watch();
+
+  const [feedbackData, setFeedbackData] = useState({
+    date: targetValue.date || '',
+    targets: targetValue.target || undefined,
+    link: targetValue.link,
+    content: targetValue.content || '',
+    files: targetValue.file ?? null,
+  });
 
   useEffect(() => {
-    const subscription = watch((value) => {
+    return () => {
+      const data = getValues();
       const formDataObject: CustomFormData = {
-        date: value.date ?? '',
-        targets: value.target,
-        link: value.link,
-        content: value.content ?? '',
-        files: value.file,
+        date: data.date,
+        targets: data.target,
+        link: data.link,
+        content: data.content,
+        files: data.file,
       };
       setFeedbackFormData(formDataObject, 'personal');
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
+    };
+  }, []);
 
   const onSubmit = async (data: FormType) => {
-    const uploadedUrls: string[] = [];
-
-    for (const image of data.file.newFiles) {
+    for (const image of data.file) {
       try {
         const presignedURL = await getFeedbackPresignedURL([image.name]);
         if (!presignedURL) {
@@ -128,24 +123,44 @@ export default function FeedbackWrite() {
         if (!response.ok) {
           throw new Error('파일 업로드 실패');
         }
-        uploadedUrls.push(presignedURL[0].presignedUrl.split('?')[0]);
+        image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
       } catch (error) {
         return null;
       }
     }
-
-    const finalFilePaths = [...(data.file.existing || []), ...uploadedUrls];
 
     const formDataObject: CustomFormData = {
       date: data.date,
       targets: data.target,
       link: data.link,
       content: data.content,
-      files: finalFilePaths,
+      files: data.file,
     };
 
     setFeedbackFormData(formDataObject, 'personal');
     return router.push('/feedback/create/confirm');
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const targetFiles = (e.target as HTMLInputElement).files as FileList;
+    const targetFilesArray = Array.from(targetFiles);
+
+    [...targetFilesArray].forEach((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const result = reader.result as string;
+        const obj = {
+          name: file.name,
+          dataUrl: result,
+          file: file,
+        };
+        // @ts-ignore
+        setImages((prev) => [...prev, obj]);
+        setValue('file', obj);
+      };
+    });
   };
 
   return (
@@ -170,7 +185,7 @@ export default function FeedbackWrite() {
               {...register('target')}
               // @ts-ignore
               setFeedbackFormData={setFeedbackFormData}
-              feedbackData={watch()}
+              feedbackData={feedbackData}
               members={members}
               setValue={setValue}
               errors={[errors.target?.message ?? '']}
@@ -186,20 +201,14 @@ export default function FeedbackWrite() {
               <div className={styled.title}>
                 피드백 기준 수업일 <span>(필수)</span>
               </div>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => (
-                  <DateInput
-                    name="date"
-                    renderIcon={() => <IconCalendar width={14} height={14} />}
-                    placeholder="수업 일자를 선택해주세요"
-                    suffix="종료"
-                    defaultValue={field.value}
-                    onChange={(value) => field.onChange(value)}
-                    errors={[errors.date?.message ?? '']}
-                  />
-                )}
+              <DateInput
+                renderIcon={() => <IconCalendar width={14} height={14} />}
+                placeholder="수업 일자를 선택해주세요"
+                suffix="종료"
+                {...register('date')}
+                defaultValue={initialFeedbackData?.feedbackDate}
+                // @ts-ignore
+                errors={[errors.date?.message ?? '']}
               />
             </div>
             <div className={styled.wrap}>
@@ -208,18 +217,14 @@ export default function FeedbackWrite() {
                 최대 4개의 20MB 이하 파일만 첨부 가능합니다
               </div>
 
-              <Controller
-                name="file"
-                control={control}
-                render={({ field }) => (
-                  <FileInput
-                    name="file"
-                    defaultImages={initialFeedbackData.files || []}
-                    defaultNewFiles={[]}
-                    onChange={(newFileValue) => field.onChange(newFileValue)}
-                    setValue={setValue}
-                  />
-                )}
+              <FileInput
+                {...register('file')}
+                onChange={handleChange}
+                defaultImages={
+                  initialFeedbackData?.images?.map((img: any) => img.file) || []
+                }
+                // @ts-ignore
+                setValue={setValue}
               />
             </div>
 
@@ -228,6 +233,7 @@ export default function FeedbackWrite() {
               <LinkInput
                 placeholder="첨부하고자 하는 URL을 입력해주세요"
                 {...register('link')}
+                value={initialFeedbackData?.feedbackLink}
                 // @ts-ignore
                 errors={[errors.link?.message ?? '']}
               />

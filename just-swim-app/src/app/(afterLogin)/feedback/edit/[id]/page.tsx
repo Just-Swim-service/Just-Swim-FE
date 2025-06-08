@@ -9,7 +9,7 @@ import { IconArrowRightSmall } from '@assets';
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Header } from '@components';
 import { FeedbackInfo, Members } from '@/_types/typeFeedback';
 import { DateInput, FileInput, LinkInput, TextArea } from '@components';
@@ -43,7 +43,6 @@ export default function FeedbackInfoEdit() {
     register,
     setValue,
     reset,
-    control,
     handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm<FormType>({
@@ -191,36 +190,25 @@ export default function FeedbackInfoEdit() {
               <div className={styled.title}>
                 피드백 기준 수업일 <span>(필수)</span>
               </div>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => (
-                  <DateInput
-                    name="date"
-                    renderIcon={() => <IconCalendar width={14} height={14} />}
-                    placeholder="수업 일자를 선택해주세요"
-                    defaultValue={field.value}
-                    onChange={(value) => field.onChange(value)}
-                  />
-                )}
+              <DateInput
+                renderIcon={() => <IconCalendar width={14} height={14} />}
+                placeholder="수업 일자를 선택해주세요"
+                {...register('date')}
+                defaultValue={feedback?.feedbackDate}
+                // @ts-ignore
+                errors={[errors.date?.message ?? '']}
               />
             </div>
 
             <div className={styled.wrap}>
               <div className={styled.title}>첨부 파일</div>
-              <Controller
-                name="file"
-                control={control}
-                render={({ field }) => (
-                  <FileInput
-                    name="file"
-                    defaultImages={
-                      feedback?.images?.map((img) => img.imagePath) || []
-                    }
-                    onChange={(newFiles) => field.onChange(newFiles)}
-                    setValue={setValue}
-                  />
-                )}
+              <FileInput
+                {...register('file')}
+                defaultImages={
+                  feedback?.images?.map((img) => img.imagePath) || []
+                }
+                // @ts-ignore
+                setValue={setValue}
               />
             </div>
 

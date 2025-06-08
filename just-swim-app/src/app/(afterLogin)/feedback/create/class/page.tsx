@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from './feedbackWrite.module.scss';
 
 import { Header, DateInput, FileInput, LinkInput, TextArea } from '@components';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema, FormType } from '@/_schema';
 import { SelectClassInput } from '@/_components/form/input/selectClassInput';
@@ -145,18 +145,12 @@ export default function FeedbackWrite() {
               <div className={styled.title}>
                 피드백 기준 수업일 <span>(필수)</span>
               </div>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => (
-                  <DateInput
-                    name="date"
-                    renderIcon={() => <IconCalendar width={14} height={14} />}
-                    placeholder="수업 일자를 선택해주세요"
-                    defaultValue={field.value}
-                    onChange={(value) => field.onChange(value)}
-                  />
-                )}
+              <DateInput
+                renderIcon={() => <IconCalendar width={14} height={14} />}
+                placeholder="수업 일자를 선택해주세요"
+                {...register('date')}
+                // @ts-ignore
+                errors={[errors.date?.message ?? '']}
               />
             </div>
 
