@@ -99,8 +99,13 @@ export default function FeedbackWrite() {
   useEffect(() => {
     return () => {
       const data = getValues();
+      const formattedDate = new Date(data?.date[0])
+        .toISOString()
+        .slice(0, 10)
+        .replace(/-/g, '.');
+
       const formDataObject: CustomFormData = {
-        date: data.date,
+        date: formattedDate,
         targets: data.target,
         link: data.link,
         content: data.content,
