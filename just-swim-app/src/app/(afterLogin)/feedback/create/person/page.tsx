@@ -77,7 +77,6 @@ export default function FeedbackWrite() {
   const {
     register,
     handleSubmit,
-    getValues,
     setValue,
     watch,
     formState: { errors, isValid },
@@ -87,7 +86,8 @@ export default function FeedbackWrite() {
     defaultValues: {
       target: initialFeedbackData?.targets ?? '',
       date: initialFeedbackData?.date ?? '',
-      file: initialFeedbackData?.files ?? [],
+      file:
+        initialFeedbackData?.files?.map((fileObj: any) => fileObj.file) ?? [],
       link: initialFeedbackData?.link ?? '',
       content: initialFeedbackData?.content ?? '',
     },
@@ -148,25 +148,11 @@ export default function FeedbackWrite() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    const targetFilesArray = Array.from(targetFiles);
+    const targetFiles = Array.from(e.target.files || []);
 
-    [...targetFilesArray].forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+    const prevFiles = watch('file') || [];
 
-      reader.onload = () => {
-        const result = reader.result as string;
-        const obj = {
-          name: file.name,
-          dataUrl: result,
-          file: file,
-        };
-        // @ts-ignore
-        setImages((prev) => [...prev, obj]);
-        setValue('file', obj);
-      };
-    });
+    setValue('file', [...prevFiles, ...targetFiles], { shouldValidate: true });
   };
 
   return (
@@ -230,7 +216,10 @@ export default function FeedbackWrite() {
                 {...register('file')}
                 onChange={handleChange}
                 defaultImages={
-                  initialFeedbackData?.images?.map((img: any) => img.file) || []
+                  initialFeedbackData?.files?.map((img: any) => ({
+                    file: img.file,
+                    previewURL: img.previewURL,
+                  })) || []
                 }
                 // @ts-ignore
                 setValue={setValue}

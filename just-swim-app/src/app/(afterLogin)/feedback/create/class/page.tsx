@@ -25,12 +25,21 @@ interface CustomFormData {
 
 export default function FeedbackWrite() {
   const router = useRouter();
-  const fileRef = useRef<HTMLInputElement>(null);
 
-  const { setFeedbackFormData, resetFeedbackFormData } = feedbackStore();
+  const { setFeedbackFormData, resetFeedbackFormData, getFeedbackFormData } =
+    feedbackStore();
   const { resetClassData } = searchClassStore();
   const [lectures, setLectures] = useState<any>();
-  const [images, setImages] = useState<string[]>([]);
+
+  const initialFeedbackDataRaw = getFeedbackFormData();
+
+  const initialFeedbackData = {
+    ...initialFeedbackDataRaw,
+    files: initialFeedbackDataRaw?.files?.map((fileObj: any) => ({
+      file: fileObj.file,
+      previewURL: fileObj.dataUrl,
+    })),
+  };
 
   useEffect(() => {
     const getLecturesData = async () => {
@@ -44,14 +53,20 @@ export default function FeedbackWrite() {
   }, []);
 
   const {
-    register, // RHF의 상태에 연결
-    handleSubmit, // RHF에서 제공하는 함수 & event.preventDefault()를 자동으로 호출
-    control,
+    register,
+    handleSubmit,
     setValue,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
+    defaultValues: {
+      target: initialFeedbackData?.targets ?? '',
+      date: initialFeedbackData?.date ?? '',
+      file: initialFeedbackData?.files ?? [],
+      link: initialFeedbackData?.link ?? '',
+      content: initialFeedbackData?.content ?? '',
+    },
   });
 
   // handleSubmit에는 RHF에서 validate된 데이터가 들어간다
@@ -149,6 +164,10 @@ export default function FeedbackWrite() {
                 renderIcon={() => <IconCalendar width={14} height={14} />}
                 placeholder="수업 일자를 선택해주세요"
                 {...register('date')}
+                defaultValue={initialFeedbackData.date}
+                setFormValue={(value: string) =>
+                  setValue('date', value, { shouldValidate: true })
+                }
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
@@ -173,6 +192,7 @@ export default function FeedbackWrite() {
               <LinkInput
                 placeholder="첨부하고자 하는 URL을 입력해주세요"
                 {...register('link')}
+                value={initialFeedbackData?.link}
                 // @ts-ignore
                 errors={[errors.link?.message ?? '']}
               />
