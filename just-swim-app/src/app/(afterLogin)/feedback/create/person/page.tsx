@@ -216,8 +216,13 @@ export default function FeedbackWrite() {
               <FileInput
                 {...register('file')}
                 defaultImages={
-                  Array.isArray(initialFeedbackData?.files)
-                    ? initialFeedbackData.files
+                  Array.isArray(initialFeedbackData?.files?.existing)
+                    ? initialFeedbackData.files.existing
+                    : []
+                }
+                defaultNewFiles={
+                  Array.isArray(initialFeedbackData?.files?.newFiles)
+                    ? initialFeedbackData.files.newFiles
                     : []
                 }
                 setValue={setValue}

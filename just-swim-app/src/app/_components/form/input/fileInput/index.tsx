@@ -27,13 +27,16 @@ function _FileInput(
     id = 'fileInput',
     defaultImages = [],
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
+    defaultNewFiles = [],
     setValue,
     errors = [],
     ...props
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<File[]>(
+    defaultNewFiles || [],
+  );
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
 
@@ -137,15 +140,13 @@ function _FileInput(
     ];
 
     setPreviewImages(newPreviewImages);
-    if (setValue) {
-      const fileInputValue: FileInputValue = {
-        existing: existingImages,
-        deleted: deletedImages,
-        newFiles: uploadedImages,
-      };
+    const fileInputValue = {
+      existing: existingImages,
+      deleted: deletedImages,
+      newFiles: uploadedImages,
+    };
 
-      setValue(name, fileInputValue);
-    }
+    setValue(name, fileInputValue);
   }, [existingImages, deletedImages, uploadedImages]);
 
   // 캐러셀 관련

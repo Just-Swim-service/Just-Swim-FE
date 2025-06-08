@@ -35,7 +35,8 @@ export interface FileInputProps<T extends FieldValues = any> {
   length?: number;
   size?: number;
   defaultImages?: string[];
-  setValue?: UseFormSetValue<T>;
+  defaultNewFiles?: File[];
+  setValue: UseFormSetValue<T>;
   errors?: string[];
 }
 
