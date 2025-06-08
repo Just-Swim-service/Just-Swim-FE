@@ -45,7 +45,15 @@ export default function FeedbackWrite() {
   const [members, setMembers] = useState<any>();
   const [images, setImages] = useState<string[]>([]);
 
-  const initialFeedbackData = getFeedbackFormData();
+  const initialFeedbackDataRaw = getFeedbackFormData();
+
+  const initialFeedbackData = {
+    ...initialFeedbackDataRaw,
+    files: initialFeedbackDataRaw?.files?.map((fileObj: any) => ({
+      file: fileObj.file,
+      previewURL: fileObj.dataUrl, // base64로 저장되어 있음
+    })),
+  };
 
   useEffect(() => {
     const getMembersData = async () => {
@@ -77,19 +85,38 @@ export default function FeedbackWrite() {
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
+    defaultValues: {
+      target: initialFeedbackData?.targets ?? '',
+      date: initialFeedbackData?.date ?? '',
+      file: initialFeedbackData?.files ?? [],
+      link: initialFeedbackData?.link ?? '',
+      content: initialFeedbackData?.content ?? '',
+    },
   });
 
   console.log('getFeedbackFormData: ', getFeedbackFormData);
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
-  const targetValue: FormType = watch();
 
-  const [feedbackData, setFeedbackData] = useState({
-    date: targetValue.date || '',
-    targets: targetValue.target || undefined,
-    link: targetValue.link,
-    content: targetValue.content || '',
-    files: targetValue.file ?? null,
-  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const targetFiles = (e.target as HTMLInputElement).files as FileList;
+    const targetFilesArray = Array.from(targetFiles);
+
+    [...targetFilesArray].forEach((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const result = reader.result as string;
+        const obj = {
+          name: file.name,
+          dataUrl: result,
+          file: file,
+        };
+        // @ts-ignore
+        setImages((prev) => [...prev, obj]);
+      };
+    });
+  };
 
   useEffect(() => {
     return () => {
@@ -141,28 +168,6 @@ export default function FeedbackWrite() {
     return router.push('/feedback/create/confirm');
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    const targetFilesArray = Array.from(targetFiles);
-
-    [...targetFilesArray].forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        const result = reader.result as string;
-        const obj = {
-          name: file.name,
-          dataUrl: result,
-          file: file,
-        };
-        // @ts-ignore
-        setImages((prev) => [...prev, obj]);
-        setValue('file', obj);
-      };
-    });
-  };
-
   return (
     <>
       <Header
@@ -185,7 +190,7 @@ export default function FeedbackWrite() {
               {...register('target')}
               // @ts-ignore
               setFeedbackFormData={setFeedbackFormData}
-              feedbackData={feedbackData}
+              feedbackData={watch()}
               members={members}
               setValue={setValue}
               errors={[errors.target?.message ?? '']}
@@ -206,7 +211,7 @@ export default function FeedbackWrite() {
                 placeholder="수업 일자를 선택해주세요"
                 suffix="종료"
                 {...register('date')}
-                defaultValue={initialFeedbackData?.feedbackDate}
+                defaultValue={initialFeedbackData?.date}
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
@@ -221,7 +226,7 @@ export default function FeedbackWrite() {
                 {...register('file')}
                 onChange={handleChange}
                 defaultImages={
-                  initialFeedbackData?.images?.map((img: any) => img.file) || []
+                  initialFeedbackData?.files?.map((f: any) => f.previewURL) || []
                 }
                 // @ts-ignore
                 setValue={setValue}
@@ -233,7 +238,7 @@ export default function FeedbackWrite() {
               <LinkInput
                 placeholder="첨부하고자 하는 URL을 입력해주세요"
                 {...register('link')}
-                value={initialFeedbackData?.feedbackLink}
+                value={initialFeedbackData?.link}
                 // @ts-ignore
                 errors={[errors.link?.message ?? '']}
               />
