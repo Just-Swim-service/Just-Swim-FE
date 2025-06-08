@@ -216,8 +216,8 @@ export default function FeedbackWrite() {
                 name="file"
                 onChange={handleChange}
                 defaultImages={
-                  initialFeedbackData?.files?.map(
-                    (img: any) => img.previewURL,
+                  initialFeedbackData?.files?.map((file: File) =>
+                    URL.createObjectURL(file),
                   ) || []
                 }
                 setValue={setValue}
