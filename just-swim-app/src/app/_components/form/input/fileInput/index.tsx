@@ -20,7 +20,6 @@ import { useModal } from '@hooks';
 import { FormType } from '@/_schema';
 import { FileInputProps } from '@types';
 
-// 🔥 수정된 FileInput 함수
 function _FileInput(
   {
     name,
@@ -51,20 +50,21 @@ function _FileInput(
     }
   }, [defaultPreviewImages]);
 
-  // 초기 defaultFiles -> URL
   useEffect(() => {
     if (defaultFiles.length > 0) {
-      const urls = defaultFiles.map((file) => URL.createObjectURL(file));
-      setInitialDefaultImages(urls);
-      setPreviewImages(urls);
+      const urls = defaultFiles
+        .filter((file): file is File => file instanceof File) // 🔥 File만!
+        .map((file) => URL.createObjectURL(file));
+
+      setUploadedImages(defaultFiles);
+      setPreviewImages((prev) => [...initialDefaultImages, ...urls]);
 
       return () => {
         urls.forEach((url) => URL.revokeObjectURL(url));
       };
     }
-  }, [defaultFiles]);
+  }, [defaultFiles, initialDefaultImages]);
 
-  // 업로드된 파일 -> URL
   useEffect(() => {
     const objectUrls = uploadedImages
       .filter((file): file is File => file instanceof File)
@@ -78,7 +78,7 @@ function _FileInput(
     return () => {
       objectUrls.forEach((url) => URL.revokeObjectURL(url));
     };
-  }, [initialDefaultImages, uploadedImages, name, setValue]);
+  }, [uploadedImages, initialDefaultImages, name, setValue]);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
