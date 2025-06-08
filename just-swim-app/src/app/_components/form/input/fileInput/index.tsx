@@ -176,7 +176,7 @@ function _FileInput(
         <div className={styled.preview_wrapper}>
           {previewImages.map((preview, index) => (
             <div
-              key={randomId()}
+              key={`${preview}-${index}`}
               className={styled.preview_item}
               style={{ backgroundImage: `url(${preview})` }}
               onClick={(event: MouseEvent<HTMLDivElement>) => {
