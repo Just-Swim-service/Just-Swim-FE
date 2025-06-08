@@ -21,6 +21,8 @@ export interface DateInputProps {
   use?: boolean;
   renderIcon?: Function;
   suffix?: string;
+  onChange?: (date: string) => void;
+  errors?: string[];
 }
 
 export interface DayInputProps {
@@ -80,5 +82,5 @@ export interface SelectInputProps {
 export type FileInputValue = {
   existing: string[];
   deleted: string[];
-  newFiles: File[];
+  newFiles: { name: string; dataUrl: string }[];
 };

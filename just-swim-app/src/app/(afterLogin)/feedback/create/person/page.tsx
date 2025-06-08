@@ -17,7 +17,7 @@ import { getClassList, getFeedbackPresignedURL } from '@apis';
 
 // test
 // RHF 사용을 위한 커스텀 훅
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 // RHF에서 zod 사용을 위한 resolver
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormType, formSchema } from '@/_schema/index';
@@ -74,8 +74,8 @@ export default function FeedbackWrite() {
   const {
     register,
     handleSubmit,
-    getValues,
     setValue,
+    control,
     watch,
     formState: { errors, isValid },
   } = useForm<FormType>({
@@ -94,18 +94,19 @@ export default function FeedbackWrite() {
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
 
   useEffect(() => {
-    return () => {
-      const data = getValues();
+    const subscription = watch((value) => {
       const formDataObject: CustomFormData = {
-        date: data.date,
-        targets: data.target,
-        link: data.link,
-        content: data.content,
-        files: data.file,
+        date: value.date ?? '',
+        targets: value.target,
+        link: value.link,
+        content: value.content ?? '',
+        files: value.file,
       };
       setFeedbackFormData(formDataObject, 'personal');
-    };
-  }, []);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   const onSubmit = async (data: FormType) => {
     const uploadedUrls: string[] = [];
@@ -185,14 +186,20 @@ export default function FeedbackWrite() {
               <div className={styled.title}>
                 피드백 기준 수업일 <span>(필수)</span>
               </div>
-              <DateInput
-                renderIcon={() => <IconCalendar width={14} height={14} />}
-                placeholder="수업 일자를 선택해주세요"
-                suffix="종료"
-                {...register('date')}
-                defaultValue={initialFeedbackData?.date}
-                // @ts-ignore
-                errors={[errors.date?.message ?? '']}
+              <Controller
+                name="date"
+                control={control}
+                render={({ field }) => (
+                  <DateInput
+                    name="date"
+                    renderIcon={() => <IconCalendar width={14} height={14} />}
+                    placeholder="수업 일자를 선택해주세요"
+                    suffix="종료"
+                    defaultValue={field.value}
+                    onChange={(value) => field.onChange(value)}
+                    errors={[errors.date?.message ?? '']}
+                  />
+                )}
               />
             </div>
             <div className={styled.wrap}>
@@ -201,19 +208,18 @@ export default function FeedbackWrite() {
                 최대 4개의 20MB 이하 파일만 첨부 가능합니다
               </div>
 
-              <FileInput
-                {...register('file')}
-                defaultImages={
-                  Array.isArray(initialFeedbackData?.files?.existing)
-                    ? initialFeedbackData.files.existing
-                    : []
-                }
-                defaultNewFiles={
-                  Array.isArray(initialFeedbackData?.files?.newFiles)
-                    ? initialFeedbackData.files.newFiles
-                    : []
-                }
-                setValue={setValue}
+              <Controller
+                name="file"
+                control={control}
+                render={({ field }) => (
+                  <FileInput
+                    name="file"
+                    defaultImages={initialFeedbackData.files || []}
+                    defaultNewFiles={[]}
+                    onChange={(newFileValue) => field.onChange(newFileValue)}
+                    setValue={setValue}
+                  />
+                )}
               />
             </div>
 
@@ -222,7 +228,6 @@ export default function FeedbackWrite() {
               <LinkInput
                 placeholder="첨부하고자 하는 URL을 입력해주세요"
                 {...register('link')}
-                value={initialFeedbackData?.link}
                 // @ts-ignore
                 errors={[errors.link?.message ?? '']}
               />
