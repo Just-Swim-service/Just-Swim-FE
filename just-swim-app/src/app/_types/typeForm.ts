@@ -34,7 +34,7 @@ export interface DayInputProps {
 export interface FileInputProps {
   name: keyof FormType;
   setValue: UseFormSetValue<FormType>;
-  defaultImages?: string[];
+  defaultFiles?: File[];
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   length?: number;
   size?: number;

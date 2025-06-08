@@ -11,46 +11,67 @@ import {
   useState,
 } from 'react';
 
-import { FileInputProps } from '@types';
+import { UseFormSetValue } from 'react-hook-form';
 import { mergeRefs, randomId } from '@utils';
-import { ConfirmModal, ImageCarousel } from '@components';
+import { ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
-
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
+import { FormType } from '@/_schema';
+import { FileInputProps } from '@types';
 
+// 🔥 수정된 FileInput 함수
 function _FileInput(
   {
     name,
     length = 4,
     size = 20,
     id = 'fileInput',
-    defaultImages = [], // 기존 이미지 URL 배열을 받음
+    defaultFiles = [], // File[]
     onChange = (event: ChangeEvent<HTMLInputElement>) => {},
     setValue,
-    // @ts-ignore
-    errors = [],
     ...inputProps
-  }: FileInputProps &
-    InputHTMLAttributes<HTMLInputElement> & {
-      onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-      defaultImages?: string[];
-    },
+  }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
-
-  const [previewImages, setPreviewImages] = useState<string[]>(defaultImages);
-
-  useEffect(() => {
-    if (defaultImages.length > 0) {
-      setInitialDefaultImages(defaultImages);
-    }
-  }, [defaultImages]);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
+
+  const { modal, setModal, showModal, hideModal } = useModal();
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  // 초기 defaultFiles -> URL
+  useEffect(() => {
+    if (defaultFiles.length > 0) {
+      const urls = defaultFiles.map((file) => URL.createObjectURL(file));
+      setInitialDefaultImages(urls);
+      setPreviewImages(urls);
+
+      return () => {
+        urls.forEach((url) => URL.revokeObjectURL(url));
+      };
+    }
+  }, [defaultFiles]);
+
+  // 업로드된 파일 -> URL
+  useEffect(() => {
+    const objectUrls = uploadedImages
+      .filter((file): file is File => file instanceof File)
+      .map((file) => URL.createObjectURL(file));
+
+    const newPreviewImages = [...initialDefaultImages, ...objectUrls];
+    setPreviewImages(newPreviewImages);
+
+    setValue(name, uploadedImages);
+
+    return () => {
+      objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [initialDefaultImages, uploadedImages, name, setValue]);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
@@ -82,51 +103,37 @@ function _FileInput(
       );
     }
 
-    if (
-      newFiles.length + uploadedImages.length + defaultImages.length >
-      length
-    ) {
+    if (newFiles.length + uploadedImages.length > length) {
       alert(`${length}개 이하의 파일만 업로드할 수 있습니다.`);
-      newFiles = newFiles.slice(
-        0,
-        length - uploadedImages.length - defaultImages.length,
-      );
+      newFiles = newFiles.slice(0, length - uploadedImages.length);
     }
 
     const result = [...uploadedImages, ...newFiles];
+    setUploadedImages(result);
+
     const store = new DataTransfer();
     result.forEach((file) => store.items.add(file));
-
     if (inputRef.current) {
       inputRef.current.files = store.files;
     }
-
-    setUploadedImages(result);
   };
 
   const deleteUploadedImage = (index: number) => {
     onDelete.current = true;
 
-    // 기존 이미지 삭제인지 새로운 업로드된 파일 삭제인지 확인
-    if (index < defaultImages.length) {
-      // 기존 이미지 삭제 (defaultImages에서 제거)
-      const newDefaultImages = [...defaultImages];
-      newDefaultImages.splice(index, 1);
-      setPreviewImages([
-        ...newDefaultImages,
-        ...uploadedImages.map((file) => URL.createObjectURL(file)),
-      ]);
+    const totalImages = [...initialDefaultImages, ...uploadedImages];
+    if (index < initialDefaultImages.length) {
+      const newDefaults = [...initialDefaultImages];
+      newDefaults.splice(index, 1);
+      setInitialDefaultImages(newDefaults);
     } else {
-      // 새로 업로드한 파일 삭제
-      const newFiles = [
-        ...uploadedImages.slice(0, index - defaultImages.length),
-        ...uploadedImages.slice(index - defaultImages.length + 1),
-      ];
-      setUploadedImages(newFiles);
+      const fileIndex = index - initialDefaultImages.length;
+      const newUploaded = [...uploadedImages];
+      newUploaded.splice(fileIndex, 1);
+      setUploadedImages(newUploaded);
 
       const store = new DataTransfer();
-      newFiles.forEach((file) => store.items.add(file));
-
+      newUploaded.forEach((file) => store.items.add(file));
       if (inputRef.current) {
         inputRef.current.files = store.files;
         inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
@@ -136,24 +143,10 @@ function _FileInput(
     onDelete.current = false;
   };
 
-  useEffect(() => {
-    const objectUrls = uploadedImages
-      .filter((file): file is File => file instanceof File)
-      .map((file) => URL.createObjectURL(file));
-
-    const newPreviewImages = [...initialDefaultImages, ...objectUrls];
-    setPreviewImages(newPreviewImages);
-
-    setValue(name as 'file', uploadedImages);
-
-    return () => {
-      objectUrls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [initialDefaultImages, uploadedImages]);
-
-  // 캐러셀 관련
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const { modal, setModal, showModal, hideModal } = useModal();
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChangeImages(event);
+    onChange(event);
+  };
 
   useEffect(() => {
     if (selectedIndex >= previewImages.length && selectedIndex !== 0) {
@@ -164,73 +157,57 @@ function _FileInput(
     }
   }, [previewImages]);
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChangeImages(event);
-    onChange(event);
-  };
-
-  console.log('previewImages:', previewImages);
-
   return (
-    <>
-      <div className={styled.input_wrapper}>
-        <div className={styled.preview_wrapper}>
-          {previewImages
-            .filter(
-              (preview) => typeof preview === 'string' && preview.length > 0,
-            ) // 안전 필터
-            .map((preview, index) => (
-              <div
-                key={`${preview}-${index}`}
-                className={styled.preview_item}
-                style={{
-                  backgroundImage: preview ? `url("${preview}")` : 'none',
-                }}
-                onClick={(event: MouseEvent<HTMLDivElement>) => {
-                  event.preventDefault();
-                  setSelectedIndex(index);
-                  showModal();
-                }}>
-                <button
-                  className={styled.delete_button}
-                  onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    deleteUploadedImage(index);
-                  }}>
-                  <IconCancelWhite width={14} height={14} />
-                </button>
-              </div>
-            ))}
-        </div>
-        <label htmlFor={id} className={styled.add_label}>
-          <span>+</span>
-        </label>
-
-        <input
-          {...inputProps}
-          name={name}
-          id={id}
-          ref={mergeRefs(inputRef, ref)}
-          type="file"
-          multiple
-          hidden
-          readOnly
-          onChange={handleOnChange}
-        />
-
-        {modal && (
-          <ImageCarousel
-            images={previewImages}
-            index={selectedIndex}
-            setIndex={setSelectedIndex}
-            useDeleteButton={true}
-            deleteImage={deleteUploadedImage}
-            hideModal={hideModal}
-          />
-        )}
+    <div className={styled.input_wrapper}>
+      <div className={styled.preview_wrapper}>
+        {previewImages.map((preview, index) => (
+          <div
+            key={`${preview}-${index}`}
+            className={styled.preview_item}
+            style={{
+              backgroundImage: preview ? `url("${preview}")` : 'none',
+            }}
+            onClick={(event: MouseEvent<HTMLDivElement>) => {
+              event.preventDefault();
+              setSelectedIndex(index);
+              showModal();
+            }}>
+            <button
+              className={styled.delete_button}
+              onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                event.stopPropagation();
+                event.preventDefault();
+                deleteUploadedImage(index);
+              }}>
+              <IconCancelWhite width={14} height={14} />
+            </button>
+          </div>
+        ))}
       </div>
-    </>
+      <label htmlFor={id} className={styled.add_label}>
+        <span>+</span>
+      </label>
+      <input
+        {...inputProps}
+        name={name}
+        id={id}
+        ref={mergeRefs(inputRef, ref)}
+        type="file"
+        multiple
+        hidden
+        onChange={handleOnChange}
+      />
+      {modal && (
+        <ImageCarousel
+          images={previewImages}
+          index={selectedIndex}
+          setIndex={setSelectedIndex}
+          useDeleteButton={true}
+          deleteImage={deleteUploadedImage}
+          hideModal={hideModal}
+        />
+      )}
+    </div>
   );
 }
 

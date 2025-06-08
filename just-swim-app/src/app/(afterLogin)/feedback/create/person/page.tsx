@@ -212,11 +212,7 @@ export default function FeedbackWrite() {
               <FileInput
                 name="file"
                 onChange={handleChange}
-                defaultImages={
-                  initialFeedbackData?.files?.map((file: File) =>
-                    URL.createObjectURL(file),
-                  ) || []
-                }
+                defaultFiles={initialFeedbackData?.files || []}
                 setValue={setValue}
               />
             </div>
