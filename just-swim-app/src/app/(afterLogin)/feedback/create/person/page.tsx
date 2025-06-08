@@ -53,6 +53,8 @@ export default function FeedbackWrite() {
     })),
   };
 
+  console.log(initialFeedbackData);
+
   useEffect(() => {
     const getMembersData = async () => {
       // 수강생 목록 조회 - 이름 순서, 반 순서
@@ -209,6 +211,7 @@ export default function FeedbackWrite() {
                 placeholder="수업 일자를 선택해주세요"
                 suffix="종료"
                 {...register('date')}
+                defaultValue={initialFeedbackData?.date}
                 // @ts-ignore
                 errors={[errors.date?.message ?? '']}
               />
