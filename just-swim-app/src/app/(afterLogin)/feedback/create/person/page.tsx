@@ -25,10 +25,11 @@ import { FormType, formSchema } from '@/_schema/index';
 import { useRouter } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
 import { searchUserStore } from '@store';
+import { FileInputValue } from '@types';
 
 interface CustomFormData {
   date: string;
-  files: File[] | null;
+  files: string[];
   targets?: string;
   link: string | null | undefined;
   content: string;
@@ -47,8 +48,16 @@ export default function FeedbackWrite() {
 
   const initialFeedbackDataRaw = getFeedbackFormData();
 
+  const formattedDate = initialFeedbackDataRaw?.date
+    ? new Date(initialFeedbackDataRaw.date)
+        .toISOString()
+        .slice(0, 10)
+        .replace(/-/g, '.')
+    : '';
+
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
+    date: formattedDate,
     files: initialFeedbackDataRaw?.files?.map((fileObj: any) => ({
       file: fileObj.file,
       previewURL: fileObj.dataUrl, // base64로 저장되어 있음
@@ -97,27 +106,6 @@ export default function FeedbackWrite() {
   console.log('getFeedbackFormData: ', getFeedbackFormData);
   console.log('getFeedbackFormData(): ', getFeedbackFormData());
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    const targetFilesArray = Array.from(targetFiles);
-
-    [...targetFilesArray].forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        const result = reader.result as string;
-        const obj = {
-          name: file.name,
-          dataUrl: result,
-          file: file,
-        };
-        // @ts-ignore
-        setImages((prev) => [...prev, obj]);
-      };
-    });
-  };
-
   useEffect(() => {
     return () => {
       const data = getValues();
@@ -133,7 +121,9 @@ export default function FeedbackWrite() {
   }, []);
 
   const onSubmit = async (data: FormType) => {
-    for (const image of data.file) {
+    const uploadedUrls: string[] = [];
+
+    for (const image of data.file.newFiles) {
       try {
         const presignedURL = await getFeedbackPresignedURL([image.name]);
         if (!presignedURL) {
@@ -150,18 +140,20 @@ export default function FeedbackWrite() {
         if (!response.ok) {
           throw new Error('파일 업로드 실패');
         }
-        image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
+        uploadedUrls.push(presignedURL[0].presignedUrl.split('?')[0]);
       } catch (error) {
         return null;
       }
     }
+
+    const finalFilePaths = [...(data.file.existing || []), ...uploadedUrls];
 
     const formDataObject: CustomFormData = {
       date: data.date,
       targets: data.target,
       link: data.link,
       content: data.content,
-      files: data.file,
+      files: finalFilePaths,
     };
 
     setFeedbackFormData(formDataObject, 'personal');
@@ -224,11 +216,9 @@ export default function FeedbackWrite() {
 
               <FileInput
                 {...register('file')}
-                onChange={handleChange}
                 defaultImages={
                   initialFeedbackData?.files?.map((f: any) => f.previewURL) || []
                 }
-                // @ts-ignore
                 setValue={setValue}
               />
             </div>
