@@ -15,8 +15,6 @@ import {
 import { IconCalendar } from '@assets';
 import { getClassList, getFeedbackPresignedURL } from '@apis';
 
-// test
-// RHF 사용을 위한 커스텀 훅
 import { useForm } from 'react-hook-form';
 // RHF에서 zod 사용을 위한 resolver
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,7 +32,6 @@ interface CustomFormData {
   content: string;
 }
 
-///////////////////////////
 export default function FeedbackWrite() {
   const router = useRouter();
 

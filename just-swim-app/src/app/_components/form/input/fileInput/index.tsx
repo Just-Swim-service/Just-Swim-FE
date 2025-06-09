@@ -34,6 +34,7 @@ function _FileInput(
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
+  console.log(defaultFiles);
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -53,7 +54,7 @@ function _FileInput(
   useEffect(() => {
     if (defaultFiles.length > 0) {
       const urls = defaultFiles
-        .filter((file): file is File => file instanceof File) // 🔥 File만!
+        .filter((file): file is File => file instanceof File)
         .map((file) => URL.createObjectURL(file));
 
       setUploadedImages(defaultFiles);

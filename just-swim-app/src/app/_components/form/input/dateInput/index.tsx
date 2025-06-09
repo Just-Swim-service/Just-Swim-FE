@@ -83,8 +83,6 @@ function _DateInput(
     }
   }, [selectedDate]);
 
-  console.log(selectedDate);
-
   return (
     <div className={styled.input_wrapper}>
       <div className={styled.icon_wrapper}>{renderIcon()}</div>
