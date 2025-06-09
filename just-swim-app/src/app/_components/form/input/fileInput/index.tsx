@@ -58,13 +58,13 @@ function _FileInput(
         .map((file) => URL.createObjectURL(file));
 
       setUploadedImages(defaultFiles);
-      setPreviewImages((prev) => [...initialDefaultImages, ...urls]);
+      setPreviewImages(urls);
 
       return () => {
         urls.forEach((url) => URL.revokeObjectURL(url));
       };
     }
-  }, [defaultFiles, initialDefaultImages]);
+  }, [defaultFiles]);
 
   useEffect(() => {
     const objectUrls = uploadedImages
