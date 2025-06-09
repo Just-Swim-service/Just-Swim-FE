@@ -38,6 +38,7 @@ function _FileInput(
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
+  console.log(initialDefaultImages);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
@@ -58,7 +59,7 @@ function _FileInput(
         .map((file) => URL.createObjectURL(file));
 
       setUploadedImages(defaultFiles);
-      setPreviewImages(urls);
+      setPreviewImages((prev) => [...prev, ...urls]);
 
       return () => {
         urls.forEach((url) => URL.revokeObjectURL(url));
@@ -67,19 +68,8 @@ function _FileInput(
   }, [defaultFiles]);
 
   useEffect(() => {
-    const objectUrls = uploadedImages
-      .filter((file): file is File => file instanceof File)
-      .map((file) => URL.createObjectURL(file));
-
-    const newPreviewImages = [...initialDefaultImages, ...objectUrls];
-    setPreviewImages(newPreviewImages);
-
     setValue(name, uploadedImages);
-
-    return () => {
-      objectUrls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [uploadedImages, initialDefaultImages, name, setValue]);
+  }, [uploadedImages, name, setValue]);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
