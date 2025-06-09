@@ -20,7 +20,7 @@ import { useModal } from '@hooks';
 import { FormType } from '@/_schema';
 import { FileInputProps } from '@types';
 
-function _FileInput(
+function FileInputInner(
   {
     name,
     length = 4,
@@ -209,4 +209,4 @@ function _FileInput(
   );
 }
 
-export const FileInput = forwardRef(_FileInput);
+export const FileInput = forwardRef(FileInputInner);
