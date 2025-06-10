@@ -34,11 +34,11 @@ function FileInputInner(
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  console.log(defaultFiles);
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
-  console.log(initialDefaultImages);
+  console.log('1', initialDefaultImages);
+  console.log('2', previewImages);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
