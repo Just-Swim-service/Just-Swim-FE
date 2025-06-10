@@ -106,6 +106,28 @@ export default function FeedbackWrite() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const targetFiles = Array.from(e.target.files || []);
+    const prevFiles = watch('file') || [];
+
+    const updatedFiles: any[] = [...prevFiles];
+
+    targetFiles.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        const fileObj = Object.assign(file, {
+          fileURL: dataUrl,
+        });
+        updatedFiles.push(fileObj);
+        setValue('file', updatedFiles, { shouldValidate: true });
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
   const onSubmit = async (data: FormType) => {
     for (const image of data.file) {
       try {
@@ -146,12 +168,6 @@ export default function FeedbackWrite() {
 
     setFeedbackFormData(formDataObject, 'personal');
     return router.push('/feedback/create/confirm');
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetFiles = Array.from(e.target.files || []);
-    const prevFiles = watch('file') || [];
-    setValue('file', [...prevFiles, ...targetFiles], { shouldValidate: true });
   };
 
   return (

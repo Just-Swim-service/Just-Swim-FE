@@ -37,8 +37,6 @@ function FileInputInner(
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
-  console.log('1', defaultFiles);
-  console.log('2', previewImages);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
@@ -49,23 +47,31 @@ function FileInputInner(
   useEffect(() => {
     const previews: string[] = [];
 
-    // 기본 preview URL 처리
     if (defaultPreviewImages.length > 0) {
       setInitialDefaultImages(defaultPreviewImages);
       previews.push(...defaultPreviewImages);
     }
 
-    // File 객체인 경우만 createObjectURL 사용
     const filePreviews = defaultFiles
-      .filter((f): f is File => f instanceof File)
-      .map((file) => URL.createObjectURL(file));
+      .map((f) => {
+        if ('fileURL' in f && typeof f.fileURL === 'string') {
+          return f.fileURL;
+        } else if (f instanceof File) {
+          return URL.createObjectURL(f);
+        }
+        return '';
+      })
+      .filter(Boolean) as string[];
 
     previews.push(...filePreviews);
     setPreviewImages(previews);
 
-    // 메모리 정리
     return () => {
-      filePreviews.forEach((url) => URL.revokeObjectURL(url));
+      filePreviews.forEach((url) => {
+        if (url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
     };
   }, [defaultFiles, defaultPreviewImages]);
 
