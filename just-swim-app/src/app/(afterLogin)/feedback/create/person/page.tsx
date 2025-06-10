@@ -80,8 +80,7 @@ export default function FeedbackWrite() {
     defaultValues: {
       target: initialFeedbackData?.targets ?? '',
       date: initialFeedbackData?.date ?? '',
-      file:
-        initialFeedbackData?.files?.map((fileObj: any) => fileObj.file) ?? [],
+      file: [],
       link: initialFeedbackData?.link ?? '',
       content: initialFeedbackData?.content ?? '',
     },
@@ -97,7 +96,12 @@ export default function FeedbackWrite() {
         targets: data.target,
         link: data.link,
         content: data.content ?? '',
-        files: data.file,
+        files:
+          data.file?.map((file: any) => ({
+            name: file.name,
+            size: file.size,
+            length: file.size,
+          })) ?? [],
       };
       setFeedbackFormData(formDataObject, 'personal');
     });
@@ -134,7 +138,12 @@ export default function FeedbackWrite() {
       targets: data.target,
       link: data.link,
       content: data.content,
-      files: data.file,
+      files:
+        data.file?.map((file: any) => ({
+          name: file.name,
+          size: file.size,
+          length: file.size,
+        })) ?? [],
     };
 
     setFeedbackFormData(formDataObject, 'personal');
@@ -143,9 +152,7 @@ export default function FeedbackWrite() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetFiles = Array.from(e.target.files || []);
-
     const prevFiles = watch('file') || [];
-
     setValue('file', [...prevFiles, ...targetFiles], { shouldValidate: true });
   };
 

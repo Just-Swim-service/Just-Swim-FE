@@ -53,23 +53,18 @@ function FileInputInner(
   }, [defaultPreviewImages]);
 
   useEffect(() => {
-    if (defaultFiles.length > 0) {
-      const urls = defaultFiles
-        .filter((file): file is File => file instanceof File)
+    if (defaultFiles && defaultFiles.length > 0) {
+      const filePreviews = defaultFiles
+        .filter((f): f is File => f instanceof File)
         .map((file) => URL.createObjectURL(file));
 
-      setUploadedImages(defaultFiles);
-      setPreviewImages((prev) => [...prev, ...urls]);
+      setPreviewImages((prev) => [...prev, ...filePreviews]);
 
       return () => {
-        urls.forEach((url) => URL.revokeObjectURL(url));
+        filePreviews.forEach((url) => URL.revokeObjectURL(url));
       };
     }
   }, [defaultFiles]);
-
-  useEffect(() => {
-    setValue(name, uploadedImages);
-  }, [uploadedImages, name, setValue]);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;

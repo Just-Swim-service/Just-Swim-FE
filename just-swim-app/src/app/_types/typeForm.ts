@@ -35,7 +35,7 @@ export interface FileInputProps {
   name: keyof FormType;
   setValue: UseFormSetValue<FormType>;
   defaultPreviewImages?: string[];
-  defaultFiles?: File[];
+  defaultFiles?: StoredFileInfo[];
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   length?: number;
   size?: number;
@@ -76,4 +76,10 @@ export interface SelectInputProps {
   name: string;
   lectures?: LectureProps;
   members?: any;
+}
+
+export interface StoredFileInfo {
+  name: string;
+  length?: number;
+  size?: number;
 }
