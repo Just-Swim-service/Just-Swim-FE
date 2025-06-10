@@ -47,8 +47,6 @@ export default function FeedbackWrite() {
     files: initialFeedbackDataRaw?.files || [],
   };
 
-  console.log(initialFeedbackDataRaw);
-
   useEffect(() => {
     const getMembersData = async () => {
       // 수강생 목록 조회 - 이름 순서, 반 순서
@@ -88,6 +86,7 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const subscription = watch((data) => {
+      console.log(data);
       const formDataObject: CustomFormData = {
         date: data.date ?? '',
         targets: data.target,
