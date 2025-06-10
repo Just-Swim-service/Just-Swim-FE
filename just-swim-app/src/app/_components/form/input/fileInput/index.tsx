@@ -47,24 +47,27 @@ function FileInputInner(
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (defaultPreviewImages && defaultPreviewImages.length > 0) {
+    const previews: string[] = [];
+
+    // 기본 preview URL 처리
+    if (defaultPreviewImages.length > 0) {
       setInitialDefaultImages(defaultPreviewImages);
+      previews.push(...defaultPreviewImages);
     }
-  }, [defaultPreviewImages]);
 
-  useEffect(() => {
-    if (defaultFiles && defaultFiles.length > 0) {
-      const filePreviews = defaultFiles
-        .filter((f): f is File => f instanceof File)
-        .map((file) => URL.createObjectURL(file));
+    // File 객체인 경우만 createObjectURL 사용
+    const filePreviews = defaultFiles
+      .filter((f): f is File => f instanceof File)
+      .map((file) => URL.createObjectURL(file));
 
-      setPreviewImages((prev) => [...prev, ...filePreviews]);
+    previews.push(...filePreviews);
+    setPreviewImages(previews);
 
-      return () => {
-        filePreviews.forEach((url) => URL.revokeObjectURL(url));
-      };
-    }
-  }, [defaultFiles]);
+    // 메모리 정리
+    return () => {
+      filePreviews.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [defaultFiles, defaultPreviewImages]);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;

@@ -96,6 +96,7 @@ export default function FeedbackWrite() {
             name: file.name,
             size: file.size,
             length: file.size,
+            fileURL: file.fileURL,
           })) ?? [],
       };
       setFeedbackFormData(formDataObject, 'personal');
@@ -138,6 +139,7 @@ export default function FeedbackWrite() {
           name: file.name,
           size: file.size,
           length: file.size,
+          fileURL: file.fileURL,
         })) ?? [],
     };
 
@@ -212,6 +214,11 @@ export default function FeedbackWrite() {
                 name="file"
                 onChange={handleChange}
                 defaultFiles={initialFeedbackData?.files || []}
+                defaultPreviewImages={
+                  initialFeedbackData?.files
+                    ?.map((f: any) => f.fileURL)
+                    .filter(Boolean) ?? []
+                }
                 setValue={setValue}
               />
             </div>

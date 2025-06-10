@@ -82,4 +82,5 @@ export interface StoredFileInfo {
   name: string;
   length?: number;
   size?: number;
+  fileURL?: string;
 }
