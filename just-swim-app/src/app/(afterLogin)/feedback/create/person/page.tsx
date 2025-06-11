@@ -23,10 +23,11 @@ import { FormType, formSchema } from '@/_schema/index';
 import { useRouter } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
 import { searchUserStore } from '@store';
+import { StoredFileInfo } from '@types';
 
 interface CustomFormData {
   date: string;
-  files: File[] | null;
+  files?: StoredFileInfo[];
   targets?: string;
   link: string | null | undefined;
   content: string;
@@ -94,13 +95,6 @@ export default function FeedbackWrite() {
         targets: data.target,
         link: data.link,
         content: data.content ?? '',
-        files:
-          data.file?.map((file: any) => ({
-            name: file.name,
-            size: file.size,
-            length: file.size,
-            fileURL: file.fileURL,
-          })) ?? [],
       };
       setFeedbackFormData(formDataObject, 'personal');
     });
