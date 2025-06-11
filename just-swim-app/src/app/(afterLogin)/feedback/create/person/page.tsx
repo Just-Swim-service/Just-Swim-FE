@@ -107,25 +107,8 @@ export default function FeedbackWrite() {
   }, [watch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetFiles = Array.from(e.target.files || []);
-    const prevFiles = watch('file') || [];
-
-    const updatedFiles: any[] = [...prevFiles];
-
-    targetFiles.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        const dataUrl = reader.result as string;
-        const fileObj = Object.assign(file, {
-          fileURL: dataUrl,
-        });
-        updatedFiles.push(fileObj);
-        setValue('file', updatedFiles, { shouldValidate: true });
-      };
-
-      reader.readAsDataURL(file);
-    });
+    const files = Array.from(e.target.files || []);
+    setValue('file', files, { shouldValidate: true });
   };
 
   const onSubmit = async (data: FormType) => {

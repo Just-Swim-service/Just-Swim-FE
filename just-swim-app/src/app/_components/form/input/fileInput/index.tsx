@@ -51,6 +51,10 @@ function FileInputInner(
     }
   }, [defaultPreviewImages]);
 
+  useEffect(() => {
+    setValue(name, uploadedImages, { shouldValidate: true });
+  }, [uploadedImages]);
+
   const previewImages = [
     ...initialDefaultImages,
     ...uploadedImages.map((f) => f.fileURL),
@@ -96,7 +100,6 @@ function FileInputInner(
           const total = [...uploadedImages, ...newFiles];
           const limited = total.slice(0, length);
           setUploadedImages(limited);
-          setValue(name, limited, { shouldValidate: true });
 
           const store = new DataTransfer();
           limited.forEach((file) => store.items.add(file));
