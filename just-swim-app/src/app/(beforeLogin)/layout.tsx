@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './layout.module.scss';
+import { FullPageLoader } from '@/_components/common/loading';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkRefreshToken = async () => {
@@ -36,11 +38,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         }
       } catch (err) {
         console.error('Silent Refresh 에러:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
     checkRefreshToken();
   }, [router]);
+
+  if (loading) return <FullPageLoader />;
 
   return <div className={styles.before_login_container}>{children}</div>;
 }
