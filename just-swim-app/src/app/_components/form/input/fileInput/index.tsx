@@ -61,8 +61,6 @@ function FileInputInner(
     ...uploadedImages.map((f) => f.fileURL),
   ];
 
-  console.log(previewImages);
-
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
 
@@ -90,7 +88,14 @@ function FileInputInner(
         const fileWithURL = Object.assign(file, {
           fileURL: reader.result as string,
         });
-        newFiles.push(fileWithURL);
+
+        const isDuplicate =
+          initialDefaultImages.includes(fileWithURL.fileURL) ||
+          uploadedImages.some((f) => f.fileURL === fileWithURL.fileURL);
+
+        if (!isDuplicate) {
+          newFiles.push(fileWithURL);
+        }
         processedCount++;
 
         if (processedCount === fileArray.length) {

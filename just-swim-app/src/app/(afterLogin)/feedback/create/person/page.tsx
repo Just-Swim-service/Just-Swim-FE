@@ -89,7 +89,6 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const subscription = watch((data) => {
-      console.log(data);
       const formDataObject: CustomFormData = {
         date: data.date ?? '',
         targets: data.target,
@@ -189,8 +188,6 @@ export default function FeedbackWrite() {
 
     return router.push('/feedback/create/confirm');
   };
-
-  console.log('aa', initialFeedbackData);
 
   return (
     <>
