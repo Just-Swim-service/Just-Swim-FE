@@ -49,3 +49,23 @@ export async function getFeedbackPresignedURL(
     return notFound();
   }
 }
+
+export async function deleteFeedbackImageFromS3(fileURL: string) {
+  const result = await Fetch<{ success: boolean; data: string }>({
+    url: `${URL}/image`,
+    method: 'DELETE',
+    header: {
+      credential: true,
+      json: true,
+    },
+    body: {
+      fileURL,
+    },
+  });
+
+  if (result.success) {
+    return result.data;
+  } else {
+    return notFound();
+  }
+}

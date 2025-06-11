@@ -213,7 +213,6 @@ export default function FeedbackWrite() {
               <FileInput
                 name="file"
                 onChange={handleChange}
-                defaultFiles={initialFeedbackData?.files || []}
                 defaultPreviewImages={
                   initialFeedbackData?.files
                     ?.map((f: any) => f.fileURL)

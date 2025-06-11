@@ -19,6 +19,7 @@ import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 import { FormType } from '@/_schema';
 import { FileInputProps, FileWithPreview } from '@types';
+import { deleteFeedbackImageFromS3 } from '@apis';
 
 function FileInputInner(
   {
@@ -112,14 +113,27 @@ function FileInputInner(
     });
   };
 
-  const deleteUploadedImage = (index: number) => {
+  const deleteUploadedImage = async (index: number) => {
     onDelete.current = true;
 
+    // 서버에 S3 삭제 요청 함수
+    const deleteS3Image = async (fileURL: string) => {
+      try {
+        await deleteFeedbackImageFromS3(fileURL);
+      } catch (error) {
+        console.error('S3 이미지 삭제 실패:', error);
+      }
+    };
+
+    // case 1: S3 미리보기 이미지 삭제
     if (index < initialDefaultImages.length) {
       const newDefaults = [...initialDefaultImages];
-      newDefaults.splice(index, 1);
+      const removed = newDefaults.splice(index, 1)[0];
+
       setInitialDefaultImages(newDefaults);
+      await deleteS3Image(removed);
     } else {
+      // case 2: 새로 업로드한 이미지 삭제
       const realIndex = index - initialDefaultImages.length;
       const newUploaded = [...uploadedImages];
       newUploaded.splice(realIndex, 1);
