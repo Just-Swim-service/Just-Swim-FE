@@ -44,7 +44,10 @@ export default function FeedbackWrite() {
 
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
-    files: initialFeedbackDataRaw?.files || [],
+    files:
+      initialFeedbackDataRaw?.files?.length > 0
+        ? initialFeedbackDataRaw.files
+        : [],
   };
 
   useEffect(() => {
@@ -248,9 +251,9 @@ export default function FeedbackWrite() {
                 name="file"
                 onChange={handleChange}
                 defaultPreviewImages={
-                  initialFeedbackData?.files
-                    ?.map((f: any) => f.fileURL)
-                    .filter(Boolean) ?? []
+                  initialFeedbackData?.files?.length > 0
+                    ? initialFeedbackData.files.map((f: any) => f.fileURL)
+                    : []
                 }
                 setValue={setValue}
               />
