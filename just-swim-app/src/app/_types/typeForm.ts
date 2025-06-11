@@ -84,3 +84,7 @@ export interface StoredFileInfo {
   size?: number;
   fileURL?: string;
 }
+
+export interface FileWithPreview extends File {
+  fileURL: string;
+}

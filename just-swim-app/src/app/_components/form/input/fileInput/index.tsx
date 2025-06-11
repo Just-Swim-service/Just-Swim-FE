@@ -18,7 +18,7 @@ import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 import { FormType } from '@/_schema';
-import { FileInputProps } from '@types';
+import { FileInputProps, FileWithPreview } from '@types';
 
 function FileInputInner(
   {
@@ -34,9 +34,10 @@ function FileInputInner(
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  // upload 된 이미지(s3)
+  const [uploadedImages, setUploadedImages] = useState<FileWithPreview[]>([]);
+  // 입력한 이미지
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
@@ -45,35 +46,15 @@ function FileInputInner(
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
-    const previews: string[] = [];
-
     if (defaultPreviewImages.length > 0) {
       setInitialDefaultImages(defaultPreviewImages);
-      previews.push(...defaultPreviewImages);
     }
+  }, [defaultPreviewImages]);
 
-    const filePreviews = defaultFiles
-      .map((f) => {
-        if ('fileURL' in f && typeof f.fileURL === 'string') {
-          return f.fileURL;
-        } else if (f instanceof File) {
-          return URL.createObjectURL(f);
-        }
-        return '';
-      })
-      .filter(Boolean) as string[];
-
-    previews.push(...filePreviews);
-    setPreviewImages(previews);
-
-    return () => {
-      filePreviews.forEach((url) => {
-        if (url.startsWith('blob:')) {
-          URL.revokeObjectURL(url);
-        }
-      });
-    };
-  }, [defaultFiles, defaultPreviewImages]);
+  const previewImages = [
+    ...initialDefaultImages,
+    ...uploadedImages.map((f) => f.fileURL),
+  ];
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
@@ -84,55 +65,63 @@ function FileInputInner(
       return;
     }
 
-    let newFiles: File[] = [];
+    let newFiles: FileWithPreview[] = [];
     let hasInvalidFile = false;
 
-    for (const file of Array.from(files)) {
-      if (!file.type.startsWith('image')) {
+    const fileArray = Array.from(files);
+    let processedCount = 0;
+
+    fileArray.forEach((file) => {
+      if (!file.type.startsWith('image') || file.size > size * 1024 * 1024) {
         hasInvalidFile = true;
-        continue;
+        processedCount++;
+        return;
       }
-      if (file.size > size * 1024 * 1024) {
-        hasInvalidFile = true;
-        continue;
-      }
-      newFiles.push(file);
-    }
 
-    if (hasInvalidFile) {
-      alert(
-        `이미지 파일만 추가할 수 있으며, ${size}MB 이하의 파일만 업로드할 수 있습니다.`,
-      );
-    }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileWithURL = Object.assign(file, {
+          fileURL: reader.result as string,
+        });
+        newFiles.push(fileWithURL);
+        processedCount++;
 
-    if (newFiles.length + uploadedImages.length > length) {
-      alert(`${length}개 이하의 파일만 업로드할 수 있습니다.`);
-      newFiles = newFiles.slice(0, length - uploadedImages.length);
-    }
+        if (processedCount === fileArray.length) {
+          if (hasInvalidFile) {
+            alert(
+              `이미지 파일만 추가할 수 있으며, ${size}MB 이하의 파일만 업로드할 수 있습니다.`,
+            );
+          }
 
-    const result = [...uploadedImages, ...newFiles];
-    setUploadedImages(result);
+          const total = [...uploadedImages, ...newFiles];
+          const limited = total.slice(0, length);
+          setUploadedImages(limited);
+          setValue(name, limited, { shouldValidate: true });
 
-    const store = new DataTransfer();
-    result.forEach((file) => store.items.add(file));
-    if (inputRef.current) {
-      inputRef.current.files = store.files;
-    }
+          const store = new DataTransfer();
+          limited.forEach((file) => store.items.add(file));
+          if (inputRef.current) {
+            inputRef.current.files = store.files;
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const deleteUploadedImage = (index: number) => {
     onDelete.current = true;
 
-    const totalImages = [...initialDefaultImages, ...uploadedImages];
     if (index < initialDefaultImages.length) {
       const newDefaults = [...initialDefaultImages];
       newDefaults.splice(index, 1);
       setInitialDefaultImages(newDefaults);
     } else {
-      const fileIndex = index - initialDefaultImages.length;
+      const realIndex = index - initialDefaultImages.length;
       const newUploaded = [...uploadedImages];
-      newUploaded.splice(fileIndex, 1);
+      newUploaded.splice(realIndex, 1);
       setUploadedImages(newUploaded);
+      setValue(name, newUploaded, { shouldValidate: true });
 
       const store = new DataTransfer();
       newUploaded.forEach((file) => store.items.add(file));
