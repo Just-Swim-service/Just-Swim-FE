@@ -190,6 +190,8 @@ export default function FeedbackWrite() {
     return router.push('/feedback/create/confirm');
   };
 
+  console.log('aa', initialFeedbackData);
+
   return (
     <>
       <Header

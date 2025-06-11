@@ -61,6 +61,8 @@ function FileInputInner(
     ...uploadedImages.map((f) => f.fileURL),
   ];
 
+  console.log(previewImages);
+
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
 
