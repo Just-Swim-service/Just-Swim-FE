@@ -14,10 +14,11 @@ import { useRouter } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
 import { getClassList, getFeedbackPresignedURL } from '@apis';
 import { searchClassStore } from '@store';
+import { StoredFileInfo } from '@types';
 
 interface CustomFormData {
   date: string;
-  files: File[] | null;
+  files?: StoredFileInfo[];
   targets?: string;
   link: string | null | undefined;
   content: string;
@@ -35,10 +36,10 @@ export default function FeedbackWrite() {
 
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
-    files: initialFeedbackDataRaw?.files?.map((fileObj: any) => ({
-      file: fileObj.file,
-      previewURL: fileObj.dataUrl,
-    })),
+    files:
+      initialFeedbackDataRaw?.files?.length > 0
+        ? initialFeedbackDataRaw.files
+        : [],
   };
 
   useEffect(() => {
@@ -56,6 +57,7 @@ export default function FeedbackWrite() {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -63,67 +65,94 @@ export default function FeedbackWrite() {
     defaultValues: {
       target: initialFeedbackData?.targets ?? '',
       date: initialFeedbackData?.date ?? '',
-      file: initialFeedbackData?.files ?? [],
+      file: [],
       link: initialFeedbackData?.link ?? '',
       content: initialFeedbackData?.content ?? '',
     },
   });
 
-  // handleSubmit에는 RHF에서 validate된 데이터가 들어간다
-  const onSubmit = async (data: FormType) => {
-    for (const image of data.file) {
-      try {
-        const presignedURL = await getFeedbackPresignedURL([image.name]);
-        if (!presignedURL) {
-          throw new Error('Presigned URL을 가져오지 못했습니다.');
-        }
-        const response = await fetch(presignedURL[0].presignedUrl, {
-          method: 'PUT',
-          body: image,
-          headers: {
-            'Content-Type': image.type, // 올리는 파일의 타입
-          },
-        });
+  useEffect(() => {
+    const subscription = watch((data) => {
+      const formDataObject: CustomFormData = {
+        date: data.date ?? '',
+        targets: data.target,
+        link: data.link,
+        content: data.content ?? '',
+      };
+      setFeedbackFormData(formDataObject, 'group');
+    });
 
-        if (!response.ok) {
-          throw new Error('파일 업로드 실패');
-        }
-        image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
-      } catch (error) {
-        return null;
-      }
-    }
-
-    const formDataObject: CustomFormData = {
-      date: data.date,
-      targets: data.target,
-      link: data.link,
-      content: data.content,
-      files: data.file,
-    };
-    setFeedbackFormData(formDataObject, 'group');
-    return router.push('/feedback/create/confirmClass');
-  };
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetFiles = (e.target as HTMLInputElement).files as FileList;
-    const targetFilesArray = Array.from(targetFiles);
+    const selectedFiles = Array.from(e.target.files || []);
 
-    [...targetFilesArray].forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+    const newFiles = selectedFiles.map((file) => ({
+      name: file.name,
+      size: file.size,
+      fileURL: '',
+      origin: file,
+    }));
 
-      reader.onload = () => {
-        const result = reader.result as string;
-        const obj = {
-          name: file.name,
-          dataUrl: result,
-          file: file,
-        };
-        // @ts-ignore
-        setImages((prev) => [...prev, obj]);
-      };
-    });
+    setValue(
+      'file',
+      newFiles.map((f) => f.origin),
+      { shouldValidate: true },
+    );
+
+    setFeedbackFormData(
+      {
+        ...getFeedbackFormData(),
+        files: newFiles,
+      },
+      'group',
+    );
+  };
+
+  const onSubmit = async (data: FormType) => {
+    const prevFiles = getFeedbackFormData().files ?? [];
+
+    const uploadedFiles = await Promise.all(
+      prevFiles.map(async (file: any) => {
+        if (file.fileURL) return file;
+
+        try {
+          const presignedURL = await getFeedbackPresignedURL([file.name]);
+          const response = await fetch(presignedURL[0].presignedUrl, {
+            method: 'PUT',
+            body: file.origin,
+            headers: {
+              'Content-Type': file.origin.type,
+            },
+          });
+
+          if (!response.ok) throw new Error('파일 업로드 실패');
+
+          return {
+            ...file,
+            fileURL: presignedURL[0].presignedUrl.split('?')[0],
+          };
+        } catch (error) {
+          return null;
+        }
+      }),
+    );
+
+    const validFiles = uploadedFiles.filter((f) => f?.fileURL);
+
+    setFeedbackFormData(
+      {
+        date: data.date,
+        targets: data.target,
+        link: data.link,
+        content: data.content,
+        files: validFiles,
+      },
+      'group',
+    );
+
+    return router.push('/feedback/create/confirmClass');
   };
 
   return (
@@ -182,7 +211,11 @@ export default function FeedbackWrite() {
               <FileInput
                 {...register('file')}
                 onChange={handleChange}
-                // @ts-ignore
+                defaultPreviewImages={
+                  initialFeedbackData?.files?.length > 0
+                    ? initialFeedbackData.files.map((f: any) => f.fileURL)
+                    : []
+                }
                 setValue={setValue}
               />
             </div>
