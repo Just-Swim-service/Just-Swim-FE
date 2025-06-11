@@ -107,49 +107,83 @@ export default function FeedbackWrite() {
   }, [watch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setValue('file', files, { shouldValidate: true });
+    const selectedFiles = Array.from(e.target.files || []);
+
+    // 기존 fileURL 포함된 파일들
+    const oldFiles =
+      initialFeedbackData?.files?.filter((f: any) => f.fileURL) ?? [];
+
+    // 새로 선택한 파일은 fileURL이 없음
+    const newFiles = selectedFiles.map((file: File) => ({
+      name: file.name,
+      size: file.size,
+      fileURL: '', // 업로드 전
+      origin: file, // 원본 File 객체 저장
+    }));
+
+    // 상태 업데이트
+    const updatedFiles = [...oldFiles, ...newFiles];
+
+    // RHF엔 실제 File만 넣어줌
+    setValue(
+      'file',
+      newFiles.map((f) => f.origin),
+      { shouldValidate: true },
+    );
+
+    // 상태 저장
+    setFeedbackFormData(
+      {
+        ...getFeedbackFormData(),
+        files: updatedFiles,
+      },
+      'personal',
+    );
   };
 
   const onSubmit = async (data: FormType) => {
-    for (const image of data.file) {
-      try {
-        const presignedURL = await getFeedbackPresignedURL([image.name]);
-        if (!presignedURL) {
-          throw new Error('Presigned URL을 가져오지 못했습니다.');
+    const prevFiles = getFeedbackFormData().files ?? [];
+
+    const uploadedFiles = await Promise.all(
+      prevFiles.map(async (file: any) => {
+        if (file.fileURL) return file;
+
+        try {
+          const presignedURL = await getFeedbackPresignedURL([file.name]);
+
+          const response = await fetch(presignedURL[0].presignedUrl, {
+            method: 'PUT',
+            body: file.origin, // File 객체
+            headers: {
+              'Content-Type': file.origin.type,
+            },
+          });
+
+          if (!response.ok) throw new Error('파일 업로드 실패');
+
+          return {
+            ...file,
+            fileURL: presignedURL[0].presignedUrl.split('?')[0],
+          };
+        } catch (error) {
+          return null;
         }
-        const response = await fetch(presignedURL[0].presignedUrl, {
-          method: 'PUT',
-          body: image,
-          headers: {
-            'Content-Type': image.type,
-          },
-        });
+      }),
+    );
 
-        if (!response.ok) {
-          throw new Error('파일 업로드 실패');
-        }
-        image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
-      } catch (error) {
-        return null;
-      }
-    }
+    const validFiles = uploadedFiles.filter((f) => f?.fileURL);
 
-    const formDataObject: CustomFormData = {
-      date: data.date,
-      targets: data.target,
-      link: data.link,
-      content: data.content,
-      files:
-        data.file?.map((file: any) => ({
-          name: file.name,
-          size: file.size,
-          length: file.size,
-          fileURL: file.fileURL,
-        })) ?? [],
-    };
+    setFeedbackFormData(
+      {
+        date: data.date,
+        targets: data.target,
+        link: data.link,
+        content: data.content,
+        files: validFiles,
+      },
+      'personal',
+    );
 
-    setFeedbackFormData(formDataObject, 'personal');
     return router.push('/feedback/create/confirm');
   };
 
