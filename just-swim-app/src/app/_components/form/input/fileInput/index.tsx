@@ -12,12 +12,11 @@ import {
 } from 'react';
 
 import { UseFormSetValue } from 'react-hook-form';
-import { mergeRefs, randomId } from '@utils';
+import { mergeRefs } from '@utils';
 import { ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
-import { FormType } from '@/_schema';
 import { FileInputProps, FileWithPreview } from '@types';
 import { deleteFeedbackImageFromS3 } from '@apis';
 
@@ -27,19 +26,17 @@ function FileInputInner(
     length = 4,
     size = 20,
     id = 'fileInput',
-    defaultFiles = [],
     defaultPreviewImages = [],
-    onChange = (event: ChangeEvent<HTMLInputElement>) => {},
+    onChange = () => {},
     setValue,
     ...inputProps
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  // upload 된 이미지(s3)
   const [uploadedImages, setUploadedImages] = useState<FileWithPreview[]>([]);
-  // 입력한 이미지
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
 
+  const isInitialRender = useRef(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const onDelete = useRef<boolean>(false);
 
@@ -47,8 +44,9 @@ function FileInputInner(
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (defaultPreviewImages.length > 0) {
+    if (isInitialRender.current && defaultPreviewImages.length > 0) {
       setInitialDefaultImages(defaultPreviewImages);
+      isInitialRender.current = false;
     }
   }, [defaultPreviewImages]);
 
@@ -59,7 +57,7 @@ function FileInputInner(
   const previewImages = [
     ...initialDefaultImages,
     ...uploadedImages.map((f) => f.fileURL),
-  ];
+  ].filter(Boolean);
 
   const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
@@ -70,10 +68,9 @@ function FileInputInner(
       return;
     }
 
+    const fileArray = Array.from(files);
     let newFiles: FileWithPreview[] = [];
     let hasInvalidFile = false;
-
-    const fileArray = Array.from(files);
     let processedCount = 0;
 
     fileArray.forEach((file) => {
@@ -85,8 +82,10 @@ function FileInputInner(
 
       const reader = new FileReader();
       reader.onload = () => {
+        if (typeof reader.result !== 'string') return;
+
         const fileWithURL = Object.assign(file, {
-          fileURL: reader.result as string,
+          fileURL: reader.result,
         });
 
         const isDuplicate =
@@ -96,6 +95,7 @@ function FileInputInner(
         if (!isDuplicate) {
           newFiles.push(fileWithURL);
         }
+
         processedCount++;
 
         if (processedCount === fileArray.length) {
@@ -116,6 +116,7 @@ function FileInputInner(
           }
         }
       };
+
       reader.readAsDataURL(file);
     });
   };
@@ -123,7 +124,6 @@ function FileInputInner(
   const deleteUploadedImage = async (index: number) => {
     onDelete.current = true;
 
-    // 서버에 S3 삭제 요청 함수
     const deleteS3Image = async (fileURL: string) => {
       try {
         await deleteFeedbackImageFromS3(fileURL);
@@ -132,7 +132,6 @@ function FileInputInner(
       }
     };
 
-    // case 1: S3 미리보기 이미지 삭제
     if (index < initialDefaultImages.length) {
       const newDefaults = [...initialDefaultImages];
       const removed = newDefaults.splice(index, 1)[0];
@@ -140,7 +139,6 @@ function FileInputInner(
       setInitialDefaultImages(newDefaults);
       await deleteS3Image(removed);
     } else {
-      // case 2: 새로 업로드한 이미지 삭제
       const realIndex = index - initialDefaultImages.length;
       const newUploaded = [...uploadedImages];
       newUploaded.splice(realIndex, 1);
