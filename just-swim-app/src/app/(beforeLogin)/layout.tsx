@@ -8,6 +8,7 @@ import { FullPageLoader } from '@/_components/common/loading';
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     const checkRefreshToken = async () => {
@@ -26,12 +27,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             const userInfo = await userInfoRes.json();
 
             if (userInfo?.data?.userType) {
+              setRedirecting(true);
               router.replace('/schedule');
+              return;
             } else {
+              setRedirecting(true);
               router.replace('/type');
+              return;
             }
-          } else {
-            router.replace('/signin');
           }
         } else {
           console.log('❌ Refresh 실패, 로그인 폼 유지');
@@ -47,6 +50,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [router]);
 
   if (loading) return <FullPageLoader />;
+
+  if (redirecting) return null;
 
   return <div className={styles.before_login_container}>{children}</div>;
 }
