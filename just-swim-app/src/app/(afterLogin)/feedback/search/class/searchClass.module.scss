@@ -2,7 +2,6 @@
 
 .container {
   margin: 0 16px;
-  // height: 100dvh;
 
   .title {
     @include Title2-SB;
@@ -17,10 +16,8 @@
     gap: 10px;
 
     .item {
-      width: 48%;
-      max-width: 48%;
+      width: calc(50% - 5px);
       height: 151px;
-      flex: 1;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
