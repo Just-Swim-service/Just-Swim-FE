@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import styles from './layout.module.scss';
 import { FullPageLoader } from '@/_components/common/loading';
+import { usePathname } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+  const pathname = usePathname();
   const [loading, setLoading] = useState(true);
-  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     const checkRefreshToken = async () => {
@@ -26,13 +25,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           if (userInfoRes.ok) {
             const userInfo = await userInfoRes.json();
 
-            if (userInfo?.data?.userType) {
-              setRedirecting(true);
-              router.replace('/schedule');
+            if (userInfo?.data?.userType && pathname !== '/schedule') {
+              window.location.href = '/schedule';
               return;
-            } else {
-              setRedirecting(true);
-              router.replace('/type');
+            } else if (!userInfo?.data?.userType && pathname !== '/type') {
+              window.location.href = '/type';
               return;
             }
           }
@@ -47,11 +44,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     };
 
     checkRefreshToken();
-  }, [router]);
+  }, [pathname]);
 
   if (loading) return <FullPageLoader />;
-
-  if (redirecting) return null;
 
   return <div className={styles.before_login_container}>{children}</div>;
 }
