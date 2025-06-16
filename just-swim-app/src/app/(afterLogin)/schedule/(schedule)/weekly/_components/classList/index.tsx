@@ -6,36 +6,21 @@ import { ClassDetailItem } from '@components';
 import { LectureProps } from '@types';
 import { WEEK_DAYS } from '@data';
 import { randomId } from '@utils';
-import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
-import { getMyProfile } from '@apis';
-import { ClassListSkeleton } from '../skeleton';
 
 function _ClassList({
   weeklyInfo,
   selectedDate,
+  userType,
 }: {
   weeklyInfo: { date: string; day: string; lectures: LectureProps[] }[];
   selectedDate: number;
+  userType: string;
 }) {
   const todaySchedules = weeklyInfo[selectedDate].lectures;
   const todayDate = weeklyInfo[selectedDate].date.split('.')[2];
-
-  const [type, setType] = useState<string>('');
-
-  useEffect(() => {
-    const setUserType = async () => {
-      const data = await getMyProfile();
-      setType(data.data.data.userType);
-    };
-    setUserType();
-  }, []);
-
-  if (!type) {
-    return <ClassListSkeleton />;
-  }
 
   return (
     <div className={styled.container}>
@@ -58,11 +43,7 @@ function _ClassList({
                 <Link
                   href={`/class/detail/${schedule.lectureId}`}
                   key={schedule.lectureId}>
-                  <ClassDetailItem
-                    key={randomId()}
-                    schedule={schedule}
-                    type={type}
-                  />
+                  <ClassDetailItem schedule={schedule} type={userType} />
                 </Link>
               );
             })}

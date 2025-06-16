@@ -61,11 +61,18 @@ export default function PersonalFeedbackConfirm() {
         <div className={styled.feedback_content}>
           <div className={`${styled.wrap} ${styled.row}`}>
             <div className={styled.title}>
-              선택 수강생: <span>{target.length}</span>
+              선택 수강생:{' '}
+              <span>
+                {target.length > 0
+                  ? target.length === 1
+                    ? target[0].memberNickname
+                    : `${target.length}명`
+                  : '0명'}
+              </span>
             </div>
             <div className={styled.tag}>
               {target?.length > 0 ? (
-                <div>{target[0]?.lectureTitle} 전체</div>
+                <div>{target[0]?.lectureTitle}</div>
               ) : (
                 <div>{target[0]?.lectureTitle}</div>
               )}

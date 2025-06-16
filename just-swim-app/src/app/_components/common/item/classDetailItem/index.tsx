@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { IconLocation, IconRepeat } from '@assets';
@@ -12,14 +12,13 @@ import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
 
-export function ClassDetailItem({
+export function _ClassDetailItem({
   schedule,
   type,
 }: {
   schedule: LectureProps;
   type: string;
 }) {
-  const [mounted, setMounted] = useState(false);
   const [instructor, setInstructor] = useState<{
     instructorName: string;
     instructorProfileImage: string;
@@ -28,10 +27,8 @@ export function ClassDetailItem({
   const startTime = parseInt(schedule.lectureTime.split(':')[0]);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    let ignore = false;
 
-  useEffect(() => {
     const getDetail = async () => {
       const result = await getLectureDetail(parseInt(schedule.lectureId));
 
@@ -39,9 +36,11 @@ export function ClassDetailItem({
     };
 
     getDetail();
-  }, [schedule.lectureId]);
 
-  if (!mounted) return null;
+    return () => {
+      ignore = true;
+    };
+  }, [schedule.lectureId]);
 
   return (
     <div className={styled.container}>
@@ -61,7 +60,7 @@ export function ClassDetailItem({
               style={{ color: `${schedule.lectureColor}` }}>
               {schedule.lectureTitle}
             </p>
-            {mounted && type === 'instructor' && (
+            {type === 'instructor' && (
               <p className={styled.class_info}>{schedule.lectureContent}</p>
             )}
           </div>
@@ -69,12 +68,13 @@ export function ClassDetailItem({
             <div className={styled.student_info}>
               {schedule.members?.map(
                 (student: { userId: string; profileImage: string }) => (
-                  <div key={randomId()} className={styled.student}>
+                  <div key={student.userId} className={styled.student}>
                     <Image
                       src={student?.profileImage || NoProfile}
                       alt={`${student?.userId}`}
                       width={20}
                       height={20}
+                      loading="lazy"
                     />
                   </div>
                 ),
@@ -126,3 +126,5 @@ export function ClassDetailItem({
     </div>
   );
 }
+
+export const ClassDetailItem = React.memo(_ClassDetailItem);
