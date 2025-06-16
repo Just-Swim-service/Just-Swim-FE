@@ -8,6 +8,7 @@ import { WeekInfo } from '../weekInfo';
 import { ClassList } from '../classList';
 import { SkeletonFallback } from '@components';
 import { getMyProfile } from '@apis';
+import { ClassListSkeleton } from '../skeleton';
 
 export function WeekWrapper({
   weeklyInfo,
@@ -32,7 +33,7 @@ export function WeekWrapper({
     setUserType();
   }, []);
 
-  if (type === null) return <SkeletonFallback />;
+  if (type === null) return <ClassListSkeleton />;
 
   return (
     <>

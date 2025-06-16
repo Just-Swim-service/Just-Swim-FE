@@ -23,6 +23,7 @@ import { ClassList } from '../classList';
 import { MonthlyInfo } from '../monthlyInfo';
 
 import styled from './styles.module.scss';
+import { ClassListSkeleton } from '../skeleton';
 
 const itemHeight = 70;
 
@@ -32,6 +33,8 @@ export function MonthlyWrapper() {
   const [y, setY] = useState<number>(0);
 
   const today = useMemo(() => getToday(), []);
+
+  const isLoading = useMemo(() => monthlyInfo.length === 0, [monthlyInfo]);
 
   const ClassCalendarItem = useCallback(
     ({
@@ -84,10 +87,7 @@ export function MonthlyWrapper() {
   );
 
   useEffect(() => {
-    if (show) {
-      return;
-    }
-
+    if (show) return;
     setY(0);
   }, [show]);
 
@@ -133,13 +133,18 @@ export function MonthlyWrapper() {
         setMonth={setMonth}
       />
       <MonthlyCalendar days={days} itemHeight={itemHeight} y={y} />
-      {show && (
-        <ClassList
-          selectedDate={selectedDate}
-          monthlyInfo={monthlyInfo}
-          itemHeight={itemHeight}
-          unshowClass={unshowClass}
-        />
+
+      {isLoading ? (
+        <ClassListSkeleton />
+      ) : (
+        show && (
+          <ClassList
+            selectedDate={selectedDate}
+            monthlyInfo={monthlyInfo}
+            itemHeight={itemHeight}
+            unshowClass={unshowClass}
+          />
+        )
       )}
     </div>
   );
