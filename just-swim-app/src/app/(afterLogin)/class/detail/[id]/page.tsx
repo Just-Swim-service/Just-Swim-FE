@@ -137,6 +137,11 @@ export default function ClassDetail() {
       ? lecture.lectureTime.split('-')
       : ['', ''];
 
+  const getMeridiem = (time: string) => {
+    const hour = parseInt(time.split(':')[0], 10);
+    return hour >= 12 ? 'PM' : 'AM';
+  };
+
   return (
     <div>
       <Header
@@ -220,16 +225,12 @@ export default function ClassDetail() {
               <span className={styled.icon}>
                 <IconClock width={20} height={20} fill="#212223" />
               </span>
-              <span className={styled.twelve}>
-                {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
-              </span>
+              <span className={styled.twelve}>{getMeridiem(timeStart)}</span>
               {timeStart}
             </div>
             <span className={styled.wave}>~</span>
             <div>
-              <span className={styled.twelve}>
-                {parseInt(lecture.lectureTime[0], 10) >= 12 ? `PM ` : `AM `}
-              </span>
+              <span className={styled.twelve}>{getMeridiem(timeEnd)}</span>
               {timeEnd}
             </div>
           </div>
