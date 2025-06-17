@@ -78,6 +78,15 @@ export default function FeedbackWrite() {
         targets: data.target,
         link: data.link,
         content: data.content ?? '',
+        files:
+          data.file?.map((file: any) => {
+            return {
+              name: file.name,
+              size: file.size,
+              fileURL: '',
+              origin: file,
+            };
+          }) ?? [],
       };
       setFeedbackFormData(formDataObject, 'group');
     });
