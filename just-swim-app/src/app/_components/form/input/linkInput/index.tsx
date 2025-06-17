@@ -51,9 +51,15 @@ function _LinkInput(
   };
 
   const onClickButton = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+    const syntheticEvent = {
+      target: {
+        name,
+        value: '',
+      },
+    } as unknown as ChangeEvent<HTMLInputElement>;
 
     setLink('');
+    onChange(syntheticEvent);
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
