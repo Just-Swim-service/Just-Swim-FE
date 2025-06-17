@@ -82,8 +82,7 @@ function _LinkInput(
         onFocus={onFocusInput}
         onBlur={onBlurInput}
       />
-      {/* <span>{errors.map((error, index) => <li key={index}>{ error}</li>)}</span> */}
-      {!value || !isValidURL(value as string) ? null : (
+      {!value || !isValidURL(value as string) || focus ? null : (
         <Link href={value as string} target="_blank" className={styled.link}>
           {value}
         </Link>
