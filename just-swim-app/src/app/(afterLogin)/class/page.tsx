@@ -132,14 +132,18 @@ export default function ClassView() {
 
   useEffect(() => {
     fetchJson<{ data: LectureViewProps[] }>('/lecture/schedule').then((data) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
       const processedLectures =
         data.data?.map((lecture) => {
-          const lectureEndDate = new Date(
-            lecture.lectureEndDate.replace(/\./g, '-'),
-          );
+          const parsedDateStr = lecture.lectureEndDate.replace(/\./g, '-');
+          const lectureEndDate = new Date(parsedDateStr);
+          lectureEndDate.setHours(0, 0, 0, 0);
+
           return {
             ...lecture,
-            isPastLecture: lectureEndDate < new Date(),
+            isPastLecture: lectureEndDate < today,
           };
         }) ?? [];
       setLectures(processedLectures);

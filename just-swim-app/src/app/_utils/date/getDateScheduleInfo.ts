@@ -12,12 +12,20 @@ import {
   getToday,
 } from './getDateInfo';
 
+function normalizeDate(date: string | Date): Date {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 export async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
   const result: ScheduleSummary[] = [];
   const thisWeekInfo = getThisWeek();
   const scheduleInfo = (await getInProgressSchedule()) || [];
 
   for (let i = 0; i < thisWeekInfo.length; i++) {
+    const targetDate = normalizeDate(thisWeekInfo[i]);
+
     const nowInfo: ScheduleSummary = {
       date: thisWeekInfo[i],
       day: WEEK_DAYS[i],
@@ -25,14 +33,16 @@ export async function getWeeklyScheduleInfo(): Promise<ScheduleSummary[] | []> {
     };
 
     for (const schedule of scheduleInfo) {
-      if (
-        schedule.lectureEndDate &&
-        new Date(thisWeekInfo[i]) > new Date(schedule.lectureEndDate)
-      ) {
+      const endDate = schedule.lectureEndDate
+        ? normalizeDate(schedule.lectureEndDate)
+        : null;
+      const createdAt = normalizeDate(schedule.lectureCreatedAt);
+
+      if (endDate && targetDate > endDate) {
         continue;
       }
 
-      if (new Date(thisWeekInfo[i]) < new Date(schedule.lectureCreatedAt)) {
+      if (targetDate < createdAt) {
         continue;
       }
 
@@ -58,6 +68,8 @@ export async function getMonthlyScheduleInfo(
   const scheduleInfo = (await getInProgressSchedule()) || [];
 
   for (let i = 0; i < thisMonthInfo.length; i++) {
+    const targetDate = normalizeDate(thisMonthInfo[i]);
+
     const nowInfo: ScheduleSummary = {
       date: thisMonthInfo[i],
       day: WEEK_DAYS[i % 7],
@@ -65,14 +77,16 @@ export async function getMonthlyScheduleInfo(
     };
 
     for (const schedule of scheduleInfo) {
-      if (
-        schedule.lectureEndDate &&
-        new Date(thisMonthInfo[i]) > new Date(schedule.lectureEndDate)
-      ) {
+      const endDate = schedule.lectureEndDate
+        ? normalizeDate(schedule.lectureEndDate)
+        : null;
+      const createdAt = normalizeDate(schedule.lectureCreatedAt);
+
+      if (endDate && targetDate > endDate) {
         continue;
       }
 
-      if (new Date(thisMonthInfo[i]) < new Date(schedule.lectureCreatedAt)) {
+      if (targetDate < createdAt) {
         continue;
       }
 
