@@ -194,14 +194,20 @@ export default function FeedbackDetail() {
                   <span className={styled.detail_icon}>
                     <Link />
                   </span>
-                  <p>{feedbackInfo?.feedbackLink}</p>
+                  <a
+                    href={feedbackInfo?.feedbackLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styled.link_text}>
+                    {feedbackInfo?.feedbackLink}
+                  </a>
                 </div>
               </div>
             )}
             <div className={styled.detail_title}>
               <p>피드백</p>
             </div>
-            <div className={styled.detail_content}>
+            <div className={styled.feedback_content}>
               <p>{feedbackInfo?.feedbackContent}</p>
             </div>
           </div>
@@ -304,14 +310,20 @@ export default function FeedbackDetail() {
                     <span className={styled.detail_icon}>
                       <Link />
                     </span>
-                    <p>{feedbackInfo?.feedbackLink}</p>
+                    <a
+                      href={feedbackInfo?.feedbackLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styled.link_text}>
+                      {feedbackInfo?.feedbackLink}
+                    </a>
                   </div>
                 </div>
               )}
               <div className={styled.detail_title}>
                 <p>피드백</p>
               </div>
-              <div className={styled.detail_content}>
+              <div className={styled.feedback_content}>
                 <p>{feedbackInfo?.feedbackContent}</p>
               </div>
             </div>
