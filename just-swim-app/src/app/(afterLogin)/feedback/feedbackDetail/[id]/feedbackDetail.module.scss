@@ -90,6 +90,14 @@
       margin-right: 8px;
     }
 
+    a {
+      @include Title5-M;
+      line-height: 1.5;
+      text-decoration: underline;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
     p {
       @include Title5-M;
       line-height: 1.5;
@@ -268,6 +276,7 @@
       a {
         @include Title5-M;
         line-height: 1.5;
+        text-decoration: underline;
         white-space: pre-wrap;
         word-break: break-word;
       }
