@@ -13,6 +13,8 @@ export interface ConfirmModalProps extends ModalBodyProps {
 
 export interface LightConfirmModalProps extends ConfirmModalProps {
   title?: string;
+  confirmText?: string;
+  showCancel?: boolean;
 }
 
 export interface ColorModalProps extends ModalBodyProps {
