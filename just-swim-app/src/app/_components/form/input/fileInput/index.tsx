@@ -29,7 +29,7 @@ function FileInputInner(
   {
     name,
     length = 4,
-    size = 100,
+    size = 100, // MB
     id = 'fileInput',
     defaultPreviewImages = [],
     onChange = () => {},
@@ -82,30 +82,34 @@ function FileInputInner(
 
     const results = await Promise.all(
       fileArray.map(async (file) => {
-        if (file.size > size * 1024 * 1024) {
-          hasInvalidFile = true;
-          return null;
-        }
-
-        if (!isImageFile(file) && (!allowVideo || !isVideoFile(file))) {
-          hasInvalidFile = true;
-          return null;
-        }
-
         try {
+          const isImage = isImageFile(file);
+          const isVideo = allowVideo && isVideoFile(file);
+
+          if (!isImage && !isVideo) {
+            console.warn('허용되지 않은 타입:', file.type);
+            hasInvalidFile = true;
+            return null;
+          }
+
+          if (file.size > size * 1024 * 1024) {
+            console.warn('파일 크기 초과:', file.name, file.size);
+            hasInvalidFile = true;
+            return null;
+          }
+
           let fileURL = '';
-          let fileType: 'image' | 'video' = 'image';
+          let fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
           let duration: number | undefined;
           let thumbnailPath: string | undefined;
 
-          if (isImageFile(file)) {
+          if (isImage) {
             fileURL = await new Promise<string>((resolve) => {
               const reader = new FileReader();
               reader.onload = () => resolve(reader.result as string);
               reader.readAsDataURL(file);
             });
-          } else if (isVideoFile(file)) {
-            fileType = 'video';
+          } else if (isVideo) {
             duration = await getVideoDuration(file);
             thumbnailPath = await generateVideoThumbnail(file);
             fileURL = await new Promise<string>((resolve) => {
@@ -152,10 +156,9 @@ function FileInputInner(
     }
 
     if (hasInvalidFile) {
-      const allowedTypes = allowVideo
-        ? '이미지 또는 동영상 파일만 추가할 수 있으며'
-        : '이미지 파일만 추가할 수 있으며';
-      alert(`${allowedTypes}, ${size}MB 이하의 파일만 업로드할 수 있습니다.`);
+      alert(
+        `이미지 또는 동영상 파일만 업로드 가능하며, 크기는 ${size}MB 이하이어야 합니다.`,
+      );
     }
   };
 
