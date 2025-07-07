@@ -78,7 +78,6 @@ function FileInputInner(
     }
 
     const fileArray = Array.from(files);
-    let hasInvalidFile = false;
 
     const results = await Promise.all(
       fileArray.map(async (file) => {
@@ -87,14 +86,12 @@ function FileInputInner(
           const isVideo = allowVideo && isVideoFile(file);
 
           if (!isImage && !isVideo) {
-            console.warn('허용되지 않은 타입:', file.type);
-            hasInvalidFile = true;
+            console.warn('허용되지 않은 타입:', file.name, file.type);
             return null;
           }
 
           if (file.size > size * 1024 * 1024) {
             console.warn('파일 크기 초과:', file.name, file.size);
-            hasInvalidFile = true;
             return null;
           }
 
@@ -133,13 +130,14 @@ function FileInputInner(
           return isDuplicate ? null : fileWithURL;
         } catch (error) {
           console.error('파일 처리 중 오류:', error);
-          hasInvalidFile = true;
           return null;
         }
       }),
     );
 
     const validFiles = results.filter(Boolean) as FileWithPreview[];
+    const hasInvalidFile = validFiles.length < fileArray.length;
+
     const total = [...uploadedImages, ...validFiles].slice(0, length);
     setUploadedImages(total);
 
