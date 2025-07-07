@@ -149,6 +149,9 @@ function FileInputInner(
     }
 
     const total = [...uploadedImages, ...validFiles].slice(0, length);
+    console.log('✅ 최종 validFiles:', validFiles);
+    console.log('✅ setUploadedImages에 들어가는 total:', total);
+
     setUploadedImages(total);
 
     const store = new DataTransfer();
@@ -161,6 +164,7 @@ function FileInputInner(
     });
     if (inputRef.current) {
       inputRef.current.files = store.files;
+      console.log('📥 inputRef.current.files:', inputRef.current.files);
     }
 
     if (invalidCount > 0) {
