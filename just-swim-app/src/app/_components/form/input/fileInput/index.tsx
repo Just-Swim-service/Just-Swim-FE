@@ -29,7 +29,7 @@ function FileInputInner(
   {
     name,
     length = 4,
-    size = 20,
+    size = 100,
     id = 'fileInput',
     defaultPreviewImages = [],
     onChange = () => {},
@@ -82,12 +82,6 @@ function FileInputInner(
 
     const results = await Promise.all(
       fileArray.map(async (file) => {
-        console.log('Processing file:', {
-          name: file.name,
-          type: file.type,
-          size: file.size,
-        });
-
         if (file.size > size * 1024 * 1024) {
           hasInvalidFile = true;
           return null;
