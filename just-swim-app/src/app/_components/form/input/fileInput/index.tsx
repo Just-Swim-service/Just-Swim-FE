@@ -11,7 +11,6 @@ import {
   useState,
 } from 'react';
 
-import { UseFormSetValue } from 'react-hook-form';
 import { mergeRefs } from '@utils';
 import { ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
@@ -100,7 +99,7 @@ function FileInputInner(
         let fileURL: string;
         let fileType: 'image' | 'video' = 'image';
         let duration: number | undefined;
-        let thumbnail: string | undefined;
+        let thumbnailPath: string | undefined;
 
         if (isImageFile(file)) {
           // 이미지 파일 처리
@@ -115,8 +114,15 @@ function FileInputInner(
           // 동영상 파일 처리
           fileType = 'video';
           duration = await getVideoDuration(file);
-          thumbnail = await generateVideoThumbnail(file);
-          fileURL = thumbnail; // 썸네일을 미리보기로 사용
+          thumbnailPath = await generateVideoThumbnail(file);
+          // 동영상 파일의 경우 원본 파일의 URL을 생성
+          fileURL = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              resolve(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+          });
         } else {
           continue;
         }
@@ -125,7 +131,7 @@ function FileInputInner(
           fileURL,
           type: fileType,
           duration,
-          thumbnail,
+          thumbnailPath,
         });
 
         const isDuplicate =
@@ -241,7 +247,9 @@ function FileInputInner(
               key={`${preview}-${index}`}
               className={styled.preview_item}
               style={{
-                backgroundImage: preview ? `url("${preview}")` : 'none',
+                backgroundImage: preview
+                  ? `url("${file?.type === 'video' ? file.thumbnail : preview}")`
+                  : 'none',
               }}
               onClick={(event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault();
