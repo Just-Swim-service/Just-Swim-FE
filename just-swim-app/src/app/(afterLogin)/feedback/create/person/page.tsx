@@ -246,12 +246,14 @@ export default function FeedbackWrite() {
             <div className={styled.wrap}>
               <div className={styled.title}>첨부 파일</div>
               <div className={`${styled.sub_title} ${styled.file}`}>
-                최대 4개의 20MB 이하 파일만 첨부 가능합니다
+                최대 4개의 20MB 이하 이미지 또는 동영상 파일만 첨부 가능합니다
               </div>
 
               <FileInput
                 name="file"
                 onChange={handleChange}
+                allowVideo={true}
+                accept="image/*,video/*"
                 defaultPreviewImages={
                   initialFeedbackData?.files?.length > 0
                     ? initialFeedbackData.files.map((f: any) => f.fileURL)

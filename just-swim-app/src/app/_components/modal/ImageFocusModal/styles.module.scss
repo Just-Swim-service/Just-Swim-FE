@@ -6,45 +6,101 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.9);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
-.modal_wrapper {
+.modal_content {
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  margin-bottom: 120px;
+  align-items: center;
 }
 
-.content {
-  position: relative;
+.close_button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1001;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.nav_button_left,
+.nav_button_right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1001;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.nav_button_left {
+  left: 20px;
+}
+
+.nav_button_right {
+  right: 20px;
+}
+
+.media_container {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
 .image {
-  max-width: 90%;
+  max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.close_button {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-  margin-right: 18px;
-  background: none;
+.video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.image_counter {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
-  font-size: 24px;
-  border: none;
-  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
 }
 
 .dots {

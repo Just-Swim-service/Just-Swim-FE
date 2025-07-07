@@ -19,6 +19,12 @@ import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 import { FileInputProps, FileWithPreview } from '@types';
 import { deleteFeedbackImageFromS3 } from '@apis';
+import {
+  generateVideoThumbnail,
+  getVideoDuration,
+  isVideoFile,
+  isImageFile,
+} from '@utils';
 
 function FileInputInner(
   {
@@ -29,6 +35,8 @@ function FileInputInner(
     defaultPreviewImages = [],
     onChange = () => {},
     setValue,
+    accept = 'image/*,video/*',
+    allowVideo = true,
     ...inputProps
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
@@ -59,7 +67,7 @@ function FileInputInner(
     ...uploadedImages.map((f) => f.fileURL),
   ].filter(Boolean);
 
-  const onChangeImages = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
 
     const { files } = event.target;
@@ -73,19 +81,51 @@ function FileInputInner(
     let hasInvalidFile = false;
     let processedCount = 0;
 
-    fileArray.forEach((file) => {
-      if (!file.type.startsWith('image') || file.size > size * 1024 * 1024) {
+    for (const file of fileArray) {
+      // 파일 크기 체크
+      if (file.size > size * 1024 * 1024) {
         hasInvalidFile = true;
         processedCount++;
-        return;
+        continue;
       }
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result !== 'string') return;
+      // 파일 타입 체크
+      if (!isImageFile(file) && (!allowVideo || !isVideoFile(file))) {
+        hasInvalidFile = true;
+        processedCount++;
+        continue;
+      }
+
+      try {
+        let fileURL: string;
+        let fileType: 'image' | 'video' = 'image';
+        let duration: number | undefined;
+        let thumbnail: string | undefined;
+
+        if (isImageFile(file)) {
+          // 이미지 파일 처리
+          fileURL = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              resolve(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+          });
+        } else if (isVideoFile(file)) {
+          // 동영상 파일 처리
+          fileType = 'video';
+          duration = await getVideoDuration(file);
+          thumbnail = await generateVideoThumbnail(file);
+          fileURL = thumbnail; // 썸네일을 미리보기로 사용
+        } else {
+          continue;
+        }
 
         const fileWithURL = Object.assign(file, {
-          fileURL: reader.result,
+          fileURL,
+          type: fileType,
+          duration,
+          thumbnail,
         });
 
         const isDuplicate =
@@ -100,8 +140,11 @@ function FileInputInner(
 
         if (processedCount === fileArray.length) {
           if (hasInvalidFile) {
+            const allowedTypes = allowVideo
+              ? '이미지 또는 동영상 파일만 추가할 수 있으며'
+              : '이미지 파일만 추가할 수 있으며';
             alert(
-              `이미지 파일만 추가할 수 있으며, ${size}MB 이하의 파일만 업로드할 수 있습니다.`,
+              `${allowedTypes}, ${size}MB 이하의 파일만 업로드할 수 있습니다.`,
             );
           }
 
@@ -110,15 +153,24 @@ function FileInputInner(
           setUploadedImages(limited);
 
           const store = new DataTransfer();
-          limited.forEach((file) => store.items.add(file));
+          limited.forEach((file) => {
+            // 원본 File 객체의 내용을 사용하여 새로운 File 객체 생성
+            const originalFile = new File([file as Blob], file.name, {
+              type: file.type || 'application/octet-stream',
+              lastModified: file.lastModified,
+            });
+            store.items.add(originalFile);
+          });
           if (inputRef.current) {
             inputRef.current.files = store.files;
           }
         }
-      };
-
-      reader.readAsDataURL(file);
-    });
+      } catch (error) {
+        console.error('파일 처리 중 오류:', error);
+        hasInvalidFile = true;
+        processedCount++;
+      }
+    }
   };
 
   const deleteUploadedImage = async (index: number) => {
@@ -146,7 +198,14 @@ function FileInputInner(
       setValue(name, newUploaded, { shouldValidate: true });
 
       const store = new DataTransfer();
-      newUploaded.forEach((file) => store.items.add(file));
+      newUploaded.forEach((file) => {
+        // 원본 File 객체의 내용을 사용하여 새로운 File 객체 생성
+        const originalFile = new File([file as Blob], file.name, {
+          type: file.type || 'application/octet-stream',
+          lastModified: file.lastModified,
+        });
+        store.items.add(originalFile);
+      });
       if (inputRef.current) {
         inputRef.current.files = store.files;
         inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
@@ -173,29 +232,45 @@ function FileInputInner(
   return (
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
-        {previewImages.map((preview, index) => (
-          <div
-            key={`${preview}-${index}`}
-            className={styled.preview_item}
-            style={{
-              backgroundImage: preview ? `url("${preview}")` : 'none',
-            }}
-            onClick={(event: MouseEvent<HTMLDivElement>) => {
-              event.preventDefault();
-              setSelectedIndex(index);
-              showModal();
-            }}>
-            <button
-              className={styled.delete_button}
-              onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                event.stopPropagation();
+        {previewImages.map((preview, index) => {
+          const file = uploadedImages[index - initialDefaultImages.length];
+          const isVideo = file?.type === 'video';
+
+          return (
+            <div
+              key={`${preview}-${index}`}
+              className={styled.preview_item}
+              style={{
+                backgroundImage: preview ? `url("${preview}")` : 'none',
+              }}
+              onClick={(event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault();
-                deleteUploadedImage(index);
+                setSelectedIndex(index);
+                showModal();
               }}>
-              <IconCancelWhite width={14} height={14} />
-            </button>
-          </div>
-        ))}
+              {isVideo && (
+                <div className={styled.video_overlay}>
+                  <div className={styled.play_icon}>▶</div>
+                  {file?.duration && (
+                    <div className={styled.duration}>
+                      {Math.floor(file.duration / 60)}:
+                      {(file.duration % 60).toFixed(0).padStart(2, '0')}
+                    </div>
+                  )}
+                </div>
+              )}
+              <button
+                className={styled.delete_button}
+                onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  deleteUploadedImage(index);
+                }}>
+                <IconCancelWhite width={14} height={14} />
+              </button>
+            </div>
+          );
+        })}
       </div>
       <label htmlFor={id} className={styled.add_label}>
         <span>+</span>
@@ -207,6 +282,7 @@ function FileInputInner(
         ref={mergeRefs(inputRef, ref)}
         type="file"
         multiple
+        accept={accept}
         hidden
         onChange={handleOnChange}
       />

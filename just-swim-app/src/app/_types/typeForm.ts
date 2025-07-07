@@ -39,6 +39,8 @@ export interface FileInputProps {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   length?: number;
   size?: number;
+  accept?: string;
+  allowVideo?: boolean;
 }
 
 export interface LocationInputPros {
@@ -83,8 +85,24 @@ export interface StoredFileInfo {
   length?: number;
   size?: number;
   fileURL?: string;
+  type?: 'image' | 'video';
+  duration?: number;
+  thumbnail?: string;
 }
 
-export interface FileWithPreview extends File {
+export interface FileWithPreview extends Omit<File, 'type'> {
   fileURL: string;
+  type?: 'image' | 'video';
+  duration?: number;
+  thumbnail?: string;
+}
+
+export interface VideoFileInfo extends StoredFileInfo {
+  type: 'video';
+  duration: number;
+  thumbnail: string;
+}
+
+export interface ImageFileInfo extends StoredFileInfo {
+  type: 'image';
 }

@@ -10,6 +10,17 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ];
 
+// 동영상 파일 타입 추가
+const ACCEPTED_VIDEO_TYPES = [
+  'video/mp4',
+  'video/webm',
+  'video/ogg',
+  'video/quicktime',
+  'video/x-msvideo',
+];
+
+const ACCEPTED_FILE_TYPES = [...ACCEPTED_IMAGE_TYPES, ...ACCEPTED_VIDEO_TYPES];
+
 const MAX_FILE_LENGTH = 4;
 const checkFileLength = (file: string) => file.length <= MAX_FILE_LENGTH;
 
@@ -22,9 +33,9 @@ export const formSchema = z.object({
   //   .refine( checkFileLength, "4장까지만 첨부 가능합니다.")
   //   .refine((files) => !files || Array.from(files).every(file => file.size <= MAX_FILE_SIZE), `Max file size is 20MB.`)
   //   .refine(
-  //     (files) =>  !files || Array.from(files).every(file => ACCEPTED_IMAGE_TYPES.includes(file.type)),
-  //     ".jpg, .jpeg, .png, .webp 형식의 파일만 업로드 가능합니다."
-  // )
+  //     (files) =>  !files || Array.from(files).every(file => ACCEPTED_FILE_TYPES.includes(file.type)),
+  //     ".jpg, .jpeg, .png, .webp, .mp4, .webm, .ogg, .mov, .avi 형식의 파일만 업로드 가능합니다."
+  //   )
   link: z.string().nullable().optional(),
   content: z.string().refine((str) => str.length !== 0, '피드백은 필수입니다.'),
 });
