@@ -31,6 +31,7 @@ type UserStoreType = {
   setResetUser: () => void;
   loadProfileInfo: () => Promise<void>;
   setProfileInfo: (profile: any) => void;
+  invalidateProfile: () => void;
 };
 
 export const useUserStore = create(
@@ -115,6 +116,9 @@ export const useUserStore = create(
       },
       setProfileInfo: (profile: any) => {
         set({ profileInfo: profile });
+      },
+      invalidateProfile: () => {
+        set({ profileInfo: null });
       },
     }),
     {

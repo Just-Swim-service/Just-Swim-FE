@@ -4,6 +4,14 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  // 페이지 이동 성능 최적화
+  experimental: {
+    optimizePackageImports: ['@mui/material', '@mui/icons-material', 'lodash'],
+  },
+  // 컴파일러 최적화
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   webpack: (config, { dev, isServer }) => {
     config.module.rules.push({
       test: /\.svg$/,

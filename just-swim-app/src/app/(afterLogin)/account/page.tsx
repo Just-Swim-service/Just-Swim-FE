@@ -14,17 +14,12 @@ import { removeTokenInCookies } from '@utils';
 
 export default function Account() {
   const router = useRouter();
-  const { setResetUser } = useUserStore();
+  const { setResetUser, profileInfo, loadProfileInfo } = useUserStore();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>();
 
   useEffect(() => {
-    const fetchProfileInfo = async () => {
-      const response = await getMyProfile();
-      setProfileInfo(response.data.data as ProfileInfo);
-    };
-    fetchProfileInfo();
-  }, []);
+    loadProfileInfo();
+  }, [loadProfileInfo]);
 
   const setUserLogout = async () => {
     await postUserLogout();
@@ -35,7 +30,8 @@ export default function Account() {
   };
 
   const handleProfileEdit = () => {
-    router.push(ROUTES.ACCOUNT.edit);
+    // router.push 대신 Link 컴포넌트 사용 권장
+    // router.push(ROUTES.ACCOUNT.edit);
   };
 
   const handleManageAccount = () => {
@@ -70,7 +66,9 @@ export default function Account() {
         <button
           className={styles.account_change_profile}
           onClick={handleProfileEdit}>
-          {TEXT.ACCOUNT_PAGE.editInfo}
+          <Link href={ROUTES.ACCOUNT.edit} className={styles.edit_link}>
+            {TEXT.ACCOUNT_PAGE.editInfo}
+          </Link>
         </button>
       </div>
       <div className={styles.account_setting}>

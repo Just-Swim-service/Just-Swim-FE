@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 export const usePerformance = (componentName: string) => {
   const renderCount = useRef(0);
@@ -40,4 +40,36 @@ export const useDebounce = <T>(value: T, delay: number): T => {
   }, [value, delay]);
 
   return debouncedValue;
+};
+
+// 페이지 이동 성능 측정 훅
+export const useNavigationPerformance = () => {
+  const [navigationTime, setNavigationTime] = useState<number>(0);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const measureNavigation = useCallback((navigationFn: () => void) => {
+    const startTime = performance.now();
+    setIsNavigating(true);
+
+    try {
+      navigationFn();
+    } finally {
+      const endTime = performance.now();
+      const duration = endTime - startTime;
+      setNavigationTime(duration);
+      setIsNavigating(false);
+
+      if (duration > 1000) {
+        console.warn(`🐌 Slow Navigation: ${duration.toFixed(2)}ms`);
+      } else {
+        console.debug(`✅ Fast Navigation: ${duration.toFixed(2)}ms`);
+      }
+    }
+  }, []);
+
+  return {
+    navigationTime,
+    isNavigating,
+    measureNavigation,
+  };
 };
