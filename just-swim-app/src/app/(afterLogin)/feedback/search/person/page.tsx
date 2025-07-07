@@ -12,6 +12,7 @@ import React, {
   useCallback,
 } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 
 import { MemberProps } from './server';
@@ -24,6 +25,7 @@ import { randomId } from '@utils';
 
 import styled from './styles.module.scss';
 import { Header } from '@components';
+import { usePerformance } from '@hooks';
 
 function _MemberItem({
   member,
@@ -215,6 +217,7 @@ export default function Search() {
     updateSelectedList,
     isLoading,
   } = searchUserStore();
+  const { renderCount } = usePerformance('SearchPage');
 
   const [type, setType] = useState<'group' | 'name'>('group');
   const [search, setSearch] = useState<string>('');
@@ -256,11 +259,10 @@ export default function Search() {
     setReverse((s) => !s);
   }, []);
 
-  // 여기에 선택하기 버튼을 눌렀을 때 처리해야 할 동작 추가
-  const onClickSelect = useCallback(() => {
+  // 선택된 수강생을 store에 저장
+  const handleSelect = useCallback(() => {
     updateSelectedList(selected);
-    router.push('/feedback/create/person');
-  }, [selected, updateSelectedList, router]);
+  }, [selected, updateSelectedList]);
 
   // 로딩 상태 처리
   if (isLoading) {
@@ -335,13 +337,15 @@ export default function Search() {
           />
         )}
         <div className={styled.button_container}>
-          <button
+          <Link
+            href="/feedback/create/person"
+            onClick={handleSelect}
+            prefetch={true}
             className={`${styled.button} ${selected.length === 0 ? styled.disable : styled.active}`}
-            disabled={selected.length === 0}
-            onClick={onClickSelect}>
+            style={{ pointerEvents: selected.length === 0 ? 'none' : 'auto' }}>
             {selected.length !== 0 && <span>{`${selected.length}명 `}</span>}
             <span>선택하기</span>
-          </button>
+          </Link>
         </div>
       </div>
     </>

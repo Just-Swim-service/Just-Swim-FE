@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Provider, UserEntity, UserType } from '@types';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { getMyProfile } from '@apis';
 
 export type User = {
   token: string | boolean;
@@ -9,6 +10,15 @@ export type User = {
 
 type UserStoreType = {
   user: Record<string, Partial<Omit<User, 'token'>>>;
+  profileInfo: {
+    email: string;
+    name: string;
+    userType: UserType;
+    profileImage: string;
+    birth?: string;
+    phoneNumber?: string;
+  } | null;
+  isLoading: boolean;
   getToken: () => string;
   getUser: () => Record<string, Partial<Omit<User, 'token'>>>;
   getProvider: (token: Provider) => string;
@@ -19,12 +29,16 @@ type UserStoreType = {
   setAddUserToken: (token: string) => void;
   setAddUserProfile: ({ token, profile }: User) => void;
   setResetUser: () => void;
+  loadProfileInfo: () => Promise<void>;
+  setProfileInfo: (profile: any) => void;
 };
 
 export const useUserStore = create(
   persist<UserStoreType>(
     (set, get) => ({
       user: {},
+      profileInfo: null,
+      isLoading: false,
       getToken: () => {
         return Object.keys(get().user)[0];
       },
@@ -79,7 +93,28 @@ export const useUserStore = create(
       setResetUser: () => {
         set(() => ({
           user: {},
+          profileInfo: null,
         }));
+      },
+      loadProfileInfo: async () => {
+        const currentProfile = get().profileInfo;
+        if (currentProfile) return;
+
+        set({ isLoading: true });
+        try {
+          const response = await getMyProfile();
+          const profileData = response.data.data;
+          set({
+            profileInfo: profileData,
+            isLoading: false,
+          });
+        } catch (error) {
+          console.error('Failed to load profile info:', error);
+          set({ isLoading: false });
+        }
+      },
+      setProfileInfo: (profile: any) => {
+        set({ profileInfo: profile });
       },
     }),
     {
