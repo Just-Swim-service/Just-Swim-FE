@@ -252,6 +252,7 @@ function FileInputInner(
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log('handleOnChange called:', event.target.files?.length, 'files');
     onChangeImages(event);
     onChange(event);
   };
@@ -321,6 +322,7 @@ function FileInputInner(
         accept={accept}
         hidden
         onChange={handleOnChange}
+        onClick={() => console.log('File input clicked')}
       />
       {modal && (
         <ImageCarousel
