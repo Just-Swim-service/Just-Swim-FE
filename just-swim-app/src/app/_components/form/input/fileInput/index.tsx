@@ -248,7 +248,7 @@ function FileInputInner(
               className={styled.preview_item}
               style={{
                 backgroundImage: preview
-                  ? `url("${file?.type === 'video' ? file.thumbnail : preview}")`
+                  ? `url("${file?.type === 'video' ? file.thumbnailPath : preview}")`
                   : 'none',
               }}
               onClick={(event: MouseEvent<HTMLDivElement>) => {

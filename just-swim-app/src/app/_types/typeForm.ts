@@ -94,7 +94,7 @@ export interface FileWithPreview extends Omit<File, 'type'> {
   fileURL: string;
   type?: 'image' | 'video';
   duration?: number;
-  thumbnail?: string;
+  thumbnailPath?: string;
 }
 
 export interface VideoFileInfo extends StoredFileInfo {

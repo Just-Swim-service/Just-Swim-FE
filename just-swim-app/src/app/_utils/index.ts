@@ -17,8 +17,8 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
     const ctx = canvas.getContext('2d');
 
     video.onloadedmetadata = () => {
-      // 동영상의 1초 지점에서 썸네일 생성
-      video.currentTime = 1;
+      // 동영상의 첫 프레임에서 썸네일 생성 (0초 지점)
+      video.currentTime = 0;
     };
 
     video.onseeked = () => {
@@ -27,6 +27,12 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const thumbnail = canvas.toDataURL('image/jpeg', 0.8);
+        console.log(
+          'Generated thumbnail for:',
+          file.name,
+          'Size:',
+          thumbnail.length,
+        );
         resolve(thumbnail);
       } else {
         reject(new Error('Canvas context not available'));
@@ -34,6 +40,7 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
     };
 
     video.onerror = () => {
+      console.error('Video loading error:', file.name);
       reject(new Error('Failed to load video'));
     };
 
