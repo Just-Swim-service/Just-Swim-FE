@@ -63,23 +63,10 @@ function FileInputInner(
 
   const previewImages = [
     ...initialDefaultImages,
-    ...uploadedImages.map((f) => {
-      // 동영상 파일의 경우 썸네일을 사용, 이미지 파일의 경우 fileURL 사용
-      return f.type === 'video' ? f.thumbnailPath || f.fileURL : f.fileURL;
-    }),
+    ...uploadedImages.map((f) =>
+      f.type === 'video' ? f.thumbnailPath || f.fileURL : f.fileURL,
+    ),
   ].filter(Boolean);
-
-  // 디버깅을 위한 로그
-  console.log('FileInput Debug:', {
-    initialDefaultImages,
-    uploadedImages: uploadedImages.map((f) => ({
-      name: f.name,
-      type: f.type,
-      fileURL: f.fileURL,
-      thumbnailPath: f.thumbnailPath,
-    })),
-    previewImages,
-  });
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
@@ -91,121 +78,90 @@ function FileInputInner(
     }
 
     const fileArray = Array.from(files);
-    let newFiles: FileWithPreview[] = [];
     let hasInvalidFile = false;
-    let processedCount = 0;
 
-    for (const file of fileArray) {
-      console.log('Processing file:', {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-      });
-
-      // 파일 크기 체크
-      if (file.size > size * 1024 * 1024) {
-        console.log('File too large:', file.name);
-        hasInvalidFile = true;
-        processedCount++;
-        continue;
-      }
-
-      // 파일 타입 체크
-      if (!isImageFile(file) && (!allowVideo || !isVideoFile(file))) {
-        hasInvalidFile = true;
-        processedCount++;
-        continue;
-      }
-
-      try {
-        let fileURL: string;
-        let fileType: 'image' | 'video' = 'image';
-        let duration: number | undefined;
-        let thumbnailPath: string | undefined;
-
-        if (isImageFile(file)) {
-          // 이미지 파일 처리
-          fileURL = await new Promise<string>((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              resolve(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-          });
-        } else if (isVideoFile(file)) {
-          // 동영상 파일 처리
-          fileType = 'video';
-          duration = await getVideoDuration(file);
-          thumbnailPath = await generateVideoThumbnail(file);
-          // 동영상 파일의 경우 원본 파일의 URL을 생성
-          fileURL = await new Promise<string>((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              resolve(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-          });
-        } else {
-          continue;
-        }
-
-        const fileWithURL = Object.assign(file, {
-          fileURL,
-          type: fileType,
-          duration,
-          thumbnailPath,
+    const results = await Promise.all(
+      fileArray.map(async (file) => {
+        console.log('Processing file:', {
+          name: file.name,
+          type: file.type,
+          size: file.size,
         });
 
-        console.log('Created fileWithURL:', {
-          name: fileWithURL.name,
-          type: fileWithURL.type,
-          fileURL: fileWithURL.fileURL?.substring(0, 50) + '...',
-          thumbnailPath: fileWithURL.thumbnailPath?.substring(0, 50) + '...',
-          duration: fileWithURL.duration,
-        });
-
-        const isDuplicate =
-          initialDefaultImages.includes(fileWithURL.fileURL) ||
-          uploadedImages.some((f) => f.fileURL === fileWithURL.fileURL);
-
-        if (!isDuplicate) {
-          newFiles.push(fileWithURL);
+        if (file.size > size * 1024 * 1024) {
+          hasInvalidFile = true;
+          return null;
         }
 
-        processedCount++;
+        if (!isImageFile(file) && (!allowVideo || !isVideoFile(file))) {
+          hasInvalidFile = true;
+          return null;
+        }
 
-        if (processedCount === fileArray.length) {
-          if (hasInvalidFile) {
-            const allowedTypes = allowVideo
-              ? '이미지 또는 동영상 파일만 추가할 수 있으며'
-              : '이미지 파일만 추가할 수 있으며';
-            alert(
-              `${allowedTypes}, ${size}MB 이하의 파일만 업로드할 수 있습니다.`,
-            );
-          }
+        try {
+          let fileURL = '';
+          let fileType: 'image' | 'video' = 'image';
+          let duration: number | undefined;
+          let thumbnailPath: string | undefined;
 
-          const total = [...uploadedImages, ...newFiles];
-          const limited = total.slice(0, length);
-          setUploadedImages(limited);
-
-          const store = new DataTransfer();
-          limited.forEach((file) => {
-            // 원본 File 객체의 내용을 사용하여 새로운 File 객체 생성
-            const originalFile = new File([file as Blob], file.name, {
-              type: file.type || 'application/octet-stream',
-              lastModified: file.lastModified,
+          if (isImageFile(file)) {
+            fileURL = await new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.readAsDataURL(file);
             });
-            store.items.add(originalFile);
-          });
-          if (inputRef.current) {
-            inputRef.current.files = store.files;
+          } else if (isVideoFile(file)) {
+            fileType = 'video';
+            duration = await getVideoDuration(file);
+            thumbnailPath = await generateVideoThumbnail(file);
+            fileURL = await new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.readAsDataURL(file);
+            });
           }
+
+          const fileWithURL = Object.assign(file, {
+            fileURL,
+            type: fileType,
+            duration,
+            thumbnailPath,
+          });
+
+          const isDuplicate =
+            initialDefaultImages.includes(fileWithURL.fileURL) ||
+            uploadedImages.some((f) => f.fileURL === fileWithURL.fileURL);
+
+          return isDuplicate ? null : fileWithURL;
+        } catch (error) {
+          console.error('파일 처리 중 오류:', error);
+          hasInvalidFile = true;
+          return null;
         }
-      } catch (error) {
-        console.error('파일 처리 중 오류:', error);
-        hasInvalidFile = true;
-        processedCount++;
-      }
+      }),
+    );
+
+    const validFiles = results.filter(Boolean) as FileWithPreview[];
+    const total = [...uploadedImages, ...validFiles].slice(0, length);
+    setUploadedImages(total);
+
+    const store = new DataTransfer();
+    total.forEach((file) => {
+      const originalFile = new File([file as Blob], file.name, {
+        type: file.type || 'application/octet-stream',
+        lastModified: file.lastModified,
+      });
+      store.items.add(originalFile);
+    });
+    if (inputRef.current) {
+      inputRef.current.files = store.files;
+    }
+
+    if (hasInvalidFile) {
+      const allowedTypes = allowVideo
+        ? '이미지 또는 동영상 파일만 추가할 수 있으며'
+        : '이미지 파일만 추가할 수 있으며';
+      alert(`${allowedTypes}, ${size}MB 이하의 파일만 업로드할 수 있습니다.`);
     }
   };
 
@@ -223,7 +179,6 @@ function FileInputInner(
     if (index < initialDefaultImages.length) {
       const newDefaults = [...initialDefaultImages];
       const removed = newDefaults.splice(index, 1)[0];
-
       setInitialDefaultImages(newDefaults);
       await deleteS3Image(removed);
     } else {
@@ -235,7 +190,6 @@ function FileInputInner(
 
       const store = new DataTransfer();
       newUploaded.forEach((file) => {
-        // 원본 File 객체의 내용을 사용하여 새로운 File 객체 생성
         const originalFile = new File([file as Blob], file.name, {
           type: file.type || 'application/octet-stream',
           lastModified: file.lastModified,
@@ -252,7 +206,6 @@ function FileInputInner(
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('handleOnChange called:', event.target.files?.length, 'files');
     onChangeImages(event);
     onChange(event);
   };
