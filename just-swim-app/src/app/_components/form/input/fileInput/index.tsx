@@ -78,65 +78,75 @@ function FileInputInner(
     }
 
     const fileArray = Array.from(files);
+    const validFiles: FileWithPreview[] = [];
+    let invalidCount = 0;
 
-    const results = await Promise.all(
-      fileArray.map(async (file) => {
-        try {
-          const isImage = isImageFile(file);
-          const isVideo = allowVideo && isVideoFile(file);
+    for (const file of fileArray) {
+      console.log('🔍 업로드 시도 중인 파일:', {
+        name: file.name,
+        type: file.type,
+        sizeMB: (file.size / 1024 / 1024).toFixed(2),
+      });
 
-          if (!isImage && !isVideo) {
-            console.warn('허용되지 않은 타입:', file.name, file.type);
-            return null;
-          }
+      const isImage = isImageFile(file);
+      const isVideo = allowVideo && isVideoFile(file);
 
-          if (file.size > size * 1024 * 1024) {
-            console.warn('파일 크기 초과:', file.name, file.size);
-            return null;
-          }
+      if (!isImage && !isVideo) {
+        console.warn('❌ 허용되지 않은 파일 형식:', file.name);
+        invalidCount++;
+        continue;
+      }
 
-          let fileURL = '';
-          let fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
-          let duration: number | undefined;
-          let thumbnailPath: string | undefined;
+      if (file.size > size * 1024 * 1024) {
+        console.warn('❌ 파일 용량 초과:', file.name);
+        invalidCount++;
+        continue;
+      }
 
-          if (isImage) {
-            fileURL = await new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve(reader.result as string);
-              reader.readAsDataURL(file);
-            });
-          } else if (isVideo) {
-            duration = await getVideoDuration(file);
-            thumbnailPath = await generateVideoThumbnail(file);
-            fileURL = await new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve(reader.result as string);
-              reader.readAsDataURL(file);
-            });
-          }
+      try {
+        let fileURL = '';
+        let fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
+        let duration: number | undefined;
+        let thumbnailPath: string | undefined;
 
-          const fileWithURL = Object.assign(file, {
-            fileURL,
-            type: fileType,
-            duration,
-            thumbnailPath,
+        if (isImage) {
+          fileURL = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
           });
-
-          const isDuplicate =
-            initialDefaultImages.includes(fileWithURL.fileURL) ||
-            uploadedImages.some((f) => f.fileURL === fileWithURL.fileURL);
-
-          return isDuplicate ? null : fileWithURL;
-        } catch (error) {
-          console.error('파일 처리 중 오류:', error);
-          return null;
+        } else if (isVideo) {
+          duration = await getVideoDuration(file);
+          thumbnailPath = await generateVideoThumbnail(file);
+          fileURL = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
+          });
         }
-      }),
-    );
 
-    const validFiles = results.filter(Boolean) as FileWithPreview[];
-    const hasInvalidFile = validFiles.length < fileArray.length;
+        const fileWithURL = Object.assign(file, {
+          fileURL,
+          type: fileType,
+          duration,
+          thumbnailPath,
+        });
+
+        const isDuplicate =
+          initialDefaultImages.includes(fileWithURL.fileURL) ||
+          uploadedImages.some((f) => f.fileURL === fileWithURL.fileURL);
+
+        if (isDuplicate) {
+          console.log('⚠️ 중복된 파일:', file.name);
+          continue;
+        }
+
+        validFiles.push(fileWithURL);
+      } catch (err) {
+        console.error('❌ 파일 처리 실패:', file.name, err);
+        invalidCount++;
+      }
+    }
 
     const total = [...uploadedImages, ...validFiles].slice(0, length);
     setUploadedImages(total);
@@ -153,7 +163,7 @@ function FileInputInner(
       inputRef.current.files = store.files;
     }
 
-    if (hasInvalidFile) {
+    if (invalidCount > 0) {
       alert(
         `이미지 또는 동영상 파일만 업로드 가능하며, 크기는 ${size}MB 이하이어야 합니다.`,
       );
