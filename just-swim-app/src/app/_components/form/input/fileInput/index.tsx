@@ -63,8 +63,23 @@ function FileInputInner(
 
   const previewImages = [
     ...initialDefaultImages,
-    ...uploadedImages.map((f) => f.fileURL),
+    ...uploadedImages.map((f) => {
+      // 동영상 파일의 경우 썸네일을 사용, 이미지 파일의 경우 fileURL 사용
+      return f.type === 'video' ? f.thumbnailPath || f.fileURL : f.fileURL;
+    }),
   ].filter(Boolean);
+
+  // 디버깅을 위한 로그
+  console.log('FileInput Debug:', {
+    initialDefaultImages,
+    uploadedImages: uploadedImages.map((f) => ({
+      name: f.name,
+      type: f.type,
+      fileURL: f.fileURL,
+      thumbnailPath: f.thumbnailPath,
+    })),
+    previewImages,
+  });
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     if (onDelete.current) return;
@@ -81,8 +96,15 @@ function FileInputInner(
     let processedCount = 0;
 
     for (const file of fileArray) {
+      console.log('Processing file:', {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      });
+
       // 파일 크기 체크
       if (file.size > size * 1024 * 1024) {
+        console.log('File too large:', file.name);
         hasInvalidFile = true;
         processedCount++;
         continue;
@@ -132,6 +154,14 @@ function FileInputInner(
           type: fileType,
           duration,
           thumbnailPath,
+        });
+
+        console.log('Created fileWithURL:', {
+          name: fileWithURL.name,
+          type: fileWithURL.type,
+          fileURL: fileWithURL.fileURL?.substring(0, 50) + '...',
+          thumbnailPath: fileWithURL.thumbnailPath?.substring(0, 50) + '...',
+          duration: fileWithURL.duration,
         });
 
         const isDuplicate =
@@ -247,9 +277,7 @@ function FileInputInner(
               key={`${preview}-${index}`}
               className={styled.preview_item}
               style={{
-                backgroundImage: preview
-                  ? `url("${file?.type === 'video' ? file.thumbnailPath : preview}")`
-                  : 'none',
+                backgroundImage: preview ? `url("${preview}")` : 'none',
               }}
               onClick={(event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault();
