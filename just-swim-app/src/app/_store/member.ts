@@ -38,6 +38,11 @@ type State = {
   userList?: Member[];
   checkedList: Member[];
   selectedList: Member[];
+  processedData?: {
+    userNameList: Member[];
+    groupNameList: { lecture: string; members: Member[] }[];
+  };
+  isLoading: boolean;
 };
 
 type Prams = {
@@ -56,27 +61,68 @@ type Action = {
   loadUserList: () => Promise<void>;
 };
 
+const processUserData = (rawData: any[]) => {
+  if (!rawData || rawData.length === 0) {
+    return { userNameList: [], groupNameList: [] };
+  }
+
+  const userNameList = [...rawData].sort((a, b) =>
+    a.memberNickname.localeCompare(b.memberNickname, 'ko'),
+  );
+
+  const groupMap = rawData.reduce((acc: any, member: any) => {
+    const { lectureId, lectureTitle } = member;
+    if (!acc[lectureId]) {
+      acc[lectureId] = {
+        lecture: lectureTitle,
+        members: [],
+      };
+    }
+    acc[lectureId].members.push(member);
+    return acc;
+  }, {});
+
+  const groupNameList = Object.values(groupMap);
+
+  return { userNameList, groupNameList };
+};
+
 // @ts-ignore
 const initialState: State = {
   selectedList: [],
   checkedList: [],
+  isLoading: false,
 };
 
 const searchUserStore = create<any>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       userList: [],
       checkedList: [],
       selectedList: [],
+      processedData: undefined,
+      isLoading: false,
       resetMemberData: () => {
         set(initialState);
       },
-      //   수강생 데이터 불러오기
       loadUserList: async () => {
-        const userList = await getMemberList();
-        set({ userList: userList || [] });
+        set({ isLoading: true });
+        try {
+          const userList = await getMemberList();
+          const rawData = (userList as any)?.data?.data || [];
+
+          const processedData = processUserData(rawData);
+
+          set({
+            userList: userList || [],
+            processedData,
+            isLoading: false,
+          });
+        } catch (error) {
+          console.error('Failed to load user list:', error);
+          set({ isLoading: false });
+        }
       },
-      //   유저가 체크됐는지 확인하고, 체크되어있으면 checkedList에 추가, 아니면 checkedList에서 제거
       checkItemHandler: (e: ChangeEvent<HTMLInputElement>, userId: string) =>
         set((state: any) => {
           const isChecked = e.target.checked;
@@ -99,14 +145,12 @@ const searchUserStore = create<any>()(
             checkedList: [...list],
           };
         }),
-      // 선택한 수강생을 selectedList에 추가
       updateSelectedList: (list: Member[]) =>
         set((state: any) => {
           return {
             selectedList: [...list],
           };
         }),
-      // 선택한 수강생을 selectedList에 추가??? 위와 뭐가 다른거지??
       setSelectedListHandler: () =>
         set((state: any) => {
           return {
@@ -129,6 +173,7 @@ const searchUserStore = create<any>()(
         selectedList: state.selectedList,
         checkedList: state.checkedList,
         userList: state.userList,
+        processedData: state.processedData,
       }),
     },
   ),
@@ -182,7 +227,6 @@ const searchClassStore = create<any>()(
             checkedList: [...state.classList],
           };
         }),
-      // 추가한 부분
       updateCheckList: (list: ClassGroup[]) =>
         set((state: any) => {
           return {
@@ -201,7 +245,6 @@ const searchClassStore = create<any>()(
             selectedList: state.checkedList,
           };
         }),
-
       removeItemHandler: (lectureId: string) =>
         set((state: any) => ({
           selectedList: state.selectedList.filter(

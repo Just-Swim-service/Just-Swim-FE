@@ -1,10 +1,63 @@
 'use client';
 
-import { MouseEvent, TouchEvent, WheelEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  MouseEvent,
+  TouchEvent,
+  WheelEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
 
 import { randomId, throttle } from '@utils';
 
 import styled from './styles.module.scss';
+
+// 블러 요소들을 메모이제이션
+const BlurElements = React.memo(
+  ({
+    sideItemsToShow,
+    itemHeight,
+  }: {
+    sideItemsToShow: number;
+    itemHeight: number;
+  }) => {
+    const blurElements = useMemo(() => {
+      const elements = [];
+      for (let idx = 0; idx < sideItemsToShow; idx++) {
+        elements.push(
+          <div
+            key={`top-${idx}`}
+            className={styled.blur}
+            style={{
+              height: itemHeight,
+              top: itemHeight * (sideItemsToShow - 1 - idx),
+              opacity: 0.5 + idx * 0.2,
+            }}
+          />,
+        );
+        elements.push(
+          <div
+            key={`bottom-${idx}`}
+            className={styled.blur}
+            style={{
+              height: itemHeight,
+              bottom: itemHeight * (sideItemsToShow - 1 - idx),
+              opacity: 0.5 + idx * 0.2,
+            }}
+          />,
+        );
+      }
+      return elements;
+    }, [sideItemsToShow, itemHeight]);
+
+    return <>{blurElements}</>;
+  },
+);
+
+BlurElements.displayName = 'BlurElements';
 
 export function VerticalSlider({
   itemList,
@@ -15,26 +68,29 @@ export function VerticalSlider({
   xAxisPadding = 20,
   useBorder = false,
 }: {
-  itemList: string[],
-  initialItem: string,
-  updateItem: (item: string) => void,
-  itemHeight?: number,
-  itemsToShow?: number,
-  xAxisPadding?: number
-  useBorder?: boolean,
+  itemList: string[];
+  initialItem: string;
+  updateItem: (item: string) => void;
+  itemHeight?: number;
+  itemsToShow?: number;
+  xAxisPadding?: number;
+  useBorder?: boolean;
 }) {
-  const sideItemsToShow = ((itemsToShow - 1) / 2);
-  const initialItemIndex = itemList.indexOf(initialItem) !== -1 ? itemList.indexOf(initialItem) : 0;
+  const sideItemsToShow = (itemsToShow - 1) / 2;
+  const initialItemIndex =
+    itemList.indexOf(initialItem) !== -1 ? itemList.indexOf(initialItem) : 0;
   const middleY = itemHeight * sideItemsToShow;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-  
+
   const startCapture = useRef<boolean>(false);
   const startCursorPosition = useRef<number>(0);
 
-  const [cursorPosition, setCursorPosition] = useState<number>(-initialItemIndex * itemHeight);
-  const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);  
+  const [cursorPosition, setCursorPosition] = useState<number>(
+    -initialItemIndex * itemHeight,
+  );
+  const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
 
   const startDrag = useCallback((position: number) => {
     if (!startCapture.current) {
@@ -52,16 +108,16 @@ export function VerticalSlider({
   const endDrag = useCallback(() => {
     if (startCapture.current) {
       startCapture.current = false;
-      
-      setCursorPosition(prev => prev + movingCursorPositon);
+
+      setCursorPosition((prev) => prev + movingCursorPositon);
       setMovingCursorPosition(0);
     }
   }, [movingCursorPositon]);
-  
+
   // mouse drag
   const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     startDrag(event.pageY);
- };
+  };
 
   const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     whileDrag(event.pageY);
@@ -70,7 +126,7 @@ export function VerticalSlider({
   const handleMouseLeave = (event: MouseEvent<HTMLDivElement>) => {
     endDrag();
   };
-  
+
   const handleMouseUp = (event: MouseEvent<HTMLDivElement>) => {
     endDrag();
   };
@@ -82,12 +138,12 @@ export function VerticalSlider({
 
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     whileDrag(event.targetTouches[0].pageY);
-  };  
-  
+  };
+
   const handleTouchCancle = (event: TouchEvent<HTMLDivElement>) => {
     endDrag();
   };
-  
+
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     endDrag();
   };
@@ -114,7 +170,7 @@ export function VerticalSlider({
     if (finalValue > 0) {
       finalValue = 0;
     }
-    
+
     const value = -(finalValue / itemHeight);
 
     setCursorPosition(finalValue);
@@ -137,75 +193,46 @@ export function VerticalSlider({
       onTouchMove={throttle(handleTouchMove, 10)}
       onTouchCancel={handleTouchCancle}
       onTouchEnd={handleTouchEnd}
-      onWheel={handleWheelScroll}
-    >
-      {
-        useBorder &&
+      onWheel={handleWheelScroll}>
+      {useBorder && (
         <>
-          <div className={styled.border} style={{
-            top: itemHeight * sideItemsToShow
-          }} />
-          <div className={styled.border} style={{
-            bottom: itemHeight * sideItemsToShow
-          }} />
+          <div
+            className={styled.border}
+            style={{
+              top: itemHeight * sideItemsToShow,
+            }}
+          />
+          <div
+            className={styled.border}
+            style={{
+              bottom: itemHeight * sideItemsToShow,
+            }}
+          />
         </>
-      }
-      {
-        new Array(sideItemsToShow).fill(0).map((_, idx) => {
-          return (
-            <div
-              key={randomId()}
-              className={styled.blur} 
-              style={{
-                height: itemHeight,
-                top: itemHeight * (sideItemsToShow - 1 - idx),
-                opacity: 0.5 + (idx * 0.2)
-              }}
-            />
-          )
-        })
-      }
-      {
-        new Array(sideItemsToShow).fill(0).map((_, idx) => {
-          return (
-            <div
-              key={randomId()}
-              className={styled.blur} 
-              style={{
-                height: itemHeight,
-                bottom: itemHeight * (sideItemsToShow - 1 - idx),
-                opacity: 0.5 + (idx * 0.2)
-              }}
-            />
-          )
-        })
-      }
+      )}
+      <BlurElements sideItemsToShow={sideItemsToShow} itemHeight={itemHeight} />
       <div
         ref={listRef}
-        className={`${styled.item_list} ${styled.use_transition}`} 
+        className={`${styled.item_list} ${styled.use_transition}`}
         style={{
-          transform: `translateY(${cursorPosition + movingCursorPositon + middleY}px)`
-        }}
-      >
-        {
-          itemList.map(item => {
-            return (
-              <div 
-                key={randomId()} 
-                className={styled.item}
-                style={{
-                  height: itemHeight,
-                  padding: `0 ${xAxisPadding}px`
-                }}
-              >
-                <div>{item}</div>
-              </div>
-            );
-          })
-        }
+          transform: `translateY(${cursorPosition + movingCursorPositon + middleY}px)`,
+        }}>
+        {itemList.map((item) => {
+          return (
+            <div
+              key={randomId()}
+              className={styled.item}
+              style={{
+                height: itemHeight,
+                padding: `0 ${xAxisPadding}px`,
+              }}>
+              <div>{item}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
-  )
+  );
 }
 
 const checkIndexInRange = (list: string[], index: number) => {
@@ -218,9 +245,13 @@ const checkIndexInRange = (list: string[], index: number) => {
   }
 
   return index;
-}
+};
 
-const initList = (list: string[], initialIndex: number, targetListLength: number): string[] => {
+const initList = (
+  list: string[],
+  initialIndex: number,
+  targetListLength: number,
+): string[] => {
   const side = (targetListLength - 1) / 2;
   const result: string[] = [];
 
@@ -228,27 +259,31 @@ const initList = (list: string[], initialIndex: number, targetListLength: number
     let index = i;
 
     index = checkIndexInRange(list, index);
-    
+
     result.push(list[index]);
   }
 
   return result;
-}
+};
 
-const updateList = (list: string[], currentIndex: number, targetListLength: number): string[] => {
+const updateList = (
+  list: string[],
+  currentIndex: number,
+  targetListLength: number,
+): string[] => {
   const side = (targetListLength - 1) / 2;
   const result: string[] = [];
-  
+
   for (let i = currentIndex - side; i <= currentIndex + side; i++) {
     let index = i;
-    
+
     index = checkIndexInRange(list, index);
-    
+
     result.push(list[index]);
   }
 
   return result;
-}
+};
 
 export function VerticalSliderLoop({
   itemList,
@@ -259,17 +294,18 @@ export function VerticalSliderLoop({
   xAxisPadding = 20,
   useBorder = false,
 }: {
-  itemList: string[],
-  initialItem: string,
-  updateItem: (item: string) => void,
-  itemHeight?: number,
-  itemsToShow?: number,
-  xAxisPadding?: number
-  useBorder?: boolean,
+  itemList: string[];
+  initialItem: string;
+  updateItem: (item: string) => void;
+  itemHeight?: number;
+  itemsToShow?: number;
+  xAxisPadding?: number;
+  useBorder?: boolean;
 }) {
-  const sideItemsToShow = ((itemsToShow - 1) / 2);
-  const initialItemIndex = itemList.indexOf(initialItem) !== -1 ? itemList.indexOf(initialItem) : 0;
-  
+  const sideItemsToShow = (itemsToShow - 1) / 2;
+  const initialItemIndex =
+    itemList.indexOf(initialItem) !== -1 ? itemList.indexOf(initialItem) : 0;
+
   const listLength = itemsToShow * 4 + 1;
   const middleIndex = itemsToShow * 2;
   const middleY = (middleIndex - sideItemsToShow) * itemHeight;
@@ -277,7 +313,7 @@ export function VerticalSliderLoop({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-  
+
   const startCapture = useRef<boolean>(false);
   const startCursorPosition = useRef<number>(0);
 
@@ -285,48 +321,65 @@ export function VerticalSliderLoop({
   const updatePosition = useRef<number>(0);
   const marginTop = useRef<number>(0);
 
-  const [list, setList] = useState<string[]>(initList(itemList, initialItemIndex, listLength));
+  const [list, setList] = useState<string[]>(
+    initList(itemList, initialItemIndex, listLength),
+  );
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
   const [animating, setAnimating] = useState<boolean>(false);
 
-  const startDrag = useCallback((position: number) => {
-    if (animating) {
-      return;
-    }
-
-    if (!startCapture.current) {
-      startCapture.current = true;
-      startCursorPosition.current = position;
-      updatePosition.current = position;
-
-      listRef.current?.style.setProperty('transition', 'transform 600ms cubic-bezier(0.13, 0.67, 0.01, 0.94)');
-    }
-  }, [animating]);
-
-  const whileDrag = useCallback((position: number) => {
-    if (startCapture.current) {
-      setMovingCursorPosition(position - startCursorPosition.current);
-
-      const direction = position > updatePosition.current ? 1 : -1;
-      const moved = direction * position - direction * updatePosition.current;
-
-      if (moved > moveNext) {
-        const itemsPassed = Math.floor(moved / itemHeight);
-        const itemsToMove = itemsPassed + (Math.abs(moved % itemHeight) > moveNext ? 1 : 0);
-
-        currentIndex.current = checkIndexInRange(itemList, currentIndex.current - direction * itemsToMove);
-        updatePosition.current = updatePosition.current + (direction * itemHeight * itemsToMove);
-        marginTop.current = marginTop.current - (direction * itemHeight * itemsToMove);
-
-        setList(updateList(itemList, currentIndex.current, listLength));
+  const startDrag = useCallback(
+    (position: number) => {
+      if (animating) {
+        return;
       }
-    }
-  }, [itemHeight, itemList, listLength, moveNext]);
+
+      if (!startCapture.current) {
+        startCapture.current = true;
+        startCursorPosition.current = position;
+        updatePosition.current = position;
+
+        listRef.current?.style.setProperty(
+          'transition',
+          'transform 600ms cubic-bezier(0.13, 0.67, 0.01, 0.94)',
+        );
+      }
+    },
+    [animating],
+  );
+
+  const whileDrag = useCallback(
+    (position: number) => {
+      if (startCapture.current) {
+        setMovingCursorPosition(position - startCursorPosition.current);
+
+        const direction = position > updatePosition.current ? 1 : -1;
+        const moved = direction * position - direction * updatePosition.current;
+
+        if (moved > moveNext) {
+          const itemsPassed = Math.floor(moved / itemHeight);
+          const itemsToMove =
+            itemsPassed + (Math.abs(moved % itemHeight) > moveNext ? 1 : 0);
+
+          currentIndex.current = checkIndexInRange(
+            itemList,
+            currentIndex.current - direction * itemsToMove,
+          );
+          updatePosition.current =
+            updatePosition.current + direction * itemHeight * itemsToMove;
+          marginTop.current =
+            marginTop.current - direction * itemHeight * itemsToMove;
+
+          setList(updateList(itemList, currentIndex.current, listLength));
+        }
+      }
+    },
+    [itemHeight, itemList, listLength, moveNext],
+  );
 
   const endDrag = useCallback(() => {
     if (startCapture.current) {
       startCapture.current = false;
-      
+
       setAnimating(true);
     }
   }, []);
@@ -343,7 +396,7 @@ export function VerticalSliderLoop({
   const handleMouseLeave = (event: MouseEvent<HTMLDivElement>) => {
     endDrag();
   };
-  
+
   const handleMouseUp = (event: MouseEvent<HTMLDivElement>) => {
     endDrag();
   };
@@ -356,11 +409,11 @@ export function VerticalSliderLoop({
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
     whileDrag(event.targetTouches[0].pageY);
   };
-  
+
   const handleTouchCancle = (event: TouchEvent<HTMLDivElement>) => {
     endDrag();
   };
-  
+
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     endDrag();
   };
@@ -374,13 +427,17 @@ export function VerticalSliderLoop({
     const rest = Math.abs(movingCursorPositon % itemHeight);
 
     if (rest <= moveNext) {
-      setMovingCursorPosition(count * itemHeight * (movingCursorPositon > 0 ? 1 : -1));
+      setMovingCursorPosition(
+        count * itemHeight * (movingCursorPositon > 0 ? 1 : -1),
+      );
     } else {
-      setMovingCursorPosition((count + 1) * itemHeight * (movingCursorPositon > 0 ? 1 : -1));
+      setMovingCursorPosition(
+        (count + 1) * itemHeight * (movingCursorPositon > 0 ? 1 : -1),
+      );
     }
 
     updateItem(itemList[currentIndex.current]);
-    
+
     setTimeout(() => {
       listRef.current?.style.setProperty('transition', '');
 
@@ -407,74 +464,45 @@ export function VerticalSliderLoop({
       onTouchStart={handleTouchStart}
       onTouchMove={throttle(handleTouchMove, 10)}
       onTouchCancel={handleTouchCancle}
-      onTouchEnd={handleTouchEnd}
-    >
-      {
-        useBorder &&
+      onTouchEnd={handleTouchEnd}>
+      {useBorder && (
         <>
-          <div className={styled.border} style={{
-            top: itemHeight * sideItemsToShow
-          }} />
-          <div className={styled.border} style={{
-            bottom: itemHeight * sideItemsToShow
-          }} />
+          <div
+            className={styled.border}
+            style={{
+              top: itemHeight * sideItemsToShow,
+            }}
+          />
+          <div
+            className={styled.border}
+            style={{
+              bottom: itemHeight * sideItemsToShow,
+            }}
+          />
         </>
-      }
-      {
-        new Array(sideItemsToShow).fill(0).map((_, idx) => {
-          return (
-            <div
-              key={randomId()}
-              className={styled.blur} 
-              style={{
-                height: itemHeight,
-                top: itemHeight * (sideItemsToShow - 1 - idx),
-                opacity: 0.5 + (idx * 0.2)
-              }}
-            />
-          )
-        })
-      }
-      {
-        new Array(sideItemsToShow).fill(0).map((_, idx) => {
-          return (
-            <div
-              key={randomId()}
-              className={styled.blur} 
-              style={{
-                height: itemHeight,
-                bottom: itemHeight * (sideItemsToShow - 1 - idx),
-                opacity: 0.5 + (idx * 0.2)
-              }}
-            />
-          )
-        })
-      }
+      )}
+      <BlurElements sideItemsToShow={sideItemsToShow} itemHeight={itemHeight} />
       <div
         ref={listRef}
-        className={styled.item_list} 
+        className={styled.item_list}
         style={{
           marginTop: marginTop.current,
-          transform: `translateY(${movingCursorPositon - middleY}px)`
-        }}
-      >
-        {
-          list.map(item => {
-            return (
-              <div 
-                key={randomId()} 
-                className={styled.item}
-                style={{
-                  height: itemHeight,
-                  padding: `0 ${xAxisPadding}px`
-                }}
-              >
-                <div>{item}</div>
-              </div>
-            );
-          })
-        }
+          transform: `translateY(${movingCursorPositon - middleY}px)`,
+        }}>
+        {list.map((item) => {
+          return (
+            <div
+              key={randomId()}
+              className={styled.item}
+              style={{
+                height: itemHeight,
+                padding: `0 ${xAxisPadding}px`,
+              }}>
+              <div>{item}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
-  )
+  );
 }

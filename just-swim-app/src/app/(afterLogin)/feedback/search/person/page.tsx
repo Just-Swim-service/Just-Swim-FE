@@ -8,6 +8,8 @@ import React, {
   useEffect,
   useState,
   useTransition,
+  useMemo,
+  useCallback,
 } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -36,9 +38,9 @@ function _MemberItem({
   const [itemSelected, setItemSelected] = useState<boolean>(defaultSelected);
 
   // 현재 수강생 선택 여부 변경
-  const onClickMember = () => {
+  const onClickMember = useCallback(() => {
     setItemSelected((s) => !s);
-  };
+  }, []);
 
   // 현재 수강생 선택 여부가 변경될 때마다
   useEffect(() => {
@@ -66,27 +68,23 @@ function _MemberItem({
   }, [itemSelected, member, setSelected]);
 
   return (
-    <button onClick={onClickMember} className={styled.member_item}>
-      <div className={`${styled.check_box} ${itemSelected && styled.selected}`}>
-        {itemSelected && <IconCheckSmall />}
-      </div>
-      <div className={styled.image_wrapper}>
-        {member.profileImage && member.profileImage.startsWith('http') ? (
+    <div className={styled.member_item} onClick={onClickMember}>
+      <div className={styled.member_info}>
+        <div className={styled.profile}>
           <Image
-            src={member.profileImage}
-            alt={member.memberNickname}
-            width={34}
-            height={34}
+            src={member.profileImage || '/assets/no_profile.png'}
+            alt="프로필 이미지"
+            width={40}
+            height={40}
           />
-        ) : (
-          <div className={styled.empty_image} />
-        )}
+        </div>
+        <div className={styled.info}>
+          <p className={styled.name}>{member.memberNickname}</p>
+          <p className={styled.lecture}>{member.lectureTitle}</p>
+        </div>
       </div>
-      <p className={styled.name}>{member.memberNickname}</p>
-      <div className={styled.lecture}>
-        <p>{member.lectureTitle}</p>
-      </div>
-    </button>
+      <div className={styled.check}>{itemSelected && <IconCheckSmall />}</div>
+    </div>
   );
 }
 
@@ -105,38 +103,32 @@ function _GroupList({
   setSelected: Dispatch<SetStateAction<MemberProps[]>>;
   defaultList: MemberProps[];
 }) {
-  let list = group;
+  if (!group) return null;
 
-  // 배열 뒤집기
+  let list = [...group];
+
   if (reverse) {
-    list = list && [...list].reverse();
+    list = [...list].reverse();
   }
 
   return (
     <div className={styled.group_list}>
-      {list?.map((g) => {
-        // 현재 강의에서, 검색어를 포함하는 수강생 확인
-        const members = [];
+      {list.map((groupItem) => {
+        const filteredMembers = groupItem.members.filter((member) =>
+          member.memberNickname.includes(search),
+        );
 
-        for (const m of g.members) {
-          if (m.memberNickname.includes(search)) {
-            members.push(m);
-          }
-        }
+        if (filteredMembers.length === 0) return null;
 
-        if (members.length === 0) {
-          // 검색어를 포함하는 수강생이 없으면 현재 강의명도 출력하지 않음
-          return null;
-        } else {
-          // 검색어를 포함하는 수강생이 한명이라도 있으면 강의명과 수강생 출력
-          return (
-            <div key={randomId()}>
-              <p className={styled.title}>{g.lecture}</p>
-              {members.map((m) => {
+        return (
+          <div key={randomId()} className={styled.group_item}>
+            <div className={styled.group_title}>{groupItem.lecture}</div>
+            <div className={styled.member_list}>
+              {filteredMembers.map((member) => {
                 let flag = false;
 
                 for (const def of defaultList) {
-                  if (def.memberId === m.memberId) {
+                  if (def.memberId === member.memberId) {
                     flag = true;
                   }
                 }
@@ -144,15 +136,15 @@ function _GroupList({
                 return (
                   <MemberItem
                     key={randomId()}
-                    member={m}
+                    member={member}
                     setSelected={setSelected}
                     defaultSelected={flag}
                   />
                 );
               })}
             </div>
-          );
-        }
+          </div>
+        );
       })}
     </div>
   );
@@ -173,9 +165,10 @@ function _NameList({
   setSelected: Dispatch<SetStateAction<MemberProps[]>>;
   defaultList: MemberProps[];
 }) {
-  let list = name;
+  if (!name) return null;
 
-  // 배열 뒤집기
+  let list = [...name];
+
   if (reverse) {
     list = [...list].reverse();
   }
@@ -214,90 +207,72 @@ const NameList = React.memo(_NameList);
 export default function Search() {
   const router = useRouter();
   const {
-    userList,
+    processedData,
     loadUserList,
     checkedList,
     checkItemHandler,
     selectedList,
     updateSelectedList,
+    isLoading,
   } = searchUserStore();
 
   const [type, setType] = useState<'group' | 'name'>('group');
-  const [groupName, setGroupName] = useState<
-    { lecture: string; members: MemberProps[] }[] | null
-  >([]);
-  const [userName, setUserName] = useState<MemberProps[]>([]);
   const [search, setSearch] = useState<string>('');
   const [reverse, setReverse] = useState<boolean>(false);
   const [selected, setSelected] = useState<MemberProps[]>([]);
+
+  // 캐시된 데이터 사용
+  const { userNameList, groupNameList } = useMemo(() => {
+    return processedData || { userNameList: [], groupNameList: [] };
+  }, [processedData]);
 
   useEffect(() => {
     loadUserList();
   }, [loadUserList]);
 
-  useEffect(() => {
-    const userNameList = userList.data?.data.sort((a: any, b: any) => {
-      a.memberNickname.localeCompare(b.memberNickname, 'ko');
-    });
-    const groupNameList: { lecture: string; members: MemberProps[] }[] | null =
-      userList.data?.data
-        ? Object.values(
-            userList.data?.data.reduce((acc: any, member: any) => {
-              const { lectureId, lectureTitle } = member;
-              // 그룹 키 생성
-              if (!acc[lectureId]) {
-                acc[lectureId] = {
-                  lecture: lectureTitle,
-                  members: [],
-                };
-              }
-
-              // 멤버 추가
-              acc[lectureId].members.push(member);
-              return acc;
-            }, {}),
-          )
-        : null;
-    setUserName(userNameList);
-    setGroupName(groupNameList);
-  }, [userList]);
-
   // 타입이 변경될 때 오름차순으로 초기화, 선택된 수강생 삭제
   useEffect(() => {
     setReverse(false);
-    setSelected([...selectedList]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
+    setSelected(selectedList);
+  }, [type, selectedList]);
 
   // input 이벤트 핸들러
-  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
-  };
+  }, []);
 
-  // 이 부분은 크게 신경 쓰지 않아도 됨
   // 타입 선택의 우선순위를 미뤄주는 부분
   const [_, startTransition] = useTransition();
 
   // 타입을 설정하는 부분
-  const onClickSelectType = (type: 'group' | 'name') => {
+  const onClickSelectType = useCallback((newType: 'group' | 'name') => {
     startTransition(() => {
-      setType(type);
+      setType(newType);
     });
-  };
+  }, []);
 
   // 오름차순, 내림차순 여부
-  const toggleReverse = () => {
+  const toggleReverse = useCallback(() => {
     setReverse((s) => !s);
-  };
+  }, []);
 
   // 여기에 선택하기 버튼을 눌렀을 때 처리해야 할 동작 추가
-  const onClickSelect = () => {
-    // 선택 관련 로직 처리
-
-    // console.table(selected);
+  const onClickSelect = useCallback(() => {
     updateSelectedList(selected);
     router.push('/feedback/create/person');
-  };
+  }, [selected, updateSelectedList, router]);
+
+  // 로딩 상태 처리
+  if (isLoading) {
+    return (
+      <>
+        <Header title="수강생 선택" />
+        <div className={styled.container}>
+          <div className={styled.loading}>데이터를 불러오는 중...</div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -311,16 +286,12 @@ export default function Search() {
           <div className={styled.type}>
             <button
               className={`${styled.select} ${type === 'group' && styled.selected}`}
-              onClick={() => {
-                onClickSelectType('group');
-              }}>
+              onClick={() => onClickSelectType('group')}>
               <span>수업별로 보기</span>
             </button>
             <button
               className={`${styled.select} ${type === 'name' && styled.selected}`}
-              onClick={() => {
-                onClickSelectType('name');
-              }}>
+              onClick={() => onClickSelectType('name')}>
               <span>이름순으로 보기</span>
             </button>
           </div>
@@ -348,7 +319,7 @@ export default function Search() {
         </div>
         {type === 'group' ? (
           <GroupList
-            group={groupName}
+            group={groupNameList}
             reverse={reverse}
             search={search}
             setSelected={setSelected}
@@ -356,7 +327,7 @@ export default function Search() {
           />
         ) : (
           <NameList
-            name={userName}
+            name={userNameList}
             reverse={reverse}
             search={search}
             setSelected={setSelected}
