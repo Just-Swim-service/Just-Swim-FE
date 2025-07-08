@@ -45,7 +45,6 @@ function FileInputInner(
 
   const isInitialRender = useRef(true);
   const inputRef = useRef<HTMLInputElement>(null);
-  const onDelete = useRef<boolean>(false);
 
   const { modal, setModal, showModal, hideModal } = useModal();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -69,8 +68,6 @@ function FileInputInner(
   ].filter(Boolean);
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (onDelete.current) return;
-
     const { files } = event.target;
     if (!files) {
       console.error('❌ 파일이 선택되지 않았습니다.');
@@ -242,42 +239,50 @@ function FileInputInner(
   };
 
   const deleteUploadedImage = async (index: number) => {
-    onDelete.current = true;
+    console.log('🗑️ 이미지 삭제 시작:', index);
 
     try {
       if (index < initialDefaultImages.length) {
-        // 기존 이미지 삭제 - S3 API 호출 없이 로컬 상태만 업데이트
-        const newDefaults = [...initialDefaultImages];
-        newDefaults.splice(index, 1);
-        setInitialDefaultImages(newDefaults);
+        // 기존 이미지 삭제
+        console.log('기존 이미지 삭제:', index);
+        setInitialDefaultImages((prev) => {
+          const newDefaults = [...prev];
+          newDefaults.splice(index, 1);
+          console.log('기존 이미지 삭제 완료, 남은 개수:', newDefaults.length);
+          return newDefaults;
+        });
       } else {
         // 새로 업로드된 이미지 삭제
         const realIndex = index - initialDefaultImages.length;
-        const newUploaded = [...uploadedImages];
-        newUploaded.splice(realIndex, 1);
+        console.log('새 이미지 삭제:', realIndex);
 
-        // 상태 즉시 업데이트
-        setUploadedImages(newUploaded);
-        setValue(name, newUploaded, { shouldValidate: true });
+        setUploadedImages((prev) => {
+          const newUploaded = [...prev];
+          newUploaded.splice(realIndex, 1);
+          console.log('새 이미지 삭제 완료, 남은 개수:', newUploaded.length);
 
-        // input files 업데이트
-        const store = new DataTransfer();
-        newUploaded.forEach((file) => {
-          const originalFile = new File([file as Blob], file.name, {
-            type: file.type || 'application/octet-stream',
-            lastModified: file.lastModified,
+          // setValue도 여기서 호출
+          setValue(name, newUploaded, { shouldValidate: true });
+
+          // input files 업데이트
+          const store = new DataTransfer();
+          newUploaded.forEach((file) => {
+            const originalFile = new File([file as Blob], file.name, {
+              type: file.type || 'application/octet-stream',
+              lastModified: file.lastModified,
+            });
+            store.items.add(originalFile);
           });
-          store.items.add(originalFile);
-        });
 
-        if (inputRef.current) {
-          inputRef.current.files = store.files;
-        }
+          if (inputRef.current) {
+            inputRef.current.files = store.files;
+          }
+
+          return newUploaded;
+        });
       }
     } catch (error) {
       console.error('이미지 삭제 중 오류:', error);
-    } finally {
-      onDelete.current = false;
     }
   };
 
@@ -330,7 +335,9 @@ function FileInputInner(
                 onClick={(event: MouseEvent<HTMLButtonElement>) => {
                   event.stopPropagation();
                   event.preventDefault();
-                  deleteUploadedImage(index);
+                  setTimeout(() => {
+                    deleteUploadedImage(index);
+                  }, 0);
                 }}>
                 <IconCancelWhite width={14} height={14} />
               </button>
