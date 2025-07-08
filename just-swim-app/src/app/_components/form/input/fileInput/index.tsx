@@ -244,34 +244,17 @@ function FileInputInner(
   const deleteUploadedImage = async (index: number) => {
     onDelete.current = true;
 
-    const deleteS3Image = async (fileURL: string) => {
-      try {
-        if (fileURL.startsWith('data:')) {
-          console.log(
-            '로컬 파일이므로 S3 삭제 생략:',
-            fileURL.substring(0, 50) + '...',
-          );
-          return;
-        }
-
-        await deleteFeedbackImageFromS3(fileURL);
-      } catch (error) {
-        console.error('S3 이미지 삭제 실패:', error);
-      }
-    };
-
     try {
       if (index < initialDefaultImages.length) {
-        // 기존 이미지 삭제
+        // 기존 이미지 삭제 - S3 API 호출 없이 로컬 상태만 업데이트
         const newDefaults = [...initialDefaultImages];
-        const removed = newDefaults.splice(index, 1)[0];
+        newDefaults.splice(index, 1);
         setInitialDefaultImages(newDefaults);
-        await deleteS3Image(removed);
       } else {
         // 새로 업로드된 이미지 삭제
         const realIndex = index - initialDefaultImages.length;
         const newUploaded = [...uploadedImages];
-        const removed = newUploaded.splice(realIndex, 1)[0];
+        newUploaded.splice(realIndex, 1);
 
         // 상태 즉시 업데이트
         setUploadedImages(newUploaded);
@@ -289,11 +272,6 @@ function FileInputInner(
 
         if (inputRef.current) {
           inputRef.current.files = store.files;
-        }
-
-        // S3에서 삭제 (필요한 경우에만)
-        if (removed.fileURL) {
-          await deleteS3Image(removed.fileURL);
         }
       }
     } catch (error) {
