@@ -89,6 +89,7 @@ function FileInputInner(
       }
 
       try {
+        // ✅ 파일 URL 생성
         const fileURL = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result as string);
@@ -96,11 +97,30 @@ function FileInputInner(
           reader.readAsDataURL(file);
         });
 
+        const fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
+
         const fileWithPreview: FileWithPreview = {
           ...file,
           fileURL,
-          type: isVideo ? 'video' : 'image',
+          type: fileType,
+          name: file.name,
+          lastModified: file.lastModified,
         };
+
+        const isDuplicate = uploadedFiles.some(
+          (f) => f.name === file.name && f.lastModified === file.lastModified,
+        );
+
+        if (isDuplicate) {
+          console.log('⚠️ 중복된 파일로 간주됨:', file.name);
+          continue;
+        }
+
+        console.log('✅ 파일 추가됨:', {
+          name: file.name,
+          type: fileType,
+          fileURL: fileWithPreview.fileURL,
+        });
 
         validFiles.push(fileWithPreview);
       } catch (err) {
