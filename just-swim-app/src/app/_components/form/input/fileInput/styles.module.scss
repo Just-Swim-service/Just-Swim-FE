@@ -2,9 +2,7 @@
 
 .input_wrapper {
   position: relative;
-
   width: 100%;
-
   display: flex;
   gap: 7px;
 
@@ -16,15 +14,30 @@
       position: relative;
       width: 78px;
       height: 78px;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
       border-radius: 8px;
       cursor: pointer;
       flex-shrink: 0;
+      overflow: hidden;
 
       &:hover {
         opacity: 0.8;
+      }
+
+      // ✅ 이미지 미리보기용
+      .preview_image {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      // ✅ 동영상 미리보기용
+      .preview_video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
       }
 
       .delete_button {
@@ -42,6 +55,35 @@
         background-image: none;
         background-color: $--Cancel;
         border-radius: 50%;
+        z-index: 2;
+      }
+
+      .video_overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        z-index: 1;
+
+        .play_icon {
+          font-size: 20px;
+          margin-bottom: 4px;
+        }
+
+        .duration {
+          font-size: 10px;
+          background: rgba(0, 0, 0, 0.7);
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
       }
     }
   }
@@ -69,31 +111,4 @@
 .error {
   color: $--Cancel;
   @include Body5-R;
-}
-
-.video_overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
-
-.play_icon {
-  font-size: 20px;
-  margin-bottom: 4px;
-}
-
-.duration {
-  font-size: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 2px 6px;
-  border-radius: 4px;
 }

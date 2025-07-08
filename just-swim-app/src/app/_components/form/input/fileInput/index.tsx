@@ -17,13 +17,7 @@ import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 import { FileInputProps, FileWithPreview } from '@types';
-import { deleteFeedbackImageFromS3 } from '@apis';
-import {
-  generateVideoThumbnail,
-  getVideoDuration,
-  isVideoFile,
-  isImageFile,
-} from '@utils';
+import { isVideoFile, isImageFile } from '@utils';
 
 function FileInputInner(
   {
@@ -40,7 +34,7 @@ function FileInputInner(
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const [uploadedImages, setUploadedImages] = useState<FileWithPreview[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<FileWithPreview[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
 
   const isInitialRender = useRef(true);
@@ -57,268 +51,155 @@ function FileInputInner(
   }, [defaultPreviewImages]);
 
   useEffect(() => {
-    setValue(name, uploadedImages, { shouldValidate: true });
-  }, [uploadedImages]);
+    setValue(name, uploadedFiles, { shouldValidate: true });
+  }, [uploadedFiles]);
 
-  const previewImages = [
+  const previewURLs = [
     ...initialDefaultImages,
-    ...uploadedImages.map((f) =>
-      f.type === 'video' ? f.thumbnailPath || f.fileURL : f.fileURL,
-    ),
+    ...uploadedFiles.map((file) => file.fileURL),
   ].filter(Boolean);
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
-    if (!files) {
-      console.error('❌ 파일이 선택되지 않았습니다.');
-      alert('파일을 추가해주세요.');
-      return;
-    }
+    if (!files) return;
 
-    console.log('📁 선택된 파일 개수:', files.length);
     const fileArray = Array.from(files);
     const validFiles: FileWithPreview[] = [];
-    let invalidCount = 0;
-    let invalidReasons: string[] = [];
+    const invalidReasons: string[] = [];
 
     for (const file of fileArray) {
-      console.log('🔍 파일 검증 시작:', {
-        name: file.name,
-        type: file.type,
-        sizeMB: (file.size / 1024 / 1024).toFixed(2),
-        sizeBytes: file.size,
-      });
-
       const isImage = isImageFile(file);
       const isVideo = allowVideo && isVideoFile(file);
 
-      console.log('📋 파일 타입 검증 결과:', {
-        isImage,
-        isVideo,
-        allowVideo,
-        fileType: file.type,
-      });
-
       if (!isImage && !isVideo) {
-        const reason = `허용되지 않은 파일 형식: ${file.name} (${file.type})`;
-        console.warn('❌', reason);
-        invalidReasons.push(reason);
-        invalidCount++;
+        invalidReasons.push(`허용되지 않은 파일 형식: ${file.name}`);
+        continue;
+      }
+
+      if (file.size === 0) {
+        invalidReasons.push(`빈 파일: ${file.name}`);
         continue;
       }
 
       if (file.size > size * 1024 * 1024) {
-        const reason = `파일 용량 초과: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB > ${size}MB)`;
-        console.warn('❌', reason);
-        invalidReasons.push(reason);
-        invalidCount++;
-        continue;
-      }
-
-      // 파일 크기가 0인 경우 체크
-      if (file.size === 0) {
-        const reason = `빈 파일: ${file.name}`;
-        console.warn('❌', reason);
-        invalidReasons.push(reason);
-        invalidCount++;
+        invalidReasons.push(
+          `파일 용량 초과: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB > ${size}MB)`,
+        );
         continue;
       }
 
       try {
-        console.log('✅ 파일 검증 통과, 처리 시작:', file.name);
-        let fileURL = '';
-        let fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
-        let duration: number | undefined;
-        let thumbnailPath: string | undefined;
-
-        if (isImage) {
-          console.log('🖼️ 이미지 파일 처리 중:', file.name);
-          fileURL = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              console.log('✅ 이미지 파일 읽기 완료:', file.name);
-              resolve(reader.result as string);
-            };
-            reader.onerror = () => {
-              console.error('❌ 이미지 파일 읽기 실패:', file.name);
-              reject(new Error('이미지 파일 읽기 실패'));
-            };
-            reader.readAsDataURL(file);
-          });
-        } else if (isVideo) {
-          console.log('🎥 비디오 파일 처리 중 (단순화):', file.name);
-
-          // 비디오 파일을 단순히 이미지로 처리
-          fileType = 'image';
-
-          try {
-            fileURL = await new Promise<string>((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = () => {
-                console.log('✅ 비디오 파일 읽기 완료:', file.name);
-                resolve(reader.result as string);
-              };
-              reader.onerror = () => {
-                console.error('❌ 비디오 파일 읽기 실패:', file.name);
-                reject(new Error('비디오 파일 읽기 실패'));
-              };
-              reader.readAsDataURL(file);
-            });
-          } catch (readError) {
-            console.error('❌ 비디오 파일 읽기 실패:', readError);
-            throw new Error('비디오 파일 읽기 실패');
-          }
-        }
-
-        const fileWithURL: FileWithPreview = {
-          ...file,
-          fileURL,
-          type: fileType,
-          duration,
-          thumbnailPath,
-        };
-
-        const isDuplicate =
-          initialDefaultImages.includes(fileWithURL.fileURL) ||
-          uploadedImages.some((f) => f.fileURL === fileWithURL.fileURL);
-
-        if (isDuplicate) {
-          console.log('⚠️ 중복된 파일:', file.name);
-          continue;
-        }
-
-        console.log('✅ 파일 처리 완료:', {
-          name: file.name,
-          type: fileType,
-          fileURL: fileWithURL.fileURL ? '생성됨' : '실패',
+        const fileURL = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = () => reject('파일 읽기 실패');
+          reader.readAsDataURL(file);
         });
 
-        validFiles.push(fileWithURL);
+        const fileWithPreview: FileWithPreview = {
+          ...file,
+          fileURL,
+          type: isVideo ? 'video' : 'image',
+        };
+
+        validFiles.push(fileWithPreview);
       } catch (err) {
-        const reason = `파일 처리 실패: ${file.name} - ${err instanceof Error ? err.message : '알 수 없는 오류'}`;
-        console.error('❌', reason, err);
-        invalidReasons.push(reason);
-        invalidCount++;
+        invalidReasons.push(`파일 처리 실패: ${file.name}`);
       }
     }
 
-    const total = [...uploadedImages, ...validFiles].slice(0, length);
-    console.log('📊 최종 결과:', {
-      validFilesCount: validFiles.length,
-      invalidCount,
-      totalCount: total.length,
-      invalidReasons,
-    });
-
-    setUploadedImages(total);
+    const merged = [...uploadedFiles, ...validFiles].slice(0, length);
+    setUploadedFiles(merged);
 
     const store = new DataTransfer();
-    total.forEach((file) => {
-      const originalFile = new File([file as Blob], file.name, {
-        type: file.type || 'application/octet-stream',
+    merged.forEach((file) => {
+      const original = new File([file as Blob], file.name, {
+        type: file.type,
         lastModified: file.lastModified,
       });
-      store.items.add(originalFile);
+      store.items.add(original);
     });
     if (inputRef.current) {
       inputRef.current.files = store.files;
     }
 
-    if (invalidCount > 0) {
+    if (invalidReasons.length > 0) {
       alert(
-        `업로드 실패:\n${invalidReasons.join('\n')}\n\n이미지 또는 동영상 파일만 업로드 가능하며, 크기는 ${size}MB 이하 이어야 합니다.`,
+        `업로드 실패:\n${invalidReasons.join('\n')}\n\n이미지 또는 동영상만 업로드 가능하며 크기는 ${size}MB 이하여야 합니다.`,
       );
     }
   };
 
-  const deleteUploadedImage = (index: number) => {
-    console.log('🗑️ 이미지 삭제 시작:', index);
-
+  const deleteFile = (index: number) => {
     if (index < initialDefaultImages.length) {
-      // 기존 이미지 삭제
-      console.log('기존 이미지 삭제:', index);
-      const newDefaults = [...initialDefaultImages];
-      newDefaults.splice(index, 1);
-      setInitialDefaultImages(newDefaults);
-      console.log('기존 이미지 삭제 완료, 남은 개수:', newDefaults.length);
+      const updatedDefaults = [...initialDefaultImages];
+      updatedDefaults.splice(index, 1);
+      setInitialDefaultImages(updatedDefaults);
     } else {
-      // 새로 업로드된 이미지 삭제
       const realIndex = index - initialDefaultImages.length;
-      console.log('새 이미지 삭제:', realIndex);
+      const updated = [...uploadedFiles];
+      updated.splice(realIndex, 1);
+      setUploadedFiles(updated);
 
-      const newUploaded = [...uploadedImages];
-      newUploaded.splice(realIndex, 1);
-      console.log('새 이미지 삭제 완료, 남은 개수:', newUploaded.length);
-
-      setUploadedImages(newUploaded);
-      setValue(name, newUploaded, { shouldValidate: true });
-
-      // input files 업데이트
       const store = new DataTransfer();
-      newUploaded.forEach((file) => {
-        const originalFile = new File([file as Blob], file.name, {
-          type: file.type || 'application/octet-stream',
+      updated.forEach((file) => {
+        const original = new File([file as Blob], file.name, {
+          type: file.type,
           lastModified: file.lastModified,
         });
-        store.items.add(originalFile);
+        store.items.add(original);
       });
-
       if (inputRef.current) {
         inputRef.current.files = store.files;
       }
-    }
-  };
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChangeImages(event);
-    onChange(event);
+      setValue(name, updated, { shouldValidate: true });
+    }
   };
 
   useEffect(() => {
-    if (selectedIndex >= previewImages.length && selectedIndex !== 0) {
-      setSelectedIndex(previewImages.length - 1);
+    if (selectedIndex >= previewURLs.length && selectedIndex !== 0) {
+      setSelectedIndex(previewURLs.length - 1);
     }
-    if (previewImages.length === 0) {
+    if (previewURLs.length === 0) {
       setModal(false);
     }
-  }, [previewImages]);
+  }, [previewURLs]);
 
   return (
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
-        {previewImages.map((preview, index) => {
-          const file = uploadedImages[index - initialDefaultImages.length];
-          const isVideo = file?.type === 'video';
+        {previewURLs.map((preview, index) => {
+          const file = uploadedFiles[index - initialDefaultImages.length];
+          const isVideo = !!file && file.type === 'video';
 
           return (
-            <div
-              key={`${preview}-${index}`}
-              className={styled.preview_item}
-              style={{
-                backgroundImage: preview ? `url("${preview}")` : 'none',
-              }}
-              onClick={(event: MouseEvent<HTMLDivElement>) => {
-                event.preventDefault();
-                setSelectedIndex(index);
-                showModal();
-              }}>
-              {isVideo && (
-                <div className={styled.video_overlay}>
-                  <div className={styled.play_icon}>▶</div>
-                  {file?.duration && (
-                    <div className={styled.duration}>
-                      {Math.floor(file.duration / 60)}:
-                      {(file.duration % 60).toFixed(0).padStart(2, '0')}
-                    </div>
-                  )}
-                </div>
+            <div className={styled.preview_item}>
+              {isVideo ? (
+                <>
+                  <video className={styled.preview_video} src={preview} />
+                  <div className={styled.video_overlay}>
+                    <div className={styled.play_icon}>▶</div>
+                    {file?.duration && (
+                      <div className={styled.duration}>
+                        {Math.floor(file.duration / 60)}:
+                        {(file.duration % 60).toFixed(0).padStart(2, '0')}
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div
+                  className={styled.preview_image}
+                  style={{ backgroundImage: `url(${preview})` }}
+                />
               )}
               <button
                 className={styled.delete_button}
                 onClick={(event: MouseEvent<HTMLButtonElement>) => {
                   event.stopPropagation();
                   event.preventDefault();
-                  deleteUploadedImage(index);
+                  deleteFile(index);
                 }}>
                 <IconCancelWhite width={14} height={14} />
               </button>
@@ -326,9 +207,11 @@ function FileInputInner(
           );
         })}
       </div>
+
       <label htmlFor={id} className={styled.add_label}>
         <span>+</span>
       </label>
+
       <input
         {...inputProps}
         name={name}
@@ -338,15 +221,19 @@ function FileInputInner(
         multiple
         accept={accept}
         hidden
-        onChange={handleOnChange}
+        onChange={(e) => {
+          onChangeImages(e);
+          onChange(e);
+        }}
       />
+
       {modal && (
         <ImageCarousel
-          images={previewImages}
+          images={previewURLs}
           index={selectedIndex}
           setIndex={setSelectedIndex}
           useDeleteButton={true}
-          deleteImage={deleteUploadedImage}
+          deleteImage={deleteFile}
           hideModal={hideModal}
         />
       )}
