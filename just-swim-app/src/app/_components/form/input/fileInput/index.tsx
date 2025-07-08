@@ -118,6 +118,15 @@ function FileInputInner(
         continue;
       }
 
+      // 파일 크기가 0인 경우 체크
+      if (file.size === 0) {
+        const reason = `빈 파일: ${file.name}`;
+        console.warn('❌', reason);
+        invalidReasons.push(reason);
+        invalidCount++;
+        continue;
+      }
+
       try {
         console.log('✅ 파일 검증 통과, 처리 시작:', file.name);
         let fileURL = '';
@@ -171,12 +180,13 @@ function FileInputInner(
           });
         }
 
-        const fileWithURL = Object.assign(file, {
+        const fileWithURL: FileWithPreview = {
+          ...file,
           fileURL,
           type: fileType,
           duration,
           thumbnailPath,
-        });
+        };
 
         const isDuplicate =
           initialDefaultImages.includes(fileWithURL.fileURL) ||

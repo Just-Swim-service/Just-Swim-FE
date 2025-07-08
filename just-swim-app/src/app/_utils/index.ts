@@ -15,6 +15,7 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
     const video = document.createElement('video');
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
+    let objectURL: string;
 
     video.onloadedmetadata = () => {
       // 동영상의 첫 프레임에서 썸네일 생성 (0초 지점)
@@ -33,18 +34,23 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
           'Size:',
           thumbnail.length,
         );
+        // 메모리 정리
+        URL.revokeObjectURL(objectURL);
         resolve(thumbnail);
       } else {
+        URL.revokeObjectURL(objectURL);
         reject(new Error('Canvas context not available'));
       }
     };
 
     video.onerror = () => {
       console.error('Video loading error:', file.name);
+      URL.revokeObjectURL(objectURL);
       reject(new Error('Failed to load video'));
     };
 
-    video.src = URL.createObjectURL(file);
+    objectURL = URL.createObjectURL(file);
+    video.src = objectURL;
   });
 };
 
@@ -52,16 +58,21 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
 export const getVideoDuration = (file: File): Promise<number> => {
   return new Promise((resolve, reject) => {
     const video = document.createElement('video');
+    let objectURL: string;
 
     video.onloadedmetadata = () => {
-      resolve(video.duration);
+      const duration = video.duration;
+      URL.revokeObjectURL(objectURL);
+      resolve(duration);
     };
 
     video.onerror = () => {
+      URL.revokeObjectURL(objectURL);
       reject(new Error('Failed to load video'));
     };
 
-    video.src = URL.createObjectURL(file);
+    objectURL = URL.createObjectURL(file);
+    video.src = objectURL;
   });
 };
 
