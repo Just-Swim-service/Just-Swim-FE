@@ -90,7 +90,7 @@ function FileInputInner(
       });
 
       const isImage = isImageFile(file);
-      const isVideo = allowVideo && isVideoFile(file);
+      const isVideo = false; // 비디오 업로드 비활성화
 
       console.log('📋 파일 타입 검증 결과:', {
         isImage,
@@ -146,40 +146,28 @@ function FileInputInner(
             reader.readAsDataURL(file);
           });
         } else if (isVideo) {
-          console.log('🎥 비디오 파일 처리 중:', file.name);
+          console.log('🎥 비디오 파일 처리 중 (단순화):', file.name);
 
-          // 비디오 처리 중 에러가 발생하면 이미지로 처리
-          try {
-            duration = await getVideoDuration(file);
-            console.log('✅ 비디오 길이 추출 완료:', duration);
-          } catch (durationError) {
-            console.warn(
-              '⚠️ 비디오 길이 추출 실패, 이미지로 처리:',
-              durationError,
-            );
-            fileType = 'image';
-          }
+          // 비디오 파일을 단순히 이미지로 처리
+          fileType = 'image';
 
           try {
-            thumbnailPath = await generateVideoThumbnail(file);
-            console.log('✅ 비디오 썸네일 생성 완료:', thumbnailPath);
-          } catch (thumbnailError) {
-            console.warn('⚠️ 비디오 썸네일 생성 실패:', thumbnailError);
-            // 썸네일 생성 실패해도 계속 진행
+            fileURL = await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                console.log('✅ 비디오 파일 읽기 완료:', file.name);
+                resolve(reader.result as string);
+              };
+              reader.onerror = () => {
+                console.error('❌ 비디오 파일 읽기 실패:', file.name);
+                reject(new Error('비디오 파일 읽기 실패'));
+              };
+              reader.readAsDataURL(file);
+            });
+          } catch (readError) {
+            console.error('❌ 비디오 파일 읽기 실패:', readError);
+            throw new Error('비디오 파일 읽기 실패');
           }
-
-          fileURL = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              console.log('✅ 비디오 파일 읽기 완료:', file.name);
-              resolve(reader.result as string);
-            };
-            reader.onerror = () => {
-              console.error('❌ 비디오 파일 읽기 실패:', file.name);
-              reject(new Error('비디오 파일 읽기 실패'));
-            };
-            reader.readAsDataURL(file);
-          });
         }
 
         const fileWithURL: FileWithPreview = {
