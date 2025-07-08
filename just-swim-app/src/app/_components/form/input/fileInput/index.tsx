@@ -174,7 +174,14 @@ function FileInputInner(
           const isVideo = !!file && file.type === 'video';
 
           return (
-            <div className={styled.preview_item}>
+            <div
+              key={`${preview}-${index}`}
+              className={styled.preview_item}
+              onClick={(event: MouseEvent<HTMLDivElement>) => {
+                event.preventDefault();
+                setSelectedIndex(index);
+                showModal();
+              }}>
               {isVideo ? (
                 <>
                   <video className={styled.preview_video} src={preview} />
