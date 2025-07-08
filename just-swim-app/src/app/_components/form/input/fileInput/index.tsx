@@ -232,17 +232,11 @@ function FileInputInner(
     });
     if (inputRef.current) {
       inputRef.current.files = store.files;
-      console.log(
-        '📥 inputRef.current.files 업데이트 완료:',
-        inputRef.current.files.length,
-        '개 파일',
-      );
     }
 
     if (invalidCount > 0) {
-      console.error('❌ 업로드 실패 상세:', invalidReasons);
       alert(
-        `업로드 실패:\n${invalidReasons.join('\n')}\n\n이미지 또는 동영상 파일만 업로드 가능하며, 크기는 ${size}MB 이하이어야 합니다.`,
+        `업로드 실패:\n${invalidReasons.join('\n')}\n\n이미지 또는 동영상 파일만 업로드 가능하며, 크기는 ${size}MB 이하 이어야 합니다.`,
       );
     }
   };
@@ -252,39 +246,61 @@ function FileInputInner(
 
     const deleteS3Image = async (fileURL: string) => {
       try {
+        if (fileURL.startsWith('data:')) {
+          console.log(
+            '로컬 파일이므로 S3 삭제 생략:',
+            fileURL.substring(0, 50) + '...',
+          );
+          return;
+        }
+
         await deleteFeedbackImageFromS3(fileURL);
       } catch (error) {
         console.error('S3 이미지 삭제 실패:', error);
       }
     };
 
-    if (index < initialDefaultImages.length) {
-      const newDefaults = [...initialDefaultImages];
-      const removed = newDefaults.splice(index, 1)[0];
-      setInitialDefaultImages(newDefaults);
-      await deleteS3Image(removed);
-    } else {
-      const realIndex = index - initialDefaultImages.length;
-      const newUploaded = [...uploadedImages];
-      newUploaded.splice(realIndex, 1);
-      setUploadedImages(newUploaded);
-      setValue(name, newUploaded, { shouldValidate: true });
+    try {
+      if (index < initialDefaultImages.length) {
+        // 기존 이미지 삭제
+        const newDefaults = [...initialDefaultImages];
+        const removed = newDefaults.splice(index, 1)[0];
+        setInitialDefaultImages(newDefaults);
+        await deleteS3Image(removed);
+      } else {
+        // 새로 업로드된 이미지 삭제
+        const realIndex = index - initialDefaultImages.length;
+        const newUploaded = [...uploadedImages];
+        const removed = newUploaded.splice(realIndex, 1)[0];
 
-      const store = new DataTransfer();
-      newUploaded.forEach((file) => {
-        const originalFile = new File([file as Blob], file.name, {
-          type: file.type || 'application/octet-stream',
-          lastModified: file.lastModified,
+        // 상태 즉시 업데이트
+        setUploadedImages(newUploaded);
+        setValue(name, newUploaded, { shouldValidate: true });
+
+        // input files 업데이트
+        const store = new DataTransfer();
+        newUploaded.forEach((file) => {
+          const originalFile = new File([file as Blob], file.name, {
+            type: file.type || 'application/octet-stream',
+            lastModified: file.lastModified,
+          });
+          store.items.add(originalFile);
         });
-        store.items.add(originalFile);
-      });
-      if (inputRef.current) {
-        inputRef.current.files = store.files;
-        inputRef.current.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }
 
-    onDelete.current = false;
+        if (inputRef.current) {
+          inputRef.current.files = store.files;
+        }
+
+        // S3에서 삭제 (필요한 경우에만)
+        if (removed.fileURL) {
+          await deleteS3Image(removed.fileURL);
+        }
+      }
+    } catch (error) {
+      console.error('이미지 삭제 중 오류:', error);
+    } finally {
+      onDelete.current = false;
+    }
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -357,7 +373,6 @@ function FileInputInner(
         accept={accept}
         hidden
         onChange={handleOnChange}
-        onClick={() => console.log('File input clicked')}
       />
       {modal && (
         <ImageCarousel
