@@ -73,54 +73,100 @@ function FileInputInner(
 
     const { files } = event.target;
     if (!files) {
+      console.error('❌ 파일이 선택되지 않았습니다.');
       alert('파일을 추가해주세요.');
       return;
     }
 
+    console.log('📁 선택된 파일 개수:', files.length);
     const fileArray = Array.from(files);
     const validFiles: FileWithPreview[] = [];
     let invalidCount = 0;
+    let invalidReasons: string[] = [];
 
     for (const file of fileArray) {
-      console.log('🔍 업로드 시도 중인 파일:', {
+      console.log('🔍 파일 검증 시작:', {
         name: file.name,
         type: file.type,
         sizeMB: (file.size / 1024 / 1024).toFixed(2),
+        sizeBytes: file.size,
       });
 
       const isImage = isImageFile(file);
       const isVideo = allowVideo && isVideoFile(file);
 
+      console.log('📋 파일 타입 검증 결과:', {
+        isImage,
+        isVideo,
+        allowVideo,
+        fileType: file.type,
+      });
+
       if (!isImage && !isVideo) {
-        console.warn('❌ 허용되지 않은 파일 형식:', file.name);
+        const reason = `허용되지 않은 파일 형식: ${file.name} (${file.type})`;
+        console.warn('❌', reason);
+        invalidReasons.push(reason);
         invalidCount++;
         continue;
       }
 
       if (file.size > size * 1024 * 1024) {
-        console.warn('❌ 파일 용량 초과:', file.name);
+        const reason = `파일 용량 초과: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB > ${size}MB)`;
+        console.warn('❌', reason);
+        invalidReasons.push(reason);
         invalidCount++;
         continue;
       }
 
       try {
+        console.log('✅ 파일 검증 통과, 처리 시작:', file.name);
         let fileURL = '';
         let fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
         let duration: number | undefined;
         let thumbnailPath: string | undefined;
 
         if (isImage) {
-          fileURL = await new Promise<string>((resolve) => {
+          console.log('🖼️ 이미지 파일 처리 중:', file.name);
+          fileURL = await new Promise<string>((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
+            reader.onload = () => {
+              console.log('✅ 이미지 파일 읽기 완료:', file.name);
+              resolve(reader.result as string);
+            };
+            reader.onerror = () => {
+              console.error('❌ 이미지 파일 읽기 실패:', file.name);
+              reject(new Error('이미지 파일 읽기 실패'));
+            };
             reader.readAsDataURL(file);
           });
         } else if (isVideo) {
-          duration = await getVideoDuration(file);
-          thumbnailPath = await generateVideoThumbnail(file);
-          fileURL = await new Promise<string>((resolve) => {
+          console.log('🎥 비디오 파일 처리 중:', file.name);
+          try {
+            duration = await getVideoDuration(file);
+            console.log('✅ 비디오 길이 추출 완료:', duration);
+          } catch (durationError) {
+            console.error('❌ 비디오 길이 추출 실패:', durationError);
+            throw new Error('비디오 길이 추출 실패');
+          }
+
+          try {
+            thumbnailPath = await generateVideoThumbnail(file);
+            console.log('✅ 비디오 썸네일 생성 완료:', thumbnailPath);
+          } catch (thumbnailError) {
+            console.error('❌ 비디오 썸네일 생성 실패:', thumbnailError);
+            throw new Error('비디오 썸네일 생성 실패');
+          }
+
+          fileURL = await new Promise<string>((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
+            reader.onload = () => {
+              console.log('✅ 비디오 파일 읽기 완료:', file.name);
+              resolve(reader.result as string);
+            };
+            reader.onerror = () => {
+              console.error('❌ 비디오 파일 읽기 실패:', file.name);
+              reject(new Error('비디오 파일 읽기 실패'));
+            };
             reader.readAsDataURL(file);
           });
         }
@@ -141,16 +187,28 @@ function FileInputInner(
           continue;
         }
 
+        console.log('✅ 파일 처리 완료:', {
+          name: file.name,
+          type: fileType,
+          fileURL: fileWithURL.fileURL ? '생성됨' : '실패',
+        });
+
         validFiles.push(fileWithURL);
       } catch (err) {
-        console.error('❌ 파일 처리 실패:', file.name, err);
+        const reason = `파일 처리 실패: ${file.name} - ${err instanceof Error ? err.message : '알 수 없는 오류'}`;
+        console.error('❌', reason, err);
+        invalidReasons.push(reason);
         invalidCount++;
       }
     }
 
     const total = [...uploadedImages, ...validFiles].slice(0, length);
-    console.log('✅ 최종 validFiles:', validFiles);
-    console.log('✅ setUploadedImages에 들어가는 total:', total);
+    console.log('📊 최종 결과:', {
+      validFilesCount: validFiles.length,
+      invalidCount,
+      totalCount: total.length,
+      invalidReasons,
+    });
 
     setUploadedImages(total);
 
@@ -164,12 +222,17 @@ function FileInputInner(
     });
     if (inputRef.current) {
       inputRef.current.files = store.files;
-      console.log('📥 inputRef.current.files:', inputRef.current.files);
+      console.log(
+        '📥 inputRef.current.files 업데이트 완료:',
+        inputRef.current.files.length,
+        '개 파일',
+      );
     }
 
     if (invalidCount > 0) {
+      console.error('❌ 업로드 실패 상세:', invalidReasons);
       alert(
-        `이미지 또는 동영상 파일만 업로드 가능하며, 크기는 ${size}MB 이하이어야 합니다.`,
+        `업로드 실패:\n${invalidReasons.join('\n')}\n\n이미지 또는 동영상 파일만 업로드 가능하며, 크기는 ${size}MB 이하이어야 합니다.`,
       );
     }
   };
