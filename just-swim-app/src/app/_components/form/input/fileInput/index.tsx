@@ -90,7 +90,7 @@ function FileInputInner(
       });
 
       const isImage = isImageFile(file);
-      const isVideo = false; // 비디오 업로드 비활성화
+      const isVideo = allowVideo && isVideoFile(file);
 
       console.log('📋 파일 타입 검증 결과:', {
         isImage,
