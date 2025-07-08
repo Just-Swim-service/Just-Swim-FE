@@ -9,70 +9,92 @@ export * from './token';
 export * from './server';
 export * from './fetchJson';
 
-// 동영상 썸네일 생성 유틸리티
 export const generateVideoThumbnail = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const video = document.createElement('video');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    let objectURL: string;
+    try {
+      const video = document.createElement('video');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      let objectURL: string;
 
-    video.onloadedmetadata = () => {
-      // 동영상의 첫 프레임에서 썸네일 생성 (0초 지점)
-      video.currentTime = 0;
-    };
+      video.onloadedmetadata = () => {
+        try {
+          // 동영상의 첫 프레임에서 썸네일 생성 (0초 지점)
+          video.currentTime = 0;
+        } catch (error) {
+          URL.revokeObjectURL(objectURL);
+          reject(new Error('비디오 메타데이터 로드 실패'));
+        }
+      };
 
-    video.onseeked = () => {
-      if (ctx) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const thumbnail = canvas.toDataURL('image/jpeg', 0.8);
-        console.log(
-          'Generated thumbnail for:',
-          file.name,
-          'Size:',
-          thumbnail.length,
-        );
-        // 메모리 정리
+      video.onseeked = () => {
+        try {
+          if (ctx) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const thumbnail = canvas.toDataURL('image/jpeg', 0.8);
+            console.log(
+              'Generated thumbnail for:',
+              file.name,
+              'Size:',
+              thumbnail.length,
+            );
+            // 메모리 정리
+            URL.revokeObjectURL(objectURL);
+            resolve(thumbnail);
+          } else {
+            URL.revokeObjectURL(objectURL);
+            reject(new Error('Canvas context not available'));
+          }
+        } catch (error) {
+          URL.revokeObjectURL(objectURL);
+          reject(new Error('썸네일 생성 실패'));
+        }
+      };
+
+      video.onerror = () => {
+        console.error('Video loading error:', file.name);
         URL.revokeObjectURL(objectURL);
-        resolve(thumbnail);
-      } else {
-        URL.revokeObjectURL(objectURL);
-        reject(new Error('Canvas context not available'));
-      }
-    };
+        reject(new Error('Failed to load video'));
+      };
 
-    video.onerror = () => {
-      console.error('Video loading error:', file.name);
-      URL.revokeObjectURL(objectURL);
-      reject(new Error('Failed to load video'));
-    };
-
-    objectURL = URL.createObjectURL(file);
-    video.src = objectURL;
+      objectURL = URL.createObjectURL(file);
+      video.src = objectURL;
+    } catch (error) {
+      reject(new Error('비디오 처리 초기화 실패'));
+    }
   });
 };
 
 // 동영상 길이 가져오기
 export const getVideoDuration = (file: File): Promise<number> => {
   return new Promise((resolve, reject) => {
-    const video = document.createElement('video');
-    let objectURL: string;
+    try {
+      const video = document.createElement('video');
+      let objectURL: string;
 
-    video.onloadedmetadata = () => {
-      const duration = video.duration;
-      URL.revokeObjectURL(objectURL);
-      resolve(duration);
-    };
+      video.onloadedmetadata = () => {
+        try {
+          const duration = video.duration;
+          URL.revokeObjectURL(objectURL);
+          resolve(duration);
+        } catch (error) {
+          URL.revokeObjectURL(objectURL);
+          reject(new Error('비디오 길이 추출 실패'));
+        }
+      };
 
-    video.onerror = () => {
-      URL.revokeObjectURL(objectURL);
-      reject(new Error('Failed to load video'));
-    };
+      video.onerror = () => {
+        URL.revokeObjectURL(objectURL);
+        reject(new Error('Failed to load video'));
+      };
 
-    objectURL = URL.createObjectURL(file);
-    video.src = objectURL;
+      objectURL = URL.createObjectURL(file);
+      video.src = objectURL;
+    } catch (error) {
+      reject(new Error('비디오 처리 초기화 실패'));
+    }
   });
 };
 

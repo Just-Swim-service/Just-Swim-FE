@@ -147,20 +147,25 @@ function FileInputInner(
           });
         } else if (isVideo) {
           console.log('🎥 비디오 파일 처리 중:', file.name);
+
+          // 비디오 처리 중 에러가 발생하면 이미지로 처리
           try {
             duration = await getVideoDuration(file);
             console.log('✅ 비디오 길이 추출 완료:', duration);
           } catch (durationError) {
-            console.error('❌ 비디오 길이 추출 실패:', durationError);
-            throw new Error('비디오 길이 추출 실패');
+            console.warn(
+              '⚠️ 비디오 길이 추출 실패, 이미지로 처리:',
+              durationError,
+            );
+            fileType = 'image';
           }
 
           try {
             thumbnailPath = await generateVideoThumbnail(file);
             console.log('✅ 비디오 썸네일 생성 완료:', thumbnailPath);
           } catch (thumbnailError) {
-            console.error('❌ 비디오 썸네일 생성 실패:', thumbnailError);
-            throw new Error('비디오 썸네일 생성 실패');
+            console.warn('⚠️ 비디오 썸네일 생성 실패:', thumbnailError);
+            // 썸네일 생성 실패해도 계속 진행
           }
 
           fileURL = await new Promise<string>((resolve, reject) => {
@@ -238,51 +243,41 @@ function FileInputInner(
     }
   };
 
-  const deleteUploadedImage = async (index: number) => {
+  const deleteUploadedImage = (index: number) => {
     console.log('🗑️ 이미지 삭제 시작:', index);
 
-    try {
-      if (index < initialDefaultImages.length) {
-        // 기존 이미지 삭제
-        console.log('기존 이미지 삭제:', index);
-        setInitialDefaultImages((prev) => {
-          const newDefaults = [...prev];
-          newDefaults.splice(index, 1);
-          console.log('기존 이미지 삭제 완료, 남은 개수:', newDefaults.length);
-          return newDefaults;
+    if (index < initialDefaultImages.length) {
+      // 기존 이미지 삭제
+      console.log('기존 이미지 삭제:', index);
+      const newDefaults = [...initialDefaultImages];
+      newDefaults.splice(index, 1);
+      setInitialDefaultImages(newDefaults);
+      console.log('기존 이미지 삭제 완료, 남은 개수:', newDefaults.length);
+    } else {
+      // 새로 업로드된 이미지 삭제
+      const realIndex = index - initialDefaultImages.length;
+      console.log('새 이미지 삭제:', realIndex);
+
+      const newUploaded = [...uploadedImages];
+      newUploaded.splice(realIndex, 1);
+      console.log('새 이미지 삭제 완료, 남은 개수:', newUploaded.length);
+
+      setUploadedImages(newUploaded);
+      setValue(name, newUploaded, { shouldValidate: true });
+
+      // input files 업데이트
+      const store = new DataTransfer();
+      newUploaded.forEach((file) => {
+        const originalFile = new File([file as Blob], file.name, {
+          type: file.type || 'application/octet-stream',
+          lastModified: file.lastModified,
         });
-      } else {
-        // 새로 업로드된 이미지 삭제
-        const realIndex = index - initialDefaultImages.length;
-        console.log('새 이미지 삭제:', realIndex);
+        store.items.add(originalFile);
+      });
 
-        setUploadedImages((prev) => {
-          const newUploaded = [...prev];
-          newUploaded.splice(realIndex, 1);
-          console.log('새 이미지 삭제 완료, 남은 개수:', newUploaded.length);
-
-          // setValue도 여기서 호출
-          setValue(name, newUploaded, { shouldValidate: true });
-
-          // input files 업데이트
-          const store = new DataTransfer();
-          newUploaded.forEach((file) => {
-            const originalFile = new File([file as Blob], file.name, {
-              type: file.type || 'application/octet-stream',
-              lastModified: file.lastModified,
-            });
-            store.items.add(originalFile);
-          });
-
-          if (inputRef.current) {
-            inputRef.current.files = store.files;
-          }
-
-          return newUploaded;
-        });
+      if (inputRef.current) {
+        inputRef.current.files = store.files;
       }
-    } catch (error) {
-      console.error('이미지 삭제 중 오류:', error);
     }
   };
 
@@ -335,9 +330,7 @@ function FileInputInner(
                 onClick={(event: MouseEvent<HTMLButtonElement>) => {
                   event.stopPropagation();
                   event.preventDefault();
-                  setTimeout(() => {
-                    deleteUploadedImage(index);
-                  }, 0);
+                  deleteUploadedImage(index);
                 }}>
                 <IconCancelWhite width={14} height={14} />
               </button>
