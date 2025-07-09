@@ -193,6 +193,9 @@ function FileInputInner(
         {previewURLs.map((preview, index) => {
           const file = uploadedFiles[index - initialDefaultImages.length];
           const isVideo = !!file && file.type === 'video';
+          console.log('📦 file:', file);
+          console.log('▶ isVideo:', isVideo);
+          console.log('⏱ duration:', file?.duration);
 
           return (
             <div
