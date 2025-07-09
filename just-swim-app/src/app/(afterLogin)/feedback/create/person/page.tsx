@@ -153,14 +153,14 @@ export default function FeedbackWrite() {
 
     const uploadedFiles = await Promise.all(
       prevFiles.map(async (file: any) => {
-        if (file.fileURL) return file;
+        const fileToUpload = file.origin instanceof File ? file.origin : file;
 
         try {
           const presignedURL = await getFeedbackPresignedURL([file.name]);
 
           const response = await fetch(presignedURL[0].presignedUrl, {
             method: 'PUT',
-            body: file.origin, // File 객체
+            body: fileToUpload,
             headers: {
               'Content-Type': file.origin.type,
             },
