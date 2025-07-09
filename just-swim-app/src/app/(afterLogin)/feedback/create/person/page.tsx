@@ -101,6 +101,7 @@ export default function FeedbackWrite() {
               name: file.name,
               size: file.size,
               fileURL: '',
+              mediaType: file.type?.startsWith('video') ? 'video' : 'image',
               origin: file,
             };
           }) ?? [],
@@ -122,8 +123,9 @@ export default function FeedbackWrite() {
     const newFiles = selectedFiles.map((file: File) => ({
       name: file.name,
       size: file.size,
-      fileURL: '', // 업로드 전
-      origin: file, // 원본 File 객체 저장
+      mediaType: file.type.startsWith('video') ? 'video' : 'image',
+      fileURL: '',
+      origin: file,
     }));
 
     // 상태 업데이트

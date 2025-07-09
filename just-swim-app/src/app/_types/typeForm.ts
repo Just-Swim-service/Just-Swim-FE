@@ -85,9 +85,10 @@ export interface StoredFileInfo {
   length?: number;
   size?: number;
   fileURL?: string;
-  type?: 'image' | 'video';
+  mediaType?: 'image' | 'video';
   duration?: number;
   thumbnailPath?: string;
+  origin?: File;
 }
 
 export interface FileWithPreview extends File {
