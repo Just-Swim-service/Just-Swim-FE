@@ -90,9 +90,9 @@ export interface StoredFileInfo {
   thumbnailPath?: string;
 }
 
-export interface FileWithPreview extends Omit<File, 'type'> {
+export interface FileWithPreview extends File {
   fileURL: string;
-  type: 'image' | 'video';
+  mediaType: 'image' | 'video';
   duration?: number;
   thumbnailPath?: string;
 }

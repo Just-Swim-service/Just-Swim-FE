@@ -112,7 +112,7 @@ function FileInputInner(
         const fileWithPreview: FileWithPreview = {
           ...file,
           fileURL,
-          type: fileType,
+          mediaType: fileType,
           name: file.name,
           lastModified: file.lastModified,
           ...(duration !== undefined && { duration }),
@@ -228,7 +228,7 @@ function FileInputInner(
               );
             }
 
-            const isVideo = file?.type === 'video';
+            const isVideo = file?.mediaType === 'video';
 
             return (
               <div
@@ -295,7 +295,7 @@ function FileInputInner(
         }}
       />
 
-      {/* {modal && (
+      {modal && (
         <ImageCarousel
           images={previewURLs}
           index={selectedIndex}
@@ -304,7 +304,7 @@ function FileInputInner(
           deleteImage={deleteFile}
           hideModal={hideModal}
         />
-      )} */}
+      )}
     </div>
   );
 }
