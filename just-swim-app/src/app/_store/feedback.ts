@@ -1,10 +1,11 @@
+import { StoredFileInfo } from '@types';
 import { ChangeEvent } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface FeedbackFormData {
   date: string;
-  files: File[] | null;
+  files: StoredFileInfo[];
   targets: string[];
   link: string | null;
   content: string;
@@ -12,15 +13,15 @@ interface FeedbackFormData {
 
 // TODO: 타입 정의
 interface FeedbackStoreState {
-  formData: FeedbackFormData;
-  setFeedbackFormData: (formData: FeedbackFormData) => void;
+  formDataState: FeedbackFormData & { type?: string };
+  setFeedbackFormData: (form: FeedbackFormData, type?: string) => void;
   resetFeedbackFormData: () => void;
-  getFeedbackFormData: () => FeedbackFormData;
+  getFeedbackFormData: () => FeedbackFormData & { type?: string };
 }
 
 const initialFormData: FeedbackFormData = {
   date: '',
-  files: null,
+  files: [],
   targets: [],
   link: null,
   content: '',
@@ -34,11 +35,8 @@ const feedbackStore = create<any>()(
         set(() => {
           return {
             formDataState: {
-              date: form.date,
-              link: form.link,
-              content: form.content,
-              files: form.files,
-              targets: form.targets,
+              ...form,
+              files: form.files ?? [],
               type: targetType,
             },
           };

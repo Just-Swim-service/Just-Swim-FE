@@ -96,15 +96,12 @@ export default function FeedbackWrite() {
         link: data.link,
         content: data.content ?? '',
         files:
-          data.file?.map((file: any) => {
-            return {
-              name: file.name,
-              size: file.size,
-              fileURL: '',
-              mediaType: file.type?.startsWith('video') ? 'video' : 'image',
-              origin: file,
-            };
-          }) ?? [],
+          data.file?.map((file: File) => ({
+            name: file.name,
+            size: file.size,
+            fileURL: '',
+            mediaType: file.type.startsWith('video') ? 'video' : 'image',
+          })) ?? [],
       };
       setFeedbackFormData(formDataObject, 'personal');
     });
@@ -115,64 +112,49 @@ export default function FeedbackWrite() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
 
-    // 기존 fileURL 포함된 파일들
-    const oldFiles =
-      initialFeedbackData?.files?.filter((f: any) => f.fileURL) ?? [];
+    // RHF용 원본 파일만 따로 저장
+    setValue('file', selectedFiles, { shouldValidate: true });
 
-    // 새로 선택한 파일은 fileURL이 없음
-    const newFiles = selectedFiles.map((file: File) => ({
+    // zustand 저장용 요약 정보 생성
+    const fileInfoList = selectedFiles.map((file: File) => ({
       name: file.name,
       size: file.size,
+      fileURL: '', // 업로드 전
       mediaType: file.type.startsWith('video') ? 'video' : 'image',
-      fileURL: '',
-      origin: file,
     }));
 
-    // 상태 업데이트
-    const updatedFiles = [...oldFiles, ...newFiles];
-
-    // RHF엔 실제 File만 넣어줌
-    setValue(
-      'file',
-      newFiles.map((f) => f.origin),
-      { shouldValidate: true },
-    );
-
-    // 상태 저장
     setFeedbackFormData(
       {
         ...getFeedbackFormData(),
-        files: updatedFiles,
+        files: fileInfoList,
       },
       'personal',
     );
   };
 
   const onSubmit = async (data: FormType) => {
-    const prevFiles = getFeedbackFormData().files ?? [];
+    const rhfFiles = data.file; // File[]
+    const storedFiles = getFeedbackFormData().files ?? [];
 
     const uploadedFiles = await Promise.all(
-      prevFiles.map(async (file: any) => {
-        const fileToUpload = file.origin instanceof File ? file.origin : file;
+      storedFiles.map(async (storedFile: any, idx: number) => {
+        const file = rhfFiles[idx];
+        if (!file) return null;
 
         try {
-          const presignedURL = await getFeedbackPresignedURL([file.name]);
-
+          const presignedURL = await getFeedbackPresignedURL([storedFile.name]);
           const response = await fetch(presignedURL[0].presignedUrl, {
             method: 'PUT',
-            body: fileToUpload,
-            headers: {
-              'Content-Type': file.origin.type,
-            },
+            body: file,
+            headers: { 'Content-Type': file.type },
           });
-
           if (!response.ok) throw new Error('파일 업로드 실패');
 
           return {
-            ...file,
+            ...storedFile,
             fileURL: presignedURL[0].presignedUrl.split('?')[0],
           };
-        } catch (error) {
+        } catch (err) {
           return null;
         }
       }),
