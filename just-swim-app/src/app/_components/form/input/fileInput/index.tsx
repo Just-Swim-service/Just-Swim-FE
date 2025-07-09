@@ -295,7 +295,7 @@ function FileInputInner(
         }}
       />
 
-      {modal && (
+      {/* {modal && (
         <ImageCarousel
           images={previewURLs}
           index={selectedIndex}
@@ -304,7 +304,7 @@ function FileInputInner(
           deleteImage={deleteFile}
           hideModal={hideModal}
         />
-      )}
+      )} */}
     </div>
   );
 }
