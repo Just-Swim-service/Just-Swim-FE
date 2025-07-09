@@ -63,6 +63,8 @@ function FileInputInner(
     const { files } = event.target;
     if (!files) return;
 
+    console.log('🔥 업로드된 파일:', files);
+
     const fileArray = Array.from(files);
     const validFiles: FileWithPreview[] = [];
     const invalidReasons: string[] = [];

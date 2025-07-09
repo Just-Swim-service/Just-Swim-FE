@@ -170,14 +170,14 @@
 
   .group_item {
     margin-bottom: 20px;
-  }
 
-  .group_title {
-    @include Title4-M;
+    .group_title {
+      @include Title4-M;
 
-    color: $--Black;
+      color: $--Black;
 
-    margin-bottom: 5px;
+      margin-bottom: 5px;
+    }
   }
 }
 
