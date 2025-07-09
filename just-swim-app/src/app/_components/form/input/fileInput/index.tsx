@@ -43,6 +43,16 @@ function FileInputInner(
   const { modal, setModal, showModal, hideModal } = useModal();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
+  const getVideoDuration = (src: string): Promise<number> => {
+    return new Promise((resolve) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.src = src;
+      video.onloadedmetadata = () => resolve(video.duration);
+      video.onerror = () => resolve(0);
+    });
+  };
+
   useEffect(() => {
     if (isInitialRender.current && defaultPreviewImages.length > 0) {
       setInitialDefaultImages(defaultPreviewImages);
@@ -62,8 +72,6 @@ function FileInputInner(
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
     if (!files) return;
-
-    console.log('🔥 업로드된 파일:', files);
 
     const fileArray = Array.from(files);
     const validFiles: FileWithPreview[] = [];
@@ -91,7 +99,6 @@ function FileInputInner(
       }
 
       try {
-        // ✅ 파일 URL 생성
         const fileURL = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result as string);
@@ -100,6 +107,7 @@ function FileInputInner(
         });
 
         const fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
+        const duration = isVideo ? await getVideoDuration(fileURL) : undefined;
 
         const fileWithPreview: FileWithPreview = {
           ...file,
@@ -107,22 +115,13 @@ function FileInputInner(
           type: fileType,
           name: file.name,
           lastModified: file.lastModified,
+          ...(duration !== undefined && { duration }),
         };
 
         const isDuplicate = uploadedFiles.some(
           (f) => f.name === file.name && f.lastModified === file.lastModified,
         );
-
-        if (isDuplicate) {
-          console.log('⚠️ 중복된 파일로 간주됨:', file.name);
-          continue;
-        }
-
-        console.log('✅ 파일 추가됨:', {
-          name: file.name,
-          type: fileType,
-          fileURL: fileWithPreview.fileURL,
-        });
+        if (isDuplicate) continue;
 
         validFiles.push(fileWithPreview);
       } catch (err) {
@@ -209,7 +208,7 @@ function FileInputInner(
                   <video className={styled.preview_video} src={preview} />
                   <div className={styled.video_overlay}>
                     <div className={styled.play_icon}>▶</div>
-                    {file?.duration && (
+                    {file?.duration !== undefined && !isNaN(file.duration) && (
                       <div className={styled.duration}>
                         {Math.floor(file.duration / 60)}:
                         {(file.duration % 60).toFixed(0).padStart(2, '0')}
