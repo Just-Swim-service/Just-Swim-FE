@@ -23,7 +23,7 @@ import IconCheckSmall from './icon_check_small.svg';
 import { searchUserStore } from '@store';
 import { randomId } from '@utils';
 
-import styled from './searchPerson.module.scss';
+import styled from './styles.module.scss';
 import { Header } from '@components';
 import { usePerformance } from '@hooks';
 
