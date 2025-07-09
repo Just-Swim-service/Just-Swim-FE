@@ -71,21 +71,21 @@ function _MemberItem({
 
   return (
     <div className={styled.member_item} onClick={onClickMember}>
-      <div className={styled.member_info}>
-        <div className={styled.profile}>
-          <Image
-            src={member.profileImage || '/assets/no_profile.png'}
-            alt="프로필 이미지"
-            width={40}
-            height={40}
-          />
-        </div>
-        <div className={styled.info}>
-          <p className={styled.name}>{member.memberNickname}</p>
-          <p className={styled.lecture}>{member.lectureTitle}</p>
-        </div>
+      <div className={styled.check_box}>
+        {itemSelected && <IconCheckSmall />}
       </div>
-      <div className={styled.check}>{itemSelected && <IconCheckSmall />}</div>
+      <div className={styled.image_wrapper}>
+        <Image
+          src={member.profileImage || '/assets/no_profile.png'}
+          alt="프로필 이미지"
+          width={40}
+          height={40}
+        />
+      </div>
+      <div className={styled.info}>
+        <div className={styled.name}>{member.memberNickname}</div>
+        <div className={styled.lecture}>{member.lectureTitle}</div>
+      </div>
     </div>
   );
 }
