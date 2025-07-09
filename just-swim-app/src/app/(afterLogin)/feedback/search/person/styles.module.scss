@@ -96,6 +96,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 22px;
 
     box-shadow: 0 4px 4px -2px $--gray-300;
 
@@ -192,16 +193,13 @@
   .check_box {
     width: 22px;
     height: 22px;
-    min-width: 22px;
-    min-height: 22px;
-    border-radius: 6px;
-    margin-right: 12px;
+    border-radius: 50%;
     border: 2px solid $--gray-300;
     background: $--White;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: border-color 0.2s;
+    margin-right: 12px;
   }
   .check_box.selected {
     border: 2px solid $--Primary-blue;
@@ -211,64 +209,63 @@
   .image_wrapper {
     width: 40px;
     height: 40px;
-    min-width: 40px;
-    min-height: 40px;
-    margin-right: 12px;
     border-radius: 50%;
     overflow: hidden;
     background: $--gray-200;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 12px;
     & > img {
-      object-fit: cover;
       width: 100%;
       height: 100%;
+      object-fit: cover;
       display: block;
     }
   }
 
-  .info {
+  .member_info {
     flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
     min-width: 0;
+    margin-bottom: 20px;
+
     .name {
-      @include Title3-M;
+      font-weight: 500;
       color: $--Black;
-      margin-bottom: 2px;
+      font-size: 16px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-right: 8px;
     }
     .lecture {
-      width: fit-content;
+      margin-left: auto;
       min-width: 48px;
       height: 22px;
       padding: 0 10px;
-      margin-left: 0;
+      border-radius: 11px;
+      background: $--Chips;
+      color: $--Primary-blue;
+      font-size: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 11px;
-      background-color: $--Chips;
-      @include Body4-R;
-      color: $--Primary-blue;
-      font-size: 13px;
-      margin-top: 0;
     }
   }
 }
 
 .button_container {
-  width: 100%;
-  padding: 20px 0 0 0;
-  background: $--White;
-  position: sticky;
-  bottom: 0;
+  position: fixed;
   left: 0;
+  bottom: 0;
+  width: 100vw;
+  max-width: 640px; // 모바일 최대폭
+  background: $--White;
+  padding: 20px 16px 16px 16px;
   z-index: 10;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
   .button {
     width: 100%;
     height: 52px;

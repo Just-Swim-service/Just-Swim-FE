@@ -82,7 +82,7 @@ function _MemberItem({
           height={40}
         />
       </div>
-      <div className={styled.info}>
+      <div className={styled.member_info}>
         <div className={styled.name}>{member.memberNickname}</div>
         <div className={styled.lecture}>{member.lectureTitle}</div>
       </div>
