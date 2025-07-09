@@ -19,7 +19,7 @@ import IconCheckSmall from './icon_check_small.svg';
 import { searchUserStore } from '@store';
 import { randomId } from '@utils';
 
-import styled from './styles.module.scss';
+import styles from './styles.module.scss';
 import { Header } from '@components';
 
 function _MemberItem({
@@ -83,11 +83,11 @@ function _MemberItem({
   }, [itemSelected]);
 
   return (
-    <button onClick={onClickMember} className={styled.member_item}>
-      <div className={`${styled.check_box} ${itemSelected && styled.selected}`}>
+    <button onClick={onClickMember} className={styles.member_item}>
+      <div className={`${styles.check_box} ${itemSelected && styles.selected}`}>
         {itemSelected && <IconCheckSmall />}
       </div>
-      <div className={styled.image_wrapper}>
+      <div className={styles.image_wrapper}>
         {member.profileImage && member.profileImage.startsWith('http') ? (
           <Image
             src={member.profileImage}
@@ -96,11 +96,11 @@ function _MemberItem({
             height={34}
           />
         ) : (
-          <div className={styled.empty_image} />
+          <div className={styles.empty_image} />
         )}
       </div>
-      <p className={styled.name}>{member.memberNickname}</p>
-      <div className={styled.lecture}>
+      <p className={styles.name}>{member.memberNickname}</p>
+      <div className={styles.lecture}>
         <p>{member.lectureTitle}</p>
       </div>
     </button>
@@ -130,7 +130,7 @@ function _GroupList({
   }
 
   return (
-    <div className={styled.group_list}>
+    <div className={styles.group_list}>
       {list.map((g) => {
         // 현재 강의에서, 검색어를 포함하는 수강생 확인
         const members = [];
@@ -148,7 +148,7 @@ function _GroupList({
           // 검색어를 포함하는 수강생이 한명이라도 있으면 강의명과 수강생 출력
           return (
             <div key={randomId()}>
-              <p className={styled.title}>{g.lecture}</p>
+              <p className={styles.title}>{g.lecture}</p>
               {members.map((m) => {
                 let flag = false;
 
@@ -198,7 +198,7 @@ function _NameList({
   }
 
   return (
-    <div className={styled.name_list}>
+    <div className={styles.name_list}>
       {list.map((member) => {
         if (member.memberNickname.includes(search)) {
           let flag = false;
@@ -281,7 +281,6 @@ export function Search({
   const onClickSelect = () => {
     // 선택 관련 로직 처리
 
-    // console.table(selected);
     updateSelectedList(selected);
     router.push('/feedback/create/person');
   };
@@ -289,35 +288,35 @@ export function Search({
   return (
     <>
       <Header title="수강생 선택" />
-      <div className={styled.container}>
-        <p className={styled.title}>
+      <div className={styles.container}>
+        <p className={styles.title}>
           피드백을 남길
           <br />
           수강생을 선택해주세요
         </p>
-        <div className={styled.header}>
-          <div className={styled.type}>
+        <div className={styles.header}>
+          <div className={styles.type}>
             <button
-              className={`${styled.select} ${type === 'group' && styled.selected}`}
+              className={`${styles.select} ${type === 'group' && styles.selected}`}
               onClick={() => {
                 onClickSelectType('group');
               }}>
               <span>수업별로 보기</span>
             </button>
             <button
-              className={`${styled.select} ${type === 'name' && styled.selected}`}
+              className={`${styles.select} ${type === 'name' && styles.selected}`}
               onClick={() => {
                 onClickSelectType('name');
               }}>
               <span>이름순으로 보기</span>
             </button>
           </div>
-          <div className={styled.search}>
-            <div className={styled.icon}>
+          <div className={styles.search}>
+            <div className={styles.icon}>
               <IconSearch />
             </div>
             <input
-              className={styled.input}
+              className={styles.input}
               type="text"
               onChange={onChangeInput}
               value={search}
@@ -325,10 +324,10 @@ export function Search({
             />
           </div>
         </div>
-        <div className={styled.info}>
+        <div className={styles.info}>
           <p>{type === 'group' ? '수업명' : '이름'}</p>
           <button
-            className={`${styled.button} ${reverse && styled.reverse}`}
+            className={`${styles.button} ${reverse && styles.reverse}`}
             onClick={toggleReverse}>
             <span>{reverse ? '내림차순' : '오름차순'}</span>
             <IconDown />
@@ -351,9 +350,9 @@ export function Search({
             defaultList={selectedList}
           />
         )}
-        <div className={styled.button_container}>
+        <div className={styles.button_container}>
           <button
-            className={`${styled.button} ${selected.length === 0 ? styled.disable : styled.active}`}
+            className={`${styles.button} ${selected.length === 0 ? styles.disable : styles.active}`}
             disabled={selected.length === 0}
             onClick={onClickSelect}>
             {selected.length !== 0 && <span>{`${selected.length}명 `}</span>}
