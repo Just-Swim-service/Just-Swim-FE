@@ -262,7 +262,7 @@ function FileInputInner(
         }}
       />
 
-      {modal && (
+      {modal && previewURLs.length > 0 && selectedIndex < previewURLs.length && (
         <ImageCarousel
           images={previewURLs}
           index={selectedIndex}

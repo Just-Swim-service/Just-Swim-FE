@@ -17,6 +17,10 @@ export function ImageCarousel({
   deleteImage = (index: number) => {},
   hideModal,
 }: ImageCarouselProps) {
+  if (!images || images.length === 0 || index >= images.length) {
+    return null;
+  }
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
