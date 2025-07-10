@@ -1,40 +1,46 @@
 'use client';
 
-import React from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
-interface ErrorBoundaryProps {
-  children: React.ReactNode;
+interface Props {
+  children: ReactNode;
 }
 
-interface ErrorBoundaryState {
+interface State {
   hasError: boolean;
-  error: Error | null;
+  error?: Error;
+  errorInfo?: ErrorInfo;
 }
 
-export class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+export class ErrorBoundary extends Component<Props, State> {
+  state: State = {
+    hasError: false,
+    error: undefined,
+    errorInfo: undefined,
+  };
 
-  static getDerivedStateFromError(error: Error) {
-    console.error('🚨 getDerivedStateFromError:', error);
+  static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
-    console.error('🚨 componentDidCatch:', error);
-    console.error('🧾 componentStack:', info.componentStack);
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('🔥 ErrorBoundary caught an error:', error, errorInfo);
+    this.setState({ errorInfo });
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: 40, color: 'red', fontWeight: 'bold' }}>
-          ❌ 렌더링 중 오류 발생: {this.state.error?.message}
+        <div style={{ padding: '1rem', color: 'red', whiteSpace: 'pre-wrap' }}>
+          <h2>❌ 렌더링 중 에러 발생</h2>
+          <p>
+            <strong>{this.state.error?.message}</strong>
+          </p>
+          <details style={{ marginTop: '1rem' }}>
+            <summary>상세 정보</summary>
+            <pre>{this.state.error?.stack}</pre>
+            <pre>{this.state.errorInfo?.componentStack}</pre>
+          </details>
         </div>
       );
     }
