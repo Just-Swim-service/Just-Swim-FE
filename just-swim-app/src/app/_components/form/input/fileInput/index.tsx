@@ -97,8 +97,14 @@ function FileInputInner(
       fileArray.map(async (file) => {
         if (!(file instanceof File)) return null;
 
-        const isImage = isImageFile(file);
-        const isVideo = allowVideo && isVideoFile(file);
+        const isImage = file?.type && isImageFile(file);
+        const isVideo = allowVideo && file?.type && isVideoFile(file);
+        if (!isImage && !isVideo) {
+          invalidReasons.push(
+            `허용되지 않은 파일 형식: ${file?.name ?? 'unknown'}`,
+          );
+          return null;
+        }
 
         console.log('[DEBUG] 파일 정보:', file.name, file.type, {
           isImage,
