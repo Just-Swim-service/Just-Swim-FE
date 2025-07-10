@@ -17,16 +17,16 @@ export function ImageCarousel({
   deleteImage = (index: number) => {},
   hideModal,
 }: ImageCarouselProps) {
-  if (!images || images.length === 0 || index >= images.length) {
-    return null;
-  }
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
 
   const startCapture = useRef<boolean>(false);
   const startCursorPosition = useRef<number>(0);
+
+  if (!images || images.length === 0 || index >= images.length) {
+    return null;
+  }
 
   const endDrag = () => {
     if (startCapture.current) {
