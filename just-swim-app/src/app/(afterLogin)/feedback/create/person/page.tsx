@@ -121,7 +121,7 @@ export default function FeedbackWrite() {
       name: file.name,
       size: file.size,
       fileURL: '', // 업로드 전
-      mediaType: file.type.startsWith('video') ? 'video' : 'image',
+      mediaType: file.type?.startsWith('video') ? 'video' : 'image',
     }));
 
     setFeedbackFormData(
