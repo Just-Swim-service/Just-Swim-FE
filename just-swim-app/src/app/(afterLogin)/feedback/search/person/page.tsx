@@ -71,7 +71,8 @@ function _MemberItem({
 
   return (
     <div className={styled.member_item} onClick={onClickMember}>
-      <div className={styled.check_box}>
+      <div
+        className={`${styled.check_box} ${itemSelected ? styled.selected : ''}`}>
         {itemSelected && <IconCheckSmall />}
       </div>
       <div className={styled.image_wrapper}>

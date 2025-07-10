@@ -23,7 +23,7 @@ function FileInputInner(
   {
     name,
     length = 4,
-    size = 100, // MB
+    size = 100,
     id = 'fileInput',
     defaultPreviewImages = [],
     onChange = () => {},
@@ -66,8 +66,10 @@ function FileInputInner(
 
   const previewURLs = [
     ...initialDefaultImages,
-    ...uploadedFiles.map((file) => file.fileURL),
-  ].filter(Boolean);
+    ...uploadedFiles
+      .filter((f): f is FileWithPreview => !!f?.fileURL)
+      .map((file) => file.fileURL),
+  ];
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -78,6 +80,11 @@ function FileInputInner(
     const invalidReasons: string[] = [];
 
     for (const file of fileArray) {
+      if (!(file instanceof File)) {
+        invalidReasons.push(`유효하지 않은 파일 객체`);
+        continue;
+      }
+
       const isImage = isImageFile(file);
       const isVideo = allowVideo && isVideoFile(file);
 
@@ -109,21 +116,19 @@ function FileInputInner(
         const fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
         const duration = isVideo ? await getVideoDuration(fileURL) : undefined;
 
-        const fileWithPreview: FileWithPreview = {
+        const isDuplicate = uploadedFiles.some(
+          (f) => f.name === file.name && f.lastModified === file.lastModified,
+        );
+        if (isDuplicate) continue;
+
+        validFiles.push({
           ...file,
           fileURL,
           mediaType: fileType,
           name: file.name,
           lastModified: file.lastModified,
           ...(duration !== undefined && { duration }),
-        };
-
-        const isDuplicate = uploadedFiles.some(
-          (f) => f.name === file.name && f.lastModified === file.lastModified,
-        );
-        if (isDuplicate) continue;
-
-        validFiles.push(fileWithPreview);
+        });
       } catch (err) {
         invalidReasons.push(`파일 처리 실패: ${file.name}`);
       }
@@ -191,88 +196,50 @@ function FileInputInner(
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
         {previewURLs.map((preview, index) => {
-          try {
-            const resolvedIndex = index - initialDefaultImages.length;
-            const file = uploadedFiles[resolvedIndex];
+          const resolvedIndex = index - initialDefaultImages.length;
+          const file = uploadedFiles[resolvedIndex];
 
-            // 로그로 추적
-            console.log('🟡 preview:', preview);
-            console.log('🔢 index:', index, '→ resolvedIndex:', resolvedIndex);
-            console.log('📁 file:', file);
+          const isVideo = file?.mediaType === 'video';
 
-            // 기본 이미지 처리
-            if (resolvedIndex < 0 || !file) {
-              return (
+          return (
+            <div
+              key={`${preview}-${index}`}
+              className={styled.preview_item}
+              onClick={(event: MouseEvent<HTMLDivElement>) => {
+                event.preventDefault();
+                setSelectedIndex(index);
+                showModal();
+              }}>
+              {isVideo ? (
+                <>
+                  <video className={styled.preview_video} src={preview} />
+                  <div className={styled.video_overlay}>
+                    <div className={styled.play_icon}>▶</div>
+                    {file?.duration !== undefined && !isNaN(file.duration) && (
+                      <div className={styled.duration}>
+                        {Math.floor(file.duration / 60)}:
+                        {(file.duration % 60).toFixed(0).padStart(2, '0')}
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
                 <div
-                  key={`default-${index}`}
-                  className={styled.preview_item}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedIndex(index);
-                    showModal();
-                  }}>
-                  <div
-                    className={styled.preview_image}
-                    style={{ backgroundImage: `url(${preview})` }}
-                  />
-                  <button
-                    className={styled.delete_button}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      event.preventDefault();
-                      deleteFile(index);
-                    }}>
-                    <IconCancelWhite width={14} height={14} />
-                  </button>
-                </div>
-              );
-            }
-
-            const isVideo = file?.mediaType === 'video';
-
-            return (
-              <div
-                key={`${preview}-${index}`}
-                className={styled.preview_item}
-                onClick={(event: MouseEvent<HTMLDivElement>) => {
+                  className={styled.preview_image}
+                  style={{ backgroundImage: `url(${preview})` }}
+                />
+              )}
+              <button
+                className={styled.delete_button}
+                onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                  event.stopPropagation();
                   event.preventDefault();
-                  setSelectedIndex(index);
-                  showModal();
+                  deleteFile(index);
                 }}>
-                {isVideo ? (
-                  <>
-                    <video className={styled.preview_video} src={preview} />
-                    <div className={styled.video_overlay}>
-                      <div className={styled.play_icon}>▶</div>
-                      {file?.duration !== undefined && !isNaN(file.duration) && (
-                        <div className={styled.duration}>
-                          {Math.floor(file.duration / 60)}:
-                          {(file.duration % 60).toFixed(0).padStart(2, '0')}
-                        </div>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <div
-                    className={styled.preview_image}
-                    style={{ backgroundImage: `url(${preview})` }}
-                  />
-                )}
-                <button
-                  className={styled.delete_button}
-                  onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    deleteFile(index);
-                  }}>
-                  <IconCancelWhite width={14} height={14} />
-                </button>
-              </div>
-            );
-          } catch (err) {
-            console.error('❌ 렌더링 에러 발생:', err);
-            return null;
-          }
+                <IconCancelWhite width={14} height={14} />
+              </button>
+            </div>
+          );
         })}
       </div>
 
