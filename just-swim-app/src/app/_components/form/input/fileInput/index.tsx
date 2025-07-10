@@ -99,6 +99,12 @@ function FileInputInner(
 
         const isImage = isImageFile(file);
         const isVideo = allowVideo && isVideoFile(file);
+
+        console.log('[DEBUG] 파일 정보:', file.name, file.type, {
+          isImage,
+          isVideo,
+        });
+
         if (!isImage && !isVideo) {
           invalidReasons.push(`허용되지 않은 파일 형식: ${file.name}`);
           return null;
@@ -134,7 +140,8 @@ function FileInputInner(
             lastModified: file.lastModified,
             ...(duration !== undefined && { duration }),
           } satisfies FileWithPreview;
-        } catch {
+        } catch (err) {
+          console.error('[ERROR] 파일 처리 실패:', file.name, err);
           invalidReasons.push(`파일 처리 실패: ${file.name}`);
           return null;
         }
