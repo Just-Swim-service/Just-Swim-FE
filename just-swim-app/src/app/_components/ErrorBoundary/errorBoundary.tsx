@@ -8,39 +8,43 @@ interface Props {
 
 interface State {
   hasError: boolean;
-  error?: Error;
-  errorInfo?: ErrorInfo;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  state: State = {
-    hasError: false,
-    error: undefined,
-    errorInfo: undefined,
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null };
+  }
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error, errorInfo: null };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('🔥 ErrorBoundary caught an error:', error, errorInfo);
-    this.setState({ errorInfo });
+    console.error('🧨 ErrorBoundary caught an error:', error);
+    console.error(errorInfo);
+    this.setState({ error, errorInfo });
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: '1rem', color: 'red', whiteSpace: 'pre-wrap' }}>
-          <h2>❌ 렌더링 중 에러 발생</h2>
+        <div style={{ padding: '1rem', color: 'red' }}>
+          <h2>🚨 렌더링 중 에러 발생</h2>
           <p>
-            <strong>{this.state.error?.message}</strong>
+            <strong>{this.state.error?.name}:</strong>{' '}
+            {this.state.error?.message}
           </p>
-          <details style={{ marginTop: '1rem' }}>
-            <summary>상세 정보</summary>
-            <pre>{this.state.error?.stack}</pre>
-            <pre>{this.state.errorInfo?.componentStack}</pre>
-          </details>
+          <pre
+            style={{
+              fontSize: '12px',
+              overflow: 'auto',
+              whiteSpace: 'pre-wrap',
+            }}>
+            {this.state.errorInfo?.componentStack}
+          </pre>
         </div>
       );
     }
