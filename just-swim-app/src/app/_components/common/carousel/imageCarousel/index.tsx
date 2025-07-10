@@ -24,7 +24,7 @@ export function ImageCarousel({
   const startCapture = useRef<boolean>(false);
   const startCursorPosition = useRef<number>(0);
 
-  if (!images || images.length === 0 || index >= images.length) {
+  if (!images || images.length === 0 || index < 0 || index >= images.length) {
     return null;
   }
 

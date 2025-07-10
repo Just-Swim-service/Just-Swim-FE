@@ -198,8 +198,8 @@ function FileInputInner(
   };
 
   useEffect(() => {
-    if (selectedIndex >= previewURLs.length && selectedIndex !== 0) {
-      setSelectedIndex(previewURLs.length - 1);
+    if (selectedIndex >= previewURLs.length) {
+      setSelectedIndex(previewURLs.length > 0 ? previewURLs.length - 1 : 0);
     }
     if (previewURLs.length === 0) {
       setModal(false);
@@ -277,16 +277,19 @@ function FileInputInner(
         }}
       />
 
-      {modal && previewURLs.length > 0 && selectedIndex < previewURLs.length && (
-        <ImageCarousel
-          images={previewURLs}
-          index={selectedIndex}
-          setIndex={setSelectedIndex}
-          useDeleteButton={true}
-          deleteImage={deleteFile}
-          hideModal={hideModal}
-        />
-      )}
+      {modal &&
+        previewURLs.length > 0 &&
+        selectedIndex >= 0 &&
+        selectedIndex < previewURLs.length && (
+          <ImageCarousel
+            images={previewURLs}
+            index={selectedIndex}
+            setIndex={setSelectedIndex}
+            useDeleteButton={true}
+            deleteImage={deleteFile}
+            hideModal={hideModal}
+          />
+        )}
     </div>
   );
 }
