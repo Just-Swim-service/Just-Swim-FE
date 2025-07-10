@@ -24,7 +24,6 @@ import { useRouter } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
 import { searchUserStore } from '@store';
 import { StoredFileInfo } from '@types';
-import { ErrorBoundary } from '@/_components/ErrorBoundary/errorBoundary';
 
 interface CustomFormData {
   date: string;
@@ -123,24 +122,6 @@ export default function FeedbackWrite() {
       (file): file is File => file instanceof File,
     );
     setValue('file', validFiles, { shouldValidate: true });
-
-    const fileInfoList = validFiles.map((file: File) => ({
-      name: file.name,
-      size: file.size,
-      fileURL: '',
-      mediaType:
-        typeof file.type === 'string' && file.type.startsWith('video')
-          ? 'video'
-          : 'image',
-    }));
-
-    setFeedbackFormData(
-      {
-        ...getFeedbackFormData(),
-        files: fileInfoList,
-      },
-      'personal',
-    );
   };
 
   const onSubmit = async (data: FormType) => {
@@ -243,25 +224,22 @@ export default function FeedbackWrite() {
               <div className={`${styled.sub_title} ${styled.file}`}>
                 최대 4개의 100MB 이하 이미지 또는 동영상 파일만 첨부 가능합니다
               </div>
-              <ErrorBoundary>
-                <FileInput
-                  name="file"
-                  onChange={handleChange}
-                  allowVideo={true}
-                  accept="image/*,video/*"
-                  defaultPreviewImages={
-                    initialFeedbackData?.files?.length > 0
-                      ? initialFeedbackData.files
-                          .map((f: any) => f.fileURL)
-                          .filter(
-                            (url: string | undefined): url is string =>
-                              typeof url === 'string' && url.trim() !== '',
-                          )
-                      : []
-                  }
-                  setValue={setValue}
-                />
-              </ErrorBoundary>
+              <FileInput
+                allowVideo={true}
+                accept="image/*,video/*"
+                defaultPreviewImages={
+                  initialFeedbackData?.files?.length > 0
+                    ? initialFeedbackData.files
+                        .map((f: any) => f.fileURL)
+                        .filter(
+                          (url: string | undefined): url is string =>
+                            typeof url === 'string' && url.trim() !== '',
+                        )
+                    : []
+                }
+                setValue={setValue}
+                {...register('file')}
+              />
             </div>
             <div className={styled.wrap}>
               <div className={styled.title}>첨부 링크</div>
