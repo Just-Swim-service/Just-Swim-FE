@@ -112,8 +112,11 @@ export function ImageCarousel({
           style={{
             transform: `translateX(calc(${-100 * index}% + ${movingCursorPositon}px))`,
           }}>
-          {images.map((image) => {
-            return (
+          {images
+            .filter(
+              (img): img is string => typeof img === 'string' && !!img.trim(),
+            )
+            .map((image) => (
               <div key={randomId()} className={styled.slider_item}>
                 <div className={styled.image_wrapper}>
                   <img
@@ -123,8 +126,7 @@ export function ImageCarousel({
                   />
                 </div>
               </div>
-            );
-          })}
+            ))}
         </div>
       </div>
       <div className={styled.index_list}>

@@ -69,17 +69,21 @@ function FileInputInner(
   }, [uploadedFiles]);
 
   const previewURLs = useMemo(() => {
-    return [
-      ...initialDefaultImages,
-      ...uploadedFiles
-        .filter(
-          (f): f is FileWithPreview =>
-            !!f?.fileURL &&
-            typeof f.fileURL === 'string' &&
-            f.fileURL.trim() !== '',
-        )
-        .map((f) => f.fileURL),
-    ];
+    const urls: string[] = [];
+
+    initialDefaultImages.forEach((url) => {
+      if (typeof url === 'string' && url.trim()) {
+        urls.push(url);
+      }
+    });
+
+    uploadedFiles.forEach((f) => {
+      if (f && typeof f.fileURL === 'string' && f.fileURL.trim()) {
+        urls.push(f.fileURL);
+      }
+    });
+
+    return urls;
   }, [uploadedFiles, initialDefaultImages]);
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
