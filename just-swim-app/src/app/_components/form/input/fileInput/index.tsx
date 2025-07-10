@@ -211,11 +211,14 @@ function FileInputInner(
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
         {previewURLs.map((preview, index) => {
-          if (typeof preview !== 'string' || preview.trim() === '') return null;
+          if (typeof preview !== 'string' || !preview.trim()) return null;
 
           const resolvedIndex = index - initialDefaultImages.length;
           const file = uploadedFiles[resolvedIndex];
-          const isVideo = file?.mediaType === 'video';
+
+          const isVideo =
+            file?.mediaType === 'video' ||
+            (typeof preview === 'string' && preview.startsWith('data:video'));
 
           return (
             <div
