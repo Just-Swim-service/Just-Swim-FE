@@ -91,18 +91,24 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const subscription = watch((data) => {
+      // File 객체만 files에 들어가도록 방어
+      const files = (data.file ?? []).filter(
+        (file: any): file is File => file instanceof File,
+      );
       const formDataObject: CustomFormData = {
         date: data.date ?? '',
         targets: data.target,
         link: data.link,
         content: data.content ?? '',
-        files:
-          data.file?.map((file: File) => ({
-            name: file.name,
-            size: file.size,
-            fileURL: '',
-            mediaType: file.type.startsWith('video') ? 'video' : 'image',
-          })) ?? [],
+        files: files.map((file: File) => ({
+          name: file.name,
+          size: file.size,
+          fileURL: '',
+          mediaType:
+            typeof file.type === 'string' && file.type.startsWith('video')
+              ? 'video'
+              : 'image',
+        })),
       };
       setFeedbackFormData(formDataObject, 'personal');
     });
@@ -112,19 +118,21 @@ export default function FeedbackWrite() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
+    // File 객체만 files에 들어가도록 방어
+    const validFiles = selectedFiles.filter(
+      (file): file is File => file instanceof File,
+    );
+    setValue('file', validFiles, { shouldValidate: true });
 
-    // RHF용 원본 파일만 따로 저장
-    setValue('file', selectedFiles, { shouldValidate: true });
-
-    // zustand 저장용 요약 정보 생성
-    const fileInfoList = selectedFiles
-      .filter((file): file is File => !!file)
-      .map((file: File) => ({
-        name: file.name,
-        size: file.size,
-        fileURL: '',
-        mediaType: file?.type?.startsWith('video') ? 'video' : 'image',
-      }));
+    const fileInfoList = validFiles.map((file: File) => ({
+      name: file.name,
+      size: file.size,
+      fileURL: '',
+      mediaType:
+        typeof file.type === 'string' && file.type.startsWith('video')
+          ? 'video'
+          : 'image',
+    }));
 
     setFeedbackFormData(
       {
@@ -136,7 +144,7 @@ export default function FeedbackWrite() {
   };
 
   const onSubmit = async (data: FormType) => {
-    const rhfFiles = data.file; // File[]
+    const rhfFiles = data.file;
     const storedFiles = getFeedbackFormData().files ?? [];
 
     const uploadedFiles = await Promise.all(
