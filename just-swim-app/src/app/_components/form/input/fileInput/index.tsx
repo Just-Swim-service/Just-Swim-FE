@@ -91,6 +91,8 @@ function FileInputInner(
     if (!files) return;
 
     const fileArray = Array.from(files);
+
+    console.log('[onChangeImages] fileArray:', fileArray);
     const invalidReasons: string[] = [];
 
     const processedFiles = await Promise.all(
@@ -99,6 +101,13 @@ function FileInputInner(
 
         const isImage = file?.type && isImageFile(file);
         const isVideo = allowVideo && file?.type && isVideoFile(file);
+
+        console.log('[Check file]', {
+          file,
+          isImage,
+          isVideo,
+          type: file?.type,
+        });
         if (!isImage && !isVideo) {
           invalidReasons.push(
             `허용되지 않은 파일 형식: ${file?.name ?? 'unknown'}`,

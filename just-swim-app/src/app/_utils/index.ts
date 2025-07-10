@@ -131,18 +131,20 @@ export const getVideoDuration = (file: File): Promise<number> => {
 };
 
 // 파일 타입 확인
-export const isVideoFile = (file: File): boolean => {
-  if (!file?.type) {
-    console.warn('[WARN] 파일 타입이 없습니다', file);
+export const isVideoFile = (file?: File): boolean => {
+  if (!file || typeof file.type !== 'string') {
+    console.warn('[isVideoFile] Invalid file:', file);
     return false;
   }
+
   return file.type.startsWith('video/');
 };
 
-export const isImageFile = (file: File): boolean => {
-  if (!file?.type) {
-    console.warn('[WARN] 파일 타입이 없습니다', file);
+export const isImageFile = (file?: File): boolean => {
+  if (!file || typeof file.type !== 'string') {
+    console.warn('[isImageFile] Invalid file:', file);
     return false;
   }
+
   return file.type.startsWith('image/');
 };
