@@ -19,6 +19,7 @@ import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 import { FileInputProps, FileWithPreview } from '@types';
 import { isVideoFile, isImageFile } from '@utils';
+import { ErrorBoundary } from '@/_components/ErrorBoundary/errorBoundary';
 
 function FileInputInner(
   {
@@ -281,14 +282,16 @@ function FileInputInner(
         previewURLs.length > 0 &&
         selectedIndex >= 0 &&
         selectedIndex < previewURLs.length && (
-          <ImageCarousel
-            images={previewURLs}
-            index={selectedIndex}
-            setIndex={setSelectedIndex}
-            useDeleteButton={true}
-            deleteImage={deleteFile}
-            hideModal={hideModal}
-          />
+          <ErrorBoundary>
+            <ImageCarousel
+              images={previewURLs}
+              index={selectedIndex}
+              setIndex={setSelectedIndex}
+              useDeleteButton={true}
+              deleteImage={deleteFile}
+              hideModal={hideModal}
+            />
+          </ErrorBoundary>
         )}
     </div>
   );
