@@ -9,6 +9,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useMemo,
 } from 'react';
 
 import { mergeRefs } from '@utils';
@@ -36,7 +37,6 @@ function FileInputInner(
 ) {
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPreview[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
-
   const isInitialRender = useRef(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -64,77 +64,82 @@ function FileInputInner(
     setValue(name, uploadedFiles, { shouldValidate: true });
   }, [uploadedFiles]);
 
-  const previewURLs = [
-    ...initialDefaultImages,
-    ...uploadedFiles
-      .filter((f): f is FileWithPreview => !!f?.fileURL)
-      .map((file) => file.fileURL),
-  ];
+  const previewURLs = useMemo(() => {
+    return [
+      ...initialDefaultImages,
+      ...uploadedFiles
+        .filter((f): f is FileWithPreview => !!f?.fileURL)
+        .map((f) => f.fileURL),
+    ];
+  }, [uploadedFiles, initialDefaultImages]);
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
     if (!files) return;
 
     const fileArray = Array.from(files);
-    const validFiles: FileWithPreview[] = [];
     const invalidReasons: string[] = [];
 
-    for (const file of fileArray) {
-      if (!(file instanceof File)) {
-        invalidReasons.push(`유효하지 않은 파일 객체`);
-        continue;
-      }
+    const processedFiles = await Promise.all(
+      fileArray.map(async (file) => {
+        if (!(file instanceof File)) return null;
 
-      const isImage = isImageFile(file);
-      const isVideo = allowVideo && isVideoFile(file);
+        const isImage = isImageFile(file);
+        const isVideo = allowVideo && isVideoFile(file);
+        if (!isImage && !isVideo) {
+          invalidReasons.push(`허용되지 않은 파일 형식: ${file.name}`);
+          return null;
+        }
 
-      if (!isImage && !isVideo) {
-        invalidReasons.push(`허용되지 않은 파일 형식: ${file.name}`);
-        continue;
-      }
+        if (file.size === 0) {
+          invalidReasons.push(`빈 파일: ${file.name}`);
+          return null;
+        }
 
-      if (file.size === 0) {
-        invalidReasons.push(`빈 파일: ${file.name}`);
-        continue;
-      }
+        if (file.size > size * 1024 * 1024) {
+          invalidReasons.push(
+            `파일 용량 초과: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB > ${size}MB)`,
+          );
+          return null;
+        }
 
-      if (file.size > size * 1024 * 1024) {
-        invalidReasons.push(
-          `파일 용량 초과: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB > ${size}MB)`,
-        );
-        continue;
-      }
+        try {
+          const fileURL = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = () => reject('파일 읽기 실패');
+            reader.readAsDataURL(file);
+          });
 
-      try {
-        const fileURL = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = () => reject('파일 읽기 실패');
-          reader.readAsDataURL(file);
-        });
+          const duration = isVideo ? await getVideoDuration(fileURL) : undefined;
 
-        const fileType: 'image' | 'video' = isVideo ? 'video' : 'image';
-        const duration = isVideo ? await getVideoDuration(fileURL) : undefined;
+          return {
+            ...file,
+            fileURL,
+            mediaType: isVideo ? 'video' : 'image',
+            name: file.name,
+            lastModified: file.lastModified,
+            ...(duration !== undefined && { duration }),
+          } satisfies FileWithPreview;
+        } catch {
+          invalidReasons.push(`파일 처리 실패: ${file.name}`);
+          return null;
+        }
+      }),
+    );
 
-        const isDuplicate = uploadedFiles.some(
-          (f) => f.name === file.name && f.lastModified === file.lastModified,
-        );
-        if (isDuplicate) continue;
+    const validFiles = processedFiles.filter((f): f is FileWithPreview => !!f);
 
-        validFiles.push({
-          ...file,
-          fileURL,
-          mediaType: fileType,
-          name: file.name,
-          lastModified: file.lastModified,
-          ...(duration !== undefined && { duration }),
-        });
-      } catch (err) {
-        invalidReasons.push(`파일 처리 실패: ${file.name}`);
-      }
-    }
+    const uniqueNewFiles = validFiles.filter(
+      (newFile) =>
+        !uploadedFiles.some(
+          (existing) =>
+            existing.name === newFile.name &&
+            existing.lastModified === newFile.lastModified,
+        ),
+    );
 
-    const merged = [...uploadedFiles, ...validFiles].slice(0, length);
+    const merged = [...uploadedFiles, ...uniqueNewFiles].slice(0, length);
     setUploadedFiles(merged);
 
     const store = new DataTransfer();
@@ -145,6 +150,7 @@ function FileInputInner(
       });
       store.items.add(original);
     });
+
     if (inputRef.current) {
       inputRef.current.files = store.files;
     }
@@ -198,7 +204,6 @@ function FileInputInner(
         {previewURLs.map((preview, index) => {
           const resolvedIndex = index - initialDefaultImages.length;
           const file = uploadedFiles[resolvedIndex];
-
           const isVideo = file?.mediaType === 'video';
 
           return (
