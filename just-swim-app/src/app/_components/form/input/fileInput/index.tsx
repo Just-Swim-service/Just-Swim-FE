@@ -211,7 +211,7 @@ function FileInputInner(
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
         {previewURLs.map((preview, index) => {
-          if (!preview || preview.trim() === '') return null;
+          if (typeof preview !== 'string' || preview.trim() === '') return null;
 
           const resolvedIndex = index - initialDefaultImages.length;
           const file = uploadedFiles[resolvedIndex];

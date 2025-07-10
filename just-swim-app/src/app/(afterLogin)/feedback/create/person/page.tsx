@@ -241,7 +241,12 @@ export default function FeedbackWrite() {
                   accept="image/*,video/*"
                   defaultPreviewImages={
                     initialFeedbackData?.files?.length > 0
-                      ? initialFeedbackData.files.map((f: any) => f.fileURL)
+                      ? initialFeedbackData.files
+                          .map((f: any) => f.fileURL)
+                          .filter(
+                            (url: string | undefined): url is string =>
+                              typeof url === 'string' && url.trim() !== '',
+                          )
                       : []
                   }
                   setValue={setValue}
