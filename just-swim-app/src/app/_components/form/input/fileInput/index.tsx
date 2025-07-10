@@ -55,7 +55,10 @@ function FileInputInner(
 
   useEffect(() => {
     if (isInitialRender.current && defaultPreviewImages.length > 0) {
-      setInitialDefaultImages(defaultPreviewImages);
+      const valid = defaultPreviewImages.filter(
+        (url) => typeof url === 'string' && url.trim() !== '',
+      );
+      setInitialDefaultImages(valid);
       isInitialRender.current = false;
     }
   }, [defaultPreviewImages]);
@@ -68,7 +71,12 @@ function FileInputInner(
     return [
       ...initialDefaultImages,
       ...uploadedFiles
-        .filter((f): f is FileWithPreview => !!f?.fileURL)
+        .filter(
+          (f): f is FileWithPreview =>
+            !!f?.fileURL &&
+            typeof f.fileURL === 'string' &&
+            f.fileURL.trim() !== '',
+        )
         .map((f) => f.fileURL),
     ];
   }, [uploadedFiles, initialDefaultImages]);
@@ -202,6 +210,8 @@ function FileInputInner(
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
         {previewURLs.map((preview, index) => {
+          if (!preview || preview.trim() === '') return null;
+
           const resolvedIndex = index - initialDefaultImages.length;
           const file = uploadedFiles[resolvedIndex];
           const isVideo = file?.mediaType === 'video';
