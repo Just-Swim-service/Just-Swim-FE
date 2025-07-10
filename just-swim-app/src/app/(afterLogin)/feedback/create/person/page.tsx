@@ -117,12 +117,14 @@ export default function FeedbackWrite() {
     setValue('file', selectedFiles, { shouldValidate: true });
 
     // zustand 저장용 요약 정보 생성
-    const fileInfoList = selectedFiles.map((file: File) => ({
-      name: file.name,
-      size: file.size,
-      fileURL: '', // 업로드 전
-      mediaType: file.type?.startsWith('video') ? 'video' : 'image',
-    }));
+    const fileInfoList = selectedFiles
+      .filter((file): file is File => !!file)
+      .map((file: File) => ({
+        name: file.name,
+        size: file.size,
+        fileURL: '',
+        mediaType: file?.type?.startsWith('video') ? 'video' : 'image',
+      }));
 
     setFeedbackFormData(
       {
