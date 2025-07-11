@@ -17,8 +17,15 @@ import { ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
-import { FileInputProps, FileWithPreview } from '@types';
+import { FileInputProps } from '@types';
 import { isVideoFile, isImageFile } from '@utils';
+
+type FileWithPreviewExtended = {
+  originalFile: File;
+  fileURL: string;
+  mediaType: 'image' | 'video';
+  duration?: number;
+};
 
 function FileInputInner(
   {
@@ -34,7 +41,9 @@ function FileInputInner(
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const [uploadedFiles, setUploadedFiles] = useState<FileWithPreview[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<FileWithPreviewExtended[]>(
+    [],
+  );
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
   const isInitialRender = useRef(true);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -62,14 +71,9 @@ function FileInputInner(
     }
   }, [defaultPreviewImages]);
 
+  // ✅ RHF에 원본 File[]만 넘김
   useEffect(() => {
-    const onlyFiles = uploadedFiles.map((file) => {
-      return new File([file as Blob], file.name, {
-        type: file.type,
-        lastModified: file.lastModified,
-      });
-    });
-
+    const onlyFiles = uploadedFiles.map((f) => f.originalFile);
     setValue(name, onlyFiles, { shouldValidate: true });
   }, [uploadedFiles]);
 
@@ -77,15 +81,11 @@ function FileInputInner(
     const urls: string[] = [];
 
     initialDefaultImages.forEach((url) => {
-      if (typeof url === 'string' && url.trim()) {
-        urls.push(url);
-      }
+      if (typeof url === 'string' && url.trim()) urls.push(url);
     });
 
     uploadedFiles.forEach((f) => {
-      if (f && typeof f.fileURL === 'string' && f.fileURL.trim()) {
-        urls.push(f.fileURL);
-      }
+      if (f?.fileURL?.trim()) urls.push(f.fileURL);
     });
 
     return urls;
@@ -135,13 +135,11 @@ function FileInputInner(
           const duration = isVideo ? await getVideoDuration(fileURL) : undefined;
 
           return {
-            ...file,
+            originalFile: file,
             fileURL,
             mediaType: isVideo ? 'video' : 'image',
-            name: file.name,
-            lastModified: file.lastModified,
             ...(duration !== undefined && { duration }),
-          } satisfies FileWithPreview;
+          } satisfies FileWithPreviewExtended;
         } catch (err) {
           console.error('[ERROR] 파일 처리 실패:', file.name, err);
           invalidReasons.push(`파일 처리 실패: ${file.name}`);
@@ -150,29 +148,26 @@ function FileInputInner(
       }),
     );
 
-    const validFiles = processedFiles.filter((f): f is FileWithPreview => !!f);
+    const validFiles = processedFiles.filter(
+      (f): f is FileWithPreviewExtended => !!f,
+    );
+
     const uniqueNewFiles = validFiles.filter(
       (newFile) =>
         !uploadedFiles.some(
           (existing) =>
-            existing.name === newFile.name &&
-            existing.lastModified === newFile.lastModified,
+            existing.originalFile.name === newFile.originalFile.name &&
+            existing.originalFile.lastModified ===
+              newFile.originalFile.lastModified,
         ),
     );
 
     const merged = [...uploadedFiles, ...uniqueNewFiles].slice(0, length);
     setUploadedFiles(merged);
 
-    const store = new DataTransfer();
-    merged.forEach((file) => {
-      const original = new File([file as Blob], file.name, {
-        type: file.type,
-        lastModified: file.lastModified,
-      });
-      store.items.add(original);
-    });
-
     if (inputRef.current) {
+      const store = new DataTransfer();
+      merged.forEach((file) => store.items.add(file.originalFile));
       inputRef.current.files = store.files;
     }
 
@@ -194,26 +189,11 @@ function FileInputInner(
       updated.splice(realIndex, 1);
       setUploadedFiles(updated);
 
-      const store = new DataTransfer();
-      updated.forEach((file) => {
-        const original = new File([file as Blob], file.name, {
-          type: file.type,
-          lastModified: file.lastModified,
-        });
-        store.items.add(original);
-      });
       if (inputRef.current) {
+        const store = new DataTransfer();
+        updated.forEach((file) => store.items.add(file.originalFile));
         inputRef.current.files = store.files;
       }
-
-      const onlyFiles = updated.map((file) => {
-        return new File([file as Blob], file.name, {
-          type: file.type,
-          lastModified: file.lastModified,
-        });
-      });
-
-      setValue(name, onlyFiles, { shouldValidate: true });
     }
   };
 
@@ -232,10 +212,7 @@ function FileInputInner(
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
         {previewURLs.map((preview, index) => {
-          if (typeof preview !== 'string' || !preview.trim()) {
-            console.warn('[WARN] Invalid preview item:', preview);
-            return null;
-          }
+          if (typeof preview !== 'string' || !preview.trim()) return null;
 
           const resolvedIndex = index - initialDefaultImages.length;
           const file = uploadedFiles[resolvedIndex];
