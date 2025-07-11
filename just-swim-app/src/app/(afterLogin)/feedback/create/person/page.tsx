@@ -69,7 +69,6 @@ export default function FeedbackWrite() {
     getMembersData();
   }, []);
 
-  // test
   const {
     register,
     handleSubmit,
@@ -102,6 +101,7 @@ export default function FeedbackWrite() {
         files: files.map((file: File) => ({
           name: file.name,
           size: file.size,
+          type: file.type,
           fileURL: '',
           mediaType:
             typeof file.type === 'string' && file.type.startsWith('video')
@@ -125,7 +125,7 @@ export default function FeedbackWrite() {
   };
 
   const onSubmit = async (data: FormType) => {
-    const rhfFiles = data.file;
+    const rhfFiles = data.file; // File[]
     const storedFiles = getFeedbackFormData().files ?? [];
 
     const uploadedFiles = await Promise.all(
@@ -133,22 +133,19 @@ export default function FeedbackWrite() {
         const file = rhfFiles[idx];
         if (!file) return null;
 
-        try {
-          const presignedURL = await getFeedbackPresignedURL([storedFile.name]);
-          const response = await fetch(presignedURL[0].presignedUrl, {
-            method: 'PUT',
-            body: file,
-            headers: { 'Content-Type': file.type },
-          });
-          if (!response.ok) throw new Error('파일 업로드 실패');
+        // presignedUrl 요청 및 업로드
+        const presignedURL = await getFeedbackPresignedURL([storedFile.name]);
+        const response = await fetch(presignedURL[0].presignedUrl, {
+          method: 'PUT',
+          body: file,
+          headers: { 'Content-Type': file.type },
+        });
+        if (!response.ok) throw new Error('파일 업로드 실패');
 
-          return {
-            ...storedFile,
-            fileURL: presignedURL[0].presignedUrl.split('?')[0],
-          };
-        } catch (err) {
-          return null;
-        }
+        return {
+          ...storedFile,
+          fileURL: presignedURL[0].presignedUrl.split('?')[0],
+        };
       }),
     );
 

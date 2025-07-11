@@ -27,7 +27,6 @@ function FileInputInner(
     size = 100,
     id = 'fileInput',
     defaultPreviewImages = [],
-    onChange = () => {},
     setValue,
     accept = 'image/*,video/*',
     allowVideo = true,
@@ -64,7 +63,14 @@ function FileInputInner(
   }, [defaultPreviewImages]);
 
   useEffect(() => {
-    setValue(name, uploadedFiles, { shouldValidate: true });
+    const onlyFiles = uploadedFiles.map((file) => {
+      return new File([file as Blob], file.name, {
+        type: file.type,
+        lastModified: file.lastModified,
+      });
+    });
+
+    setValue(name, onlyFiles, { shouldValidate: true });
   }, [uploadedFiles]);
 
   const previewURLs = useMemo(() => {
@@ -90,8 +96,6 @@ function FileInputInner(
     if (!files) return;
 
     const fileArray = Array.from(files);
-
-    console.log('[onChangeImages] fileArray:', fileArray);
     const invalidReasons: string[] = [];
 
     const processedFiles = await Promise.all(
@@ -101,26 +105,10 @@ function FileInputInner(
         const isImage = file?.type && isImageFile(file);
         const isVideo = allowVideo && file?.type && isVideoFile(file);
 
-        console.log('[Check file]', {
-          file,
-          isImage,
-          isVideo,
-          type: file?.type,
-        });
         if (!isImage && !isVideo) {
           invalidReasons.push(
             `허용되지 않은 파일 형식: ${file?.name ?? 'unknown'}`,
           );
-          return null;
-        }
-
-        console.log('[DEBUG] 파일 정보:', file.name, file.type, {
-          isImage,
-          isVideo,
-        });
-
-        if (!isImage && !isVideo) {
-          invalidReasons.push(`허용되지 않은 파일 형식: ${file.name}`);
           return null;
         }
 
@@ -163,7 +151,6 @@ function FileInputInner(
     );
 
     const validFiles = processedFiles.filter((f): f is FileWithPreview => !!f);
-
     const uniqueNewFiles = validFiles.filter(
       (newFile) =>
         !uploadedFiles.some(
@@ -219,7 +206,14 @@ function FileInputInner(
         inputRef.current.files = store.files;
       }
 
-      setValue(name, updated, { shouldValidate: true });
+      const onlyFiles = updated.map((file) => {
+        return new File([file as Blob], file.name, {
+          type: file.type,
+          lastModified: file.lastModified,
+        });
+      });
+
+      setValue(name, onlyFiles, { shouldValidate: true });
     }
   };
 
@@ -231,6 +225,8 @@ function FileInputInner(
       setModal(false);
     }
   }, [previewURLs]);
+
+  const { onChange: rhfOnChange, ...restInputProps } = inputProps;
 
   return (
     <div className={styled.input_wrapper}>
@@ -295,7 +291,7 @@ function FileInputInner(
       </label>
 
       <input
-        {...inputProps}
+        {...restInputProps}
         name={name}
         id={id}
         ref={mergeRefs(inputRef, ref)}
@@ -305,7 +301,7 @@ function FileInputInner(
         hidden
         onChange={(e) => {
           onChangeImages(e);
-          onChange(e);
+          if (typeof rhfOnChange === 'function') rhfOnChange(e);
         }}
       />
 
