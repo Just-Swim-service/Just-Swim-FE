@@ -157,9 +157,15 @@ export default function FeedbackWrite() {
       );
 
       
-      const validFiles = Array.isArray(uploadedFiles)
-          ? uploadedFiles.filter((f) => f?.fileURL)
-          : [];
+      console.log('[DEBUG] uploadedFiles:', uploadedFiles);
+
+      let validFiles: any[] = [];
+
+      if (Array.isArray(uploadedFiles)) {
+          validFiles = uploadedFiles.filter((f) => f?.fileURL);
+      } else {
+          console.warn('[WARN] uploadedFiles is not an array:', uploadedFiles);
+      }
 
     setFeedbackFormData(
       {
