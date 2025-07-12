@@ -128,28 +128,38 @@ export default function FeedbackWrite() {
     const rhfFiles = data.file; // File[]
     const storedFiles = getFeedbackFormData().files ?? [];
 
-    const uploadedFiles = await Promise.all(
-      storedFiles.map(async (storedFile: any, idx: number) => {
-        const file = rhfFiles[idx];
-        if (!file) return null;
+      const uploadedFiles = await Promise.all(
+          storedFiles.map(async (storedFile: any, idx: number) => {
+              const file = rhfFiles[idx];
+              if (!file) return null;
 
-        // presignedUrl 요청 및 업로드
-        const presignedURL = await getFeedbackPresignedURL([storedFile.name]);
-        const response = await fetch(presignedURL[0].presignedUrl, {
-          method: 'PUT',
-          body: file,
-          headers: { 'Content-Type': file.type },
-        });
-        if (!response.ok) throw new Error('파일 업로드 실패');
+              try {
+                  const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
+                  const { presignedUrl, contentType } = presigned;
 
-        return {
-          ...storedFile,
-          fileURL: presignedURL[0].presignedUrl.split('?')[0],
-        };
-      }),
-    );
+                  const response = await fetch(presignedUrl, {
+                      method: 'PUT',
+                      body: file,
+                      headers: { 'Content-Type': contentType },
+                  });
 
-    const validFiles = uploadedFiles.filter((f) => f?.fileURL);
+                  if (!response.ok) throw new Error('파일 업로드 실패');
+
+                  return {
+                      ...storedFile,
+                      fileURL: presignedUrl.split('?')[0],
+                  };
+              } catch (err) {
+                  console.error('[업로드 실패]', err);
+                  return null;
+              }
+          }),
+      );
+
+      
+      const validFiles = Array.isArray(uploadedFiles)
+          ? uploadedFiles.filter((f) => f?.fileURL)
+          : [];
 
     setFeedbackFormData(
       {

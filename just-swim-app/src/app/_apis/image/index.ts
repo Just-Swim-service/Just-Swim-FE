@@ -27,10 +27,10 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
 
 export async function getFeedbackPresignedURL(
   files: string[],
-): Promise<{ fileName: string; presignedUrl: string }[]> {
+): Promise<{ fileName: string; presignedUrl: string; contentType: string }[]> {
   const result = await Fetch<{
     success: boolean;
-    data: { fileName: string; presignedUrl: string }[];
+    data: { fileName: string; presignedUrl: string; contentType: string }[];
   }>({
     url: `${URL}/feedback/feedbackImage/presignedUrl`,
     method: 'POST',
