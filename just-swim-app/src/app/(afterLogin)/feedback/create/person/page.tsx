@@ -126,47 +126,51 @@ export default function FeedbackWrite() {
 
   const onSubmit = async (data: FormType) => {
     const rhfFiles = data.file; // File[]
-      const rawFiles = getFeedbackFormData().files;
-      const storedFiles = Array.isArray(rawFiles) ? rawFiles : Object.values(rawFiles ?? {});
+    const rawFiles = getFeedbackFormData().files;
+    const storedFiles = Array.isArray(rawFiles)
+      ? rawFiles
+      : Object.values(rawFiles ?? {});
 
-      const uploadedFiles = await Promise.all(
-          storedFiles.map(async (storedFile: any, idx: number) => {
-              const file = rhfFiles[idx];
-              if (!file) return null;
+    console.log('[DEBUG] storedFiles:', storedFiles);
+    console.log('[DEBUG] rhfFiles:', rhfFiles);
 
-              try {
-                  const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
-                  const { presignedUrl, contentType } = presigned;
+    const uploadedFiles = await Promise.all(
+      storedFiles.map(async (storedFile: any, idx: number) => {
+        const file = rhfFiles[idx];
+        if (!file) return null;
 
-                  const response = await fetch(presignedUrl, {
-                      method: 'PUT',
-                      body: file,
-                      headers: { 'Content-Type': contentType },
-                  });
+        try {
+          const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
+          const { presignedUrl, contentType } = presigned;
 
-                  if (!response.ok) throw new Error('파일 업로드 실패');
+          const response = await fetch(presignedUrl, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': contentType },
+          });
 
-                  return {
-                      ...storedFile,
-                      fileURL: presignedUrl.split('?')[0],
-                  };
-              } catch (err) {
-                  console.error('[업로드 실패]', err);
-                  return null;
-              }
-          }),
-      );
+          if (!response.ok) throw new Error('파일 업로드 실패');
 
-      
-      console.log('[DEBUG] uploadedFiles:', uploadedFiles);
+          return {
+            ...storedFile,
+            fileURL: presignedUrl.split('?')[0],
+          };
+        } catch (err) {
+          console.error('[업로드 실패]', err);
+          return null;
+        }
+      }),
+    );
 
-      let validFiles: any[] = [];
+    console.log('[DEBUG] uploadedFiles:', uploadedFiles);
 
-      if (Array.isArray(uploadedFiles)) {
-          validFiles = uploadedFiles.filter((f) => f?.fileURL);
-      } else {
-          console.warn('[WARN] uploadedFiles is not an array:', uploadedFiles);
-      }
+    let validFiles: any[] = [];
+
+    if (Array.isArray(uploadedFiles)) {
+      validFiles = uploadedFiles.filter((f) => f?.fileURL);
+    } else {
+      console.warn('[WARN] uploadedFiles is not an array:', uploadedFiles);
+    }
 
     setFeedbackFormData(
       {
