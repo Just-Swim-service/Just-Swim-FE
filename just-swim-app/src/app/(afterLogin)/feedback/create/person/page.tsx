@@ -137,13 +137,7 @@ export default function FeedbackWrite() {
               try {
                   const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
                   const { presignedUrl, contentType } = presigned;
-
-                  console.log('[UPLOAD DEBUG]', {
-                      presignedUrl,
-                      contentType: file.type,
-                      fileName: file.name,
-                      file,
-                  });
+                  console.log('[DEBUG] getFeedbackPresignedURL result:', presigned);
 
                   const response = await fetch(presignedUrl, {
                       method: 'PUT',

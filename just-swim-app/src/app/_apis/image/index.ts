@@ -43,6 +43,7 @@ export async function getFeedbackPresignedURL(
     },
   });
 
+    console.log('[DEBUG] Fetch result:', result);
   if (result.success) {
     return result.data;
   } else {
