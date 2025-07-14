@@ -52,7 +52,7 @@ export async function getFeedbackPresignedURL(
 
 export async function deleteFeedbackImageFromS3(fileURL: string) {
   const result = await Fetch<{ success: boolean; data: string }>({
-    url: `${URL}/feedback/feedbackImage`,
+    url: `${URL}/image`,
     method: 'DELETE',
     header: {
       credential: true,
