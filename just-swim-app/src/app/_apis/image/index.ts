@@ -28,8 +28,6 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
 export async function getFeedbackPresignedURL(
   files: string[],
 ): Promise<{ fileName: string; presignedUrl: string; contentType: string }[]> {
-  console.log('[DEBUG] getFeedbackPresignedURL', files);
-
   const result = await Fetch<{
     success: boolean;
     data: { fileName: string; presignedUrl: string; contentType: string }[];

@@ -90,9 +90,10 @@ export default function FeedbackWrite() {
   useEffect(() => {
     const subscription = watch((data) => {
       // File 객체만 files에 들어가도록 방어
-      const files = (data.file ?? []).filter(
-        (file: any): file is File => file instanceof File,
-      );
+      const files = Array.isArray(data.file)
+        ? data.file.filter((file: any): file is File => file instanceof File)
+        : [];
+
       const formDataObject: CustomFormData = {
         date: data.date ?? '',
         targets: data.target,
@@ -146,7 +147,6 @@ export default function FeedbackWrite() {
           const response = await fetch(presignedUrl, {
             method: 'PUT',
             body: file,
-            headers: { 'Content-Type': contentType },
           });
 
           if (!response.ok) throw new Error('파일 업로드 실패');
