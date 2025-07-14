@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import styled from './feedbackWrite.module.scss';
 import {
   Header,
@@ -16,7 +15,6 @@ import { IconCalendar } from '@assets';
 import { getClassList, getFeedbackPresignedURL } from '@apis';
 
 import { useForm } from 'react-hook-form';
-// RHF에서 zod 사용을 위한 resolver
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormType, formSchema } from '@/_schema/index';
 
@@ -35,14 +33,12 @@ interface CustomFormData {
 
 export default function FeedbackWrite() {
   const router = useRouter();
-
   const { setFeedbackFormData, resetFeedbackFormData, getFeedbackFormData } =
     feedbackStore();
   const { resetMemberData } = searchUserStore();
   const [members, setMembers] = useState<any>();
 
   const initialFeedbackDataRaw = getFeedbackFormData();
-
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
     files:
@@ -53,14 +49,12 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const getMembersData = async () => {
-      // 수강생 목록 조회 - 이름 순서, 반 순서
       const data = await getClassList().then((res) => res.data);
       if (data.success) {
-        // 반정보가 함께 저장해야한다.
         const memberData: any = data.data.flatMap((d: any) =>
           d.members.map((member: any) => ({
             ...member,
-            lectureTitle: d.lectureTitle, // lectureTitle 추가
+            lectureTitle: d.lectureTitle,
           })),
         );
         setMembers(memberData);
@@ -89,7 +83,6 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const subscription = watch((data) => {
-      // File 객체만 files에 들어가도록 방어
       const files = Array.isArray(data.file)
         ? data.file.filter((file: any): file is File => file instanceof File)
         : [];
@@ -104,10 +97,7 @@ export default function FeedbackWrite() {
           size: file.size,
           type: file.type,
           fileURL: '',
-          mediaType:
-            typeof file.type === 'string' && file.type.startsWith('video')
-              ? 'video'
-              : 'image',
+          mediaType: file.type.startsWith('video') ? 'video' : 'image',
         })),
       };
       setFeedbackFormData(formDataObject, 'personal');
@@ -116,24 +106,21 @@ export default function FeedbackWrite() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
-    // File 객체만 files에 들어가도록 방어
-    const validFiles = selectedFiles.filter(
-      (file): file is File => file instanceof File,
-    );
-    setValue('file', validFiles, { shouldValidate: true });
-  };
-
   const onSubmit = async (data: FormType) => {
-    const rhfFiles = data.file; // File[]
+    const rhfFiles = data.file;
     const rawFiles = getFeedbackFormData().files;
     const storedFiles = Array.isArray(rawFiles)
       ? rawFiles
       : Object.values(rawFiles ?? {});
 
-    console.log('[DEBUG] storedFiles:', storedFiles);
-    console.log('[DEBUG] rhfFiles:', rhfFiles);
+    // ✅ 중복 방지: confirm 페이지 진입 전 fileURL 초기화
+    setFeedbackFormData(
+      {
+        ...getFeedbackFormData(),
+        files: [],
+      },
+      'personal',
+    );
 
     const uploadedFiles = await Promise.all(
       storedFiles.map(async (storedFile: any, idx: number) => {
@@ -147,9 +134,7 @@ export default function FeedbackWrite() {
           const response = await fetch(presignedUrl, {
             method: 'PUT',
             body: file,
-            headers: {
-              'Content-Type': contentType,
-            },
+            headers: { 'Content-Type': contentType },
           });
 
           if (!response.ok) throw new Error('파일 업로드 실패');
@@ -165,18 +150,11 @@ export default function FeedbackWrite() {
       }),
     );
 
-    console.log('[DEBUG] uploadedFiles:', uploadedFiles);
-
-    let validFiles: any[] = [];
-
-    if (Array.isArray(uploadedFiles)) {
-      validFiles = uploadedFiles.filter((f) => f?.fileURL);
-    } else {
-      console.warn('[WARN] uploadedFiles is not an array:', uploadedFiles);
-    }
+    const validFiles = uploadedFiles.filter((f) => f?.fileURL);
 
     setFeedbackFormData(
       {
+        ...getFeedbackFormData(),
         date: data.date,
         targets: data.target,
         link: data.link,
@@ -206,10 +184,8 @@ export default function FeedbackWrite() {
             <div className={styled.sub_title}>
               피드백을 남길 수강생의 정보를 확인해주세요
             </div>
-            {/* TODO: 추가 수정이 필요함 */}
             <SelectPersonInput
               {...register('target')}
-              // @ts-ignore
               setFeedbackFormData={setFeedbackFormData}
               feedbackData={watch()}
               members={members}
@@ -249,14 +225,9 @@ export default function FeedbackWrite() {
                 allowVideo={true}
                 accept="image/*,video/*"
                 defaultPreviewImages={
-                  initialFeedbackData?.files?.length > 0
-                    ? initialFeedbackData.files
-                        .map((f: any) => f.fileURL)
-                        .filter(
-                          (url: string | undefined): url is string =>
-                            typeof url === 'string' && url.trim() !== '',
-                        )
-                    : []
+                  initialFeedbackData?.files
+                    ?.map((f: any) => f.fileURL)
+                    .filter(Boolean) || []
                 }
                 setValue={setValue}
                 {...register('file')}
@@ -272,7 +243,6 @@ export default function FeedbackWrite() {
                 errors={[errors.link?.message ?? '']}
               />
             </div>
-
             <div className={styled.wrap}>
               <div className={styled.title}>
                 피드백 남기기 <span>(필수)</span>
