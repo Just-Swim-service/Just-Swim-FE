@@ -30,6 +30,7 @@ const initialFormData: FeedbackFormData = {
 const feedbackStore = create<any>()(
   persist(
     (set, get) => ({
+      formDataState: { ...initialFormData },
       // @ts-ignore
       setFeedbackFormData: (form, targetType) =>
         set(() => {

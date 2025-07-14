@@ -81,7 +81,7 @@ export interface SelectInputProps {
 }
 
 export interface StoredFileInfo {
-  name: string;
+  name?: string;
   length?: number;
   size?: number;
   fileURL?: string;

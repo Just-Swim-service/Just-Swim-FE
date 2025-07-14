@@ -84,11 +84,14 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const subscription = watch((data) => {
+      const currentFiles = getFeedbackFormData().files ?? [];
+
       const formDataObject: CustomFormData = {
         date: data.date ?? '',
         targets: data.target,
         link: data.link,
         content: data.content ?? '',
+        files: currentFiles,
       };
       setFeedbackFormData(formDataObject, 'personal');
     });
