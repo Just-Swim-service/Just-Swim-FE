@@ -131,6 +131,7 @@ export default function FeedbackWrite() {
 
     setFeedbackFormData(
       {
+        ...getFeedbackFormData(),
         date: data.date,
         targets: data.target,
         link: data.link,
