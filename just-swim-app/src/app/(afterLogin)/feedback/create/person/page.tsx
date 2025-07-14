@@ -138,6 +138,7 @@ export default function FeedbackWrite() {
                   const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
                   const { presignedUrl, contentType } = presigned;
                   console.log('[DEBUG] getFeedbackPresignedURL result:', presigned);
+                  await new Promise((resolve) => setTimeout(resolve, 7000));
 
                   const response = await fetch(presignedUrl, {
                       method: 'PUT',
