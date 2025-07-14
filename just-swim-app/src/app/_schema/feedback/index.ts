@@ -28,26 +28,7 @@ const checkFileLength = (file: string) => file.length <= MAX_FILE_LENGTH;
 export const formSchema = z.object({
   target: z.string().min(1).optional(),
   date: z.string().min(1),
-  // file: z.any().optional(),
-    file: z
-        .any()
-        .optional()
-        .refine(
-            (files) => !files || files.length <= MAX_FILE_LENGTH,
-            `최대 ${MAX_FILE_LENGTH}개의 파일만 업로드 가능합니다.`,
-        )
-        .refine(
-            (files) =>
-                !files ||
-                Array.from(files).every((file: any) => file.size <= MAX_FILE_SIZE),
-            `파일당 최대 ${MAX_FILE_SIZE / 1024 / 1024}MB까지 업로드할 수 있습니다.`,
-        )
-        .refine(
-            (files) =>
-                !files ||
-                Array.from(files).every((file: any) => ACCEPTED_FILE_TYPES.includes(file.type)),
-            '지원되지 않는 파일 형식입니다. (jpg, png, mp4 등)',
-        ),
+  file: z.any().optional(),
   link: z.string().nullable().optional(),
   content: z.string().refine((str) => str.length !== 0, '피드백은 필수입니다.'),
 });

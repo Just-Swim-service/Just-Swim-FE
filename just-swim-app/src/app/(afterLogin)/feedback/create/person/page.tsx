@@ -101,14 +101,16 @@ export default function FeedbackWrite() {
 
   const onSubmit = async (data: FormType) => {
     const rhfFiles = data.file; // File[]
-    const rawFiles = getFeedbackFormData().files;
-    const storedFiles = Array.isArray(rawFiles)
-      ? rawFiles
-      : Object.values(rawFiles ?? {});
+    const rawFiles = getFeedbackFormData().files ?? [];
 
     const uploadedFiles = await Promise.all(
-      storedFiles.map(async (storedFile: any, idx: number) => {
+      rawFiles.map(async (storedFile: any, idx: number) => {
         const file = rhfFiles[idx];
+
+        if (storedFile.fileURL && typeof storedFile.fileURL === 'string') {
+          return storedFile;
+        }
+
         if (!file) return null;
 
         try {
