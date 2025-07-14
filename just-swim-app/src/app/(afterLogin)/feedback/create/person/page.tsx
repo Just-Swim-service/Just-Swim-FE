@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styled from './feedbackWrite.module.scss';
+
 import {
   Header,
   DateInput,
@@ -13,11 +14,9 @@ import {
 
 import { IconCalendar } from '@assets';
 import { getClassList, getFeedbackPresignedURL } from '@apis';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormType, formSchema } from '@/_schema/index';
-
 import { useRouter } from 'next/navigation';
 import { feedbackStore } from '@/_store/feedback';
 import { searchUserStore } from '@store';
@@ -39,6 +38,7 @@ export default function FeedbackWrite() {
   const [members, setMembers] = useState<any>();
 
   const initialFeedbackDataRaw = getFeedbackFormData();
+
   const initialFeedbackData = {
     ...initialFeedbackDataRaw,
     files:
@@ -47,6 +47,7 @@ export default function FeedbackWrite() {
         : [],
   };
 
+  // 수강생 리스트 초기 로딩
   useEffect(() => {
     const getMembersData = async () => {
       const data = await getClassList().then((res) => res.data);
@@ -83,34 +84,12 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const subscription = watch((data) => {
-      const files = Array.isArray(data.file)
-        ? data.file.filter((file: any): file is File => file instanceof File)
-        : [];
-
-      const existingFiles = getFeedbackFormData().files ?? [];
-
-      // 이미 fileURL이 있는 기존 파일만 유지
-      const uploadedFiles = existingFiles.filter((f: any) => !!f.fileURL);
-
-      // 새로 추가된 파일만 추출
-      const newFiles = files
-        .filter((file) => !uploadedFiles.some((f: any) => f.name === file.name))
-        .map((file) => ({
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          fileURL: '',
-          mediaType: file.type.startsWith('video') ? 'video' : 'image',
-        }));
-
       const formDataObject: CustomFormData = {
         date: data.date ?? '',
         targets: data.target,
         link: data.link,
         content: data.content ?? '',
-        files: [...uploadedFiles, ...newFiles],
       };
-
       setFeedbackFormData(formDataObject, 'personal');
     });
 
@@ -118,12 +97,11 @@ export default function FeedbackWrite() {
   }, [watch]);
 
   const onSubmit = async (data: FormType) => {
-    const rhfFiles = data.file;
-    const rawFiles = getFeedbackFormData().files ?? [];
-
+    const rhfFiles = data.file; // File[]
+    const rawFiles = getFeedbackFormData().files;
     const storedFiles = Array.isArray(rawFiles)
       ? rawFiles
-      : Object.values(rawFiles);
+      : Object.values(rawFiles ?? {});
 
     const uploadedFiles = await Promise.all(
       storedFiles.map(async (storedFile: any, idx: number) => {
@@ -137,7 +115,9 @@ export default function FeedbackWrite() {
           const response = await fetch(presignedUrl, {
             method: 'PUT',
             body: file,
-            headers: { 'Content-Type': contentType },
+            headers: {
+              'Content-Type': contentType,
+            },
           });
 
           if (!response.ok) throw new Error('파일 업로드 실패');
@@ -153,10 +133,7 @@ export default function FeedbackWrite() {
       }),
     );
 
-    const existingUploadedFiles = storedFiles.filter((f) => !!f.fileURL);
-    const validUploadedFiles = uploadedFiles.filter((f) => f?.fileURL);
-
-    const finalFiles = [...existingUploadedFiles, ...validUploadedFiles];
+    const validFiles = uploadedFiles.filter((f) => f?.fileURL);
 
     setFeedbackFormData(
       {
@@ -165,12 +142,12 @@ export default function FeedbackWrite() {
         targets: data.target,
         link: data.link,
         content: data.content,
-        files: finalFiles,
+        files: validFiles,
       },
       'personal',
     );
 
-    return router.push('/feedback/create/confirm');
+    router.push('/feedback/create/confirm');
   };
 
   return (
@@ -179,7 +156,7 @@ export default function FeedbackWrite() {
         title="개별 피드백 작성하기"
         resetFunc1={resetFeedbackFormData}
         resetFunc2={resetMemberData}
-        routerBackUrl={'/feedback'}
+        routerBackUrl="/feedback"
       />
       <form onSubmit={handleSubmit(onSubmit)} className={styled.feedback_write}>
         <div className={styled.inner}>
@@ -222,6 +199,7 @@ export default function FeedbackWrite() {
                 errors={[errors.date?.message ?? '']}
               />
             </div>
+
             <div className={styled.wrap}>
               <div className={styled.title}>첨부 파일</div>
               <div className={`${styled.sub_title} ${styled.file}`}>
@@ -231,14 +209,20 @@ export default function FeedbackWrite() {
                 allowVideo={true}
                 accept="image/*,video/*"
                 defaultPreviewImages={
-                  initialFeedbackData?.files
-                    ?.map((f: any) => f.fileURL)
-                    .filter(Boolean) || []
+                  initialFeedbackData?.files?.length > 0
+                    ? initialFeedbackData.files
+                        .map((f: any) => f.fileURL)
+                        .filter(
+                          (url: string | undefined): url is string =>
+                            typeof url === 'string' && url.trim() !== '',
+                        )
+                    : []
                 }
                 setValue={setValue}
                 {...register('file')}
               />
             </div>
+
             <div className={styled.wrap}>
               <div className={styled.title}>첨부 링크</div>
               <LinkInput
@@ -249,6 +233,7 @@ export default function FeedbackWrite() {
                 errors={[errors.link?.message ?? '']}
               />
             </div>
+
             <div className={styled.wrap}>
               <div className={styled.title}>
                 피드백 남기기 <span>(필수)</span>
@@ -263,6 +248,7 @@ export default function FeedbackWrite() {
             </div>
           </div>
         </div>
+
         <button
           type="submit"
           className={`${styled.submit_btn} ${!isValid ? styled.disabled : ''}`}
