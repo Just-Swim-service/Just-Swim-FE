@@ -34,7 +34,8 @@
               "RelativeToolTip": "just-swim-app\\src\\app\\_schema\\feedback\\index.ts",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-07-12T01:38:12.764Z"
+              "WhenOpened": "2025-07-12T01:38:12.764Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -44,7 +45,7 @@
               "RelativeDocumentMoniker": "just-swim-app\\src\\app\\(afterLogin)\\feedback\\create\\person\\page.tsx",
               "ToolTip": "C:\\Just-swim-service\\FE\\Just-Swim-FE\\just-swim-app\\src\\app\\(afterLogin)\\feedback\\create\\person\\page.tsx",
               "RelativeToolTip": "just-swim-app\\src\\app\\(afterLogin)\\feedback\\create\\person\\page.tsx",
-              "ViewState": "AgIAAIEAAAAAAAAAAAAQwIwAAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAQwFkAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
               "WhenOpened": "2025-07-12T00:30:42.661Z",
               "EditorCaption": ""
