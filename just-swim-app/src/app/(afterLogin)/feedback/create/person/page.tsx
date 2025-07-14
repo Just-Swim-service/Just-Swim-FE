@@ -108,19 +108,13 @@ export default function FeedbackWrite() {
 
   const onSubmit = async (data: FormType) => {
     const rhfFiles = data.file;
-    const rawFiles = getFeedbackFormData().files;
+    const rawFiles = getFeedbackFormData().files ?? [];
+
     const storedFiles = Array.isArray(rawFiles)
       ? rawFiles
-      : Object.values(rawFiles ?? {});
+      : Object.values(rawFiles);
 
-    // ✅ 중복 방지: confirm 페이지 진입 전 fileURL 초기화
-    setFeedbackFormData(
-      {
-        ...getFeedbackFormData(),
-        files: [],
-      },
-      'personal',
-    );
+    const filesToUpload = storedFiles.filter((f) => !f.fileURL);
 
     const uploadedFiles = await Promise.all(
       storedFiles.map(async (storedFile: any, idx: number) => {
@@ -150,7 +144,10 @@ export default function FeedbackWrite() {
       }),
     );
 
-    const validFiles = uploadedFiles.filter((f) => f?.fileURL);
+    const existingUploadedFiles = storedFiles.filter((f) => !!f.fileURL);
+    const validUploadedFiles = uploadedFiles.filter((f) => f?.fileURL);
+
+    const finalFiles = [...existingUploadedFiles, ...validUploadedFiles];
 
     setFeedbackFormData(
       {
@@ -159,7 +156,7 @@ export default function FeedbackWrite() {
         targets: data.target,
         link: data.link,
         content: data.content,
-        files: validFiles,
+        files: finalFiles,
       },
       'personal',
     );
