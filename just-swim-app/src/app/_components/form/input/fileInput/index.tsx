@@ -78,7 +78,34 @@ function FileInputInner(
   useEffect(() => {
     const onlyFiles = uploadedFiles.map((f) => f.originalFile);
     setValue(name, onlyFiles, { shouldValidate: true });
-  }, [uploadedFiles]);
+
+    const current = getFeedbackFormData();
+
+    const defaultFiles = initialDefaultImages.map((url) => ({
+      name: '',
+      size: 0,
+      type: '',
+      fileURL: url,
+      mediaType: url.includes('video') ? 'video' : 'image',
+    }));
+
+    const newFiles = uploadedFiles.map((f) => ({
+      name: f.originalFile.name,
+      size: f.originalFile.size,
+      type: f.originalFile.type,
+      fileURL: f.fileURL,
+      mediaType: f.mediaType,
+      ...(f.duration ? { duration: f.duration } : {}),
+    }));
+
+    setFeedbackFormData(
+      {
+        ...current,
+        files: [...defaultFiles, ...newFiles],
+      },
+      'personal',
+    );
+  }, [uploadedFiles, initialDefaultImages]);
 
   const previewURLs = useMemo(() => {
     return [
@@ -98,13 +125,11 @@ function FileInputInner(
       fileArray.map(async (file) => {
         if (!(file instanceof File)) return null;
 
-        const isImage = file?.type && isImageFile(file);
-        const isVideo = allowVideo && file?.type && isVideoFile(file);
+        const isImage = isImageFile(file);
+        const isVideo = allowVideo && isVideoFile(file);
 
         if (!isImage && !isVideo) {
-          invalidReasons.push(
-            `허용되지 않은 파일 형식: ${file?.name ?? 'unknown'}`,
-          );
+          invalidReasons.push(`허용되지 않은 파일 형식: ${file.name}`);
           return null;
         }
 
@@ -134,7 +159,7 @@ function FileInputInner(
             originalFile: file,
             fileURL,
             mediaType: isVideo ? 'video' : 'image',
-            ...(duration !== undefined && { duration }),
+            ...(duration ? { duration } : {}),
           } satisfies FileWithPreviewExtended;
         } catch (err) {
           console.error('[ERROR] 파일 처리 실패:', file.name, err);
@@ -174,7 +199,7 @@ function FileInputInner(
   };
 
   const deleteFile = async (index: number) => {
-    const currentState = getFeedbackFormData();
+    const current = getFeedbackFormData();
 
     if (index < initialDefaultImages.length) {
       const updatedDefaults = [...initialDefaultImages];
@@ -189,11 +214,11 @@ function FileInputInner(
 
       setInitialDefaultImages(updatedDefaults);
 
-      const updatedFiles = (currentState.files ?? []).filter(
+      const updatedFiles = (current.files ?? []).filter(
         (file: any) => file.fileURL !== removedURL,
       );
 
-      setFeedbackFormData({ ...currentState, files: updatedFiles }, 'personal');
+      setFeedbackFormData({ ...current, files: updatedFiles }, 'personal');
     } else {
       const realIndex = index - initialDefaultImages.length;
       const updated = [...uploadedFiles];
