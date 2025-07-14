@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styled from './feedbackWrite.module.scss';
 
@@ -141,7 +141,7 @@ export default function FeedbackWrite() {
       'group',
     );
 
-    return router.push('/feedback/create/confirmClass');
+    router.push('/feedback/create/confirmClass');
   };
 
   return (

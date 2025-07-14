@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Link from '@assets/link.svg';
 import styled from './feedbackConfirm.module.scss';
 import { Header, ProfileCard } from '@components';

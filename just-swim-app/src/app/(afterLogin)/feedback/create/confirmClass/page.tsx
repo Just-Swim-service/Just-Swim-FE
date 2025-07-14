@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Link from '@assets/link.svg';
 import styled from './feedbackConfirm.module.scss';
 import { Header, ProfileCard } from '@components';
@@ -13,7 +13,9 @@ import { getLectureMembers } from '@/_apis/lecture/getLectureMembers';
 export default function ClassFeedbackConfirm() {
   // @ts-ignore
   const { resetClassData } = searchClassStore();
-  const { formDataState = {} } = feedbackStore();
+  const { getFeedbackFormData } = feedbackStore();
+  const rawFormData = getFeedbackFormData();
+  const formDataState = rawFormData || {};
   const target = JSON.parse(formDataState?.targets ?? '[]');
 
   const totalMembersCount = Array.isArray(target)
