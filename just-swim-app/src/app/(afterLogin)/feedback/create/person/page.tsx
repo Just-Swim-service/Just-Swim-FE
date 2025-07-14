@@ -87,19 +87,30 @@ export default function FeedbackWrite() {
         ? data.file.filter((file: any): file is File => file instanceof File)
         : [];
 
-      const formDataObject: CustomFormData = {
-        date: data.date ?? '',
-        targets: data.target,
-        link: data.link,
-        content: data.content ?? '',
-        files: files.map((file: File) => ({
+      const existingFiles = getFeedbackFormData().files ?? [];
+
+      // 이미 fileURL이 있는 기존 파일만 유지
+      const uploadedFiles = existingFiles.filter((f: any) => !!f.fileURL);
+
+      // 새로 추가된 파일만 추출
+      const newFiles = files
+        .filter((file) => !uploadedFiles.some((f: any) => f.name === file.name))
+        .map((file) => ({
           name: file.name,
           size: file.size,
           type: file.type,
           fileURL: '',
           mediaType: file.type.startsWith('video') ? 'video' : 'image',
-        })),
+        }));
+
+      const formDataObject: CustomFormData = {
+        date: data.date ?? '',
+        targets: data.target,
+        link: data.link,
+        content: data.content ?? '',
+        files: [...uploadedFiles, ...newFiles],
       };
+
       setFeedbackFormData(formDataObject, 'personal');
     });
 
@@ -113,8 +124,6 @@ export default function FeedbackWrite() {
     const storedFiles = Array.isArray(rawFiles)
       ? rawFiles
       : Object.values(rawFiles);
-
-    const filesToUpload = storedFiles.filter((f) => !f.fileURL);
 
     const uploadedFiles = await Promise.all(
       storedFiles.map(async (storedFile: any, idx: number) => {
