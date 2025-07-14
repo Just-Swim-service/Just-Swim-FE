@@ -148,7 +148,7 @@ export default function FeedbackWrite() {
             method: 'PUT',
             body: file,
             headers: {
-              'Content-Type': file.type,
+              'Content-Type': contentType,
             },
           });
 

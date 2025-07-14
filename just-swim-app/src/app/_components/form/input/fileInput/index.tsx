@@ -19,6 +19,7 @@ import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 import { FileInputProps } from '@types';
 import { isVideoFile, isImageFile } from '@utils';
+import { deleteFeedbackImageFromS3 } from '@apis';
 
 type FileWithPreviewExtended = {
   originalFile: File;
@@ -178,10 +179,19 @@ function FileInputInner(
     }
   };
 
-  const deleteFile = (index: number) => {
+  const deleteFile = async (index: number) => {
     if (index < initialDefaultImages.length) {
       const updatedDefaults = [...initialDefaultImages];
-      updatedDefaults.splice(index, 1);
+      const removedURL = updatedDefaults.splice(index, 1)[0];
+      const fileName = removedURL.split('/').pop();
+      if (fileName) {
+        try {
+          await deleteFeedbackImageFromS3(fileName);
+        } catch (err) {
+          console.error('[S3 삭제 실패]', err);
+        }
+      }
+
       setInitialDefaultImages(updatedDefaults);
     } else {
       const realIndex = index - initialDefaultImages.length;
