@@ -44,7 +44,7 @@ export async function getFeedbackPresignedURL(
       files: files,
     },
   });
-    console.log('[DEBUG] getFeedbackPresignedURL ¿¿¥‰:', result);
+
 
   if (result.success) {
     return result.data;
