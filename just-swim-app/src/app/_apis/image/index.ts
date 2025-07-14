@@ -28,7 +28,7 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
 export async function getFeedbackPresignedURL(
   files: string[],
 ): Promise<{ fileName: string; presignedUrl: string; contentType: string }[]> {
-    console.log('[DEBUG] getFeedbackPresignedURL 요청 시작', files);
+  console.log('[DEBUG] getFeedbackPresignedURL', files);
 
   const result = await Fetch<{
     success: boolean;
@@ -44,7 +44,6 @@ export async function getFeedbackPresignedURL(
       files: files,
     },
   });
-
 
   if (result.success) {
     return result.data;
