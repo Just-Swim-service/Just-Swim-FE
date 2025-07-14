@@ -63,7 +63,9 @@ function FileInputInner(
 
   useEffect(() => {
     const onlyFiles = uploadedFiles.map((f) => f.originalFile);
-    setValue(name, onlyFiles, { shouldValidate: true });
+    if (onlyFiles.length > 0) {
+      setValue(name, onlyFiles, { shouldValidate: true });
+    }
 
     const current = getFeedbackFormData();
     const defaultFiles = initialDefaultImages.map((url) => ({
