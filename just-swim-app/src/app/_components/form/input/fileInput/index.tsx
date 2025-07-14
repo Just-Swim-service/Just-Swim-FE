@@ -53,26 +53,25 @@ const FileInputInner = (
     });
   };
 
-  // ⚙️ 페이지 진입 시 기존 formDataState 복원 처리
   useEffect(() => {
-    const formData = getFeedbackFormData();
-    const currentFiles = formData?.files || [];
+    const current = getFeedbackFormData();
+    const restoredFiles = current.files ?? [];
 
-    const defaults = currentFiles
-      .filter((f: any) => f.name === '' && f.fileURL?.startsWith('https'))
+    const restoredDefaultImages = restoredFiles
+      .filter((f: any) => f.fileURL.startsWith('https://') && f.name === '')
       .map((f: any) => f.fileURL);
 
-    const restored = currentFiles
-      .filter((f: any) => f.name && f.fileURL?.startsWith('data'))
+    const restoredUploadedFiles = restoredFiles
+      .filter((f: any) => f.fileURL.startsWith('data:') && f.name !== '')
       .map((f: any) => ({
-        originalFile: new File([], f.name),
+        originalFile: new File([''], f.name, { type: f.type }),
         fileURL: f.fileURL,
         mediaType: f.mediaType,
-        duration: f.duration,
+        ...(f.duration ? { duration: f.duration } : {}),
       }));
 
-    setInitialDefaultImages(defaults);
-    setUploadedFiles(restored);
+    setInitialDefaultImages(restoredDefaultImages);
+    setUploadedFiles(restoredUploadedFiles);
   }, []);
 
   useEffect(() => {
