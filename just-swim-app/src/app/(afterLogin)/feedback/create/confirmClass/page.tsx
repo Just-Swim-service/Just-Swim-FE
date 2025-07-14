@@ -84,21 +84,6 @@ export default function ClassFeedbackConfirm() {
                 height={20}
                 count={false}
               />
-              {/* {formDataState.type === 'personal' ? (
-                <Profile
-                  customers={target}
-                  width={20}
-                  height={20}
-                  count={false}
-                />
-              ) : (
-                <Profile
-                  customers={target.members}
-                  width={20}
-                  height={20}
-                  count={false}
-                />
-              )} */}
             </div>
           </div>
           <div className={styled.wrap}>
@@ -116,7 +101,6 @@ export default function ClassFeedbackConfirm() {
             <div className={styled.preview_wrapper}>
               {/* @ts-ignore */}
               {(formDataState.files || []).map((preview, index) => {
-                // console.log(Object.keys(preview));
                 return (
                   <div
                     key={index}

@@ -73,20 +73,14 @@ export default function FeedbackWrite() {
 
   useEffect(() => {
     const subscription = watch((data) => {
+      const currentFiles = getFeedbackFormData().files ?? [];
+
       const formDataObject: CustomFormData = {
         date: data.date ?? '',
         targets: data.target,
         link: data.link,
         content: data.content ?? '',
-        files:
-          data.file?.map((file: any) => {
-            return {
-              name: file.name,
-              size: file.size,
-              fileURL: '',
-              origin: file,
-            };
-          }) ?? [],
+        files: currentFiles,
       };
       setFeedbackFormData(formDataObject, 'group');
     });
@@ -94,55 +88,40 @@ export default function FeedbackWrite() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
-
-    const newFiles = selectedFiles.map((file) => ({
-      name: file.name,
-      size: file.size,
-      fileURL: '',
-      origin: file,
-    }));
-
-    setValue(
-      'file',
-      newFiles.map((f) => f.origin),
-      { shouldValidate: true },
-    );
-
-    setFeedbackFormData(
-      {
-        ...getFeedbackFormData(),
-        files: newFiles,
-      },
-      'group',
-    );
-  };
-
   const onSubmit = async (data: FormType) => {
-    const prevFiles = getFeedbackFormData().files ?? [];
+    const rhfFiles = data.file; // File[]
+    const rawFiles = getFeedbackFormData().files ?? [];
 
     const uploadedFiles = await Promise.all(
-      prevFiles.map(async (file: any) => {
-        if (file.fileURL) return file;
+      rawFiles.map(async (storedFile: any, idx: number) => {
+        const file = rhfFiles[idx];
+
+        if (storedFile.fileURL && typeof storedFile.fileURL === 'string') {
+          return storedFile;
+        }
+
+        if (!file) return null;
 
         try {
-          const presignedURL = await getFeedbackPresignedURL([file.name]);
-          const response = await fetch(presignedURL[0].presignedUrl, {
+          const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
+          const { presignedUrl, contentType } = presigned;
+
+          const response = await fetch(presignedUrl, {
             method: 'PUT',
-            body: file.origin,
+            body: file,
             headers: {
-              'Content-Type': file.origin.type,
+              'Content-Type': contentType,
             },
           });
 
           if (!response.ok) throw new Error('파일 업로드 실패');
 
           return {
-            ...file,
-            fileURL: presignedURL[0].presignedUrl.split('?')[0],
+            ...storedFile,
+            fileURL: presignedUrl.split('?')[0],
           };
-        } catch (error) {
+        } catch (err) {
+          console.error('[업로드 실패]', err);
           return null;
         }
       }),
@@ -218,16 +197,20 @@ export default function FeedbackWrite() {
               </div>
 
               <FileInput
-                {...register('file')}
-                onChange={handleChange}
                 allowVideo={true}
                 accept="image/*,video/*"
                 defaultPreviewImages={
                   initialFeedbackData?.files?.length > 0
-                    ? initialFeedbackData.files.map((f: any) => f.fileURL)
+                    ? initialFeedbackData.files
+                        .map((f: any) => f.fileURL)
+                        .filter(
+                          (url: string | undefined): url is string =>
+                            typeof url === 'string' && url.trim() !== '',
+                        )
                     : []
                 }
                 setValue={setValue}
+                {...register('file')}
               />
             </div>
 
