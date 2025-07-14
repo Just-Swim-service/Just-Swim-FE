@@ -183,14 +183,15 @@ function FileInputInner(
     if (index < initialDefaultImages.length) {
       const updatedDefaults = [...initialDefaultImages];
       const removedURL = updatedDefaults.splice(index, 1)[0];
-      const fileName = removedURL.split('/').pop();
-      if (fileName) {
-        try {
-          await deleteFeedbackImageFromS3(fileName);
-        } catch (err) {
-          console.error('[S3 삭제 실패]', err);
-        }
+
+      try {
+        await deleteFeedbackImageFromS3(removedURL);
+        console.log('[S3 삭제 성공]', removedURL);
+      } catch (err) {
+        console.error('[S3 삭제 실패]', err);
       }
+
+      setInitialDefaultImages(updatedDefaults);
 
       setInitialDefaultImages(updatedDefaults);
     } else {

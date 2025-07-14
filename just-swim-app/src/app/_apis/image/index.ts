@@ -58,9 +58,7 @@ export async function deleteFeedbackImageFromS3(fileURL: string) {
       credential: true,
       json: true,
     },
-    body: {
-      fileURL,
-    },
+    body: { fileURL },
   });
 
   if (result.success) {
