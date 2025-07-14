@@ -20,6 +20,7 @@ import { useModal } from '@hooks';
 import { FileInputProps } from '@types';
 import { isVideoFile, isImageFile } from '@utils';
 import { deleteFeedbackImageFromS3 } from '@apis';
+import { feedbackStore } from '@/_store/feedback';
 
 type FileWithPreviewExtended = {
   originalFile: File;
@@ -52,6 +53,8 @@ function FileInputInner(
   const { modal, setModal, showModal, hideModal } = useModal();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
+  const { getFeedbackFormData, setFeedbackFormData } = feedbackStore();
+
   const getVideoDuration = (src: string): Promise<number> => {
     return new Promise((resolve) => {
       const video = document.createElement('video');
@@ -72,24 +75,16 @@ function FileInputInner(
     }
   }, [defaultPreviewImages]);
 
-  // ✅ RHF에 원본 File[]만 넘김
   useEffect(() => {
     const onlyFiles = uploadedFiles.map((f) => f.originalFile);
     setValue(name, onlyFiles, { shouldValidate: true });
   }, [uploadedFiles]);
 
   const previewURLs = useMemo(() => {
-    const urls: string[] = [];
-
-    initialDefaultImages.forEach((url) => {
-      if (typeof url === 'string' && url.trim()) urls.push(url);
-    });
-
-    uploadedFiles.forEach((f) => {
-      if (f?.fileURL?.trim()) urls.push(f.fileURL);
-    });
-
-    return urls;
+    return [
+      ...initialDefaultImages,
+      ...uploadedFiles.map((f) => f.fileURL),
+    ].filter(Boolean);
   }, [uploadedFiles, initialDefaultImages]);
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -152,7 +147,6 @@ function FileInputInner(
     const validFiles = processedFiles.filter(
       (f): f is FileWithPreviewExtended => !!f,
     );
-
     const uniqueNewFiles = validFiles.filter(
       (newFile) =>
         !uploadedFiles.some(
@@ -180,6 +174,8 @@ function FileInputInner(
   };
 
   const deleteFile = async (index: number) => {
+    const currentState = getFeedbackFormData();
+
     if (index < initialDefaultImages.length) {
       const updatedDefaults = [...initialDefaultImages];
       const removedURL = updatedDefaults.splice(index, 1)[0];
@@ -193,7 +189,11 @@ function FileInputInner(
 
       setInitialDefaultImages(updatedDefaults);
 
-      setInitialDefaultImages(updatedDefaults);
+      const updatedFiles = (currentState.files ?? []).filter(
+        (file: any) => file.fileURL !== removedURL,
+      );
+
+      setFeedbackFormData({ ...currentState, files: updatedFiles }, 'personal');
     } else {
       const realIndex = index - initialDefaultImages.length;
       const updated = [...uploadedFiles];
@@ -223,14 +223,12 @@ function FileInputInner(
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
         {previewURLs.map((preview, index) => {
-          if (typeof preview !== 'string' || !preview.trim()) return null;
+          if (!preview.trim()) return null;
 
           const resolvedIndex = index - initialDefaultImages.length;
           const file = uploadedFiles[resolvedIndex];
-
           const isVideo =
-            file?.mediaType === 'video' ||
-            (typeof preview === 'string' && preview.startsWith('data:video'));
+            file?.mediaType === 'video' || preview.startsWith('data:video');
 
           return (
             <div
@@ -293,19 +291,16 @@ function FileInputInner(
         }}
       />
 
-      {modal &&
-        previewURLs.length > 0 &&
-        selectedIndex >= 0 &&
-        selectedIndex < previewURLs.length && (
-          <ImageCarousel
-            images={previewURLs}
-            index={selectedIndex}
-            setIndex={setSelectedIndex}
-            useDeleteButton={true}
-            deleteImage={deleteFile}
-            hideModal={hideModal}
-          />
-        )}
+      {modal && previewURLs.length > 0 && (
+        <ImageCarousel
+          images={previewURLs}
+          index={selectedIndex}
+          setIndex={setSelectedIndex}
+          useDeleteButton={true}
+          deleteImage={deleteFile}
+          hideModal={hideModal}
+        />
+      )}
     </div>
   );
 }
