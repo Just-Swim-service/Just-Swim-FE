@@ -22,7 +22,7 @@ import { isVideoFile, isImageFile } from '@utils';
 import { deleteFeedbackImageFromS3 } from '@apis';
 import { feedbackStore } from '@/_store/feedback';
 
-const FileInputInner = (
+function FileInputInner(
   {
     name,
     length = 4,
@@ -35,13 +35,13 @@ const FileInputInner = (
     ...inputProps
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
-) => {
+) {
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { getFeedbackFormData, setFeedbackFormData } = feedbackStore();
   const { modal, setModal, showModal, hideModal } = useModal();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const { getFeedbackFormData, setFeedbackFormData } = feedbackStore();
 
   const getVideoDuration = (src: string): Promise<number> => {
     return new Promise((resolve) => {
@@ -55,30 +55,17 @@ const FileInputInner = (
 
   useEffect(() => {
     const current = getFeedbackFormData();
-    const restoredFiles = current.files ?? [];
-
-    const restoredDefaultImages = restoredFiles
-      .filter((f: any) => f.fileURL.startsWith('https://') && f.name === '')
-      .map((f: any) => f.fileURL);
-
-    const restoredUploadedFiles = restoredFiles
-      .filter((f: any) => f.fileURL.startsWith('data:') && f.name !== '')
-      .map((f: any) => ({
-        originalFile: new File([''], f.name, { type: f.type }),
-        fileURL: f.fileURL,
-        mediaType: f.mediaType,
-        ...(f.duration ? { duration: f.duration } : {}),
-      }));
-
-    setInitialDefaultImages(restoredDefaultImages);
-    setUploadedFiles(restoredUploadedFiles);
+    const restored = (current.files ?? []).filter((f: any) =>
+      f.fileURL?.startsWith('https://'),
+    );
+    setInitialDefaultImages(restored.map((f: any) => f.fileURL));
   }, []);
 
   useEffect(() => {
     const onlyFiles = uploadedFiles.map((f) => f.originalFile);
     setValue(name, onlyFiles, { shouldValidate: true });
 
-    const formData = getFeedbackFormData();
+    const current = getFeedbackFormData();
     const defaultFiles = initialDefaultImages.map((url) => ({
       name: '',
       size: 0,
@@ -97,7 +84,10 @@ const FileInputInner = (
     }));
 
     setFeedbackFormData(
-      { ...formData, files: [...defaultFiles, ...newFiles] },
+      {
+        ...current,
+        files: [...defaultFiles, ...newFiles],
+      },
       'personal',
     );
   }, [uploadedFiles, initialDefaultImages]);
@@ -123,8 +113,20 @@ const FileInputInner = (
         const isImage = isImageFile(file);
         const isVideo = allowVideo && isVideoFile(file);
 
-        if (!isImage && !isVideo) return null;
-        if (file.size === 0 || file.size > size * 1024 * 1024) return null;
+        if (!isImage && !isVideo) {
+          invalidReasons.push(`허용되지 않은 파일 형식: ${file.name}`);
+          return null;
+        }
+
+        if (file.size === 0) {
+          invalidReasons.push(`빈 파일: ${file.name}`);
+          return null;
+        }
+
+        if (file.size > size * 1024 * 1024) {
+          invalidReasons.push(`파일 용량 초과: ${file.name}`);
+          return null;
+        }
 
         const fileURL = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
@@ -163,21 +165,30 @@ const FileInputInner = (
       merged.forEach((file) => store.items.add(file.originalFile));
       inputRef.current.files = store.files;
     }
+
+    if (invalidReasons.length > 0) {
+      alert(`업로드 실패:\n${invalidReasons.join('\n')}`);
+    }
   };
 
   const deleteFile = async (index: number) => {
     const current = getFeedbackFormData();
 
     if (index < initialDefaultImages.length) {
-      const removedURL = initialDefaultImages[index];
+      const updatedDefaults = [...initialDefaultImages];
+      const removedURL = updatedDefaults.splice(index, 1)[0];
 
       try {
         await deleteFeedbackImageFromS3(removedURL);
-
-        setInitialDefaultImages((prev) => prev.filter((url, i) => i !== index));
       } catch (err) {
         console.error('[S3 삭제 실패]', err);
       }
+
+      setInitialDefaultImages(updatedDefaults);
+      const updatedFiles = (current.files ?? []).filter(
+        (file: any) => file.fileURL !== removedURL,
+      );
+      setFeedbackFormData({ ...current, files: updatedFiles }, 'personal');
     } else {
       const realIndex = index - initialDefaultImages.length;
       const updated = [...uploadedFiles];
@@ -190,12 +201,16 @@ const FileInputInner = (
         inputRef.current.files = store.files;
       }
     }
-
-    const updatedFiles = (current.files ?? []).filter(
-      (file: any) => file.fileURL !== previewURLs[index],
-    );
-    setFeedbackFormData({ ...current, files: updatedFiles }, 'personal');
   };
+
+  useEffect(() => {
+    if (selectedIndex >= previewURLs.length) {
+      setSelectedIndex(previewURLs.length > 0 ? previewURLs.length - 1 : 0);
+    }
+    if (previewURLs.length === 0) {
+      setModal(false);
+    }
+  }, [previewURLs]);
 
   const { onChange: rhfOnChange, ...restInputProps } = inputProps;
 
@@ -203,6 +218,8 @@ const FileInputInner = (
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
         {previewURLs.map((preview, index) => {
+          if (!preview.trim()) return null;
+
           const resolvedIndex = index - initialDefaultImages.length;
           const file = uploadedFiles[resolvedIndex];
           const isVideo =
@@ -212,13 +229,24 @@ const FileInputInner = (
             <div
               key={`${preview}-${index}`}
               className={styled.preview_item}
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={(event: MouseEvent<HTMLDivElement>) => {
+                event.preventDefault();
                 setSelectedIndex(index);
                 showModal();
               }}>
               {isVideo ? (
-                <video className={styled.preview_video} src={preview} />
+                <>
+                  <video className={styled.preview_video} src={preview} />
+                  <div className={styled.video_overlay}>
+                    <div className={styled.play_icon}>▶</div>
+                    {file?.duration !== undefined && !isNaN(file.duration) && (
+                      <div className={styled.duration}>
+                        {Math.floor(file.duration / 60)}:
+                        {(file.duration % 60).toFixed(0).padStart(2, '0')}
+                      </div>
+                    )}
+                  </div>
+                </>
               ) : (
                 <div
                   className={styled.preview_image}
@@ -227,9 +255,9 @@ const FileInputInner = (
               )}
               <button
                 className={styled.delete_button}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
+                onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                  event.stopPropagation();
+                  event.preventDefault();
                   deleteFile(index);
                 }}>
                 <IconCancelWhite width={14} height={14} />
@@ -270,6 +298,6 @@ const FileInputInner = (
       )}
     </div>
   );
-};
+}
 
 export const FileInput = forwardRef(FileInputInner);
