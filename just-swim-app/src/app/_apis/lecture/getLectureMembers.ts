@@ -1,30 +1,24 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { Fetch } from '@utils';
+import { notFound } from 'next/navigation';
 
 export async function getLectureMembers(
   lectureId: string,
 ): Promise<{ success: boolean; message: string; data: any }> {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId}`;
-  const authorizationToken = cookies().get('token')?.value;
 
-  try {
-    const response = await fetch(API_URL, {
-      method: 'GET',
-      headers: {
-        Authorization: authorizationToken ? `Bearer ${authorizationToken}` : '',
-        'Content-Type': 'application/json',
-        token: 'true',
-      },
-      cache: 'no-store',
-    });
+  const result = await Fetch<{ success: boolean; data: any }>({
+    url: API_URL,
+    header: {
+      json: true,
+      credential: true,
+    },
+  });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
-  } catch (error) {
-    console.error('Error fetching lecture members:', error);
-    return { success: false, message: 'Failed to fetch data', data: null };
+  if (result.success) {
+    return result.data;
+  } else {
+    return notFound();
   }
 }
