@@ -64,14 +64,7 @@ export default function SearchClass() {
                 )}
               />
               <label htmlFor={group.lectureId}>
-                {checkedList.some(
-                  (checkedItem: any) =>
-                    checkedItem.lectureId === group.lectureId,
-                ) ? (
-                  <Check color={'#3689FF'} />
-                ) : (
-                  <Check color={'#d7dbde'} />
-                )}
+                <Check className={styled.check_icon} />
               </label>
               <div>
                 <p className={styled.name}>{group.lectureTitle}</p>

@@ -27,20 +27,21 @@ export default function ClassFeedbackConfirm() {
 
   const handleSubmit = async () => {
     // @ts-ignore
-    const target_users: any = [];
+    const feedbackTarget: any = [];
     const lectureId = target.map((item: any) => item.lectureId);
 
     for (let i = 0; i < lectureId.length; i++) {
       const members = await getLectureMembers(lectureId[i]).then(
         (res) => res.data,
       );
-      target_users.push({
+      feedbackTarget.push({
         lectureId: lectureId[i],
         userIds: members?.map((item: any) => item.userId),
       });
     }
+
     try {
-      const response = await postFeedback(formDataState, target_users);
+      const response = await postFeedback(formDataState, feedbackTarget);
 
       if (response && response.status === 200) {
         resetClassData();
@@ -79,7 +80,6 @@ export default function ClassFeedbackConfirm() {
               ) : (
                 <div>{target[0]?.lectureTitle}</div>
               )}
-              {/* 혜빈  데이터 형식 같아지면 수정할 것 */}
               <ProfileCard
                 customers={target[0]?.members || []}
                 width={20}

@@ -71,17 +71,30 @@ export default function PersonalFeedbackConfirm() {
               </span>
             </div>
             <div className={styled.tag}>
-              {target?.length > 0 ? (
-                <div>{target[0]?.lectureTitle}</div>
-              ) : (
-                <div>{target[0]?.lectureTitle}</div>
-              )}
-              <ProfileCard
-                customers={target}
-                width={20}
-                height={20}
-                count={false}
-              />
+              {target?.length > 0 &&
+                Object.values(
+                  target.reduce((acc: any, curr: any) => {
+                    const key = curr.lectureId;
+                    if (!acc[key]) {
+                      acc[key] = {
+                        lectureTitle: curr.lectureTitle,
+                        members: [],
+                      };
+                    }
+                    acc[key].members.push(curr);
+                    return acc;
+                  }, {}),
+                ).map((group: any, index: number) => (
+                  <div key={index} className={styled.lecture_group}>
+                    <div>{group.lectureTitle}</div>
+                    <ProfileCard
+                      customers={group.members}
+                      width={20}
+                      height={20}
+                      count={false}
+                    />
+                  </div>
+                ))}
             </div>
           </div>
           <div className={styled.wrap}>

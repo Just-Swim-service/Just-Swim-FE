@@ -40,15 +40,20 @@
         position: absolute;
         right: 7px;
         top: 13px;
+
+        // ✅ Check 아이콘 색상 기본 (비활성)
+        .check_icon {
+          color: $--gray-300;
+        }
       }
 
       .name {
         @include Title3-SB;
         margin-bottom: 12px;
         width: 50%;
-        white-space: nowrap; /* 텍스트를 줄바꿈 없이 한 줄로 표시 */
-        overflow: hidden; /* 내용이 넘칠 경우 숨김 */
-        text-overflow: ellipsis; /* 오버플로된 텍스트의 말줄임표 표시 */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       p {
@@ -60,11 +65,17 @@
         }
       }
     }
-  }
 
-  .active {
-    box-shadow: 0 0 0 2px $--Primary-blue !important;
-    background-color: $--White !important;
+    .item.active {
+      box-shadow: 0 0 0 2px $--Primary-blue !important;
+      background-color: $--White !important;
+
+      .check + label {
+        .check_icon {
+          color: $--Primary-blue;
+        }
+      }
+    }
   }
 }
 
@@ -72,25 +83,26 @@
   position: fixed;
   width: 90%;
   bottom: 24px;
+
   button {
     @include Title3-SB;
     width: 100%;
     padding: 14px 0;
-    // background-color: $--White;
     background-color: $--Primary-blue;
-
     color: white;
     border-radius: 13px;
+
     &.disabled {
       background-color: $--gray-300;
     }
+
     &.select_all_btn {
       color: $--Primary-blue;
       background-color: $--White;
     }
+
     &.complete_btn {
       margin-bottom: 6px;
-      // background-color: $--Primary-blue;
     }
   }
 }
