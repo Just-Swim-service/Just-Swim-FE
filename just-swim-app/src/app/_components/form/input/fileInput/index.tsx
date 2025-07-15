@@ -188,6 +188,7 @@ function FileInputInner(
       }
 
       setInitialDefaultImages(updatedDefaults);
+
       const updatedFiles = (current.files ?? []).filter(
         (file: any) => file.fileURL !== removedURL,
       );
@@ -195,8 +196,14 @@ function FileInputInner(
     } else {
       const realIndex = index - initialDefaultImages.length;
       const updated = [...uploadedFiles];
-      updated.splice(realIndex, 1);
+      const removed = updated.splice(realIndex, 1)[0];
+
       setUploadedFiles(updated);
+
+      const updatedFiles = (current.files ?? []).filter(
+        (file: any) => file.fileURL !== removed?.fileURL,
+      );
+      setFeedbackFormData({ ...current, files: updatedFiles }, feedbackType);
 
       if (inputRef.current) {
         const store = new DataTransfer();

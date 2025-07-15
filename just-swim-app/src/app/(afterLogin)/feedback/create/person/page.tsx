@@ -107,7 +107,12 @@ export default function FeedbackWrite() {
       rawFiles.map(async (storedFile: any, idx: number) => {
         const file = rhfFiles[idx];
 
-        if (storedFile.fileURL && typeof storedFile.fileURL === 'string') {
+        const needsUpload =
+          !storedFile.fileURL ||
+          storedFile.fileURL.startsWith('data:') ||
+          storedFile.fileURL.includes('base64');
+
+        if (!needsUpload) {
           return storedFile;
         }
 
