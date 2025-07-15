@@ -23,11 +23,20 @@ import { UseFormSetValue } from 'react-hook-form';
 
 interface SelectClassInputProps extends SelectInputProps {
   setValue: UseFormSetValue<any>;
+  setFeedbackFormData: any;
+  feedbackData: any;
   errors: string[];
 }
 
 function _SelectClassInput(
-  { name, setValue, lectures, ...props }: SelectClassInputProps,
+  {
+    name,
+    setValue,
+    lectures,
+    setFeedbackFormData,
+    feedbackData,
+    ...props
+  }: SelectClassInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const {
@@ -65,7 +74,9 @@ function _SelectClassInput(
         multiple
         readOnly
       />
-      <div className={styled.input_inner_wrapper}>
+      <div
+        className={styled.input_inner_wrapper}
+        onClick={() => setFeedbackFormData(feedbackData, 'group')}>
         <Link href={'/feedback/search/class'} className={styled.select_user}>
           <div className={styled.icon_wrapper}>
             <IconSelectUser width={30} height={30} />

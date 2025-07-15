@@ -17,11 +17,11 @@ export default function ClassFeedbackConfirm() {
   const rawFormData = getFeedbackFormData();
   const formDataState = rawFormData || {};
   const target = JSON.parse(formDataState?.targets ?? '[]');
+  const [checked, setChecked] = useState(false);
 
   const totalMembersCount = Array.isArray(target)
     ? target.reduce((acc, cur) => acc + (cur?.members?.length || 0), 0)
     : 0;
-  const [checked, setChecked] = useState(false);
 
   const router = useRouter();
 

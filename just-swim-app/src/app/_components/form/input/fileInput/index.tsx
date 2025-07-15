@@ -32,6 +32,7 @@ function FileInputInner(
     setValue,
     accept = 'image/*,video/*',
     allowVideo = true,
+    feedbackType,
     ...inputProps
   }: FileInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>,
@@ -90,7 +91,7 @@ function FileInputInner(
         ...current,
         files: [...defaultFiles, ...newFiles],
       },
-      'personal',
+      feedbackType,
     );
   }, [uploadedFiles, initialDefaultImages]);
 
@@ -190,7 +191,7 @@ function FileInputInner(
       const updatedFiles = (current.files ?? []).filter(
         (file: any) => file.fileURL !== removedURL,
       );
-      setFeedbackFormData({ ...current, files: updatedFiles }, 'personal');
+      setFeedbackFormData({ ...current, files: updatedFiles }, feedbackType);
     } else {
       const realIndex = index - initialDefaultImages.length;
       const updated = [...uploadedFiles];

@@ -33,6 +33,7 @@ export interface DayInputProps {
 
 export interface FileInputProps {
   name: keyof FormType;
+  feedbackType?: 'personal' | 'group';
   setValue: UseFormSetValue<FormType>;
   defaultPreviewImages?: string[];
   defaultFiles?: StoredFileInfo[];

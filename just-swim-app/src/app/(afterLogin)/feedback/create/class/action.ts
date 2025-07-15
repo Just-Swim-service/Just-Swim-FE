@@ -2,7 +2,6 @@
 
 import { formSchema } from '@/_schema/index';
 
-// 혜빈 - action 하나로 합치기
 export async function submitForm(formData: FormData) {
   const data = {
     target: formData.get('target'),

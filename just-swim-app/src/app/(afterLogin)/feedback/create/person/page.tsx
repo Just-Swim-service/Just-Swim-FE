@@ -211,6 +211,7 @@ export default function FeedbackWrite() {
                 최대 4개의 100MB 이하 이미지 또는 동영상 파일만 첨부 가능합니다
               </div>
               <FileInput
+                feedbackType="personal"
                 allowVideo={true}
                 accept="image/*,video/*"
                 defaultPreviewImages={

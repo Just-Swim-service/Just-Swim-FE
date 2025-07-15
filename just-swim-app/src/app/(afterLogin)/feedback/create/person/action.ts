@@ -18,7 +18,4 @@ export async function submitForm(formData: FormData) {
   } else {
     return { success: true };
   }
-  // 관련 작업 수행
-
-  // 이후 redirect와 같은 로직 수행
 }
