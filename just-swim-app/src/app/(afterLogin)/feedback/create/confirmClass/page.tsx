@@ -27,7 +27,7 @@ export default function ClassFeedbackConfirm() {
 
   const handleSubmit = async () => {
     // @ts-ignore
-    const feedbackTarget: any = [];
+    const feedbackTarget: any[] = [];
     const lectureId = target.map((item: any) => item.lectureId);
 
     for (let i = 0; i < lectureId.length; i++) {
@@ -35,11 +35,22 @@ export default function ClassFeedbackConfirm() {
         (res) => res.data,
       );
 
+      if (!Array.isArray(members)) {
+        console.warn(
+          `lectureId ${lectureId[i]}에 대한 members 응답이 배열이 아님`,
+          members,
+        );
+        continue;
+      }
+
       const validUserIds = members
         .map((item: any) => Number(item.userId))
         .filter((id: number) => !isNaN(id));
 
-      if (validUserIds.length === 0) continue;
+      if (validUserIds.length === 0) {
+        console.warn(`lectureId ${lectureId[i]}의 userIds가 비어 있음`);
+        continue;
+      }
 
       feedbackTarget.push({
         lectureId: Number(lectureId[i]),
@@ -47,7 +58,7 @@ export default function ClassFeedbackConfirm() {
       });
     }
 
-    console.log(feedbackTarget);
+    console.log('최종 feedbackTarget:', feedbackTarget);
 
     try {
       const response = await postFeedback(formDataState, feedbackTarget);
