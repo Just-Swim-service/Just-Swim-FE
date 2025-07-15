@@ -47,6 +47,8 @@ export default function ClassFeedbackConfirm() {
       });
     }
 
+    console.log(feedbackTarget);
+
     try {
       const response = await postFeedback(formDataState, feedbackTarget);
 
