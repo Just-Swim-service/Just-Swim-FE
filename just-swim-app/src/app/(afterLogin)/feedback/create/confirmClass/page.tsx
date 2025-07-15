@@ -34,9 +34,16 @@ export default function ClassFeedbackConfirm() {
       const members = await getLectureMembers(lectureId[i]).then(
         (res) => res.data,
       );
+
+      const validUserIds = members
+        .map((item: any) => Number(item.userId))
+        .filter((id: number) => !isNaN(id));
+
+      if (validUserIds.length === 0) continue;
+
       feedbackTarget.push({
-        lectureId: lectureId[i],
-        userIds: members?.map((item: any) => item.userId),
+        lectureId: Number(lectureId[i]),
+        userIds: validUserIds,
       });
     }
 
