@@ -32,10 +32,8 @@ export default function ClassFeedbackConfirm() {
     console.log(lectureId);
 
     for (let i = 0; i < lectureId.length; i++) {
-      const members = await getLectureMembers(lectureId[i]).then(
-        (res) => res.data,
-      );
-      console.log(members);
+      const result = await getLectureMembers(lectureId[i]);
+      const members = result?.data;
 
       const validUserIds = members
         .map((item: any) => Number(item.userId))
