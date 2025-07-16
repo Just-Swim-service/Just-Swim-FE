@@ -31,7 +31,7 @@ export default function ClassFeedbackConfirm() {
     for (let i = 0; i < lectureId.length; i++) {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/lecture/memberList/${lectureId[i]}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId[i]}`,
           {
             method: 'GET',
             headers: {
