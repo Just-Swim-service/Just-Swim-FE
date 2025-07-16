@@ -8,7 +8,6 @@ import { feedbackStore } from '@/_store/feedback';
 import { searchClassStore } from '@store';
 import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
-import { getLectureMembers } from '@apis';
 
 export default function ClassFeedbackConfirm() {
   // @ts-ignore
@@ -26,25 +25,48 @@ export default function ClassFeedbackConfirm() {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    // @ts-ignore
     const feedbackTarget: any = [];
     const lectureId = target.map((item: any) => item.lectureId);
-    console.log(lectureId);
 
     for (let i = 0; i < lectureId.length; i++) {
-      const result = await getLectureMembers(lectureId[i]);
-      const members = result?.data;
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/lecture/memberList/${lectureId[i]}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          },
+        );
 
-      const validUserIds = members
-        .map((item: any) => Number(item.userId))
-        .filter((id: number) => !isNaN(id));
+        if (!res.ok) {
+          console.warn(`lectureId ${lectureId[i]} 요청 실패`);
+          continue;
+        }
 
-      if (validUserIds.length === 0) continue;
+        const result = await res.json();
+        const members = result?.data;
 
-      feedbackTarget.push({
-        lectureId: Number(lectureId[i]),
-        userIds: validUserIds,
-      });
+        if (!Array.isArray(members)) {
+          console.warn(`lectureId ${lectureId[i]}에 대한 멤버 배열이 아님`);
+          continue;
+        }
+
+        const validUserIds = members
+          .map((item: any) => Number(item.userId))
+          .filter((id: number) => !isNaN(id));
+
+        if (validUserIds.length === 0) continue;
+
+        feedbackTarget.push({
+          lectureId: Number(lectureId[i]),
+          userIds: validUserIds,
+        });
+      } catch (err) {
+        console.error(`lectureId ${lectureId[i]} fetch 실패`, err);
+      }
     }
 
     try {
