@@ -8,6 +8,7 @@ import { feedbackStore } from '@/_store/feedback';
 import { searchClassStore } from '@store';
 import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
+import { fetchJson } from '@utils';
 
 export default function ClassFeedbackConfirm() {
   // @ts-ignore
@@ -25,47 +26,41 @@ export default function ClassFeedbackConfirm() {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    const feedbackTarget: any = [];
-    const lectureId = target.map((item: any) => item.lectureId);
+    const feedbackTarget: any[] = [];
+    const lectureIdList = target.map((item: any) => item.lectureId);
 
-    for (let i = 0; i < lectureId.length; i++) {
+    for (let i = 0; i < lectureIdList.length; i++) {
+      const lectureId = lectureIdList[i];
+
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId[i]}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-          },
-        );
+        const result = await fetchJson<{
+          success: boolean;
+          message: string;
+          data: any[];
+        }>(`/lecture/memberList/${lectureId}`);
 
-        if (!res.ok) {
-          console.warn(`lectureId ${lectureId[i]} 요청 실패`);
-          continue;
-        }
-
-        const result = await res.json();
         const members = result?.data;
 
         if (!Array.isArray(members)) {
-          console.warn(`lectureId ${lectureId[i]}에 대한 멤버 배열이 아님`);
+          console.warn(
+            `lectureId ${lectureId}의 멤버 목록이 배열이 아님`,
+            members,
+          );
           continue;
         }
 
         const validUserIds = members
           .map((item: any) => Number(item.userId))
-          .filter((id: number) => !isNaN(id));
+          .filter((id) => !isNaN(id));
 
         if (validUserIds.length === 0) continue;
 
         feedbackTarget.push({
-          lectureId: Number(lectureId[i]),
+          lectureId: Number(lectureId),
           userIds: validUserIds,
         });
       } catch (err) {
-        console.error(`lectureId ${lectureId[i]} fetch 실패`, err);
+        console.error(`lectureId ${lectureId} 수강생 조회 실패:`, err);
       }
     }
 
