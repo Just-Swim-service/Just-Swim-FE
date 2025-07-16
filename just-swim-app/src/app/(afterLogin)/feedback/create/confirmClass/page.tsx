@@ -8,7 +8,7 @@ import { feedbackStore } from '@/_store/feedback';
 import { searchClassStore } from '@store';
 import { postFeedback } from '@apis';
 import { useRouter } from 'next/navigation';
-import { getLectureMembers } from '@/_apis/lecture/getLectureMembers';
+import { getLectureMembers } from '@apis';
 
 export default function ClassFeedbackConfirm() {
   // @ts-ignore
