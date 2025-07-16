@@ -1,5 +1,3 @@
-'use server';
-
 import { Fetch } from '@utils';
 import { notFound } from 'next/navigation';
 
