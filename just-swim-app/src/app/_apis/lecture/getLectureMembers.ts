@@ -6,10 +6,8 @@ import { notFound } from 'next/navigation';
 export async function getLectureMembers(
   lectureId: string,
 ): Promise<{ success: boolean; message: string; data: any }> {
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId}`;
-
   const result = await Fetch<{ success: boolean; data: any }>({
-    url: API_URL,
+    url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/memberList/${lectureId}`,
     header: {
       json: true,
       credential: true,

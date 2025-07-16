@@ -29,11 +29,13 @@ export default function ClassFeedbackConfirm() {
     // @ts-ignore
     const feedbackTarget: any = [];
     const lectureId = target.map((item: any) => item.lectureId);
+    console.log(lectureId);
 
     for (let i = 0; i < lectureId.length; i++) {
       const members = await getLectureMembers(lectureId[i]).then(
         (res) => res.data,
       );
+      console.log(members);
 
       const validUserIds = members
         .map((item: any) => Number(item.userId))
