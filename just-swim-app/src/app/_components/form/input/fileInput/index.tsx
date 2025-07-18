@@ -44,12 +44,15 @@ function FileInputInner(
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const { getFeedbackFormData, setFeedbackFormData } = feedbackStore();
 
-  const getVideoDuration = (src: string): Promise<number> => {
+  const getVideoDuration = (file: File): Promise<number> => {
     return new Promise((resolve) => {
       const video = document.createElement('video');
       video.preload = 'metadata';
-      video.src = src;
-      video.onloadedmetadata = () => resolve(video.duration);
+      video.src = URL.createObjectURL(file);
+      video.onloadedmetadata = () => {
+        URL.revokeObjectURL(video.src);
+        resolve(video.duration);
+      };
       video.onerror = () => resolve(0);
     });
   };
@@ -138,7 +141,7 @@ function FileInputInner(
           reader.readAsDataURL(file);
         });
 
-        const duration = isVideo ? await getVideoDuration(fileURL) : undefined;
+        const duration = isVideo ? await getVideoDuration(file) : undefined;
 
         return {
           originalFile: file,
@@ -252,7 +255,9 @@ function FileInputInner(
                     {file?.duration !== undefined && !isNaN(file.duration) && (
                       <div className={styled.duration}>
                         {Math.floor(file.duration / 60)}:
-                        {(file.duration % 60).toFixed(0).padStart(2, '0')}
+                        {(Math.floor(file.duration) % 60)
+                          .toString()
+                          .padStart(2, '0')}
                       </div>
                     )}
                   </div>
