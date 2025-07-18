@@ -134,12 +134,14 @@ function FileInputInner(
           return null;
         }
 
-        const fileURL = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = () => reject('파일 읽기 실패');
-          reader.readAsDataURL(file);
-        });
+        const fileURL = isVideo
+          ? URL.createObjectURL(file)
+          : await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.onerror = () => reject('파일 읽기 실패');
+              reader.readAsDataURL(file);
+            });
 
         const duration = isVideo ? await getVideoDuration(file) : undefined;
 
