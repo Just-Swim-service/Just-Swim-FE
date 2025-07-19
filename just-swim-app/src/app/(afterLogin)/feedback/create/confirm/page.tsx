@@ -110,18 +110,27 @@ export default function PersonalFeedbackConfirm() {
               </span>
             </div>
             <div className={styled.preview_wrapper}>
-              {/* @ts-ignore */}
-              {(formDataState.files || []).map((preview, index) => {
+              {(formDataState.files || []).map((preview: any, index: number) => {
+                const isVideo = preview.fileURL?.match(
+                  /\.(mp4|webm|ogg|mov|avi)$/i,
+                );
+
                 return (
-                  <div
-                    key={index}
-                    className={styled.preview_item}
-                    style={{
-                      backgroundImage: `url(${preview.fileURL})`,
-                      width: '100px',
-                      height: '100px',
-                      backgroundSize: 'cover',
-                    }}></div>
+                  <div key={index} className={styled.preview_item}>
+                    {isVideo ? (
+                      <video
+                        src={preview.fileURL}
+                        controls
+                        className={styled.preview_video}
+                      />
+                    ) : (
+                      <img
+                        src={preview.fileURL}
+                        alt={`preview-${index}`}
+                        className={styled.preview_image}
+                      />
+                    )}
+                  </div>
                 );
               })}
             </div>

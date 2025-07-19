@@ -99,7 +99,8 @@ export default function FeedbackWrite() {
         const needsUpload =
           !storedFile.fileURL ||
           storedFile.fileURL.startsWith('data:') ||
-          storedFile.fileURL.includes('base64');
+          storedFile.fileURL.includes('base64') ||
+          storedFile.fileURL.startsWith('blob:');
 
         if (!needsUpload) {
           return storedFile;
@@ -108,7 +109,11 @@ export default function FeedbackWrite() {
         if (!file) return null;
 
         try {
-          const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
+          const safeFileName = file.name
+            .normalize('NFKD')
+            .replace(/[^\w.-]/g, '_');
+
+          const [presigned] = await getFeedbackPresignedURL([safeFileName]);
           const { presignedUrl, contentType } = presigned;
 
           const response = await fetch(presignedUrl, {
@@ -213,7 +218,9 @@ export default function FeedbackWrite() {
                         .map((f: any) => f.fileURL)
                         .filter(
                           (url: string | undefined): url is string =>
-                            typeof url === 'string' && url.trim() !== '',
+                            typeof url === 'string' &&
+                            url.trim() !== '' &&
+                            !url.startsWith('blob:'),
                         )
                     : []
                 }

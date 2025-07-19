@@ -120,7 +120,11 @@ export default function FeedbackWrite() {
         if (!file) return null;
 
         try {
-          const [presigned] = await getFeedbackPresignedURL([storedFile.name]);
+          const safeFileName = file.name
+            .normalize('NFKD')
+            .replace(/[^\w.-]/g, '_');
+
+          const [presigned] = await getFeedbackPresignedURL([safeFileName]);
           const { presignedUrl, contentType } = presigned;
 
           const response = await fetch(presignedUrl, {
