@@ -1,7 +1,6 @@
 'use client';
 
 import { MouseEvent, TouchEvent, useRef, useState } from 'react';
-import Image from 'next/image';
 
 import { IconCancelWhite, IconDelete } from '@assets';
 import { randomId, throttle } from '@utils';
@@ -92,9 +91,7 @@ export function ImageCarousel({
   };
 
   function isVideoURL(url: string): boolean {
-    return (
-      url.startsWith('blob:') && (url.includes('.mp4') || url.includes('video'))
-    );
+    return url.startsWith('blob:');
   }
 
   return (
@@ -136,8 +133,9 @@ export function ImageCarousel({
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                      }}
-                    />
+                      }}>
+                      브라우저에서 비디오를 지원하지 않습니다.
+                    </video>
                   ) : (
                     <img
                       src={image}
