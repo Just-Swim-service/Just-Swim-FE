@@ -110,7 +110,8 @@ export default function FeedbackWrite() {
         const needsUpload =
           !storedFile.fileURL ||
           storedFile.fileURL.startsWith('data:') ||
-          storedFile.fileURL.includes('base64');
+          storedFile.fileURL.includes('base64') ||
+          storedFile.fileURL.startsWith('blob:');
 
         if (!needsUpload) {
           return storedFile;
@@ -225,7 +226,9 @@ export default function FeedbackWrite() {
                         .map((f: any) => f.fileURL)
                         .filter(
                           (url: string | undefined): url is string =>
-                            typeof url === 'string' && url.trim() !== '',
+                            typeof url === 'string' &&
+                            url.trim() !== '' &&
+                            !url.startsWith('blob:'),
                         )
                     : []
                 }
