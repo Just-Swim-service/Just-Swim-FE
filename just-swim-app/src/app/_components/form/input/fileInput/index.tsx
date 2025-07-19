@@ -105,6 +105,8 @@ function FileInputInner(
     ].filter(Boolean);
   }, [uploadedFiles, initialDefaultImages]);
 
+  console.log(previewURLs);
+
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
     if (!files) return;
