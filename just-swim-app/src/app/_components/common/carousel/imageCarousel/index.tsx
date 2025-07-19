@@ -79,7 +79,7 @@ export function ImageCarousel({
     endDrag();
   };
 
-  const handleTouchCancle = (event: TouchEvent<HTMLDivElement>) => {
+  const handleTouchCancel = (event: TouchEvent<HTMLDivElement>) => {
     endDrag();
   };
 
@@ -91,11 +91,18 @@ export function ImageCarousel({
     endDrag();
   };
 
+  function isVideoURL(url: string): boolean {
+    return (
+      url.startsWith('blob:') && (url.includes('.mp4') || url.includes('video'))
+    );
+  }
+
   return (
     <div className={styled.carousel_wrapper}>
       <button className={styled.close_button} onClick={hideModal}>
         <IconCancelWhite width={14} height={14} />
       </button>
+
       <div
         className={styled.slider_wrapper}
         ref={containerRef}
@@ -105,7 +112,7 @@ export function ImageCarousel({
         onMouseUp={handleMouseUp}
         onTouchStart={handleTouchStart}
         onTouchMove={throttle(handleTouchMove, 20)}
-        onTouchCancel={handleTouchCancle}
+        onTouchCancel={handleTouchCancel}
         onTouchEnd={handleTouchEnd}>
         <div
           className={styled.slider}
@@ -119,35 +126,50 @@ export function ImageCarousel({
             .map((image) => (
               <div key={randomId()} className={styled.slider_item}>
                 <div className={styled.image_wrapper}>
-                  <img
-                    src={image}
-                    alt="image"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
+                  {isVideoURL(image) ? (
+                    <video
+                      src={image}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={image}
+                      alt="image"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             ))}
         </div>
       </div>
+
       <div className={styled.index_list}>
-        {images.map((_, idx) => {
-          return (
-            <div
-              key={randomId()}
-              className={`${styled.normal} ${index === idx ? styled.selected : ''}`}
-              onClick={() => {
-                setIndex(idx);
-              }}
-            />
-          );
-        })}
+        {images.map((_, idx) => (
+          <div
+            key={randomId()}
+            className={`${styled.normal} ${index === idx ? styled.selected : ''}`}
+            onClick={() => setIndex(idx)}
+          />
+        ))}
       </div>
+
       {useDeleteButton && (
         <button
           className={styled.delete_button}
           onClick={(event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
-
             deleteImage(index);
           }}>
           <IconDelete width={40} height={40} />
