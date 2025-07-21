@@ -73,20 +73,21 @@ function FileInputInner(
 
     const current = getFeedbackFormData();
     const defaultFiles = initialDefaultImages.map((url) => ({
-      name: '',
-      size: 0,
-      type: '',
-      fileURL: url,
-      mediaType: url.includes('video') ? 'video' : 'image',
+      filePath: url,
+      fileType: url.includes('video') ? 'video' : 'image',
+      fileName: '',
+      fileSize: 0,
+      duration: null,
+      thumbnailPath: null,
     }));
 
     const newFiles = uploadedFiles.map((f) => ({
-      name: f.originalFile.name,
-      size: f.originalFile.size,
-      type: f.originalFile.type,
-      fileURL: f.fileURL,
-      mediaType: f.mediaType,
-      ...(f.duration ? { duration: f.duration } : {}),
+      filePath: f.fileURL,
+      fileType: f.mediaType,
+      fileName: f.originalFile.name,
+      fileSize: f.originalFile.size,
+      duration: f.duration ? f.duration.toFixed(1) : null,
+      thumbnailPath: f.thumbnailPath ?? null,
     }));
 
     setFeedbackFormData(
