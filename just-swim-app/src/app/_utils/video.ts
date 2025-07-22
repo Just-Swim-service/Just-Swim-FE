@@ -31,18 +31,21 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
     });
 
     video.addEventListener('seeked', () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const dataURL = canvas.toDataURL('image/jpeg');
-        resolve(dataURL);
-      } else {
-        resolve('');
-      }
-      URL.revokeObjectURL(video.src);
+      // 렌더링까지 약간의 시간 지연을 줌
+      setTimeout(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const dataURL = canvas.toDataURL('image/jpeg');
+          resolve(dataURL);
+        } else {
+          resolve('');
+        }
+        URL.revokeObjectURL(video.src);
+      }, 200);
     });
 
     video.onerror = () => resolve('');
