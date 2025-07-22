@@ -276,6 +276,7 @@ export default function FeedbackDetail() {
 
                         return (
                           <img
+                            key={index}
                             src={thumbnail}
                             alt="썸네일"
                             width={100}
