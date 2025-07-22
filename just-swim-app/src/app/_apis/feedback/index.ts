@@ -48,7 +48,14 @@ async function updateFeedback(data, id) {
     feedbackDate: data.date,
     feedbackLink: data.link,
     feedbackContent: data.content,
-    feedbackImage: data.files?.map((file: any) => file.fileURL),
+    feedbackImage: data.files?.map((file: any) => ({
+      filePath: file.filePath || file.fileURL,
+      fileType: file.fileType || file.mediaType || 'image',
+      fileName: file.fileName || file.name || '',
+      fileSize: file.fileSize || file.size || 0,
+      duration: file.duration ?? null,
+      thumbnailPath: file.thumbnailPath ?? null,
+    })),
   };
   return await api(`/feedback/${id}`, 'PATCH', {
     body: JSON.stringify(updateValue),
