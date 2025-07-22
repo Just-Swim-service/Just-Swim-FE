@@ -152,21 +152,28 @@ export default function FeedbackDetail() {
                   </div>
 
                   <div className={styled.detail_photo}>
-                    {feedbackInfo?.images.map((image, index) => (
-                      <div
-                        key={index}
-                        className={styled.preview_item}
-                        onClick={() => handleImageClick(index)}
-                        style={{
-                          backgroundImage: `url(${image.imagePath.trim()})`,
-                          width: '100px',
-                          height: '100px',
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          cursor: 'pointer',
-                        }}
-                      />
-                    ))}
+                    {feedbackInfo?.images.map((image, index) => {
+                      const thumbnail =
+                        image.fileType === 'video'
+                          ? image.thumbnailPath || image.imagePath
+                          : image.imagePath;
+
+                      return (
+                        <div
+                          key={index}
+                          className={styled.preview_item}
+                          onClick={() => handleImageClick(index)}
+                          style={{
+                            backgroundImage: `url(${thumbnail.trim()})`,
+                            width: '100px',
+                            height: '100px',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            cursor: 'pointer',
+                          }}
+                        />
+                      );
+                    })}
                   </div>
 
                   {showImageModal && feedbackInfo?.images && (
@@ -275,18 +282,18 @@ export default function FeedbackDetail() {
                             : image.imagePath;
 
                         return (
-                          <img
+                          <div
                             key={index}
-                            src={thumbnail}
-                            alt="썸네일"
-                            width={100}
-                            height={100}
+                            className={styled.preview_item}
+                            onClick={() => handleImageClick(index)}
                             style={{
-                              objectFit: 'cover',
-                              borderRadius: '8px',
+                              backgroundImage: `url(${thumbnail.trim()})`,
+                              width: '100px',
+                              height: '100px',
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
                               cursor: 'pointer',
                             }}
-                            onClick={() => handleImageClick(index)}
                           />
                         );
                       })}
