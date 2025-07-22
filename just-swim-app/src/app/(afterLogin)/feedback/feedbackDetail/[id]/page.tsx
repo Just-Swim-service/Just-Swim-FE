@@ -280,7 +280,7 @@ export default function FeedbackDetail() {
                             className={styled.preview_item}
                             onClick={() => handleImageClick(index)}
                             style={{
-                              backgroundImage: `url(${thumbnail.trim()})`,
+                              backgroundImage: `url(${thumbnail})`,
                               width: '100px',
                               height: '100px',
                               backgroundSize: 'cover',
