@@ -245,6 +245,12 @@ function FileInputInner(
         (file: any) => file.filePath !== removedMeta.filePath,
       );
       setFeedbackFormData({ ...current, files: updatedFiles }, feedbackType);
+
+      setValue(
+        name,
+        uploadedFiles.map((f) => f.originalFile),
+        { shouldDirty: true, shouldValidate: true },
+      );
     } else {
       const realIndex = index - initialDefaultImages.length;
       const updated = [...uploadedFiles];
