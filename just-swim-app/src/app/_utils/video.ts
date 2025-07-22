@@ -26,7 +26,8 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
     video.muted = true;
 
     video.addEventListener('loadeddata', () => {
-      video.currentTime = 0.5;
+      const safeTime = Math.min(2, video.duration / 2);
+      video.currentTime = safeTime;
     });
 
     video.addEventListener('seeked', () => {
