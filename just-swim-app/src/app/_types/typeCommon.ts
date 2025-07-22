@@ -22,8 +22,15 @@ export interface CalendarItemProps {
   isSelected: boolean;
 }
 
+export interface PreviewItem {
+  previewURL: string;
+  fileType: 'image' | 'video';
+  duration?: number;
+  filePath?: string;
+}
+
 export interface ImageCarouselProps {
-  images: string[];
+  images: PreviewItem[];
   index: number;
   setIndex: Dispatch<SetStateAction<number>>;
   useDeleteButton?: boolean;

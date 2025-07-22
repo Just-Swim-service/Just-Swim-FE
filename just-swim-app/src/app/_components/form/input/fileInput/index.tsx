@@ -101,14 +101,20 @@ function FileInputInner(
     );
   }, [uploadedFiles, initialDefaultImages]);
 
-  const previewURLs = useMemo(() => {
-    const defaultThumbs = initialDefaultImages.map(
-      (file) => file.thumbnailPath || file.filePath,
-    );
-    const uploadedThumbs = uploadedFiles.map(
-      (file) => file.thumbnailPath || file.fileURL,
-    );
-    return [...defaultThumbs, ...uploadedThumbs].filter(Boolean);
+  const previewItems = useMemo(() => {
+    const defaultItems = initialDefaultImages.map((file) => ({
+      previewURL: file.thumbnailPath || file.filePath,
+      fileType: file.fileType,
+      duration: file.duration,
+      filePath: file.filePath,
+    }));
+    const uploadedItems = uploadedFiles.map((file) => ({
+      previewURL: file.thumbnailPath || file.fileURL,
+      fileType: file.mediaType,
+      duration: file.duration,
+      filePath: file.fileURL,
+    }));
+    return [...defaultItems, ...uploadedItems];
   }, [uploadedFiles, initialDefaultImages]);
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -274,30 +280,27 @@ function FileInputInner(
   };
 
   useEffect(() => {
-    if (selectedIndex >= previewURLs.length) {
-      setSelectedIndex(previewURLs.length > 0 ? previewURLs.length - 1 : 0);
+    if (selectedIndex >= previewItems.length) {
+      setSelectedIndex(previewItems.length > 0 ? previewItems.length - 1 : 0);
     }
-    if (previewURLs.length === 0) {
+    if (previewItems.length === 0) {
       setModal(false);
     }
-  }, [previewURLs]);
+  }, [previewItems]);
 
   const { onChange: rhfOnChange, ...restInputProps } = inputProps;
 
   return (
     <div className={styled.input_wrapper}>
       <div className={styled.preview_wrapper}>
-        {previewURLs.map((preview, index) => {
-          if (!preview.trim()) return null;
+        {previewItems.map((item, index) => {
+          if (!item.previewURL?.trim()) return null;
 
-          const resolvedIndex = index - initialDefaultImages.length;
-          const file = uploadedFiles[resolvedIndex];
-          const isVideo =
-            file?.mediaType === 'video' || preview.startsWith('data:video');
+          const isVideo = item.fileType === 'video';
 
           return (
             <div
-              key={`${preview}-${index}`}
+              key={`${item.previewURL}-${index}`}
               className={styled.preview_item}
               onClick={(event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault();
@@ -306,13 +309,16 @@ function FileInputInner(
               }}>
               {isVideo ? (
                 <>
-                  <video className={styled.preview_video} src={preview} />
+                  <div
+                    className={styled.preview_image}
+                    style={{ backgroundImage: `url(${item.previewURL})` }}
+                  />
                   <div className={styled.video_overlay}>
                     <div className={styled.play_icon}>▶</div>
-                    {file?.duration !== undefined && !isNaN(file.duration) && (
+                    {item.duration !== undefined && !isNaN(item.duration) && (
                       <div className={styled.duration}>
-                        {Math.floor(file.duration / 60)}:
-                        {(Math.floor(file.duration) % 60)
+                        {Math.floor(Number(item.duration) / 60)}:
+                        {(Math.floor(Number(item.duration)) % 60)
                           .toString()
                           .padStart(2, '0')}
                       </div>
@@ -322,7 +328,7 @@ function FileInputInner(
               ) : (
                 <div
                   className={styled.preview_image}
-                  style={{ backgroundImage: `url(${preview})` }}
+                  style={{ backgroundImage: `url(${item.previewURL})` }}
                 />
               )}
               <button
@@ -358,9 +364,9 @@ function FileInputInner(
         }}
       />
 
-      {modal && previewURLs.length > 0 && (
+      {modal && previewItems.length > 0 && (
         <ImageCarousel
-          images={previewURLs}
+          images={previewItems}
           index={selectedIndex}
           setIndex={setSelectedIndex}
           useDeleteButton={true}

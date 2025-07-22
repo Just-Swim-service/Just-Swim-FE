@@ -116,40 +116,36 @@ export function ImageCarousel({
           style={{
             transform: `translateX(calc(${-100 * index}% + ${movingCursorPositon}px))`,
           }}>
-          {images
-            .filter(
-              (img): img is string => typeof img === 'string' && !!img.trim(),
-            )
-            .map((image) => (
-              <div key={randomId()} className={styled.slider_item}>
-                <div className={styled.image_wrapper}>
-                  {isVideoURL(image) ? (
-                    <video
-                      src={image}
-                      controls
-                      playsInline
-                      preload="metadata"
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}>
-                      브라우저에서 비디오를 지원하지 않습니다.
-                    </video>
-                  ) : (
-                    <img
-                      src={image}
-                      alt="image"
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                    />
-                  )}
-                </div>
+          {images.map((item, idx) => (
+            <div key={randomId()} className={styled.slider_item}>
+              <div className={styled.image_wrapper}>
+                {item.fileType === 'video' ? (
+                  <video
+                    src={item.filePath}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}>
+                    브라우저에서 비디오를 지원하지 않습니다.
+                  </video>
+                ) : (
+                  <img
+                    src={item.previewURL}
+                    alt="image"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                )}
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
 
