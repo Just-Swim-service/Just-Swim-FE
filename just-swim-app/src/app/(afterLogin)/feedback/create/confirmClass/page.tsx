@@ -126,7 +126,7 @@ export default function ClassFeedbackConfirm() {
             </div>
             <div className={styled.preview_wrapper}>
               {(formDataState.files || []).map((preview: any, index: number) => {
-                const isVideo = preview.fileURL?.match(
+                const isVideo = preview.filePath?.match(
                   /\.(mp4|webm|ogg|mov|avi)$/i,
                 );
 
@@ -134,13 +134,13 @@ export default function ClassFeedbackConfirm() {
                   <div key={index} className={styled.preview_item}>
                     {isVideo ? (
                       <video
-                        src={preview.fileURL}
+                        src={preview.thumbnailPath}
                         controls
                         className={styled.preview_video}
                       />
                     ) : (
                       <img
-                        src={preview.fileURL}
+                        src={preview.filePath}
                         alt={`preview-${index}`}
                         className={styled.preview_image}
                       />

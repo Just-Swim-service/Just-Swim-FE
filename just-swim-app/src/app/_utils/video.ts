@@ -26,6 +26,10 @@ export const generateVideoThumbnail = (file: File): Promise<string> => {
     video.muted = true;
 
     video.addEventListener('loadeddata', () => {
+      video.currentTime = 0.5;
+    });
+
+    video.addEventListener('seeked', () => {
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;

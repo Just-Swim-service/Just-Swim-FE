@@ -35,7 +35,7 @@ export interface FileInputProps {
   name: keyof FormType;
   feedbackType?: 'personal' | 'group';
   setValue: UseFormSetValue<FormType>;
-  defaultPreviewImages?: string[];
+  defaultPreviewImages?: StoredFileMeta[];
   defaultFiles?: StoredFileInfo[];
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   length?: number;
@@ -90,6 +90,15 @@ export interface StoredFileInfo {
   duration?: number;
   thumbnailPath?: string;
   origin?: File;
+}
+
+export interface StoredFileMeta {
+  filePath?: string;
+  fileName?: string;
+  fileSize?: number;
+  fileType?: 'image' | 'video';
+  duration?: string;
+  thumbnailPath?: string | null;
 }
 
 export interface FileWithPreview extends File {

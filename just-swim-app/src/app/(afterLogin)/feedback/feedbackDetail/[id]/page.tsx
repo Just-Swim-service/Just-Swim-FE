@@ -268,27 +268,34 @@ export default function FeedbackDetail() {
                     </div>
 
                     <div className={styled.detail_photo}>
-                      {feedbackInfo?.images.map((image, index) => (
-                        <div
-                          key={index}
-                          className={styled.preview_item}
-                          onClick={() => handleImageClick(index)}
-                          style={{
-                            backgroundImage: `url(${image.imagePath.trim()})`,
-                            width: '100px',
-                            height: '100px',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            cursor: 'pointer',
-                          }}
-                        />
-                      ))}
+                      {feedbackInfo?.images.map((image, index) => {
+                        const thumbnail =
+                          image.fileType === 'video'
+                            ? image.thumbnailPath || image.imagePath
+                            : image.imagePath;
+
+                        return (
+                          <div
+                            key={index}
+                            className={styled.preview_item}
+                            onClick={() => handleImageClick(index)}
+                            style={{
+                              backgroundImage: `url(${thumbnail.trim()})`,
+                              width: '100px',
+                              height: '100px',
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              cursor: 'pointer',
+                            }}
+                          />
+                        );
+                      })}
                     </div>
 
                     {showImageModal && feedbackInfo?.images && (
                       <ImageFocusModal
                         imageUrl={
-                          feedbackInfo?.images[selectedImageIndex]?.imagePath
+                          feedbackInfo.images[selectedImageIndex]?.imagePath
                         }
                         images={feedbackInfo.images.map(
                           (image) => image.imagePath,

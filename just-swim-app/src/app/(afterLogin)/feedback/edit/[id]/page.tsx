@@ -89,39 +89,85 @@ export default function FeedbackInfoEdit() {
   }, [feedbackId, reset]);
 
   const onSubmit = async (data: FormType) => {
-    // 파일 업로드 처리
-    if (data.file && data.file.length > 0) {
-      for (const image of data.file) {
-        try {
-          const presignedURL = await getFeedbackPresignedURL([image.name]);
-          if (!presignedURL) {
-            throw new Error('Presigned URL을 가져오지 못했습니다.');
-          }
+    const rhfFiles = data.file; // File[]
+    const rawFiles = getFeedbackFormData().files ?? [];
 
-          const response = await fetch(presignedURL[0].presignedUrl, {
+    const uploadedFiles = await Promise.all(
+      rawFiles.map(async (storedFile: any, idx: number) => {
+        const file = rhfFiles[idx];
+
+        const needsUpload =
+          !storedFile.filePath ||
+          storedFile.filePath.startsWith('data:') ||
+          storedFile.filePath.includes('base64') ||
+          storedFile.filePath.startsWith('blob:');
+
+        if (!needsUpload) {
+          return {
+            filePath: storedFile.filePath,
+            fileType: storedFile.fileType ?? 'image',
+            fileName: storedFile.fileName ?? '',
+            fileSize: storedFile.fileSize ?? 0,
+            duration: storedFile.duration?.toString() ?? null,
+            thumbnailPath: storedFile.thumbnailPath ?? null,
+          };
+        }
+
+        if (!file) return null;
+
+        try {
+          const [presigned] = await getFeedbackPresignedURL([file.name]);
+          const { presignedUrl, contentType } = presigned;
+
+          const response = await fetch(presignedUrl, {
             method: 'PUT',
-            body: image,
+            body: file,
             headers: {
-              'Content-Type': image.type,
+              'Content-Type': contentType,
             },
           });
 
-          if (!response.ok) {
-            throw new Error('파일 업로드 실패');
+          if (!response.ok) throw new Error('파일 업로드 실패');
+
+          const isVideo = file.type.startsWith('video/');
+          let duration: string | undefined = undefined;
+
+          if (isVideo) {
+            const video = document.createElement('video');
+            video.src = URL.createObjectURL(file);
+            duration = await new Promise((resolve) => {
+              video.onloadedmetadata = () => {
+                resolve(video.duration.toFixed(1));
+                URL.revokeObjectURL(video.src);
+              };
+              video.onerror = () => resolve(undefined);
+            });
           }
-          image.fileURL = presignedURL[0].presignedUrl.split('?')[0];
-        } catch (error) {
+
+          return {
+            filePath: presignedUrl.split('?')[0],
+            fileType: isVideo ? 'video' : 'image',
+            fileName: file.name,
+            fileSize: file.size,
+            duration: duration ?? null,
+            thumbnailPath: storedFile.thumbnailPath ?? null,
+          };
+        } catch (err) {
+          console.error('[업로드 실패]', err);
           return null;
         }
-      }
-    }
+      }),
+    );
 
-    // 폼 데이터 객체 생성
+    const validFiles = uploadedFiles.filter(
+      (f): f is NonNullable<typeof f> => !!f,
+    );
+
     const formDataObject: CustomFormData = {
       date: data.date,
       link: data.link,
       content: data.content,
-      files: data.file,
+      files: validFiles,
     };
 
     setFeedbackFormData(formDataObject, `${feedback?.feedbackType}`);
@@ -205,7 +251,14 @@ export default function FeedbackInfoEdit() {
               <FileInput
                 {...register('file')}
                 defaultPreviewImages={
-                  feedback?.images?.map((img) => img.imagePath) || []
+                  feedback?.images?.map((img) => ({
+                    filePath: img.imagePath,
+                    fileType: img.fileType,
+                    fileName: img.fileName,
+                    fileSize: img.fileSize,
+                    duration: img.duration,
+                    thumbnailPath: img.thumbnailPath,
+                  })) || []
                 }
                 setValue={setValue}
               />

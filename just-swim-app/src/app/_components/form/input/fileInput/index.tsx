@@ -17,7 +17,7 @@ import { ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
-import { FileInputProps } from '@types';
+import { FileInputProps, StoredFileMeta } from '@types';
 import { isVideoFile, isImageFile } from '@utils';
 import { deleteFeedbackImageFromS3, getFeedbackPresignedURL } from '@apis';
 import { feedbackStore } from '@/_store/feedback';
@@ -38,7 +38,9 @@ function FileInputInner(
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
-  const [initialDefaultImages, setInitialDefaultImages] = useState<string[]>([]);
+  const [initialDefaultImages, setInitialDefaultImages] = useState<
+    StoredFileMeta[]
+  >([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const { modal, setModal, showModal, hideModal } = useModal();
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -60,9 +62,9 @@ function FileInputInner(
   useEffect(() => {
     const current = getFeedbackFormData();
     const restored = (current.files ?? []).filter((f: any) =>
-      f.fileURL?.startsWith('https://'),
-    );
-    setInitialDefaultImages(restored.map((f: any) => f.fileURL));
+      f.filePath?.startsWith('https://'),
+    ) as StoredFileMeta[];
+    setInitialDefaultImages(restored);
   }, []);
 
   useEffect(() => {
@@ -73,16 +75,16 @@ function FileInputInner(
 
     const current = getFeedbackFormData();
     const defaultFiles = initialDefaultImages.map((url) => ({
-      filePath: url,
-      fileType: url.includes('video') ? 'video' : 'image',
-      fileName: '',
-      fileSize: 0,
-      duration: null,
-      thumbnailPath: null,
+      filePath: url.filePath,
+      fileType: url.fileType,
+      fileName: url.fileName,
+      fileSize: url.fileSize,
+      duration: url.duration,
+      thumbnailPath: url.thumbnailPath,
     }));
 
     const newFiles = uploadedFiles.map((f) => ({
-      filePath: f.fileURL,
+      filePath: f.filePath,
       fileType: f.mediaType,
       fileName: f.originalFile.name,
       fileSize: f.originalFile.size,
@@ -100,10 +102,13 @@ function FileInputInner(
   }, [uploadedFiles, initialDefaultImages]);
 
   const previewURLs = useMemo(() => {
-    return [
-      ...initialDefaultImages,
-      ...uploadedFiles.map((f) => f.fileURL),
-    ].filter(Boolean);
+    const defaultThumbs = initialDefaultImages.map(
+      (file) => file.thumbnailPath || file.filePath,
+    );
+    const uploadedThumbs = uploadedFiles.map(
+      (file) => file.thumbnailPath || file.filePath,
+    );
+    return [...defaultThumbs, ...uploadedThumbs].filter(Boolean);
   }, [uploadedFiles, initialDefaultImages]);
 
   const onChangeImages = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -212,10 +217,18 @@ function FileInputInner(
 
     if (index < initialDefaultImages.length) {
       const updatedDefaults = [...initialDefaultImages];
-      const removedURL = updatedDefaults.splice(index, 1)[0];
+      const removedMeta = updatedDefaults.splice(index, 1)[0];
 
       try {
-        await deleteFeedbackImageFromS3(removedURL);
+        if (removedMeta?.filePath) {
+          await deleteFeedbackImageFromS3(removedMeta.filePath);
+        }
+        if (
+          removedMeta?.thumbnailPath &&
+          removedMeta.thumbnailPath !== removedMeta.filePath
+        ) {
+          await deleteFeedbackImageFromS3(removedMeta.thumbnailPath);
+        }
       } catch (err) {
         console.error('[S3 삭제 실패]', err);
       }
@@ -223,7 +236,7 @@ function FileInputInner(
       setInitialDefaultImages(updatedDefaults);
 
       const updatedFiles = (current.files ?? []).filter(
-        (file: any) => file.fileURL !== removedURL,
+        (file: any) => file.filePath !== removedMeta.filePath,
       );
       setFeedbackFormData({ ...current, files: updatedFiles }, feedbackType);
     } else {
@@ -231,10 +244,24 @@ function FileInputInner(
       const updated = [...uploadedFiles];
       const removed = updated.splice(realIndex, 1)[0];
 
+      try {
+        if (removed?.fileURL) {
+          await deleteFeedbackImageFromS3(removed.fileURL);
+        }
+        if (
+          removed?.thumbnailPath &&
+          removed.thumbnailPath !== removed.fileURL
+        ) {
+          await deleteFeedbackImageFromS3(removed.thumbnailPath);
+        }
+      } catch (err) {
+        console.error('[S3 삭제 실패]', err);
+      }
+
       setUploadedFiles(updated);
 
       const updatedFiles = (current.files ?? []).filter(
-        (file: any) => file.fileURL !== removed?.fileURL,
+        (file: any) => file.filePath !== removed?.fileURL,
       );
       setFeedbackFormData({ ...current, files: updatedFiles }, feedbackType);
 

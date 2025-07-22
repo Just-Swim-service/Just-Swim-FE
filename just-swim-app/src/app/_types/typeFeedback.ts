@@ -29,7 +29,16 @@ export interface FeedbackInfo {
   feedbackCreatedAt: string;
   feedbackLink: string;
   lectureTitle: string;
-  images: [{ imagePath: string }];
+  images: [
+    {
+      imagePath: string;
+      thumbnailPath: string | null;
+      fileType: 'video' | 'image';
+      fileName: string;
+      fileSize: number;
+      duration: string;
+    },
+  ];
   instructor: {
     instructorName: string;
     instructorProfileImage: string;
