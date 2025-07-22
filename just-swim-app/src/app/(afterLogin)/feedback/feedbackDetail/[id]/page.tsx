@@ -275,18 +275,17 @@ export default function FeedbackDetail() {
                             : image.imagePath;
 
                         return (
-                          <div
-                            key={index}
-                            className={styled.preview_item}
-                            onClick={() => handleImageClick(index)}
+                          <img
+                            src={thumbnail}
+                            alt="썸네일"
+                            width={100}
+                            height={100}
                             style={{
-                              backgroundImage: `url(${thumbnail})`,
-                              width: '100px',
-                              height: '100px',
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
+                              objectFit: 'cover',
+                              borderRadius: '8px',
                               cursor: 'pointer',
                             }}
+                            onClick={() => handleImageClick(index)}
                           />
                         );
                       })}
