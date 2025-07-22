@@ -106,7 +106,7 @@ function FileInputInner(
       (file) => file.thumbnailPath || file.filePath,
     );
     const uploadedThumbs = uploadedFiles.map(
-      (file) => file.thumbnailPath || file.filePath,
+      (file) => file.thumbnailPath || file.fileURL,
     );
     return [...defaultThumbs, ...uploadedThumbs].filter(Boolean);
   }, [uploadedFiles, initialDefaultImages]);
