@@ -103,7 +103,14 @@ export default function FeedbackWrite() {
           storedFile.fileURL.startsWith('blob:');
 
         if (!needsUpload) {
-          return storedFile;
+          return {
+            filePath: storedFile.fileURL,
+            fileType: storedFile.mediaType ?? 'image',
+            fileName: storedFile.name ?? '',
+            fileSize: storedFile.size ?? 0,
+            duration: storedFile.duration?.toString() ?? null,
+            thumbnailPath: storedFile.thumbnailPath ?? null,
+          };
         }
 
         if (!file) return null;
@@ -122,9 +129,28 @@ export default function FeedbackWrite() {
 
           if (!response.ok) throw new Error('파일 업로드 실패');
 
+          const isVideo = file.type.startsWith('video/');
+          let duration: string | undefined = undefined;
+
+          if (isVideo) {
+            const video = document.createElement('video');
+            video.src = URL.createObjectURL(file);
+            duration = await new Promise((resolve) => {
+              video.onloadedmetadata = () => {
+                resolve(video.duration.toFixed(1));
+                URL.revokeObjectURL(video.src);
+              };
+              video.onerror = () => resolve(undefined);
+            });
+          }
+
           return {
-            ...storedFile,
-            fileURL: presignedUrl.split('?')[0],
+            filePath: presignedUrl.split('?')[0],
+            fileType: isVideo ? 'video' : 'image',
+            fileName: file.name,
+            fileSize: file.size,
+            duration: duration ?? null,
+            thumbnailPath: storedFile.thumbnailPath ?? null,
           };
         } catch (err) {
           console.error('[업로드 실패]', err);
@@ -133,7 +159,9 @@ export default function FeedbackWrite() {
       }),
     );
 
-    const validFiles = uploadedFiles.filter((f) => f?.fileURL);
+    const validFiles = uploadedFiles.filter(
+      (f): f is NonNullable<typeof f> => !!f,
+    );
 
     setFeedbackFormData(
       {

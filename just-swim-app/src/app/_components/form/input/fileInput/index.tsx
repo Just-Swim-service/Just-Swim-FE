@@ -12,14 +12,14 @@ import {
   useMemo,
 } from 'react';
 
-import { mergeRefs } from '@utils';
+import { dataURLtoBlob, generateVideoThumbnail, mergeRefs } from '@utils';
 import { ImageCarousel } from '@components';
 import { IconCancelWhite } from '@assets';
 import styled from './styles.module.scss';
 import { useModal } from '@hooks';
 import { FileInputProps } from '@types';
 import { isVideoFile, isImageFile } from '@utils';
-import { deleteFeedbackImageFromS3 } from '@apis';
+import { deleteFeedbackImageFromS3, getFeedbackPresignedURL } from '@apis';
 import { feedbackStore } from '@/_store/feedback';
 
 function FileInputInner(
@@ -146,11 +146,38 @@ function FileInputInner(
 
         const duration = isVideo ? await getVideoDuration(file) : undefined;
 
+        let thumbnailPath = null;
+        if (isVideo) {
+          const dataURL = await generateVideoThumbnail(file);
+          if (dataURL) {
+            const blob = dataURLtoBlob(dataURL);
+            const safeFileName = `${file.name.replace(/\.[^/.]+$/, '')}-thumbnail.jpg`;
+
+            try {
+              const [presigned] = await getFeedbackPresignedURL([safeFileName]);
+              const { presignedUrl } = presigned;
+
+              const response = await fetch(presignedUrl, {
+                method: 'PUT',
+                body: blob,
+                headers: { 'Content-Type': 'image/jpeg' },
+              });
+
+              if (response.ok) {
+                thumbnailPath = presignedUrl.split('?')[0];
+              }
+            } catch (err) {
+              console.error('[썸네일 업로드 실패]', err);
+            }
+          }
+        }
+
         return {
           originalFile: file,
           fileURL,
           mediaType: isVideo ? 'video' : 'image',
           ...(duration ? { duration } : {}),
+          ...(thumbnailPath ? { thumbnailPath } : {}),
         };
       }),
     );
