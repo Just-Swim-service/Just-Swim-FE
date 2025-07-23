@@ -3,6 +3,7 @@ import './globals.scss';
 import '@/reset.scss';
 import { Suspense } from 'react';
 import { SkeletonFallback } from '@components';
+import { usePathname } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Just Swim',
@@ -17,10 +18,13 @@ type Props = {
 };
 
 export default function RootLayout({ children }: Readonly<Props>) {
+  const pathname = usePathname();
+  const isSchedulePage = pathname.startsWith('/schedule');
+
   return (
     <html>
       <body>
-        <div className="app_layout">
+        <div className={isSchedulePage ? '' : 'app_layout'}>
           <Suspense fallback={<SkeletonFallback />}>{children}</Suspense>
           <div id="modal-portal" />
           <div id="toast-portal" />

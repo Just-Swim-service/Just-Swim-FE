@@ -14,51 +14,48 @@ function _MonthlyInfo({
   setYear,
   setMonth,
 }: {
-  currentYear: number,
-  currentMonth: number,
-  setYear: (year: number) => void,
-  setMonth: (month: number) => void,
+  currentYear: number;
+  currentMonth: number;
+  setYear: (year: number) => void;
+  setMonth: (month: number) => void;
 }) {
   // 모달 관련
   const { modal, showModal, unshowModal, hideModal } = useModal();
 
   const toggleSelectMonth = () => {
     showModal();
-  }
+  };
 
-  const updateMonth = ({ year, month }: { year: number, month: number }) => {
+  const updateMonth = ({ year, month }: { year: number; month: number }) => {
     setYear(year);
     setMonth(month);
-  }
+  };
 
   return (
     <div className={styled.container}>
       <div className={styled.month_info}>
-         <p>{currentMonth + 1}월</p>
-         <button onClick={toggleSelectMonth}>
-           <IconArrowRightSmall
+        <p>{currentMonth + 1}월</p>
+        <button onClick={toggleSelectMonth}>
+          <IconArrowRightSmall
             style={{
-              rotate: `${modal ? '90deg' : '0deg'}`
+              rotate: `${modal ? '90deg' : '0deg'}`,
+              color: '#3689ff',
             }}
           />
         </button>
       </div>
       <div className={styled.week_days}>
-        {
-          WEEK_DAYS.map((d, idx) => {
-            return (
-              <div
-                key={randomId()} 
-                className={`${styled.weeek_item} ${idx === 0 && styled.sunday} ${idx === 6 && styled.saturday}`}
-              >
-                <span>{d}</span>
-              </div>
-            )
-          })
-        }
+        {WEEK_DAYS.map((d, idx) => {
+          return (
+            <div
+              key={randomId()}
+              className={`${styled.weeek_item} ${idx === 0 && styled.sunday} ${idx === 6 && styled.saturday}`}>
+              <span>{d}</span>
+            </div>
+          );
+        })}
       </div>
-      {
-        modal &&
+      {modal && (
         <MonthModal
           yearValue={currentYear}
           monthValue={currentMonth}
@@ -66,9 +63,9 @@ function _MonthlyInfo({
           unshowModal={unshowModal}
           hideModal={hideModal}
         />
-      }
+      )}
     </div>
-  )
+  );
 }
 
 export const MonthlyInfo = React.memo(_MonthlyInfo);
