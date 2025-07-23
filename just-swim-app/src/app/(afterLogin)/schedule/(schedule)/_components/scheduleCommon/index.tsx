@@ -7,6 +7,8 @@ import { WEEK_DAYS } from '@data';
 import { getToday } from '@utils';
 
 import styled from './styles.module.scss';
+import IconCalendarWeekly from '@assets/icon_calendar_weekly.svg';
+import IconCalendarMonthly from '@assets/icon_calendar_monthly.svg';
 
 export function ScheduleCommon({ count }: { count: number }) {
   const pathname = usePathname();
@@ -38,11 +40,13 @@ export function ScheduleCommon({ count }: { count: number }) {
         <Link
           href="/schedule/weekly"
           className={`${styled.schedule_link} ${pathname === '/schedule/weekly' ? styled.active : ''}`}>
+          <IconCalendarWeekly />
           <span>주간</span>
         </Link>
         <Link
           href="/schedule/monthly"
           className={`${styled.schedule_link} ${pathname === '/schedule/monthly' ? styled.active : ''}`}>
+          <IconCalendarMonthly />
           <span>월간</span>
         </Link>
       </div>

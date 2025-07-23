@@ -2,7 +2,7 @@
 
 .container {
   padding: 16px 16px 0;
-  
+
   border-bottom: 2px solid $--gray-200;
 
   .today_info {
@@ -12,13 +12,13 @@
       display: flex;
       flex-direction: column;
     }
-  
+
     .today {
       @include Body2-R;
-  
+
       color: $--gray-700;
     }
-  
+
     .today_schedule {
       @include Title2-M;
 
@@ -29,34 +29,36 @@
       }
     }
   }
-  
+
   .schedule_tab {
     width: 100%;
-  
+
     padding: 0 16px;
-  
+
     display: flex;
-  
+
     .schedule_link {
       @include Title4-SB;
-  
+
       height: 40px;
-  
+
       margin-bottom: -2px;
-      
+
       flex-grow: 1;
-  
+
       display: flex;
       align-items: center;
       justify-content: center;
-  
+      gap: 5px;
+
+      color: $--gray-300;
+
       border-bottom: 2px solid $--gray-200;
     }
-  
+
     .schedule_link.active {
       color: $--Primary-blue;
       border-bottom: 2px solid $--Primary-blue;
     }
   }
 }
-
