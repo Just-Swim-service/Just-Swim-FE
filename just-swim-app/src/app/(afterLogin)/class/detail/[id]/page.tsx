@@ -197,6 +197,7 @@ export default function ClassDetail() {
                           borderRadius: '32px',
                           verticalAlign: 'middle',
                         }}
+                        priority
                       />
                     ))}
                   </div>

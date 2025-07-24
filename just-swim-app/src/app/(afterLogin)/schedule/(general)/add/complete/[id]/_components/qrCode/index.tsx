@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
 import { toPng } from 'html-to-image';
 import { ClipboardItem } from 'clipboard-polyfill';
 import * as clipboard from 'clipboard-polyfill';

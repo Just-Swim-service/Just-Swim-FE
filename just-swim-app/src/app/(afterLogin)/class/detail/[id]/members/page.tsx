@@ -93,6 +93,7 @@ export default function Members() {
                   width={34}
                   height={34}
                   style={{ borderRadius: '34px' }}
+                  priority
                 />
 
                 <div>{item.name}</div>

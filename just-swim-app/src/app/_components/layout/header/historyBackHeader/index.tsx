@@ -33,7 +33,12 @@ export function HistoryBackHeader({
   return (
     <header className={styled.header}>
       <div className={styled.title_wrapper}>
-        <Image src={arrowBackIcon} alt="뒤로가기" onClick={() => goBack()} />
+        <Image
+          src={arrowBackIcon}
+          alt="뒤로가기"
+          onClick={() => goBack()}
+          priority
+        />
         <h1>{title}</h1>
       </div>
       {additionalLink ? (

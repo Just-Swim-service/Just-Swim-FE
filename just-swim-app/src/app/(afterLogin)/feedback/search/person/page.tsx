@@ -81,6 +81,7 @@ function _MemberItem({
           alt="프로필 이미지"
           width={40}
           height={40}
+          priority
         />
       </div>
       <div className={styled.member_info}>

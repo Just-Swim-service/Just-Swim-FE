@@ -28,7 +28,7 @@ const suitFont = localFont({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="ko" className={suitFont.variable}>
       <body>
         <AppWrapper>
           <Suspense fallback={<SkeletonFallback />}>{children}</Suspense>

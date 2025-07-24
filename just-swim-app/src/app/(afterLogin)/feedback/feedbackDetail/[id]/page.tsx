@@ -117,6 +117,7 @@ export default function FeedbackDetail() {
                     alt={feedbackTarget[0]?.memberName}
                     width={24}
                     height={24}
+                    priority
                   />
                 </div>
                 <p>{feedbackTarget[0]?.memberName}</p>
@@ -174,6 +175,7 @@ export default function FeedbackDetail() {
                             width={100}
                             height={100}
                             style={{ objectFit: 'cover' }}
+                            priority
                           />
                         </div>
                       );
@@ -250,6 +252,7 @@ export default function FeedbackDetail() {
                     alt={`${feedbackInfo?.instructor?.instructorName}`}
                     width={24}
                     height={24}
+                    priority
                   />
                 </div>
                 <div className={styled.instructor_name}>
@@ -301,6 +304,7 @@ export default function FeedbackDetail() {
                               width={100}
                               height={100}
                               style={{ objectFit: 'cover' }}
+                              priority
                             />
                           </div>
                         );

@@ -34,6 +34,7 @@ export function FeedbackCard({ feedback }: { feedback: FeedbackProps }) {
               alt={`${selectedMember.memberName} 프로필 이미지`}
               width={22}
               height={22}
+              priority
             />
           ) : (
             <IconDefaultProfile width={22} height={22} />

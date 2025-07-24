@@ -84,6 +84,7 @@ export default function User() {
                     borderRadius: '68px',
                     textAlign: 'center',
                   }}
+                  priority
                 />
               </div>
               <p className={styled.name}>{member.name}</p>
@@ -275,6 +276,7 @@ export default function User() {
                                   style={{
                                     borderRadius: '9px',
                                   }}
+                                  priority
                                 />
                               ))
                             ) : (

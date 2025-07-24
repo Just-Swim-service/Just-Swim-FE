@@ -165,7 +165,7 @@ export function LocationModal({
         <div className={styled.header}>
           <div className={styled.title_wrapper}>
             <button onClick={onClickBack}>
-              <Image src={ImageArrowBack} alt="뒤로가기" />
+              <Image src={ImageArrowBack} alt="뒤로가기" priority />
             </button>
             <p>{title}</p>
           </div>

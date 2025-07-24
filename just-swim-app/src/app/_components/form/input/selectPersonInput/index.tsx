@@ -98,6 +98,7 @@ function _SelectPersonInput(
                     objectFit: 'cover',
                     borderRadius: '50%',
                   }}
+                  priority
                 />
               </div>
               <div className={styled.name}>{preview.memberNickname}</div>

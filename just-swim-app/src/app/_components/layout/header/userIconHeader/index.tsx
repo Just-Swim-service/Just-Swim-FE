@@ -39,6 +39,7 @@ export function UserIconHeader({ title }: { title: string }) {
             alt={profileInfo?.name || ''}
             width={34}
             height={34}
+            priority
           />
         </div>
       </Link>

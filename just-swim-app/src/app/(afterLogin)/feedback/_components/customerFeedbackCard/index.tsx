@@ -51,6 +51,7 @@ export function CustomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) 
               alt={`${feedbackDetail?.instructor?.instructorName}`}
               width={20}
               height={20}
+              priority
             />
           </div>
           <div className={styled.instructor_name}>

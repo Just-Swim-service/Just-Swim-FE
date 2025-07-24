@@ -47,6 +47,7 @@ export function ClassContentCard({ item }: { item: any }) {
                   alt={styled.프로필}
                   width={20}
                   height={20}
+                  priority
                 />
               </div>
             ))}

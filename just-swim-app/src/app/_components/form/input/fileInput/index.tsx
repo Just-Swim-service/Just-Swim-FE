@@ -322,7 +322,8 @@ function FileInputInner(
                       alt={`미리보기 영상 ${index + 1}`}
                       width={100}
                       height={100}
-                      style={{ objectFit: 'cover', borderRadius: '8px' }} // 기존 CSS 유지
+                      style={{ objectFit: 'cover', borderRadius: '8px' }}
+                      priority
                     />
                   </div>
                   <div className={styled.video_overlay}>
@@ -345,6 +346,7 @@ function FileInputInner(
                     width={100}
                     height={100}
                     style={{ objectFit: 'cover', borderRadius: '8px' }}
+                    priority
                   />
                 </div>
               )}

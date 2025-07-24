@@ -75,6 +75,7 @@ export function _ClassDetailItem({
                       width={20}
                       height={20}
                       loading="lazy"
+                      priority
                     />
                   </div>
                 ),
@@ -102,6 +103,7 @@ export function _ClassDetailItem({
                   alt={`${instructor?.instructorName}`}
                   width={20}
                   height={20}
+                  priority
                 />
               </div>
             </div>

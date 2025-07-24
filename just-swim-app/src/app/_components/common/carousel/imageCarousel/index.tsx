@@ -142,6 +142,7 @@ export function ImageCarousel({
                       height: '100%',
                       objectFit: 'cover',
                     }}
+                    priority
                   />
                 )}
               </div>

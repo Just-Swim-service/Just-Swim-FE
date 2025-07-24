@@ -34,6 +34,7 @@ export function ProfileCard({
                 margin: `0px ${xMargin}px`,
                 objectFit: 'cover',
               }}
+              priority
             />
           );
         })}

@@ -74,6 +74,7 @@ const ClassList = React.memo(
                                 borderRadius: '28px',
                                 verticalAlign: 'middle',
                               }}
+                              priority
                             />
                           ))}
                         </>
@@ -98,6 +99,7 @@ const ClassList = React.memo(
                           borderRadius: '28px',
                           verticalAlign: 'middle',
                         }}
+                        priority
                       />
                     </div>
                     <div className={styled.instructor_name}>

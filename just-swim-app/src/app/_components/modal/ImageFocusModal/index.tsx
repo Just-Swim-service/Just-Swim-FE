@@ -85,6 +85,7 @@ export function ImageFocusModal({
                 src={images[currentImageIndex]}
                 alt={`Image ${currentImageIndex + 1}`}
                 className={styled.image}
+                priority
               />
             )}
           </div>

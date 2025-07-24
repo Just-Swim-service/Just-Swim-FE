@@ -94,6 +94,7 @@ function _MemberItem({
             alt={member.memberNickname}
             width={34}
             height={34}
+            priority
           />
         ) : (
           <div className={styles.empty_image} />

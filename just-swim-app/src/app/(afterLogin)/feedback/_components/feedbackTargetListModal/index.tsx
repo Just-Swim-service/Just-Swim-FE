@@ -26,6 +26,7 @@ export function FeedbackTargetListModal({
                     alt={target.memberName}
                     width={34}
                     height={34}
+                    priority
                   />
                 ) : (
                   <div className={styled.empty_image} />

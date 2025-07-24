@@ -40,7 +40,12 @@ export function Header({
 
   return (
     <header className={styled.header}>
-      <Image src={arrowBackIcon} alt="뒤로가기" onClick={() => goBack()} />
+      <Image
+        src={arrowBackIcon}
+        alt="뒤로가기"
+        onClick={() => goBack()}
+        priority
+      />
       <div>{title}</div>
       {editURL ? (
         <Link href={editURL} className={styled.edit}>

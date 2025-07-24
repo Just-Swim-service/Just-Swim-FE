@@ -55,6 +55,7 @@ const ClassList = React.memo(({ item }: { item: LectureViewProps }) => {
                       borderRadius: '28px',
                       verticalAlign: 'middle',
                     }}
+                    priority
                   />
                 ))}
               </div>
