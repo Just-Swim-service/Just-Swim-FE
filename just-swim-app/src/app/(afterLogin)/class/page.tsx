@@ -1,6 +1,6 @@
 'use client';
 
-import { BottomNav, Header } from '@components';
+import { BottomNav, UserIconHeader } from '@components';
 
 import { ChangeEvent, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -181,7 +181,7 @@ export default function ClassView() {
 
   return (
     <>
-      <Header title="수업 정보" />
+      <UserIconHeader title="수업 정보" />
       <div className={styled.container}>
         {type === 'instructor' && (
           <div className={styled.search}>
