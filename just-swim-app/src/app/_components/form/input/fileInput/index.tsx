@@ -21,6 +21,7 @@ import { FileInputProps, StoredFileMeta } from '@types';
 import { isVideoFile, isImageFile } from '@utils';
 import { deleteFeedbackImageFromS3, getFeedbackPresignedURL } from '@apis';
 import { feedbackStore } from '@/_store/feedback';
+import Image from 'next/image';
 
 function FileInputInner(
   {
@@ -315,10 +316,15 @@ function FileInputInner(
               }}>
               {isVideo ? (
                 <>
-                  <div
-                    className={styled.preview_image}
-                    style={{ backgroundImage: `url(${item.previewURL})` }}
-                  />
+                  <div className={styled.preview_image}>
+                    <Image
+                      src={item.previewURL}
+                      alt={`미리보기 영상 ${index + 1}`}
+                      width={100}
+                      height={100}
+                      style={{ objectFit: 'cover', borderRadius: '8px' }} // 기존 CSS 유지
+                    />
+                  </div>
                   <div className={styled.video_overlay}>
                     <div className={styled.play_icon}>▶</div>
                     {item.duration !== undefined && !isNaN(item.duration) && (
@@ -332,10 +338,15 @@ function FileInputInner(
                   </div>
                 </>
               ) : (
-                <div
-                  className={styled.preview_image}
-                  style={{ backgroundImage: `url(${item.previewURL})` }}
-                />
+                <div className={styled.preview_image}>
+                  <Image
+                    src={item.previewURL}
+                    alt={`미리보기 이미지 ${index + 1}`}
+                    width={100}
+                    height={100}
+                    style={{ objectFit: 'cover', borderRadius: '8px' }}
+                  />
+                </div>
               )}
               <button
                 className={styled.delete_button}

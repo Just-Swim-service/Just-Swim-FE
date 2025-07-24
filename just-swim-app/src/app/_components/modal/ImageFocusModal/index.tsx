@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { IconArrowLeft, IconArrowRight } from '@assets';
 import { Portal } from '@components';
 import styled from './styles.module.scss';
+import Image from 'next/image';
 
 interface ImageFocusModalProps {
   imageUrl: string;
@@ -80,7 +81,7 @@ export function ImageFocusModal({
                 Your browser does not support the video tag.
               </video>
             ) : (
-              <img
+              <Image
                 src={images[currentImageIndex]}
                 alt={`Image ${currentImageIndex + 1}`}
                 className={styled.image}

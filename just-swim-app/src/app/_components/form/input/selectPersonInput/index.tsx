@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { IconSelectUser } from '@assets';
 import { searchUserStore } from '@store';
 import { UseFormSetValue } from 'react-hook-form';
+import Image from 'next/image';
 
 interface SelectPersonInputProps extends SelectInputProps {
   setFeedbackFormData: any;
@@ -87,11 +88,18 @@ function _SelectPersonInput(
         {selectedList.map((preview: any, index: number) => {
           return (
             <div key={index} className={styled.preview_item}>
-              <div
-                className={styled.profileImg}
-                style={{
-                  backgroundImage: `url(${preview.profileImage})`,
-                }}></div>
+              <div className={styled.profileImg}>
+                <Image
+                  src={preview.profileImage || '/assets/no_profile.png'}
+                  alt={`${preview.memberNickname} 프로필`}
+                  width={40}
+                  height={40}
+                  style={{
+                    objectFit: 'cover',
+                    borderRadius: '50%',
+                  }}
+                />
+              </div>
               <div className={styled.name}>{preview.memberNickname}</div>
               <div className={styled.class}>{preview.lectureTitle}</div>
 

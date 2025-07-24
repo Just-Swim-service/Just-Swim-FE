@@ -4,6 +4,7 @@ import '@/reset.scss';
 import { Suspense } from 'react';
 import { SkeletonFallback } from '@components';
 import { AppWrapper } from './appWrapper';
+import localFont from 'next/font/local';
 
 export const metadata: Metadata = {
   title: 'Just Swim',
@@ -13,11 +14,19 @@ export const metadata: Metadata = {
   },
 };
 
-type Props = {
-  children: React.ReactNode;
-};
+const suitFont = localFont({
+  src: [
+    {
+      path: '../fonts/SUIT-Variable-woff2/SUIT-Variable.woff2',
+      weight: '100 900',
+      style: 'normal',
+    },
+  ],
+  display: 'swap',
+  variable: '--font-suit',
+});
 
-export default function RootLayout({ children }: Readonly<Props>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <body>

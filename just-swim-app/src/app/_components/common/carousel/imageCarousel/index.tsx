@@ -7,6 +7,7 @@ import { randomId, throttle } from '@utils';
 import { ImageCarouselProps } from '@types';
 
 import styled from './styles.module.scss';
+import Image from 'next/image';
 
 export function ImageCarousel({
   images,
@@ -133,7 +134,7 @@ export function ImageCarousel({
                     브라우저에서 비디오를 지원하지 않습니다.
                   </video>
                 ) : (
-                  <img
+                  <Image
                     src={item.previewURL}
                     alt="image"
                     style={{

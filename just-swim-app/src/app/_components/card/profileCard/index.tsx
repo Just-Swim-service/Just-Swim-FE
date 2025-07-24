@@ -20,47 +20,28 @@ export function ProfileCard({
   return (
     <div className={styled.row}>
       <div className={styled.img_list}>
-        {/* <Image src={`/assets/profile1.png`} alt="프로필" width={40} height={40} /> */}
         {customers?.map((el, index) => {
-          // @ts-ignore
-          return el.profileImage ? (
-            <div
-              key={index}
-              className={styled.profile_img}
-              style={{
-                // @ts-ignore
-                backgroundImage: `url(${el.profileImage})`,
-                width: width,
-                height: height,
-                margin: `0px ${xMargin}px`,
-              }}
-            />
-          ) : (
-            // <Image
-            //   key={index}
-            //   src={el.profileImage}
-            //   alt="프로필"
-            //   width={width}
-            //   height={height}
-            //   style={{ margin: `0px ${xMargin}px` }}
-            // />
+          const profileSrc = el.profile || '/assets/no_profile.png';
+          return (
             <Image
               key={index}
-              src={`/assets/no_profile.png`}
-              alt="프로필"
+              src={profileSrc}
+              alt={`${el.name} 프로필`}
               width={width}
               height={height}
-              style={{ margin: `0px ${xMargin}px` }}
+              className={styled.profile_img}
+              style={{
+                margin: `0px ${xMargin}px`,
+                objectFit: 'cover',
+              }}
             />
           );
         })}
       </div>
-      {count ? (
+      {count && (
         <div className={styled.count} style={{ marginLeft: '9px' }}>
           {customers?.length}명
         </div>
-      ) : (
-        <></>
       )}
     </div>
   );

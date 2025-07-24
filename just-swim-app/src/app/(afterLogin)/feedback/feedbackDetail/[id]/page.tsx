@@ -164,14 +164,18 @@ export default function FeedbackDetail() {
                           className={styled.preview_item}
                           onClick={() => handleImageClick(index)}
                           style={{
-                            backgroundImage: `url(${thumbnail.trim()})`,
+                            cursor: 'pointer',
                             width: '100px',
                             height: '100px',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            cursor: 'pointer',
-                          }}
-                        />
+                          }}>
+                          <Image
+                            src={thumbnail.trim()}
+                            alt={`첨부 이미지 ${index + 1}`}
+                            width={100}
+                            height={100}
+                            style={{ objectFit: 'cover' }}
+                          />
+                        </div>
                       );
                     })}
                   </div>
@@ -287,14 +291,18 @@ export default function FeedbackDetail() {
                             className={styled.preview_item}
                             onClick={() => handleImageClick(index)}
                             style={{
-                              backgroundImage: `url(${thumbnail.trim()})`,
+                              cursor: 'pointer',
                               width: '100px',
                               height: '100px',
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
-                              cursor: 'pointer',
-                            }}
-                          />
+                            }}>
+                            <Image
+                              src={thumbnail.trim()}
+                              alt={`첨부 이미지 ${index + 1}`}
+                              width={100}
+                              height={100}
+                              style={{ objectFit: 'cover' }}
+                            />
+                          </div>
                         );
                       })}
                     </div>
