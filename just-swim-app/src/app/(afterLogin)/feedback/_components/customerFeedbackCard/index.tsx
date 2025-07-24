@@ -76,6 +76,7 @@ export function CustomerFeedbackCard({ feedback }: { feedback: FeedbackProps }) 
                   alt={`feedback image`}
                   width={52}
                   height={52}
+                  priority
                 />
               </div>
             )
