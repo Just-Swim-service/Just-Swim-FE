@@ -63,7 +63,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className={styles.account_header}>
         <div className={styles.content}>
           <div className={styles.back_link} onClick={handleBackPage}>
-            <IconArrowLeft width={20} height={20} fill="#ff0000" />
+            <IconArrowLeft width={20} height={20} fill="#050606" />
             <p>
               {param === ROUTES.ACCOUNT.root ? TEXT.ACCOUNT_PAGE.myInfo : ''}
               {param === ROUTES.ACCOUNT.edit

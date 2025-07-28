@@ -132,7 +132,7 @@ export function ScheduleAddButton() {
           <button
             className={styled.closeButton}
             onClick={() => setShowScanner(false)}>
-            <IconArrowLeft width={24} height={24} fill="#ff0000" />
+            <IconArrowLeft width={24} height={24} fill="#050606" />
             <span className={styled.closeText}>스캐너 끄기</span>
           </button>
           <div id="qr-reader" className={styled.fullscreenScanner} />

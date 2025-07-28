@@ -68,7 +68,7 @@ export function ImageFocusModal({
           </button>
 
           <button className={styled.nav_button_left} onClick={handlePrevious}>
-            <IconArrowLeft width={24} height={24} />
+            <IconArrowLeft width={24} height={24} fill={'#3689ff'} />
           </button>
 
           <div className={styled.media_container}>

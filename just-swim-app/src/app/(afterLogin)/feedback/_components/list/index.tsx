@@ -8,6 +8,8 @@ import { CustomerFeedbackCard } from '../customerFeedbackCard';
 import { getMyProfile } from '@apis';
 import { FeedbackListSkeleton } from '../skeleton';
 
+import { IconArrowLeft, IconArrowRight } from '@assets';
+
 const itemsToShow = 5;
 const pagesToShow = 5;
 
@@ -84,13 +86,13 @@ export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
             <div className={styled.page}>
               {pagination > 0 && (
                 <button className={styled.move_button} onClick={onClickPrev}>
-                  {'<'}
+                  <IconArrowLeft width={12} height={12} fill={'#7e8184'} />
                 </button>
               )}
               {paginationButtons}
               {pagination < maxPagination && (
                 <button className={styled.move_button} onClick={onClickNext}>
-                  {'>'}
+                  <IconArrowRight width={12} height={12} fill={'#7e8184'} />
                 </button>
               )}
             </div>
