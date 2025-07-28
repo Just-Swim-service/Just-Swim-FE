@@ -124,13 +124,13 @@ export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
               <div className={styled.page}>
                 {pagination > 0 && (
                   <button className={styled.move_button} onClick={onClickPrev}>
-                    {'<'}
+                    <IconArrowLeft width={16} height={16} fill={'#7e8184'} />
                   </button>
                 )}
                 {paginationButtons}
                 {pagination < maxPagination && (
                   <button className={styled.move_button} onClick={onClickNext}>
-                    {'>'}
+                    <IconArrowRight width={16} height={16} fill={'#7e8184'} />
                   </button>
                 )}
               </div>
