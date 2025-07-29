@@ -98,16 +98,11 @@ export function MonthlyWrapper() {
 
   useEffect(() => {
     const getMonthInfo = async () => {
-      try {
-        const result = await getMonthlyScheduleInfo(
-          `${currentYear}.${currentMonth + 1}`,
-        );
+      const result = await getMonthlyScheduleInfo(
+        `${currentYear}.${currentMonth + 1}`,
+      );
 
-        setMonthlyInfo(result);
-      } catch (error) {
-        console.error('월간 스케줄 정보 조회 실패:', error);
-        setMonthlyInfo([]);
-      }
+      setMonthlyInfo(result);
     };
 
     getMonthInfo();

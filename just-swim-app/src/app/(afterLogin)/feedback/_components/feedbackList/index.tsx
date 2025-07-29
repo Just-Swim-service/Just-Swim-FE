@@ -15,16 +15,10 @@ export async function FeedbackList() {
     const fetchData = async () => {
       try {
         const data = await getFeedback();
-        if (!data) {
-          console.error('피드백 목록 조회 실패');
-          setFeedbackList([]);
-          return;
-        }
-
         let map = new Map();
 
         // feedbackId가 같다면 피드백 정보가 담긴 obj를 배열로 담아준다.
-        data.forEach((el) => {
+        data?.forEach((el) => {
           if (!map.has(el.feedbackId)) {
             map.set(el.feedbackId, [el]);
           } else {
@@ -39,8 +33,7 @@ export async function FeedbackList() {
         // @ts-ignore
         setFeedbackList(arrayFromMap);
       } catch (error) {
-        console.error('Error fetching feedback:', error);
-        setFeedbackList([]);
+        // console.error('Error fetching feedback:', error);
       }
     };
     fetchData();

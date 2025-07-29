@@ -1,6 +1,6 @@
 'use server';
 
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { getInProgressSchedule, createLecture, updateLecture } from '@apis';
 import { LectureBasicProps } from '@types';
@@ -62,8 +62,7 @@ export async function formAction(
     if (result.success) {
       redirect(`/schedule`);
     } else {
-      console.error('강의 수정 실패');
-      return { error: '강의 수정에 실패했습니다.' };
+      return notFound();
     }
   } else {
     const result = await createLecture(data);
@@ -71,8 +70,7 @@ export async function formAction(
     if (result.success) {
       redirect(`/schedule/add/complete/${result.data.lectureId}`);
     } else {
-      console.error('강의 생성 실패');
-      return { error: '강의 생성에 실패했습니다.' };
+      return notFound();
     }
   }
 }

@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation';
+
 import { FeedbackProps } from '@types';
 import { Fetch } from '@utils';
 import api from '../api';
@@ -72,8 +74,7 @@ async function getFeedback(): Promise<FeedbackProps[] | null> {
   if (result.success) {
     return result.data;
   } else {
-    console.error('피드백 목록 조회 실패');
-    return null;
+    return notFound();
   }
 }
 
@@ -102,7 +103,7 @@ async function getSortedFeedback(): Promise<FeedbackProps[] | null> {
 }
 
 // 피드백 상세
-async function getFeedbackDetail(id: string): Promise<FeedbackProps[] | null> {
+async function getFeedbackDetail(id: string): Promise<FeedbackProps[]> {
   const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
     url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
     header: {
@@ -114,8 +115,7 @@ async function getFeedbackDetail(id: string): Promise<FeedbackProps[] | null> {
   if (result.success) {
     return result.data;
   } else {
-    console.error(`피드백 상세 조회 실패: feedbackId ${id}`);
-    return null;
+    return notFound();
   }
 }
 

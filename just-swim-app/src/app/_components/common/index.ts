@@ -8,4 +8,3 @@ export * from './switch';
 export * from './toast';
 export * from './skeleton';
 export * from './signinCheck';
-export * from './errorBoundary';

@@ -126,49 +126,30 @@ export default function ClassView() {
 
   useEffect(() => {
     const setUserType = async () => {
-      try {
-        const data = await getMyProfile();
-        if (data) {
-          setType(data.data.data.userType);
-        } else {
-          console.error('사용자 프로필 조회 실패');
-          setType('');
-        }
-      } catch (error) {
-        console.error('사용자 타입 설정 실패:', error);
-        setType('');
-      }
+      const data = await getMyProfile();
+      setType(data.data.data.userType);
     };
     setUserType();
   }, []);
 
   useEffect(() => {
-    const fetchLectures = async () => {
-      try {
-        const data = await fetchJson<{ data: LectureViewProps[] }>(
-          '/lecture/schedule',
-        );
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+    fetchJson<{ data: LectureViewProps[] }>('/lecture/schedule').then((data) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-        const processedLectures =
-          data.data?.map((lecture) => {
-            const parsedDateStr = lecture.lectureEndDate.replace(/\./g, '-');
-            const lectureEndDate = new Date(parsedDateStr);
-            lectureEndDate.setHours(0, 0, 0, 0);
+      const processedLectures =
+        data.data?.map((lecture) => {
+          const parsedDateStr = lecture.lectureEndDate.replace(/\./g, '-');
+          const lectureEndDate = new Date(parsedDateStr);
+          lectureEndDate.setHours(0, 0, 0, 0);
 
-            return {
-              ...lecture,
-              isPastLecture: lectureEndDate < today,
-            };
-          }) ?? [];
-        setLectures(processedLectures);
-      } catch (error) {
-        console.error('수업 목록 조회 실패:', error);
-        setLectures([]);
-      }
-    };
-    fetchLectures();
+          return {
+            ...lecture,
+            isPastLecture: lectureEndDate < today,
+          };
+        }) ?? [];
+      setLectures(processedLectures);
+    });
   }, []);
 
   const ongoingLectures = useMemo(() => {

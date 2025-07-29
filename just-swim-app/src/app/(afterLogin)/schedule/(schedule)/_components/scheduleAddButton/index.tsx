@@ -24,17 +24,11 @@ export function ScheduleAddButton() {
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
-      try {
-        const response = await getMyProfile();
-        if (!response || isEmpty(response)) {
-          console.error('사용자 프로필 조회 실패');
-          return router.replace('/signin');
-        }
-        setProfileInfo(response.data.data as ProfileInfo);
-      } catch (error) {
-        console.error('프로필 정보 조회 실패:', error);
-        router.replace('/signin');
+      const response = await getMyProfile();
+      if (isEmpty(response)) {
+        return router.replace('/signin');
       }
+      setProfileInfo(response.data.data as ProfileInfo);
     };
     fetchProfileInfo();
   }, [router]);
