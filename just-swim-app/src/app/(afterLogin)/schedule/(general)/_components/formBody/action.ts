@@ -62,7 +62,7 @@ export async function formAction(
     if (result.success) {
       redirect(`/schedule`);
     } else {
-      return notFound();
+      return { title: '', duplicate: '', error: '수업 수정에 실패했습니다.' };
     }
   } else {
     const result = await createLecture(data);
@@ -70,7 +70,7 @@ export async function formAction(
     if (result.success) {
       redirect(`/schedule/add/complete/${result.data.lectureId}`);
     } else {
-      return notFound();
+      return { title: '', duplicate: '', error: '수업 생성에 실패했습니다.' };
     }
   }
 }

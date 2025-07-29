@@ -49,25 +49,32 @@ async function Fetch<T>({
     const result = await response.json();
     return result;
   } catch (error) {
-    return notFound();
+    console.error('Fetch 요청 실패:', error);
+    throw error;
   }
 }
 
 // _apis 폴더 내부로 이동
 export async function getMember(): Promise<MemberProps[] | null> {
-  const result = await Fetch<{ success: boolean; data: MemberProps[] }>({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/member`,
-    header: {
-      token: true,
-      json: true,
-      credential: true,
-    },
-  });
+  try {
+    const result = await Fetch<{ success: boolean; data: MemberProps[] }>({
+      url: `${process.env.NEXT_PUBLIC_API_URL}/member`,
+      header: {
+        token: true,
+        json: true,
+        credential: true,
+      },
+    });
 
-  if (result.success) {
-    return result.data;
-  } else {
-    return notFound();
+    if (result.success) {
+      return result.data;
+    } else {
+      console.error('멤버 목록 가져오기 실패');
+      return [];
+    }
+  } catch (error) {
+    console.error('멤버 목록 가져오기 실패:', error);
+    return [];
   }
 }
 

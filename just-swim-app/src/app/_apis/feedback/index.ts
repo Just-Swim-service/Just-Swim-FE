@@ -64,17 +64,22 @@ async function updateFeedback(data, id) {
 
 // _apis 폴더 내부로 이동
 async function getFeedback(): Promise<FeedbackProps[] | null> {
-  const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/feedback`,
-    header: {
-      json: true,
-      credential: true,
-    },
-  });
-  if (result.success) {
-    return result.data;
-  } else {
-    return notFound();
+  try {
+    const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
+      url: `${process.env.NEXT_PUBLIC_API_URL}/feedback`,
+      header: {
+        json: true,
+        credential: true,
+      },
+    });
+    if (result.success) {
+      return result.data;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error('피드백 데이터 가져오기 실패:', error);
+    return [];
   }
 }
 
@@ -104,18 +109,23 @@ async function getSortedFeedback(): Promise<FeedbackProps[] | null> {
 
 // 피드백 상세
 async function getFeedbackDetail(id: string): Promise<FeedbackProps[]> {
-  const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
-    header: {
-      json: true,
-      credential: true,
-    },
-  });
+  try {
+    const result = await Fetch<{ success: boolean; data: FeedbackProps[] }>({
+      url: `${process.env.NEXT_PUBLIC_API_URL}/feedback/${id}`,
+      header: {
+        json: true,
+        credential: true,
+      },
+    });
 
-  if (result.success) {
-    return result.data;
-  } else {
-    return notFound();
+    if (result.success) {
+      return result.data;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error('피드백 상세 데이터 가져오기 실패:', error);
+    return [];
   }
 }
 
