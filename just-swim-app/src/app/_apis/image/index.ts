@@ -1,11 +1,12 @@
 'use server';
 
 import { Fetch } from '@utils';
-import { notFound } from 'next/navigation';
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
-export async function getProfilePresignedURL(name: string): Promise<string[]> {
+export async function getProfilePresignedURL(
+  name: string,
+): Promise<string[] | null> {
   const result = await Fetch<{ success: boolean; data: string[] }>({
     url: `${URL}/user/profileImage/presignedUrl`,
     method: 'POST',
@@ -21,13 +22,16 @@ export async function getProfilePresignedURL(name: string): Promise<string[]> {
   if (result.success) {
     return result.data;
   } else {
-    return notFound();
+    console.error('프로필 이미지 presigned URL 조회 실패');
+    return null;
   }
 }
 
 export async function getFeedbackPresignedURL(
   files: string[],
-): Promise<{ fileName: string; presignedUrl: string; contentType: string }[]> {
+): Promise<
+  { fileName: string; presignedUrl: string; contentType: string }[] | null
+> {
   const result = await Fetch<{
     success: boolean;
     data: { fileName: string; presignedUrl: string; contentType: string }[];
@@ -46,11 +50,14 @@ export async function getFeedbackPresignedURL(
   if (result.success) {
     return result.data;
   } else {
-    return notFound();
+    console.error('피드백 이미지 presigned URL 조회 실패');
+    return null;
   }
 }
 
-export async function deleteFeedbackImageFromS3(fileURL: string) {
+export async function deleteFeedbackImageFromS3(
+  fileURL: string,
+): Promise<string | null> {
   const result = await Fetch<{ success: boolean; data: string }>({
     url: `${URL}/image`,
     method: 'DELETE',
@@ -64,6 +71,7 @@ export async function deleteFeedbackImageFromS3(fileURL: string) {
   if (result.success) {
     return result.data;
   } else {
-    return notFound();
+    console.error('피드백 이미지 삭제 실패');
+    return null;
   }
 }

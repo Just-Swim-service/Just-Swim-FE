@@ -90,8 +90,18 @@ export default function ClassDetail() {
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getMyProfile();
-      setType(data.data.data.userType);
+      try {
+        const data = await getMyProfile();
+        if (data) {
+          setType(data.data.data.userType);
+        } else {
+          console.error('사용자 프로필 조회 실패');
+          setType('');
+        }
+      } catch (error) {
+        console.error('사용자 타입 설정 실패:', error);
+        setType('');
+      }
     };
     setUserType();
   }, []);
@@ -99,13 +109,24 @@ export default function ClassDetail() {
   useEffect(() => {
     if (!lectureId) return;
 
-    fetchJson<{ data: LectureViewProps }>(`/lecture/${lectureId}`).then(
-      (data) => {
+    const fetchLectureDetail = async () => {
+      try {
+        const data = await fetchJson<{ data: LectureViewProps }>(
+          `/lecture/${lectureId}`,
+        );
         if (data.data) {
           setLecture(data.data);
+        } else {
+          console.error('강의 상세 정보 조회 실패');
+          setLecture(null);
         }
-      },
-    );
+      } catch (error) {
+        console.error('강의 상세 정보 조회 실패:', error);
+        setLecture(null);
+      }
+    };
+
+    fetchLectureDetail();
   }, [lectureId]);
 
   //  @ts-ignore

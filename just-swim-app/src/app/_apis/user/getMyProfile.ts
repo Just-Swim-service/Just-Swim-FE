@@ -1,13 +1,11 @@
 'use server';
 
-import { notFound } from 'next/navigation';
-
 import { ProfileProps } from '@types';
 import { Fetch } from '@utils';
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/user`;
 
-export async function getMyProfile(): Promise<ProfileProps> {
+export async function getMyProfile(): Promise<ProfileProps | null> {
   const result = await Fetch<{ success: boolean; data: ProfileProps }>({
     url: `${URL}/myProfile`,
     header: {
@@ -18,6 +16,7 @@ export async function getMyProfile(): Promise<ProfileProps> {
   if (result.success) {
     return result.data;
   } else {
-    return notFound();
+    console.error('사용자 프로필 조회 실패');
+    return null;
   }
 }

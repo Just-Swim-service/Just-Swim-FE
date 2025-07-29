@@ -13,8 +13,13 @@ export function ScheduleCommonLayout() {
 
   useEffect(() => {
     const fetchTodayCount = async () => {
-      const todayCount = await getTodayScheduleCount();
-      setTodayCount(todayCount);
+      try {
+        const todayCount = await getTodayScheduleCount();
+        setTodayCount(todayCount);
+      } catch (error) {
+        console.error('오늘 스케줄 개수 조회 실패:', error);
+        setTodayCount(0);
+      }
     };
     fetchTodayCount();
   }, [pathname]);

@@ -1,7 +1,5 @@
 'use server';
 
-import { notFound } from 'next/navigation';
-
 // _types 폴더 내부로 이동
 export interface MemberProps {
   userId: string;
@@ -31,7 +29,7 @@ async function Fetch<T>({
     credential?: boolean;
   };
   body?: Object | null;
-}): Promise<T> {
+}): Promise<T | null> {
   try {
     const headers: HeadersInit = {};
 
@@ -49,7 +47,8 @@ async function Fetch<T>({
     const result = await response.json();
     return result;
   } catch (error) {
-    return notFound();
+    console.error('Fetch 함수 에러:', error);
+    return null;
   }
 }
 
@@ -64,10 +63,11 @@ export async function getMember(): Promise<MemberProps[] | null> {
     },
   });
 
-  if (result.success) {
+  if (result && result.success) {
     return result.data;
   } else {
-    return notFound();
+    console.error('멤버 목록 조회 실패');
+    return null;
   }
 }
 

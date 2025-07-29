@@ -1,7 +1,5 @@
 'use server';
 
-import { notFound } from 'next/navigation';
-
 import { LectureDetailProps } from '@types';
 import { Fetch } from '@utils';
 
@@ -19,6 +17,7 @@ export async function getLectureDetail(
   if (result.success) {
     return result.data;
   } else {
-    return notFound();
+    console.error(`강의 상세 정보 조회 실패: lectureId ${lectureId}`);
+    return null;
   }
 }

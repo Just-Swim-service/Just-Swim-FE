@@ -23,7 +23,12 @@ export function WeekWrapper({
     const setUserType = async () => {
       try {
         const data = await getMyProfile();
-        setType(data.data.data.userType);
+        if (data) {
+          setType(data.data.data.userType);
+        } else {
+          console.error('사용자 프로필 조회 실패');
+          setType('');
+        }
       } catch (error) {
         console.error('사용자 타입 불러오기 실패:', error);
         setType('');
