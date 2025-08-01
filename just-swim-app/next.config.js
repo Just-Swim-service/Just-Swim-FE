@@ -2,6 +2,57 @@
  * @type {import('next').NextConfig}
  */
 
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development',
+  runtimeCaching: [
+    {
+      urlPattern: /^https:\/\/api\.just-swim\.kr\/api\/.*/i,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'api-cache',
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 60 * 60 * 24, // 24시간
+        },
+        cacheableResponse: {
+          statuses: [0, 200],
+        },
+      },
+    },
+    {
+      urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'images-cache',
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 60 * 60 * 24 * 30, // 30일
+        },
+      },
+    },
+    {
+      urlPattern: /\.(?:js|css)$/,
+      handler: 'StaleWhileRevalidate',
+      options: {
+        cacheName: 'static-resources',
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 60 * 60 * 24 * 7, // 7일
+        },
+      },
+    },
+  ],
+  buildExcludes: [/middleware-manifest\.json$/],
+  exclude: [
+    /_next\/static\/chunks\/.*/,
+    /_next\/static\/css\/.*/,
+    /_next\/static\/media\/.*/,
+  ],
+});
+
 const nextConfig = {
   reactStrictMode: true,
   // 페이지 이동 성능 최적화
@@ -88,7 +139,7 @@ if (process.env.ANALYZE === 'true') {
   const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: true,
   });
-  module.exports = withBundleAnalyzer(nextConfig);
+  module.exports = withBundleAnalyzer(withPWA(nextConfig));
 } else {
-  module.exports = nextConfig;
+  module.exports = withPWA(nextConfig);
 }
