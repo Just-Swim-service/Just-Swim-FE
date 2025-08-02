@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import styles from './PWAInstallPrompt.module.scss';
+import { IOSInstallPrompt } from './IOSInstallPrompt';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -13,10 +14,17 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export const PWAInstallPrompt = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
+    // iOS 디바이스 감지
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    setIsIOS(isIOSDevice);
+
+    // Android용 beforeinstallprompt 이벤트 리스너
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -51,6 +59,12 @@ export const PWAInstallPrompt = () => {
     setDeferredPrompt(null);
   };
 
+  // iOS인 경우 iOS 전용 프롬프트 표시
+  if (isIOS) {
+    return <IOSInstallPrompt />;
+  }
+
+  // Android인 경우 기존 프롬프트 표시
   if (!showInstallPrompt) return null;
 
   return (
@@ -71,4 +85,4 @@ export const PWAInstallPrompt = () => {
       </div>
     </div>
   );
-}; 
+};
