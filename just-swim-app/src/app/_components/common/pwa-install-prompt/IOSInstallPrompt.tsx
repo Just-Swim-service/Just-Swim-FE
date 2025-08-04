@@ -8,35 +8,88 @@ export const IOSInstallPrompt = () => {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
 
+  // 로컬 스토리지에서 iOS PWA 상태 확인
+  const checkIOSPWAStatus = () => {
+    const dismissed = localStorage.getItem('ios-pwa-dismissed');
+    const accepted = localStorage.getItem('ios-pwa-accepted');
+
+    // 30일 후에 거부 상태 초기화 (사용자가 다시 고려할 수 있도록)
+    if (dismissed) {
+      const dismissTime = parseInt(dismissed);
+      const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+      if (Date.now() - dismissTime > thirtyDaysInMs) {
+        localStorage.removeItem('ios-pwa-dismissed');
+        return { dismissed: false, accepted: !!accepted };
+      }
+    }
+
+    return { dismissed: !!dismissed, accepted: !!accepted };
+  };
+
+  // 설치 상태 모니터링
+  const checkInstallationStatus = () => {
+    const isStandaloneMode = window.matchMedia(
+      '(display-mode: standalone)',
+    ).matches;
+
+    // PWA로 실행 중이 아니라면 이전에 설치했다고 기록된 상태를 초기화
+    if (!isStandaloneMode) {
+      const accepted = localStorage.getItem('ios-pwa-accepted');
+      if (accepted) {
+        // 설치했다고 기록되어 있지만 현재 PWA로 실행되지 않는다면 앱이 제거된 것으로 간주
+        localStorage.removeItem('ios-pwa-accepted');
+      }
+    }
+
+    setIsStandalone(isStandaloneMode);
+  };
+
   useEffect(() => {
     // iOS 디바이스 감지
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(isIOSDevice);
 
-    // 이미 PWA로 설치되어 있는지 확인
-    const isStandaloneMode = window.matchMedia(
-      '(display-mode: standalone)',
-    ).matches;
-    setIsStandalone(isStandaloneMode);
+    // 초기 설치 상태 확인
+    checkInstallationStatus();
 
     // iOS이고 PWA로 설치되지 않았다면 프롬프트 표시
-    if (isIOSDevice && !isStandaloneMode) {
-      // 로컬 스토리지에서 이전에 거부했는지 확인
-      const dismissed = localStorage.getItem('ios-pwa-dismissed');
-      if (!dismissed) {
+    if (isIOSDevice && !isStandalone) {
+      const { dismissed, accepted } = checkIOSPWAStatus();
+      if (!dismissed && !accepted) {
         setShowIOSPrompt(true);
       }
     }
-  }, []);
+
+    // 페이지 포커스 시 설치 상태 재확인
+    const handleFocus = () => {
+      checkInstallationStatus();
+
+      // 설치 상태가 변경되었을 수 있으므로 프롬프트 표시 여부 재확인
+      if (isIOS && !isStandalone) {
+        const { dismissed, accepted } = checkIOSPWAStatus();
+        if (!dismissed && !accepted) {
+          setShowIOSPrompt(true);
+        } else {
+          setShowIOSPrompt(false);
+        }
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [isIOS, isStandalone]);
 
   const handleDismiss = () => {
     setShowIOSPrompt(false);
-    localStorage.setItem('ios-pwa-dismissed', 'true');
+    localStorage.setItem('ios-pwa-dismissed', Date.now().toString());
   };
 
   const handleInstall = () => {
     setShowIOSPrompt(false);
-    localStorage.setItem('ios-pwa-dismissed', 'true');
+    localStorage.setItem('ios-pwa-accepted', Date.now().toString());
   };
 
   if (!showIOSPrompt || !isIOS || isStandalone) return null;
