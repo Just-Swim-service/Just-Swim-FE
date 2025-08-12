@@ -1,22 +1,19 @@
 'use client';
 
-import { MouseEvent, TouchEvent, useRef, useState } from "react";
+import { MouseEvent, TouchEvent, useRef, useState } from 'react';
 
-import { usePreventScroll } from "@hooks";
-import { ModalBodyProps } from "@types";
-import { Portal } from "@components";
+import { usePreventScroll } from '@hooks';
+import { ModalBodyProps } from '@types';
+import { Portal } from '@components';
 
 import styled from './styles.module.scss';
 
-export function ModalBody({
-  children,
-  hideModal
-}: ModalBodyProps) {
+export function ModalBody({ children, hideModal }: ModalBodyProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const startCursorPosition = useRef<number>(0);
   const startDrag = useRef<boolean>(false);
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
-  
+
   usePreventScroll();
 
   const handleDragStart = (event: MouseEvent<HTMLButtonElement>) => {
@@ -35,7 +32,7 @@ export function ModalBody({
 
     setMovingCursorPosition(event.pageY - startCursorPosition.current);
   };
-  
+
   const handleDragEnd = () => {
     if (!startDrag.current) {
       return;
@@ -58,9 +55,11 @@ export function ModalBody({
       return;
     }
 
-    setMovingCursorPosition(event.targetTouches[0].pageY - startCursorPosition.current);
+    setMovingCursorPosition(
+      event.targetTouches[0].pageY - startCursorPosition.current,
+    );
   };
-  
+
   const handleTouchEnd = () => {
     if (movingCursorPositon > 150 && containerRef.current) {
       containerRef.current.dispatchEvent(new Event('click', { bubbles: true }));
@@ -72,18 +71,28 @@ export function ModalBody({
   const prevent = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-  }
+  };
+
+  const preventTouch = (event: TouchEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
 
   return (
     <Portal>
-      <div className={styled.modal_wrapper} ref={containerRef} onClick={hideModal}>
-        <div 
+      <div
+        className={styled.modal_wrapper}
+        ref={containerRef}
+        onClick={hideModal}>
+        <div
           className={styled.modal}
           style={{
-            transform: `translateY(${movingCursorPositon}px)`
+            transform: `translateY(${movingCursorPositon}px)`,
           }}
           onClick={prevent}
-        >
+          onTouchStart={preventTouch}
+          onTouchMove={preventTouch}
+          onTouchEnd={preventTouch}>
           <button
             className={styled.modal_top_btn}
             onMouseDown={handleDragStart}
@@ -92,13 +101,12 @@ export function ModalBody({
             onClick={hideModal}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
+            onTouchEnd={handleTouchEnd}>
             <div />
           </button>
           {children}
         </div>
       </div>
     </Portal>
-  )
+  );
 }

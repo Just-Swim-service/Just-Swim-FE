@@ -5,7 +5,7 @@
   height: 100vh;
 
   position: fixed;
-  
+
   bottom: 0;
   left: 0;
 
@@ -13,6 +13,10 @@
   justify-content: center;
 
   background-color: rgba(0, 0, 0, 0.4);
+
+  // 모바일 환경에서 터치 동작 개선
+  touch-action: none;
+  -webkit-overflow-scrolling: touch;
 
   .modal {
     width: 100%;
@@ -25,19 +29,23 @@
 
     overflow: hidden;
 
+    // 모바일 환경에서 터치 동작 개선
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+
     &_top_btn {
       width: 100%;
       height: 4px;
-      
+
       padding-top: 10px;
       padding-bottom: 5px;
-      
+
       div {
         width: 30px;
         height: 4px;
-        
+
         margin: 0 auto;
-        
+
         background-color: $--gray-300;
 
         user-select: none;

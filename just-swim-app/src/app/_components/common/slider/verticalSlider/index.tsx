@@ -133,18 +133,29 @@ export function VerticalSlider({
 
   // touch drag
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    // 터치 이벤트가 페이지 스크롤에 영향을 주지 않도록 방지
+    event.preventDefault();
+    event.stopPropagation();
     startDrag(event.targetTouches[0].pageY);
   };
 
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    // 터치 이벤트가 페이지 스크롤에 영향을 주지 않도록 방지
+    event.preventDefault();
+    event.stopPropagation();
     whileDrag(event.targetTouches[0].pageY);
   };
 
   const handleTouchCancle = (event: TouchEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     endDrag();
   };
 
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    // 터치 이벤트가 페이지 스크롤에 영향을 주지 않도록 방지
+    event.preventDefault();
+    event.stopPropagation();
     endDrag();
   };
 
@@ -403,18 +414,29 @@ export function VerticalSliderLoop({
 
   // touch drag
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    // 터치 이벤트가 페이지 스크롤에 영향을 주지 않도록 방지
+    event.preventDefault();
+    event.stopPropagation();
     startDrag(event.targetTouches[0].pageY);
   };
 
   const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    // 터치 이벤트가 페이지 스크롤에 영향을 주지 않도록 방지
+    event.preventDefault();
+    event.stopPropagation();
     whileDrag(event.targetTouches[0].pageY);
   };
 
   const handleTouchCancle = (event: TouchEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     endDrag();
   };
 
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    // 터치 이벤트가 페이지 스크롤에 영향을 주지 않도록 방지
+    event.preventDefault();
+    event.stopPropagation();
     endDrag();
   };
 
