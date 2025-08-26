@@ -16,26 +16,23 @@ export function TimeModal({
 
   const changeSelectedTime = (time: string) => {
     setSelectedTime(time);
-  };
+  }
 
   const confirmSelectedTime = (event: MouseEvent<HTMLButtonElement>) => {
     setTimeValue(selectedTime);
     hideModal(event);
-  };
-
-  const preventTouch = (event: React.TouchEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
+  }
 
   return (
-    <ConfirmModal hideModal={hideModal} confirmCallback={confirmSelectedTime}>
-      <div
-        className={styled.modal}
-        onTouchStart={preventTouch}
-        onTouchMove={preventTouch}
-        onTouchEnd={preventTouch}>
-        <TimePicker value={selectedTime} updateValue={changeSelectedTime} />
+    <ConfirmModal 
+      hideModal={hideModal}
+      confirmCallback={confirmSelectedTime}
+    >
+      <div className={styled.modal}>
+        <TimePicker
+          value={selectedTime}
+          updateValue={changeSelectedTime}
+        />
       </div>
     </ConfirmModal>
   );

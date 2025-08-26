@@ -7,14 +7,6 @@
 
   z-index: 100;
 
-  // 모바일 환경에서 터치 동작 개선
-  touch-action: pan-y;
-  -webkit-overflow-scrolling: touch;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
   .border {
     position: absolute;
 
@@ -48,10 +40,6 @@
     cursor: grab;
 
     user-select: none;
-
-    // 모바일 환경에서 터치 동작 개선
-    touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
   }
 
   .item_list.use_transition {
@@ -71,8 +59,5 @@
 
     pointer-events: none;
     user-select: none;
-
-    // 모바일 환경에서 터치 동작 개선
-    touch-action: pan-y;
   }
 }
