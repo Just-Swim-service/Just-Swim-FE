@@ -12,21 +12,21 @@ export default function Type() {
   const router = useRouter();
   const [type, setType] = useState<UserType>();
 
-  // useEffect(() => {
-  //   const checkUserType = async () => {
-  //     try {
-  //       const data = await getMyProfile();
+  useEffect(() => {
+    const checkUserType = async () => {
+      try {
+        const data = await getMyProfile();
 
-  //       if (data?.data.data.userType) {
-  //         return router.replace(ROUTES.SCHEDULE.root);
-  //       }
-  //     } catch (err) {
-  //       return router.replace(ROUTES.ONBOARDING.signin);
-  //     }
-  //   };
+        if (data?.data.data.userType) {
+          return router.replace(ROUTES.SCHEDULE.root);
+        }
+      } catch (err) {
+        return router.replace(ROUTES.ONBOARDING.signin);
+      }
+    };
 
-  //   checkUserType();
-  // }, [router]);
+    checkUserType();
+  }, [router]);
 
   const handleSetType = async () => {
     if (!type) return;
