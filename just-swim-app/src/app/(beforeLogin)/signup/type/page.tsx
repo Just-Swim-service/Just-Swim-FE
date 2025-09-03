@@ -12,21 +12,21 @@ export default function Type() {
   const router = useRouter();
   const [type, setType] = useState<UserType>();
 
-  useEffect(() => {
-    const checkUserType = async () => {
-      try {
-        const data = await getMyProfile();
+  // useEffect(() => {
+  //   const checkUserType = async () => {
+  //     try {
+  //       const data = await getMyProfile();
 
-        if (data?.data.data.userType) {
-          return router.replace(ROUTES.SCHEDULE.root);
-        }
-      } catch (err) {
-        return router.replace(ROUTES.ONBOARDING.signin);
-      }
-    };
+  //       if (data?.data.data.userType) {
+  //         return router.replace(ROUTES.SCHEDULE.root);
+  //       }
+  //     } catch (err) {
+  //       return router.replace(ROUTES.ONBOARDING.signin);
+  //     }
+  //   };
 
-    checkUserType();
-  }, [router]);
+  //   checkUserType();
+  // }, [router]);
 
   const handleSetType = async () => {
     if (!type) return;
@@ -59,7 +59,10 @@ export default function Type() {
               className={`${styles.type_button} ${type === data ? styles.active : ''}`}
               onClick={() => setType(data)}>
               <div className={styles.type_button_img}>
-                <div></div>
+                <img
+                  src={`/assets/icon_${data}.png`}
+                  alt={`${TEXT.TYPE_SELECT_PAGE.type[data]} 아이콘`}
+                />
               </div>
               <div className={styles.type_button_info}>
                 <h3>{TEXT.TYPE_SELECT_PAGE.type[data]}</h3>

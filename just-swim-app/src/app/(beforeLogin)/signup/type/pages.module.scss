@@ -61,6 +61,14 @@
       background-color: $--White;
     }
 
+    .type_button_img img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      background-color: $--White;
+      border-radius: 8px;
+    }
+
     .type_button_info {
       display: flex;
       flex-direction: column;
