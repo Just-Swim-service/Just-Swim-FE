@@ -7,7 +7,7 @@ import styles from './pages.module.scss';
 import { ConfirmButton, DeleteModal } from '@components';
 import { DELETION_REASON, ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
-import { removeTokenInCookies } from '@utils';
+import { removeTokenInCookies, removeTokenInCookiesClient } from '@utils';
 import { deleteUser } from '@apis';
 
 function Radio({
@@ -57,7 +57,8 @@ export default function Deletion() {
 
   const setUserDeletion = async () => {
     await deleteUser({ withdrawalReasonContent: selectedValue! });
-    removeTokenInCookies();
+    removeTokenInCookies(); // 서버 사이드 쿠키 삭제
+    removeTokenInCookiesClient(); // 클라이언트 사이드 쿠키 삭제
     setResetUser();
     router.replace(ROUTES.ONBOARDING.root);
   };

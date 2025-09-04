@@ -10,7 +10,7 @@ import { useUserStore } from '@store';
 import { URLImage, LogoutModal, ProfileInfo } from '@components';
 import Link from 'next/link';
 import { getMyProfile, postUserLogout, revalidateMyProfile } from '@apis';
-import { removeTokenInCookies } from '@utils';
+import { removeTokenInCookies, removeTokenInCookiesClient } from '@utils';
 
 export default function Account() {
   const router = useRouter();
@@ -24,7 +24,8 @@ export default function Account() {
   const setUserLogout = async () => {
     await postUserLogout();
     await revalidateMyProfile();
-    removeTokenInCookies();
+    removeTokenInCookies(); // 서버 사이드 쿠키 삭제
+    removeTokenInCookiesClient(); // 클라이언트 사이드 쿠키 삭제
     setResetUser();
     router.replace(ROUTES.ONBOARDING.root);
   };
