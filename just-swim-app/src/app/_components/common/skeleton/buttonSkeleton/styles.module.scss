@@ -1,0 +1,53 @@
+.button {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  display: inline-block;
+}
+
+// 크기별 스타일
+.small {
+  height: 28px;
+  width: 80px;
+}
+
+.medium {
+  height: 36px;
+  width: 120px;
+}
+
+.large {
+  height: 44px;
+  width: 160px;
+}
+
+// 변형별 스타일
+.primary {
+  background: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+}
+
+.secondary {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+.outline {
+  background: linear-gradient(90deg, #f8f9fa 25%, #e9ecef 50%, #f8f9fa 75%);
+  background-size: 200% 100%;
+  border: 1px solid #dee2e6;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

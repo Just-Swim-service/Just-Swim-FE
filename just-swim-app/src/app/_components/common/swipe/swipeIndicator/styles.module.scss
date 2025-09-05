@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+
+  &.horizontal {
+    flex-direction: row;
+  }
+
+  &.vertical {
+    flex-direction: column;
+  }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &.active {
+    background-color: #3b82f6;
+    transform: scale(1.2);
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+// 모바일 최적화
+@media (max-width: 768px) {
+  .container {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+}

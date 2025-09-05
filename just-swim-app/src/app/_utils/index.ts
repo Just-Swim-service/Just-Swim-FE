@@ -1,5 +1,6 @@
 export * from './api';
 export * from './date';
+export * from './error';
 export * from './numberFormat';
 export * from './optimization';
 export * from './randomId';

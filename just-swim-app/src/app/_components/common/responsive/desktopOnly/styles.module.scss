@@ -1,0 +1,9 @@
+.desktopOnly {
+  width: 100%;
+  height: 100%;
+
+  // 데스크톱 최적화
+  cursor: default;
+  user-select: text;
+  -webkit-user-select: text;
+}

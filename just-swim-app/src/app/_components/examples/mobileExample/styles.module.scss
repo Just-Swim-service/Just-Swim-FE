@@ -1,0 +1,217 @@
+.container {
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.content {
+  padding: 80px 16px 80px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 32px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+}
+
+.touchArea {
+  padding: 40px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px dashed #d1d5db;
+  transition: all 0.2s ease;
+
+  &:active {
+    background: #e5e7eb;
+    transform: scale(0.98);
+  }
+
+  p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #374151;
+  }
+}
+
+.swipeContainer {
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.slide {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+
+  h4 {
+    font-size: 24px;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.9;
+  }
+}
+
+.swipeItems {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.swipeItem {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.itemContent {
+  padding: 16px;
+
+  h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #1f2937;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+  }
+}
+
+.mobileOnly,
+.desktopOnly,
+.tabletOnly {
+  padding: 16px;
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 8px;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: #0369a1;
+    font-weight: 500;
+  }
+}
+
+.desktopOnly {
+  background: #f0fdf4;
+  border-color: #22c55e;
+
+  p {
+    color: #15803d;
+  }
+}
+
+.tabletOnly {
+  background: #fef3c7;
+  border-color: #f59e0b;
+
+  p {
+    color: #d97706;
+  }
+}
+
+.button {
+  padding: 12px 24px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+    background: #2563eb;
+  }
+}
+
+.drawerContent {
+  padding: 20px;
+
+  h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+}
+
+.drawerItems {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawerItem {
+  padding: 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 16px;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:active {
+    background: #f3f4f6;
+    transform: scale(0.98);
+  }
+}
+
+// 모바일 최적화
+@media (max-width: 768px) {
+  .content {
+    padding: 70px 12px 70px;
+  }
+
+  .section {
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  .touchArea {
+    padding: 30px 20px;
+  }
+
+  .swipeContainer {
+    height: 150px;
+  }
+
+  .slide {
+    h4 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+}

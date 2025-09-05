@@ -1,0 +1,12 @@
+.mobileOnly {
+  width: 100%;
+  height: 100%;
+
+  // 모바일 최적화
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}

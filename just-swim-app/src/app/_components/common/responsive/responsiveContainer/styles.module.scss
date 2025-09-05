@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  height: 100%;
+
+  &.mobile {
+    padding: 16px;
+
+    // 모바일 최적화
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  &.tablet {
+    padding: 24px;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  &.desktop {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+// 모바일 터치 최적화
+@media (max-width: 768px) {
+  .container {
+    touch-action: pan-x pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+}

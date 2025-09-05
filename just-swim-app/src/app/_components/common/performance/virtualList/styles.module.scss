@@ -1,0 +1,40 @@
+.container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+
+  &.scrolling {
+    scroll-behavior: smooth;
+  }
+}
+
+.scrollContainer {
+  position: relative;
+  width: 100%;
+}
+
+.item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+// 스크롤바 스타일링
+.container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

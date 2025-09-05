@@ -1,0 +1,108 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.drawer {
+  background: white;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &.bottom {
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  &.top {
+    border-radius: 0 0 16px 16px;
+    width: 100%;
+    max-width: 100%;
+    align-self: flex-start;
+  }
+
+  &.left {
+    border-radius: 0 16px 16px 0;
+    height: 100%;
+    max-width: 80%;
+    align-self: flex-start;
+  }
+
+  &.right {
+    border-radius: 16px 0 0 16px;
+    height: 100%;
+    max-width: 80%;
+    align-self: flex-end;
+  }
+
+  &.small {
+    max-height: 40vh;
+  }
+
+  &.medium {
+    max-height: 60vh;
+  }
+
+  &.large {
+    max-height: 80vh;
+  }
+}
+
+.handle {
+  width: 40px;
+  height: 4px;
+  background: #d1d5db;
+  border-radius: 2px;
+  margin: 12px auto 8px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+// 모바일 최적화
+@media (max-width: 768px) {
+  .drawer {
+    &.bottom {
+      border-radius: 12px 12px 0 0;
+    }
+
+    &.top {
+      border-radius: 0 0 12px 12px;
+    }
+
+    &.left {
+      border-radius: 0 12px 12px 0;
+    }
+
+    &.right {
+      border-radius: 12px 0 0 12px;
+    }
+  }
+
+  .handle {
+    width: 32px;
+    height: 3px;
+    margin: 8px auto 6px;
+  }
+}
+
+// 안전 영역 고려
+@supports (padding: max(0px)) {
+  .drawer.bottom {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}

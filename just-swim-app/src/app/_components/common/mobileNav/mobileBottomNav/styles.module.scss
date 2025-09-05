@@ -1,0 +1,99 @@
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &.visible {
+    transform: translateY(0);
+  }
+
+  &.hidden {
+    transform: translateY(100%);
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 8px 0;
+  max-width: 100%;
+  height: 60px;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  min-width: 60px;
+
+  &:active {
+    transform: scale(0.95);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &.active {
+    color: #3b82f6;
+
+    .icon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.icon {
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+// 모바일 최적화
+@media (max-width: 768px) {
+  .nav {
+    height: 56px;
+  }
+
+  .container {
+    height: 56px;
+    padding: 6px 0;
+  }
+
+  .navItem {
+    min-width: 50px;
+    padding: 6px 8px;
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+}
+
+// 안전 영역 고려 (iPhone X 이상)
+@supports (padding: max(0px)) {
+  .nav {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}

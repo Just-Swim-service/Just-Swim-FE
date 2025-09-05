@@ -1,0 +1,29 @@
+.container {
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+
+  &.dragging {
+    cursor: grabbing;
+  }
+
+  &.animating {
+    transition: transform 0.3s ease-out;
+  }
+}
+
+// 모바일 최적화
+@media (max-width: 768px) {
+  .container {
+    touch-action: pan-x pan-y;
+  }
+}
+
+// 터치 피드백
+.container:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}

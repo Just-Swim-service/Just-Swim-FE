@@ -1,0 +1,183 @@
+.container {
+  min-height: 100vh;
+  background: #f9fafb;
+  position: relative;
+}
+
+.header {
+  background: white;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    margin: 0 0 16px 0;
+    font-size: 24px;
+    color: #1f2937;
+  }
+}
+
+.status {
+  display: flex;
+  gap: 20px;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+  }
+}
+
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.section {
+  background: white;
+  padding: 24px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #1f2937;
+  }
+
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    color: #374151;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.navigationGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.instruction {
+  margin: 12px 0 0 0;
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.trapContainer {
+  padding: 20px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
+
+  h3 {
+    margin: 0 0 16px 0;
+    color: #374151;
+  }
+}
+
+.shortcutList {
+  p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #374151;
+
+    kbd {
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+  }
+}
+
+.announcementArea {
+  p {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #374151;
+    padding: 12px;
+    background: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-radius: 6px;
+  }
+}
+
+.modalContent {
+  p {
+    margin: 0 0 16px 0;
+    color: #374151;
+  }
+
+  ul {
+    margin: 0 0 20px 0;
+    padding-left: 20px;
+
+    li {
+      margin: 8px 0;
+      color: #6b7280;
+    }
+  }
+}
+
+.modalButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+// 모바일 최적화
+@media (max-width: 768px) {
+  .main {
+    padding: 16px;
+  }
+
+  .section {
+    padding: 20px;
+  }
+
+  .buttonGroup,
+  .navigationGroup {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .status {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modalButtons {
+    flex-direction: column;
+  }
+}
+
+// 키보드 포커스 스타일
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+// 스크린 리더 전용 텍스트
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

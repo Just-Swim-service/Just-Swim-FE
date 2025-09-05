@@ -1,0 +1,48 @@
+.monitor {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 9999;
+  min-width: 200px;
+
+  h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #00ff00;
+  }
+}
+
+.metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  color: #ccc;
+}
+
+.value {
+  color: #00ff00;
+  font-weight: bold;
+
+  &.warning {
+    color: #ffaa00;
+  }
+
+  &.error {
+    color: #ff0000;
+  }
+}
