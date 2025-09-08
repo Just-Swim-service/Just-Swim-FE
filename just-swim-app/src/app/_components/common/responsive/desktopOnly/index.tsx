@@ -31,3 +31,4 @@ export function DesktopOnly({
 
   return <div className={`${styles.desktopOnly} ${className}`}>{children}</div>;
 }
+

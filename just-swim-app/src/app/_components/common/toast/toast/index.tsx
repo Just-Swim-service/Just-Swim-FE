@@ -57,3 +57,4 @@ export function Toast({ toast, onHide }: ToastProps) {
     </div>
   );
 }
+

@@ -31,3 +31,4 @@ export function MobileOnly({
 
   return <div className={`${styles.mobileOnly} ${className}`}>{children}</div>;
 }
+

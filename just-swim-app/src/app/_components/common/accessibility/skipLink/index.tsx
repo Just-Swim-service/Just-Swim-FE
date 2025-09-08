@@ -19,3 +19,4 @@ export function SkipLink({ href, children, className = '' }: SkipLinkProps) {
     </a>
   );
 }
+
