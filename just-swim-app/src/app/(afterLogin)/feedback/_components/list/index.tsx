@@ -7,6 +7,8 @@ import { FeedbackCard } from '../feedbackCard';
 import { CustomerFeedbackCard } from '../customerFeedbackCard';
 import { getMyProfile } from '@apis';
 import { FeedbackListSkeleton } from '../skeleton';
+import { VirtualList } from '@components';
+import { useErrorHandler } from '@utils';
 
 import { IconArrowLeft, IconArrowRight } from '@assets';
 
@@ -17,14 +19,19 @@ export function List({ feedback = [] }: { feedback: FeedbackProps[] | [] }) {
   const [type, setType] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [pagination, setPagination] = useState<number>(0);
+  const { handleError } = useErrorHandler();
 
   useEffect(() => {
     const setUserType = async () => {
-      const data = await getMyProfile();
-      setType(data.data.data.userType);
+      try {
+        const data = await getMyProfile();
+        setType(data.data.data.userType);
+      } catch (error) {
+        handleError(error);
+      }
     };
     setUserType();
-  }, []);
+  }, [handleError]);
 
   const maxPage = Math.ceil(feedback.length / itemsToShow) - 1;
   const maxPagination = Math.floor(maxPage / pagesToShow);

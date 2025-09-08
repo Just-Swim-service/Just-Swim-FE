@@ -2,7 +2,12 @@ import type { Metadata } from 'next';
 import './globals.scss';
 import '@/reset.scss';
 import { Suspense } from 'react';
-import { SkeletonFallback, PWAInstallPrompt } from '@components';
+import {
+  SkeletonFallback,
+  PWAInstallPrompt,
+  ToastProvider,
+  ErrorBoundary,
+} from '@components';
 import { AppWrapper } from './appWrapper';
 import localFont from 'next/font/local';
 
@@ -57,10 +62,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" className={suitFont.variable}>
       <body>
-        <AppWrapper>
-          <Suspense fallback={<SkeletonFallback />}>{children}</Suspense>
-        </AppWrapper>
-        <PWAInstallPrompt />
+        <ErrorBoundary>
+          <ToastProvider>
+            <AppWrapper>
+              <Suspense fallback={<SkeletonFallback />}>{children}</Suspense>
+            </AppWrapper>
+            <PWAInstallPrompt />
+          </ToastProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

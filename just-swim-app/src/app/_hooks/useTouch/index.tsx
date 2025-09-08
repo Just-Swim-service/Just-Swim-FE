@@ -24,6 +24,11 @@ interface UseTouchReturn {
   touchEnd: (event: React.TouchEvent) => void;
   isDragging: boolean;
   dragDistance: TouchPosition;
+  handleTap: () => {
+    onTouchStart: (event: React.TouchEvent) => void;
+    onTouchMove: (event: React.TouchEvent) => void;
+    onTouchEnd: (event: React.TouchEvent) => void;
+  };
 }
 
 export function useTouch(options: UseTouchOptions = {}): UseTouchReturn {
@@ -145,12 +150,20 @@ export function useTouch(options: UseTouchOptions = {}): UseTouchReturn {
     [threshold, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, onTap],
   );
 
+  const handleTap = useCallback(() => {
+    return {
+      onTouchStart: touchStart,
+      onTouchMove: touchMove,
+      onTouchEnd: touchEnd,
+    };
+  }, [touchStart, touchMove, touchEnd]);
+
   return {
     touchStart,
     touchMove,
     touchEnd,
     isDragging,
     dragDistance,
+    handleTap,
   };
 }
-

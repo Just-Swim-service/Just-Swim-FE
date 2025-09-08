@@ -1,15 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import styles from './styles.module.scss';
 
-interface ButtonLoaderProps {
+interface ButtonLoaderProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   children: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
-  disabled?: boolean;
-  className?: string;
-  onClick?: () => void;
+  loadingText?: string;
 }
 
 export function ButtonLoader({
@@ -18,21 +16,21 @@ export function ButtonLoader({
   size = 'medium',
   disabled = false,
   className = '',
-  onClick,
+  loadingText,
+  ...props
 }: ButtonLoaderProps) {
   const sizeClass = styles[size];
   const isDisabled = disabled || loading;
 
   return (
     <button
+      {...props}
       className={`${styles.button} ${sizeClass} ${className}`}
-      disabled={isDisabled}
-      onClick={onClick}>
+      disabled={isDisabled}>
       {loading && <div className={styles.spinner} />}
       <span className={loading ? styles.hidden : styles.visible}>
-        {children}
+        {loading && loadingText ? loadingText : children}
       </span>
     </button>
   );
 }
-
