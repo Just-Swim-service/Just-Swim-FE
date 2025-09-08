@@ -82,22 +82,42 @@ export function useErrorHandler() {
     console.error('Error handled:', apiError);
 
     if (showNotification) {
-      showToast(userMessage, 'error', 5000);
+      showToast({
+        type: 'error',
+        title: '오류 발생',
+        message: userMessage,
+        duration: 5000,
+      });
     }
 
     return apiError;
   };
 
   const handleSuccess = (message: string) => {
-    showToast(message, 'success', 3000);
+    showToast({
+      type: 'success',
+      title: '성공',
+      message: message,
+      duration: 3000,
+    });
   };
 
   const handleWarning = (message: string) => {
-    showToast(message, 'warning', 4000);
+    showToast({
+      type: 'warning',
+      title: '주의',
+      message: message,
+      duration: 4000,
+    });
   };
 
   const handleInfo = (message: string) => {
-    showToast(message, 'info', 3000);
+    showToast({
+      type: 'info',
+      title: '알림',
+      message: message,
+      duration: 3000,
+    });
   };
 
   return {
@@ -107,4 +127,3 @@ export function useErrorHandler() {
     handleInfo,
   };
 }
-

@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { Toast } from '../toast';
-import { ToastItem } from '../toastProvider';
+import { ToastMessage } from '../toastProvider';
 import styles from './styles.module.scss';
 
 interface ToastContainerProps {
-  toasts: ToastItem[];
+  toasts: ToastMessage[];
   onHide: (id: string) => void;
 }
 
@@ -19,4 +19,3 @@ export function ToastContainer({ toasts, onHide }: ToastContainerProps) {
     </div>
   );
 }
-

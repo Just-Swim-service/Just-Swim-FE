@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ToastItem } from '../toastProvider';
+import { ToastMessage } from '../toastProvider';
 import styles from './styles.module.scss';
 
 interface ToastProps {
-  toast: ToastItem;
+  toast: ToastMessage;
   onHide: (id: string) => void;
 }
 
@@ -44,7 +44,10 @@ export function Toast({ toast, onHide }: ToastProps) {
       className={`${styles.toast} ${styles[toast.type]} ${isVisible ? styles.visible : ''} ${isLeaving ? styles.leaving : ''}`}
       onClick={handleHide}>
       <div className={styles.icon}>{getIcon()}</div>
-      <div className={styles.message}>{toast.message}</div>
+      <div className={styles.content}>
+        <div className={styles.title}>{toast.title}</div>
+        {toast.message && <div className={styles.message}>{toast.message}</div>}
+      </div>
       <button
         className={styles.closeButton}
         onClick={(e) => {
@@ -57,4 +60,3 @@ export function Toast({ toast, onHide }: ToastProps) {
     </div>
   );
 }
-
