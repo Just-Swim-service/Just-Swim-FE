@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { NotificationResponse } from '@types';
+import { NotificationResponse, NotificationStatus } from '@types';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -19,7 +19,7 @@ export function _NotificationItem({
   onMarkAsRead,
   onDelete,
 }: NotificationItemProps) {
-  const isUnread = notification.notificationStatus === 'unread';
+  const isUnread = notification.notificationStatus === NotificationStatus.Unread;
   const timeAgo = formatDistanceToNow(
     new Date(notification.notificationCreatedAt),
     {

@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import {
   NotificationList as NotificationListType,
   NotificationResponse,
+  NotificationStatus,
 } from '@types';
 import { getNotifications, markAsRead, deleteNotification } from '@apis';
 import { NotificationItem } from '../notificationItem';
-import { LoadingSpinner } from '@components/common/loading';
+import { InlineLoader } from '@components';
 
 import styled from './styles.module.scss';
 
@@ -83,7 +84,7 @@ export function _NotificationList({
           notification.notificationId === notificationId
             ? {
                 ...notification,
-                notificationStatus: 'read' as const,
+                notificationStatus: NotificationStatus.Read,
                 notificationReadAt: new Date(),
               }
             : notification,
@@ -106,7 +107,8 @@ export function _NotificationList({
       const deletedNotification = notifications.find(
         (n) => n.notificationId === notificationId,
       );
-      const wasUnread = deletedNotification?.notificationStatus === 'unread';
+      const wasUnread =
+        deletedNotification?.notificationStatus === NotificationStatus.Unread;
 
       setNotifications((prev) =>
         prev.filter(
@@ -134,8 +136,7 @@ export function _NotificationList({
   if (loading && notifications.length === 0) {
     return (
       <div className={styled.loading_container}>
-        <LoadingSpinner />
-        <p>알림을 불러오는 중...</p>
+        <InlineLoader text="알림을 불러오는 중..." />
       </div>
     );
   }
@@ -164,7 +165,7 @@ export function _NotificationList({
       {hasMore && (
         <div className={styled.load_more_container}>
           {loading ? (
-            <LoadingSpinner />
+            <InlineLoader size="small" />
           ) : (
             <button
               className={styled.load_more_button}
