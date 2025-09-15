@@ -6,7 +6,7 @@ import {
   NotificationStats,
 } from '@types';
 import { NotificationHeader, NotificationList } from '@components';
-import { HistoryBackHeader } from '@components/layout/header';
+import { HistoryBackHeader } from '@components';
 import { getNotificationStats } from '@apis';
 
 import styled from './styles.module.scss';
