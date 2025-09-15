@@ -1,23 +1,18 @@
 'use server';
 
 import api from '../api';
-import { HTTP_METHODS_TYPE } from '@types';
+import { HTTP_METHODS } from '@data';
 import { NotificationResponse } from '@types';
 
 /**
  * 알림 상세 조회
  */
-export const getNotificationDetail = async (
+export async function getNotificationDetail(
   notificationId: number,
-): Promise<NotificationResponse> => {
-  const response = await api<NotificationResponse>(
+): Promise<any> {
+  const response = await api(
     `/notification/${notificationId}`,
-    'GET' as HTTP_METHODS_TYPE,
+    HTTP_METHODS.GET,
   );
-
-  if (!response.ok) {
-    throw new Error('알림 상세 조회에 실패했습니다.');
-  }
-
   return response.data;
-};
+}

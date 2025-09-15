@@ -1,15 +1,15 @@
 'use server';
 
 import api from '../api';
-import { HTTP_METHODS_TYPE } from '@types';
+import { HTTP_METHODS } from '@data';
 import { NotificationList, NotificationFilterOptions } from '@types';
 
 /**
  * 알림 목록 조회
  */
-export const getNotifications = async (
+export async function getNotifications(
   options?: NotificationFilterOptions,
-): Promise<NotificationList> => {
+): Promise<any> {
   const params = new URLSearchParams();
 
   if (options?.page) {
@@ -28,12 +28,6 @@ export const getNotifications = async (
   const queryString = params.toString();
   const url = queryString ? `/notification?${queryString}` : '/notification';
 
-  const response = await api<NotificationList>(url, 'GET' as HTTP_METHODS_TYPE);
-
-  if (!response.ok) {
-    console.error('알림 목록 조회 실패:', response.status, response.data);
-    throw new Error(`알림 목록 조회에 실패했습니다. (${response.status})`);
-  }
-
+  const response = await api(url, HTTP_METHODS.GET);
   return response.data;
-};
+}

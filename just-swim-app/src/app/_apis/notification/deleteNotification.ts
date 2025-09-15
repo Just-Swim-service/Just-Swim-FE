@@ -1,20 +1,25 @@
 'use server';
 
-import api from '../api';
-import { HTTP_METHODS_TYPE } from '@types';
+import { Fetch } from '@utils';
 
 /**
  * 알림 삭제
  */
-export const deleteNotification = async (
-  notificationId: number,
-): Promise<void> => {
-  const response = await api<{ message: string }>(
-    `/notification/${notificationId}`,
-    'DELETE' as HTTP_METHODS_TYPE,
-  );
+export async function deleteNotification(notificationId: number): Promise<{
+  success: boolean;
+  message: string;
+}> {
+  const result = await Fetch<{
+    success: boolean;
+    message: string;
+  }>({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/notification/${notificationId}`,
+    method: 'DELETE',
+    header: {
+      json: true,
+      credential: true,
+    },
+  });
 
-  if (!response.ok) {
-    throw new Error('알림 삭제에 실패했습니다.');
-  }
-};
+  return result;
+}

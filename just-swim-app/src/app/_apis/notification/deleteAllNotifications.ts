@@ -1,18 +1,25 @@
 'use server';
 
-import api from '../api';
-import { HTTP_METHODS_TYPE } from '@types';
+import { Fetch } from '@utils';
 
 /**
  * 모든 알림 삭제
  */
-export const deleteAllNotifications = async (): Promise<void> => {
-  const response = await api<{ message: string }>(
-    '/notification',
-    'DELETE' as HTTP_METHODS_TYPE,
-  );
+export async function deleteAllNotifications(): Promise<{
+  success: boolean;
+  message: string;
+}> {
+  const result = await Fetch<{
+    success: boolean;
+    message: string;
+  }>({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/notification`,
+    method: 'DELETE',
+    header: {
+      json: true,
+      credential: true,
+    },
+  });
 
-  if (!response.ok) {
-    throw new Error('모든 알림 삭제에 실패했습니다.');
-  }
-};
+  return result;
+}

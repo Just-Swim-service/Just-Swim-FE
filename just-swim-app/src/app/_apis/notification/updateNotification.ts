@@ -1,27 +1,32 @@
 'use server';
 
-import api from '../api';
-import { HTTP_METHODS_TYPE } from '@types';
-import { UpdateNotificationRequest, NotificationResponse } from '@types';
+import { UpdateNotificationRequest } from '@types';
+import { Fetch } from '@utils';
 
 /**
  * 알림 수정
  */
-export const updateNotification = async (
+export async function updateNotification(
   notificationId: number,
   data: UpdateNotificationRequest,
-): Promise<NotificationResponse> => {
-  const response = await api<NotificationResponse>(
-    `/notification/${notificationId}`,
-    'PATCH' as HTTP_METHODS_TYPE,
-    {
-      body: JSON.stringify(data),
+): Promise<{
+  success: boolean;
+  message: string;
+  data: any;
+}> {
+  const result = await Fetch<{
+    success: boolean;
+    message: string;
+    data: any;
+  }>({
+    url: `${process.env.NEXT_PUBLIC_API_URL}/notification/${notificationId}`,
+    method: 'PATCH',
+    body: data,
+    header: {
+      json: true,
+      credential: true,
     },
-  );
+  });
 
-  if (!response.ok) {
-    throw new Error('알림 수정에 실패했습니다.');
-  }
-
-  return response.data;
-};
+  return result;
+}
