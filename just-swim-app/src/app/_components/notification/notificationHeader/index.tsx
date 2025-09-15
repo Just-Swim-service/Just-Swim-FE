@@ -70,7 +70,6 @@ export function _NotificationHeader({
     <div className={styled.header}>
       <div className={styled.header_content}>
         <div className={styled.title_section}>
-          <h1 className={styled.title}>알림</h1>
           {stats.unread > 0 && (
             <span className={styled.unread_badge}>{stats.unread}</span>
           )}

@@ -40,6 +40,7 @@ export function _NotificationList({
         initialNotifications.currentPage < initialNotifications.totalPages,
       );
     } else {
+      // 초기 데이터가 없으면 로드 시도
       loadNotifications();
     }
   }, [initialNotifications]);
@@ -70,6 +71,14 @@ export function _NotificationList({
       }
     } catch (error) {
       console.error('알림 목록 로드 실패:', error);
+      // 에러가 발생해도 빈 배열로 설정하여 페이지가 정상 렌더링되도록 함
+      if (!append) {
+        setNotifications([]);
+        setCurrentPage(1);
+        setTotalPages(0);
+        setUnreadCount(0);
+        setHasMore(false);
+      }
     } finally {
       setLoading(false);
     }
