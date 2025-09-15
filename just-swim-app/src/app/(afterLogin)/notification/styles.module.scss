@@ -1,0 +1,25 @@
+.notification_page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// 모바일 스타일
+@media (max-width: 768px) {
+  .notification_page {
+    padding: 0;
+    background-color: white;
+  }
+
+  .container {
+    gap: 0;
+  }
+}

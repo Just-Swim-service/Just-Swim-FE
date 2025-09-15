@@ -24,6 +24,12 @@
     }
   }
 
+  .header_actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
   .profile_image {
     width: 34px;
     height: 34px;

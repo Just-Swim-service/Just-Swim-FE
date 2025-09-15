@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { useUserStore } from '@store';
+import { NotificationBell } from '@components';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
@@ -32,17 +33,20 @@ export function UserIconHeader({ title }: { title: string }) {
       <div className={styled.title_wrapper}>
         <h1>{title}</h1>
       </div>
-      <Link href={`/account`}>
-        <div className={styled.profile_image}>
-          <Image
-            src={profileInfo?.profileImage || NoProfile}
-            alt={profileInfo?.name || ''}
-            width={34}
-            height={34}
-            priority
-          />
-        </div>
-      </Link>
+      <div className={styled.header_actions}>
+        <NotificationBell />
+        <Link href={`/account`}>
+          <div className={styled.profile_image}>
+            <Image
+              src={profileInfo?.profileImage || NoProfile}
+              alt={profileInfo?.name || ''}
+              width={34}
+              height={34}
+              priority
+            />
+          </div>
+        </Link>
+      </div>
     </header>
   );
 }

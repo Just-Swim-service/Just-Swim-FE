@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^7.2.0",
     "@svgr/webpack": "^8.1.0",
     "clipboard-polyfill": "^4.1.0",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.10",
     "file-saver": "^2.0.5",
     "html-to-image": "^1.11.13",

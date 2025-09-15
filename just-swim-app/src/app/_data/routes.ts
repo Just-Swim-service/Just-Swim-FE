@@ -17,10 +17,15 @@ const ACCOUNT_ROUTE = {
   deletion: '/account/deletion',
 } as const;
 
+const NOTIFICATION_ROUTE = {
+  root: '/notification',
+} as const;
+
 export const ROUTES = {
   ONBOARDING: { ...SIGNIN_ROUTE },
   SCHEDULE: { ...SCHEDULE_ROUTE },
   ACCOUNT: { ...ACCOUNT_ROUTE },
+  NOTIFICATION: { ...NOTIFICATION_ROUTE },
 } as const;
 
 export const EXTERNAL_LINKS = {

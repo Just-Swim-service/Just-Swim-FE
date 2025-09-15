@@ -8,5 +8,6 @@ export * from './typePicker';
 export * from './typeLecture';
 export * from './typeMember';
 export * from './typeProfile';
+export * from './typeNotification';
 export * from './users';
 export * from './http';
