@@ -20,8 +20,7 @@ const api = async <T>(
   const accessToken = cookieStore.get('authorization')?.value || '';
 
   const buildHeaders = (token: string): HeadersInit => ({
-    'Content-Type': 'application/json; charset=utf-8',
-    Accept: 'application/json; charset=utf-8',
+    'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options?.headers || {}),
   });
