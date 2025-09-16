@@ -1,13 +1,9 @@
 'use client';
 
 import React from 'react';
-import {
-  Notification,
-  NotificationType,
-  NotificationPriority,
-} from '../../_types/typeNotification';
-import { useNotificationStore } from '../../_store/notification';
-import { notificationApi } from '../../_apis/notification';
+import { Notification, NotificationType, NotificationPriority } from '@types';
+import { useNotificationStore } from '@store';
+import { notificationApi } from '@apis';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import styles from './NotificationItem.module.scss';

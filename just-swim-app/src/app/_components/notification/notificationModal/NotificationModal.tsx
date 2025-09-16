@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { useNotificationStore } from '../../_store/notification';
-import { notificationApi } from '../../_apis/notification';
-import NotificationItem from './NotificationItem';
+import { useNotificationStore } from '../../../_store/notification';
+import { notificationApi } from '../../../_apis/notification';
+import NotificationItem from '../notificationItem/NotificationItem';
 import styles from './NotificationModal.module.scss';
 
 const NotificationModal: React.FC = () => {

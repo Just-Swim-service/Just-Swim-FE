@@ -42,7 +42,6 @@ import IconDefaultProfile from './icon_default_profile.svg';
 import IconIndividual from './individual.svg';
 import IconGroup from './group.svg';
 import IconQRScan from './icon_qr_scan.svg';
-import IconBell from './icon_bell.svg';
 
 export {
   IconArrowRight,
@@ -89,5 +88,4 @@ export {
   IconIndividual,
   IconGroup,
   IconQRScan,
-  IconBell,
 };

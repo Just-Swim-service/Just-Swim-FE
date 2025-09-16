@@ -5,10 +5,10 @@ import Image from 'next/image';
 
 import { useUserStore } from '@store';
 import NoProfile from '@/_assets/images/no_profile.png';
-import { NotificationModal } from '@/_components/notification';
 import { useNotificationStore } from '@/_store/notification';
+import NotificationModal from '@/_components/notification/notificationModal/NotificationModal';
 import { notificationApi } from '@/_apis/notification';
-import { IconBell } from '@/_assets/svg';
+import IconBell from '@assets/icon_bell.svg';
 
 import styled from './styles.module.scss';
 import { useEffect } from 'react';

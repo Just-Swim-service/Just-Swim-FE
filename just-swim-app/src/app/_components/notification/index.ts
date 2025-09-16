@@ -1,2 +1,2 @@
-export { default as NotificationModal } from './NotificationModal';
-export { default as NotificationItem } from './NotificationItem';
+export * from './notificationModal/NotificationModal';
+export * from './notificationItem/NotificationItem';
