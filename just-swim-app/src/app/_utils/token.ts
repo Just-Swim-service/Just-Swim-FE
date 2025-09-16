@@ -4,13 +4,13 @@ import { cookies } from 'next/headers';
 import Cookies from 'js-cookie';
 
 export const setTokenInCookies = (token: string) => {
-  cookies().set('token', token);
+  cookies().set('authorization', token);
 
   return token;
 };
 
 export const getTokenInCookies = () => {
-  const token = cookies().get('token')?.value;
+  const token = cookies().get('authorization')?.value;
 
   return token || false;
 };
