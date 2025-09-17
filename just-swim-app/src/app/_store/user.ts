@@ -29,9 +29,11 @@ type UserStoreType = {
   setAddUserToken: (token: string) => void;
   setAddUserProfile: ({ token, profile }: User) => void;
   setResetUser: () => void;
-  loadProfileInfo: () => Promise<void>;
+  loadProfileInfo: (forceRefresh?: boolean) => Promise<void>;
   setProfileInfo: (profile: any) => void;
   invalidateProfile: () => void;
+  refreshProfile: () => Promise<void>;
+  updateProfileAfterEdit: (updatedData: any) => void;
 };
 
 export const useUserStore = create(
@@ -97,20 +99,28 @@ export const useUserStore = create(
           profileInfo: null,
         }));
       },
-      loadProfileInfo: async () => {
+      loadProfileInfo: async (forceRefresh = false) => {
         const currentProfile = get().profileInfo;
-        if (currentProfile) return;
+        if (currentProfile && !forceRefresh) {
+          console.log(
+            '🔔 [UserStore] 프로필 캐시 사용:',
+            currentProfile.profileImage,
+          );
+          return;
+        }
 
+        console.log('🔔 [UserStore] 프로필 새로고침 시작');
         set({ isLoading: true });
         try {
           const response = await getMyProfile();
           const profileData = response.data.data;
+          console.log('🔔 [UserStore] 새로운 프로필 데이터:', profileData);
           set({
             profileInfo: profileData,
             isLoading: false,
           });
         } catch (error) {
-          console.error('Failed to load profile info:', error);
+          console.error('🔔 [UserStore] 프로필 로드 실패:', error);
           set({ isLoading: false });
         }
       },
@@ -119,6 +129,23 @@ export const useUserStore = create(
       },
       invalidateProfile: () => {
         set({ profileInfo: null });
+      },
+      refreshProfile: async () => {
+        console.log('🔔 [UserStore] 프로필 강제 새로고침');
+        set({ profileInfo: null });
+        await get().loadProfileInfo(true);
+      },
+      updateProfileAfterEdit: (updatedData: any) => {
+        console.log('🔔 [UserStore] 프로필 수정 후 업데이트:', updatedData);
+        const currentProfile = get().profileInfo;
+        if (currentProfile) {
+          const updatedProfile = {
+            ...currentProfile,
+            ...updatedData,
+          };
+          set({ profileInfo: updatedProfile });
+          console.log('🔔 [UserStore] 프로필 업데이트 완료:', updatedProfile);
+        }
       },
     }),
     {

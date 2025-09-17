@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { HTTP_STATUS, TEXT, USER_TYPE, ROUTES } from '@data';
 import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
-import { getMyProfile, getProfilePresignedURL, patchUserEdit } from '@apis';
+import { getMyProfile, getProfilePresignedURL, editProfile } from '@apis';
 
 export default function Profile() {
   const router = useRouter();
@@ -42,7 +42,7 @@ export default function Profile() {
   }, [inputName, inputImage, inputBirth, inputPhoneNumber]);
 
   const handleNextPage = async () => {
-    const { status } = await patchUserEdit({
+    const { status } = await editProfile({
       profileImage: inputImage,
       name: inputName,
       birth: inputBirth,

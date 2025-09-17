@@ -41,10 +41,20 @@ export const getMyProfile = async (): Promise<GetUserProfileRes> => {
   return await api(`${USER_API_PATH}/myProfile`, HTTP_METHODS.GET);
 };
 
-export const patchUserEdit = async (data: Partial<PatchUserEditReq>) => {
-  return await api(`${USER_API_PATH}/edit`, HTTP_METHODS.PATCH, {
-    body: JSON.stringify(data),
-  });
+export const editProfile = async (data: Partial<PatchUserEditReq>) => {
+  console.log('🔔 [editProfile] 프로필 수정 요청:', data);
+
+  try {
+    const result = await api(`${USER_API_PATH}/edit`, HTTP_METHODS.PATCH, {
+      body: JSON.stringify(data),
+    });
+
+    console.log('🔔 [editProfile] 프로필 수정 응답:', result);
+    return result;
+  } catch (error) {
+    console.error('🔔 [editProfile] 프로필 수정 실패:', error);
+    throw error;
+  }
 };
 
 export async function revalidateMyProfile() {

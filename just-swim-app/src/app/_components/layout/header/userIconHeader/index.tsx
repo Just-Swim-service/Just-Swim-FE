@@ -28,7 +28,7 @@ export function UserIconHeader({ title }: { title: string }) {
   console.log('🔔 [Header] UserIconHeader 컴포넌트 마운트됨');
   console.log('🔔 [Header] title:', title);
 
-  const { profileInfo, loadProfileInfo } = useUserStore();
+  const { profileInfo, loadProfileInfo, refreshProfile } = useUserStore();
   const { unreadCount, setUnreadCount, setModalOpen, isModalOpen } =
     useNotificationStore();
 
@@ -38,6 +38,11 @@ export function UserIconHeader({ title }: { title: string }) {
   useEffect(() => {
     loadProfileInfo();
   }, [loadProfileInfo]);
+
+  // 프로필 이미지 변경 감지 (자동 새로고침은 제거)
+  useEffect(() => {
+    console.log('🔔 [Header] 프로필 이미지 변경됨:', profileInfo?.profileImage);
+  }, [profileInfo?.profileImage]);
 
   // 컴포넌트 마운트 시 읽지 않은 알림 개수 조회
   useEffect(() => {

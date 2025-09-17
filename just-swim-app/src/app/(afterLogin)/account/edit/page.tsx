@@ -8,10 +8,12 @@ import { IconGallery, IconInputValid } from '@assets';
 import { URLImage } from '@components';
 import { ROUTES, TEXT } from '@data';
 import { AccountContext } from '../_context/context';
-import { getMyProfile, getProfilePresignedURL } from '@apis';
+import { getMyProfile, getProfilePresignedURL, editProfile } from '@apis';
+import { useUserStore } from '@store';
 
 export default function Account() {
   const router = useRouter();
+  const { updateProfileAfterEdit } = useUserStore();
 
   const accountContextData = React.useContext(AccountContext);
   const {
@@ -81,6 +83,40 @@ export default function Account() {
     }
   };
 
+  const handleSaveProfile = async () => {
+    try {
+      console.log('🔔 [ProfileEdit] 프로필 저장 시작');
+      const updateData: any = {};
+
+      if (userName) {
+        updateData.name = userName;
+      }
+
+      if (profileImage?.fileURL) {
+        updateData.profileImage = profileImage.fileURL;
+      }
+
+      const result = await editProfile(updateData);
+
+      if (result.ok) {
+        // useUserStore 업데이트
+        updateProfileAfterEdit(updateData);
+
+        // 성공 시 편집 모드 해제
+        setEditable(false);
+        // 페이지 새로고침 또는 성공 메시지 표시
+        alert('프로필이 성공적으로 수정되었습니다.');
+        router.push('/account');
+      } else {
+        console.error('🔔 [ProfileEdit] 프로필 저장 실패');
+        alert('프로필 수정에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('🔔 [ProfileEdit] 프로필 저장 에러:', error);
+      alert('프로필 수정 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <>
       <div className={styles.account_section}>
@@ -116,6 +152,13 @@ export default function Account() {
             {editable && <IconInputValid width={18} height={18} />}
           </div>
         </div>
+        {editable && (
+          <div className={styles.save_button_wrapper}>
+            <button className={styles.save_button} onClick={handleSaveProfile}>
+              저장하기
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
