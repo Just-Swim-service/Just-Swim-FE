@@ -73,14 +73,18 @@ async function deleteNotification(notificationId: number): Promise<void> {
 
 // 읽지 않은 알림 개수 조회
 async function getUnreadCount(): Promise<{ unreadCount: number }> {
+  console.log('🔔 [FE] getUnreadCount 호출됨');
+
   try {
+    console.log('🔔 [FE] API 호출 시작: /notification/stats/unread-count');
     const response = await api<{ unreadCount: number }>(
-      '/notification/unread-count',
+      '/notification/stats/unread-count',
       'GET',
     );
+    console.log('🔔 [FE] API 응답 성공:', response);
     return response.data;
   } catch (error) {
-    console.error('읽지 않은 알림 개수 조회 실패:', error);
+    console.error('🔔 [FE] 읽지 않은 알림 개수 조회 실패:', error);
     throw error;
   }
 }
