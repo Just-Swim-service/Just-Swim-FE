@@ -5,7 +5,7 @@ import styles from './layout.module.scss';
 
 import { IconArrowLeft } from '@assets';
 import React, { useEffect, useState } from 'react';
-import { editProfile, revalidateMyProfile } from '@apis';
+import { patchUserEdit, revalidateMyProfile } from '@apis';
 import { HTTP_STATUS, ROUTES, TEXT } from '@data';
 import { ProfileEditCompleteToast } from '@components';
 import { AccountContext } from './_context/context';
@@ -42,7 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const handleEditProfile = async () => {
-    const data = await editProfile({
+    const data = await patchUserEdit({
       profileImage: profileImage.fileURL,
       name: userName,
     });
