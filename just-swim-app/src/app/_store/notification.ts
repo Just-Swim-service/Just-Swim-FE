@@ -22,15 +22,21 @@ interface NotificationState {
   ) => void;
 }
 
-export const useNotificationStore = create<NotificationState>((set, get) => ({
-  notifications: [],
-  unreadCount: 0,
-  isLoading: false,
-  isModalOpen: false,
+export const useNotificationStore = create<NotificationState>((set, get) => {
+  console.log('🔔 [NotificationStore] 스토어 초기화됨');
+  
+  return {
+    notifications: [],
+    unreadCount: 0,
+    isLoading: false,
+    isModalOpen: false,
 
   setNotifications: (notifications) => set({ notifications }),
 
-  setUnreadCount: (count) => set({ unreadCount: count }),
+  setUnreadCount: (count) => {
+    console.log('🔔 [NotificationStore] setUnreadCount 호출됨, count:', count);
+    set({ unreadCount: count });
+  },
 
   setLoading: (loading) => set({ isLoading: loading }),
 

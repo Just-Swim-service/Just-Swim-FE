@@ -26,10 +26,14 @@ export interface ProfileInfo {
 
 export function UserIconHeader({ title }: { title: string }) {
   console.log('🔔 [Header] UserIconHeader 컴포넌트 마운트됨');
+  console.log('🔔 [Header] title:', title);
 
   const { profileInfo, loadProfileInfo } = useUserStore();
   const { unreadCount, setUnreadCount, setModalOpen, isModalOpen } =
     useNotificationStore();
+
+  console.log('🔔 [Header] unreadCount:', unreadCount);
+  console.log('🔔 [Header] isModalOpen:', isModalOpen);
 
   useEffect(() => {
     loadProfileInfo();
