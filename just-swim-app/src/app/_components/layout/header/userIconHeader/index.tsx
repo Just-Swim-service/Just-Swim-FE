@@ -25,6 +25,8 @@ export interface ProfileInfo {
 }
 
 export function UserIconHeader({ title }: { title: string }) {
+  console.log('🔔 [Header] UserIconHeader 컴포넌트 마운트됨');
+
   const { profileInfo, loadProfileInfo } = useUserStore();
   const { unreadCount, setUnreadCount, setModalOpen, isModalOpen } =
     useNotificationStore();

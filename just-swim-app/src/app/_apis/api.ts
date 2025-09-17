@@ -9,7 +9,8 @@ type ApiResponse<T> = {
   data: T;
 };
 
-const base = process.env.NEXT_PUBLIC_API_URL!;
+const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+console.log('🔔 [API] base URL:', base);
 
 const api = async <T>(
   url: string,
@@ -21,6 +22,17 @@ const api = async <T>(
   const cookieStore = cookies();
   const accessToken = cookieStore.get('authorization')?.value || '';
   console.log(`🔔 [API] accessToken 존재 여부:`, !!accessToken);
+  console.log(
+    `🔔 [API] accessToken 값:`,
+    accessToken ? `${accessToken.substring(0, 20)}...` : 'null',
+  );
+
+  // 모든 쿠키 확인
+  const allCookies = cookieStore.getAll();
+  console.log(
+    `🔔 [API] 모든 쿠키:`,
+    allCookies.map((c) => ({ name: c.name, hasValue: !!c.value })),
+  );
 
   const buildHeaders = (token: string): HeadersInit => ({
     'Content-Type': 'application/json',
