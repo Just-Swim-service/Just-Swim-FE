@@ -13,14 +13,20 @@ async function getNotifications(
     const queryParams = new URLSearchParams();
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined) {
-          queryParams.append(key, value.toString());
-        }
+        if (value !== undefined) queryParams.append(key, String(value));
       });
     }
-    const url = `/notification${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-    const response = await api<NotificationListResponse>(url, 'GET');
-    return response.data;
+    const url = `/notification${queryParams.toString() ? `?${queryParams}` : ''}`;
+
+    // 서버 래퍼 타입 명시
+    const response = await api<{
+      success: boolean;
+      message?: string;
+      data: NotificationListResponse;
+    }>(url, 'GET');
+
+    // ★ 실제 페이로드 반환
+    return response.data.data;
   } catch (error) {
     console.error('알림 목록 조회 실패:', error);
     throw error;
@@ -30,11 +36,14 @@ async function getNotifications(
 // 알림 상세 조회
 async function getNotification(notificationId: number): Promise<Notification> {
   try {
-    const response = await api<Notification>(
-      `/notification/${notificationId}`,
-      'GET',
-    );
-    return response.data;
+    const response = await api<{
+      success: boolean;
+      message?: string;
+      data: Notification;
+    }>(`/notification/${notificationId}`, 'GET');
+
+    // ★ 실제 페이로드 반환
+    return response.data.data;
   } catch (error) {
     console.error('알림 상세 조회 실패:', error);
     throw error;
@@ -77,12 +86,17 @@ async function getUnreadCount(): Promise<{ unreadCount: number }> {
 
   try {
     console.log('🔔 [FE] API 호출 시작: /notification/stats/unread-count');
-    const response = await api<{ unreadCount: number }>(
-      '/notification/stats/unread-count',
-      'GET',
-    );
+
+    const response = await api<{
+      success: boolean;
+      message?: string;
+      data: { unreadCount: number };
+    }>('/notification/stats/unread-count', 'GET');
+
     console.log('🔔 [FE] API 응답 성공:', response);
-    return response.data;
+
+    // ★ 실제 페이로드 반환
+    return response.data.data;
   } catch (error) {
     console.error('🔔 [FE] 읽지 않은 알림 개수 조회 실패:', error);
     throw error;

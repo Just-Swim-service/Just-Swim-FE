@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNotificationStore } from '../../../_store/notification';
 import { notificationApi } from '../../../_apis/notification';
 import NotificationItem from '../notificationItem/NotificationItem';
@@ -18,6 +18,7 @@ const NotificationModal: React.FC = () => {
     unreadCount,
   } = useNotificationStore();
 
+  const [error, setError] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // 모달이 열릴 때 알림 목록 조회
@@ -25,6 +26,7 @@ const NotificationModal: React.FC = () => {
     if (isModalOpen) {
       fetchNotifications();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalOpen]);
 
   // 모달 외부 클릭 시 닫기
@@ -43,11 +45,16 @@ const NotificationModal: React.FC = () => {
 
   const fetchNotifications = async () => {
     setLoading(true);
+    setError(null);
     try {
       const response = await notificationApi.getNotifications({ limit: 20 });
-      setNotifications(response.notifications);
+      // 안전 접근: 언래핑이 안 되어 오더라도 방어
+      const list = (response as any)?.notifications ?? [];
+      setNotifications(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
+      setError('알림을 불러오지 못했습니다.');
+      setNotifications([]); // 실패 시 목록 초기화(선택)
     } finally {
       setLoading(false);
     }
@@ -56,9 +63,13 @@ const NotificationModal: React.FC = () => {
   const handleMarkAllAsRead = async () => {
     try {
       await notificationApi.markAllAsRead();
+      // 전역 store에 반영
       markAllAsRead();
+      // UI 동기화 위해 목록 갱신(선택)
+      fetchNotifications();
     } catch (error) {
       console.error('Failed to mark all as read:', error);
+      setError('모두 읽음 처리에 실패했습니다.');
     }
   };
 
@@ -69,27 +80,37 @@ const NotificationModal: React.FC = () => {
   if (!isModalOpen) return null;
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal} ref={modalRef}>
+    <div className={styles.overlay} role="presentation">
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-label="알림"
+        ref={modalRef}>
         <div className={styles.header}>
           <h3 className={styles.title}>알림</h3>
           <div className={styles.headerActions}>
             {unreadCount > 0 && (
               <button
                 className={styles.markAllReadButton}
-                onClick={handleMarkAllAsRead}>
+                onClick={handleMarkAllAsRead}
+                aria-label="모두 읽음 처리">
                 모두 읽음
               </button>
             )}
             <button
               className={styles.refreshButton}
               onClick={handleRefresh}
-              disabled={isLoading}>
+              disabled={isLoading}
+              aria-label="새로고침"
+              title="새로고침">
               {isLoading ? '⟳' : '↻'}
             </button>
             <button
               className={styles.closeButton}
-              onClick={() => setModalOpen(false)}>
+              onClick={() => setModalOpen(false)}
+              aria-label="닫기"
+              title="닫기">
               ✕
             </button>
           </div>
@@ -98,8 +119,12 @@ const NotificationModal: React.FC = () => {
         <div className={styles.content}>
           {isLoading ? (
             <div className={styles.loading}>
-              <div className={styles.spinner}></div>
+              <div className={styles.spinner} />
               <p>알림을 불러오는 중...</p>
+            </div>
+          ) : error ? (
+            <div className={styles.error}>
+              <p>{error}</p>
             </div>
           ) : notifications.length === 0 ? (
             <div className={styles.empty}>
