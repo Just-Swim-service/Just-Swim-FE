@@ -74,8 +74,8 @@ export function UserIconHeader({ title }: { title: string }) {
             onClick={handleNotificationClick}
             aria-label="알림">
             <IconBell
-              width={24}
-              height={24}
+              width={34}
+              height={34}
               fill="currentColor"
               className={styled.bell_icon}
             />

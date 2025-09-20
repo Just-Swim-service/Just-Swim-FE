@@ -25,7 +25,6 @@ async function getNotifications(
       data: NotificationListResponse;
     }>(url, 'GET');
 
-    // ★ 실제 페이로드 반환
     return response.data.data;
   } catch (error) {
     console.error('알림 목록 조회 실패:', error);

@@ -48,13 +48,13 @@ const NotificationModal: React.FC = () => {
     setError(null);
     try {
       const response = await notificationApi.getNotifications({ limit: 20 });
-      // 안전 접근: 언래핑이 안 되어 오더라도 방어
       const list = (response as any)?.notifications ?? [];
+      console.log('Fetched notifications:', list);
       setNotifications(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
       setError('알림을 불러오지 못했습니다.');
-      setNotifications([]); // 실패 시 목록 초기화(선택)
+      setNotifications([]);
     } finally {
       setLoading(false);
     }
