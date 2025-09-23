@@ -126,25 +126,19 @@ const NotificationModal: React.FC = () => {
             <div className={styles.error}>
               <p>{error}</p>
             </div>
-          ) : notifications.filter(
-              (notification) => notification.notificationStatus === 'unread',
-            ).length === 0 ? (
+          ) : notifications.length === 0 ? (
             <div className={styles.empty}>
               <div className={styles.emptyIcon}>🔔</div>
-              <p>새로운 알림이 없습니다</p>
+              <p>알림이 없습니다</p>
             </div>
           ) : (
             <div className={styles.notificationList}>
-              {notifications
-                .filter(
-                  (notification) => notification.notificationStatus === 'unread',
-                )
-                .map((notification) => (
-                  <NotificationItem
-                    key={notification.notificationId}
-                    notification={notification}
-                  />
-                ))}
+              {notifications.map((notification) => (
+                <NotificationItem
+                  key={notification.notificationId}
+                  notification={notification}
+                />
+              ))}
             </div>
           )}
         </div>

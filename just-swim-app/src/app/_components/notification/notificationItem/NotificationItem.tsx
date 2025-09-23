@@ -52,8 +52,6 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification }) => 
       try {
         await notificationApi.markAsRead(notification.notificationId);
         markAsRead(notification.notificationId);
-        // 읽음 처리 후 알림을 목록에서 제거
-        removeNotification(notification.notificationId);
       } catch (error) {
         console.error('Failed to mark notification as read:', error);
       }

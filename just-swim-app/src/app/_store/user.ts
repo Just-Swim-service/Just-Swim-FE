@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { Provider, UserEntity, UserType } from '@types';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { getMyProfile } from '@apis';
+import { maskSensitiveProfileInfo, safeLogProfileInfo } from '@utils';
 
 export type User = {
   token: string | boolean;
@@ -32,6 +33,7 @@ type UserStoreType = {
   loadProfileInfo: () => Promise<void>;
   setProfileInfo: (profile: any) => void;
   invalidateProfile: () => void;
+  getMaskedProfileInfo: () => any;
 };
 
 export const useUserStore = create(
@@ -116,9 +118,15 @@ export const useUserStore = create(
       },
       setProfileInfo: (profile: any) => {
         set({ profileInfo: profile });
+        // 개발자 도구에서 안전하게 로깅
+        safeLogProfileInfo(profile, '프로필 정보 업데이트');
       },
       invalidateProfile: () => {
         set({ profileInfo: null });
+      },
+      getMaskedProfileInfo: () => {
+        const profileInfo = get().profileInfo;
+        return maskSensitiveProfileInfo(profileInfo);
       },
     }),
     {
