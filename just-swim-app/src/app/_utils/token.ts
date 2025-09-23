@@ -21,9 +21,3 @@ export const removeTokenInCookies = () => {
   cookies().delete('refreshToken');
   return;
 };
-
-// 클라이언트 사이드에서 쿠키 삭제
-export const removeTokenInCookiesClient = () => {
-  Cookies.remove('authorization');
-  Cookies.remove('refreshToken');
-};
