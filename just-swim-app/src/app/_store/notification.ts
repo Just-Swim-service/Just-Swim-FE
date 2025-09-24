@@ -23,8 +23,6 @@ interface NotificationState {
 }
 
 export const useNotificationStore = create<NotificationState>((set, get) => {
-  console.log('🔔 [NotificationStore] 스토어 초기화됨');
-
   return {
     notifications: [],
     unreadCount: 0,
@@ -34,7 +32,6 @@ export const useNotificationStore = create<NotificationState>((set, get) => {
     setNotifications: (notifications) => set({ notifications }),
 
     setUnreadCount: (count) => {
-      console.log('🔔 [NotificationStore] setUnreadCount 호출됨, count:', count);
       set({ unreadCount: count });
     },
 

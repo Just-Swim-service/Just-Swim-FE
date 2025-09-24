@@ -134,11 +134,8 @@ export default function ClassView() {
 
   useEffect(() => {
     fetchJson<{ data: LectureViewProps[] }>('/lecture/schedule').then((data) => {
-      console.log('📅 [Class] API 응답 데이터:', data);
-
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      console.log('📅 [Class] 오늘 날짜:', today.toISOString());
 
       const processedLectures =
         data.data?.map((lecture) => {
@@ -150,21 +147,9 @@ export default function ClassView() {
             const lectureEndDate = new Date(parsedDateStr);
             lectureEndDate.setHours(0, 0, 0, 0);
             isPastLecture = lectureEndDate < today;
-
-            console.log(`📅 [Class] 강의 ${lecture.lectureId} (종료일 있음):`, {
-              lectureEndDate: lectureEndDate.toISOString(),
-              isPastLecture,
-              lectureTitle: lecture.lectureTitle,
-              원본날짜: lecture.lectureEndDate,
-            });
           } else {
             // lectureEndDate가 null인 경우는 진행중인 수업으로 처리
             isPastLecture = false;
-            console.log(`📅 [Class] 강의 ${lecture.lectureId} (종료일 없음):`, {
-              isPastLecture,
-              lectureTitle: lecture.lectureTitle,
-              원본날짜: lecture.lectureEndDate,
-            });
           }
 
           return {
@@ -173,7 +158,6 @@ export default function ClassView() {
           };
         }) ?? [];
 
-      console.log('📅 [Class] 처리된 강의 목록:', processedLectures);
       setLectures(processedLectures);
     });
   }, []);
@@ -193,17 +177,6 @@ export default function ClassView() {
           member.name.toLowerCase().includes(searchText.toLowerCase()),
         );
       });
-
-    console.log('📅 [Class] 진행중인 수업 필터링 결과:', {
-      전체강의수: lectures?.length || 0,
-      진행중인수업수: filtered?.length || 0,
-      검색어: searchText,
-      필터링된강의: filtered?.map((l) => ({
-        id: l.lectureId,
-        title: l.lectureTitle,
-        isPast: l.isPastLecture,
-      })),
-    });
 
     return filtered;
   }, [lectures, searchText]);

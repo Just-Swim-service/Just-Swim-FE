@@ -25,15 +25,9 @@ export interface ProfileInfo {
 }
 
 export function UserIconHeader({ title }: { title: string }) {
-  console.log('🔔 [Header] UserIconHeader 컴포넌트 마운트됨');
-  console.log('🔔 [Header] title:', title);
-
   const { profileInfo, loadProfileInfo } = useUserStore();
   const { unreadCount, setUnreadCount, setModalOpen, isModalOpen } =
     useNotificationStore();
-
-  console.log('🔔 [Header] unreadCount:', unreadCount);
-  console.log('🔔 [Header] isModalOpen:', isModalOpen);
 
   useEffect(() => {
     loadProfileInfo();
@@ -41,15 +35,10 @@ export function UserIconHeader({ title }: { title: string }) {
 
   // 컴포넌트 마운트 시 읽지 않은 알림 개수 조회
   useEffect(() => {
-    console.log('🔔 [Header] useEffect 실행 - unreadCount 조회 시작');
-
     const fetchUnreadCount = async () => {
       try {
-        console.log('🔔 [Header] notificationApi.getUnreadCount 호출');
         const response = await notificationApi.getUnreadCount();
-        console.log('🔔 [Header] unreadCount 응답:', response);
         setUnreadCount(response.unreadCount);
-        console.log('🔔 [Header] unreadCount 설정 완료:', response.unreadCount);
       } catch (error) {
         console.error('🔔 [Header] Failed to fetch unread count:', error);
       }
