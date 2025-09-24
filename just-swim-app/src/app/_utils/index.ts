@@ -12,4 +12,3 @@ export * from './token';
 export * from './server';
 export * from './fetchJson';
 export * from './video';
-export * from './client-cookie';

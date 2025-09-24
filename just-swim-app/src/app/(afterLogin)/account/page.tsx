@@ -10,8 +10,7 @@ import { useUserStore } from '@store';
 import { URLImage, LogoutModal, ProfileInfo } from '@components';
 import Link from 'next/link';
 import { getMyProfile, postUserLogout, revalidateMyProfile } from '@apis';
-import { removeTokenInCookies } from '@utils';
-import { removeClientCookies } from '@utils';
+import { removeTokenInCookies, removeTokenInCookiesClient } from '@utils';
 
 export default function Account() {
   const router = useRouter();
@@ -23,12 +22,30 @@ export default function Account() {
   }, [loadProfileInfo]);
 
   const setUserLogout = async () => {
-    await postUserLogout();
-    await revalidateMyProfile();
-    removeTokenInCookies(); // 서버 사이드 쿠키 삭제
-    removeClientCookies(); // 클라이언트 사이드 쿠키 삭제 (강화된 버전)
-    setResetUser();
-    router.replace(ROUTES.ONBOARDING.root);
+    try {
+      // 1. 백엔드 로그아웃 API 호출
+      await postUserLogout();
+
+      // 2. 프로필 캐시 무효화
+      await revalidateMyProfile();
+
+      // 3. 쿠키 삭제 (서버사이드와 클라이언트사이드 모두)
+      removeTokenInCookies(); // 서버 사이드 쿠키 삭제
+      removeTokenInCookiesClient(); // 클라이언트 사이드 쿠키 삭제
+
+      // 4. 사용자 상태 초기화
+      setResetUser();
+
+      // 5. 로그인 페이지로 리다이렉트
+      router.replace(ROUTES.ONBOARDING.root);
+    } catch (error) {
+      console.error('로그아웃 중 오류 발생:', error);
+      // 오류가 발생해도 로컬 상태는 초기화
+      removeTokenInCookies();
+      removeTokenInCookiesClient();
+      setResetUser();
+      router.replace(ROUTES.ONBOARDING.root);
+    }
   };
 
   const handleProfileEdit = () => {

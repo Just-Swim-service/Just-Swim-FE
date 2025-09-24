@@ -16,8 +16,35 @@ export const getTokenInCookies = () => {
 };
 
 export const removeTokenInCookies = () => {
-  // 서버 사이드에서 쿠키 직접 삭제 - BE와 동일한 옵션 사용
-  cookies().delete('authorization');
-  cookies().delete('refreshToken');
+  // 서버 사이드에서 쿠키 삭제 - 백엔드와 동일한 옵션 사용
+  cookies().set('authorization', '', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    domain: '.just-swim.kr',
+    path: '/',
+    expires: new Date(0),
+  });
+
+  cookies().set('refreshToken', '', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    domain: '.just-swim.kr',
+    path: '/',
+    expires: new Date(0),
+  });
+
   return;
+};
+// 클라이언트 사이드에서 쿠키 삭제
+export const removeTokenInCookiesClient = () => {
+  Cookies.remove('authorization', {
+    domain: '.just-swim.kr',
+    path: '/',
+  });
+  Cookies.remove('refreshToken', {
+    domain: '.just-swim.kr',
+    path: '/',
+  });
 };
