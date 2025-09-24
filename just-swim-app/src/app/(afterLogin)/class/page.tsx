@@ -143,17 +143,20 @@ export default function ClassView() {
           const lectureEndDate = new Date(parsedDateStr);
           lectureEndDate.setHours(0, 0, 0, 0);
 
+          const isPastLecture = lectureEndDate < today;
+
           return {
             ...lecture,
-            isPastLecture: lectureEndDate < today,
+            isPastLecture,
           };
         }) ?? [];
+
       setLectures(processedLectures);
     });
   }, []);
 
   const ongoingLectures = useMemo(() => {
-    return (
+    const filtered =
       lectures &&
       lectures.filter(
         (lecture) =>
@@ -162,8 +165,20 @@ export default function ClassView() {
             lecture.members?.some((member) =>
               member.name.toLowerCase().includes(searchText.toLowerCase()),
             )),
-      )
-    );
+      );
+
+    console.log('📅 [Class] 진행중인 수업 필터링 결과:', {
+      전체강의수: lectures?.length || 0,
+      진행중인수업수: filtered?.length || 0,
+      검색어: searchText,
+      필터링된강의: filtered?.map((l) => ({
+        id: l.lectureId,
+        title: l.lectureTitle,
+        isPast: l.isPastLecture,
+      })),
+    });
+
+    return filtered;
   }, [lectures, searchText]);
 
   const pastLectures = useMemo(() => {
