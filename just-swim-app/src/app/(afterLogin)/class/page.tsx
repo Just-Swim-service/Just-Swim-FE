@@ -142,17 +142,30 @@ export default function ClassView() {
 
       const processedLectures =
         data.data?.map((lecture) => {
-          const parsedDateStr = lecture.lectureEndDate.replace(/\./g, '-');
-          const lectureEndDate = new Date(parsedDateStr);
-          lectureEndDate.setHours(0, 0, 0, 0);
+          let isPastLecture = false;
 
-          const isPastLecture = lectureEndDate < today;
-          console.log(`📅 [Class] 강의 ${lecture.lectureId}:`, {
-            lectureEndDate: lectureEndDate.toISOString(),
-            isPastLecture,
-            lectureTitle: lecture.lectureTitle,
-            원본날짜: lecture.lectureEndDate,
-          });
+          if (lecture.lectureEndDate) {
+            // lectureEndDate가 있는 경우만 날짜 비교
+            const parsedDateStr = lecture.lectureEndDate.replace(/\./g, '-');
+            const lectureEndDate = new Date(parsedDateStr);
+            lectureEndDate.setHours(0, 0, 0, 0);
+            isPastLecture = lectureEndDate < today;
+
+            console.log(`📅 [Class] 강의 ${lecture.lectureId} (종료일 있음):`, {
+              lectureEndDate: lectureEndDate.toISOString(),
+              isPastLecture,
+              lectureTitle: lecture.lectureTitle,
+              원본날짜: lecture.lectureEndDate,
+            });
+          } else {
+            // lectureEndDate가 null인 경우는 진행중인 수업으로 처리
+            isPastLecture = false;
+            console.log(`📅 [Class] 강의 ${lecture.lectureId} (종료일 없음):`, {
+              isPastLecture,
+              lectureTitle: lecture.lectureTitle,
+              원본날짜: lecture.lectureEndDate,
+            });
+          }
 
           return {
             ...lecture,
@@ -168,14 +181,18 @@ export default function ClassView() {
   const ongoingLectures = useMemo(() => {
     const filtered =
       lectures &&
-      lectures.filter(
-        (lecture) =>
-          !lecture.isPastLecture &&
-          (searchText === '' ||
-            lecture.members?.some((member) =>
-              member.name.toLowerCase().includes(searchText.toLowerCase()),
-            )),
-      );
+      lectures.filter((lecture) => {
+        // 1. 지난 수업이 아닌지 확인
+        if (lecture.isPastLecture) return false;
+
+        // 2. 검색어가 없으면 모든 강의 표시 (members 여부와 관계없이)
+        if (searchText === '') return true;
+
+        // 3. 검색어가 있으면 members에서 검색
+        return lecture.members?.some((member) =>
+          member.name.toLowerCase().includes(searchText.toLowerCase()),
+        );
+      });
 
     console.log('📅 [Class] 진행중인 수업 필터링 결과:', {
       전체강의수: lectures?.length || 0,
