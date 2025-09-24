@@ -134,8 +134,11 @@ export default function ClassView() {
 
   useEffect(() => {
     fetchJson<{ data: LectureViewProps[] }>('/lecture/schedule').then((data) => {
+      console.log('📅 [Class] API 응답 데이터:', data);
+
       const today = new Date();
       today.setHours(0, 0, 0, 0);
+      console.log('📅 [Class] 오늘 날짜:', today.toISOString());
 
       const processedLectures =
         data.data?.map((lecture) => {
@@ -144,6 +147,12 @@ export default function ClassView() {
           lectureEndDate.setHours(0, 0, 0, 0);
 
           const isPastLecture = lectureEndDate < today;
+          console.log(`📅 [Class] 강의 ${lecture.lectureId}:`, {
+            lectureEndDate: lectureEndDate.toISOString(),
+            isPastLecture,
+            lectureTitle: lecture.lectureTitle,
+            원본날짜: lecture.lectureEndDate,
+          });
 
           return {
             ...lecture,
@@ -151,6 +160,7 @@ export default function ClassView() {
           };
         }) ?? [];
 
+      console.log('📅 [Class] 처리된 강의 목록:', processedLectures);
       setLectures(processedLectures);
     });
   }, []);
