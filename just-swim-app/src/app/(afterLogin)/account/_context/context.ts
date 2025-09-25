@@ -13,16 +13,17 @@ type ContextProps = {
     fileType?: string | undefined;
     fileURL?: string | undefined;
   };
-  // 강사 전용 필드
+  // 강사 전용 필드 (BE Instructor entity 기반)
+  instructorWorkingLocation: string;
+  instructorCareer: string;
+  instructorHistory: string;
   instructorIntroduction: string;
-  instructorExperience: string;
-  instructorSpecialties: string[];
-  instructorCertifications: string[];
-  // 고객 전용 필드
-  customerSwimmingLevel: string;
-  customerPreferredStyles: string[];
-  customerAllergies: string;
-  customerEmergencyContact: string;
+  instructorCurriculum: string;
+  instructorYoutubeLink: string;
+  instructorInstagramLink: string;
+  instructorFacebookLink: string;
+  // 고객 전용 필드 (BE Customer entity 기반)
+  customerNickname: string;
 
   setEditable: React.Dispatch<SetStateAction<boolean>>;
   setUserName: React.Dispatch<SetStateAction<string>>;
@@ -36,16 +37,17 @@ type ContextProps = {
       fileURL?: string | undefined;
     }>
   >;
-  // 강사 전용 setter
+  // 강사 전용 setter (BE Instructor entity 기반)
+  setInstructorWorkingLocation: React.Dispatch<SetStateAction<string>>;
+  setInstructorCareer: React.Dispatch<SetStateAction<string>>;
+  setInstructorHistory: React.Dispatch<SetStateAction<string>>;
   setInstructorIntroduction: React.Dispatch<SetStateAction<string>>;
-  setInstructorExperience: React.Dispatch<SetStateAction<string>>;
-  setInstructorSpecialties: React.Dispatch<SetStateAction<string[]>>;
-  setInstructorCertifications: React.Dispatch<SetStateAction<string[]>>;
-  // 고객 전용 setter
-  setCustomerSwimmingLevel: React.Dispatch<SetStateAction<string>>;
-  setCustomerPreferredStyles: React.Dispatch<SetStateAction<string[]>>;
-  setCustomerAllergies: React.Dispatch<SetStateAction<string>>;
-  setCustomerEmergencyContact: React.Dispatch<SetStateAction<string>>;
+  setInstructorCurriculum: React.Dispatch<SetStateAction<string>>;
+  setInstructorYoutubeLink: React.Dispatch<SetStateAction<string>>;
+  setInstructorInstagramLink: React.Dispatch<SetStateAction<string>>;
+  setInstructorFacebookLink: React.Dispatch<SetStateAction<string>>;
+  // 고객 전용 setter (BE Customer entity 기반)
+  setCustomerNickname: React.Dispatch<SetStateAction<string>>;
 };
 
 export const AccountContext = React.createContext<ContextProps>({
@@ -56,16 +58,17 @@ export const AccountContext = React.createContext<ContextProps>({
   userPhoneNumber: '',
   userType: 'customer' as UserType,
   profileImage: {},
-  // 강사 전용 필드
+  // 강사 전용 필드 (BE Instructor entity 기반)
+  instructorWorkingLocation: '',
+  instructorCareer: '',
+  instructorHistory: '',
   instructorIntroduction: '',
-  instructorExperience: '',
-  instructorSpecialties: [],
-  instructorCertifications: [],
-  // 고객 전용 필드
-  customerSwimmingLevel: '',
-  customerPreferredStyles: [],
-  customerAllergies: '',
-  customerEmergencyContact: '',
+  instructorCurriculum: '',
+  instructorYoutubeLink: '',
+  instructorInstagramLink: '',
+  instructorFacebookLink: '',
+  // 고객 전용 필드 (BE Customer entity 기반)
+  customerNickname: '',
 
   setEditable: () => {},
   setUserName: () => {},
@@ -73,14 +76,15 @@ export const AccountContext = React.createContext<ContextProps>({
   setUserPhoneNumber: () => {},
   setUserType: () => {},
   setProfileImage: () => {},
-  // 강사 전용 setter
+  // 강사 전용 setter (BE Instructor entity 기반)
+  setInstructorWorkingLocation: () => {},
+  setInstructorCareer: () => {},
+  setInstructorHistory: () => {},
   setInstructorIntroduction: () => {},
-  setInstructorExperience: () => {},
-  setInstructorSpecialties: () => {},
-  setInstructorCertifications: () => {},
-  // 고객 전용 setter
-  setCustomerSwimmingLevel: () => {},
-  setCustomerPreferredStyles: () => {},
-  setCustomerAllergies: () => {},
-  setCustomerEmergencyContact: () => {},
+  setInstructorCurriculum: () => {},
+  setInstructorYoutubeLink: () => {},
+  setInstructorInstagramLink: () => {},
+  setInstructorFacebookLink: () => {},
+  // 고객 전용 setter (BE Customer entity 기반)
+  setCustomerNickname: () => {},
 });

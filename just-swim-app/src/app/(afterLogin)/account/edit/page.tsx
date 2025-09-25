@@ -21,16 +21,17 @@ export default function Account() {
     userPhoneNumber,
     userType,
     profileImage,
-    // 강사 전용 필드
+    // 강사 전용 필드 (BE Instructor entity 기반)
+    instructorWorkingLocation,
+    instructorCareer,
+    instructorHistory,
     instructorIntroduction,
-    instructorExperience,
-    instructorSpecialties,
-    instructorCertifications,
-    // 고객 전용 필드
-    customerSwimmingLevel,
-    customerPreferredStyles,
-    customerAllergies,
-    customerEmergencyContact,
+    instructorCurriculum,
+    instructorYoutubeLink,
+    instructorInstagramLink,
+    instructorFacebookLink,
+    // 고객 전용 필드 (BE Customer entity 기반)
+    customerNickname,
 
     setEditable,
     setUserName,
@@ -38,16 +39,17 @@ export default function Account() {
     setUserPhoneNumber,
     setUserType,
     setProfileImage,
-    // 강사 전용 setter
+    // 강사 전용 setter (BE Instructor entity 기반)
+    setInstructorWorkingLocation,
+    setInstructorCareer,
+    setInstructorHistory,
     setInstructorIntroduction,
-    setInstructorExperience,
-    setInstructorSpecialties,
-    setInstructorCertifications,
-    // 고객 전용 setter
-    setCustomerSwimmingLevel,
-    setCustomerPreferredStyles,
-    setCustomerAllergies,
-    setCustomerEmergencyContact,
+    setInstructorCurriculum,
+    setInstructorYoutubeLink,
+    setInstructorInstagramLink,
+    setInstructorFacebookLink,
+    // 고객 전용 setter (BE Customer entity 기반)
+    setCustomerNickname,
   } = accountContextData;
 
   useEffect(() => {
@@ -64,15 +66,16 @@ export default function Account() {
         // 사용자 타입별 초기 데이터 설정 (실제 API에서 받아올 데이터)
         // TODO: 실제 API에서 받아온 데이터로 초기화
         if (profile.userType === 'instructor') {
+          setInstructorWorkingLocation('');
+          setInstructorCareer('');
+          setInstructorHistory('');
           setInstructorIntroduction('');
-          setInstructorExperience('');
-          setInstructorSpecialties([]);
-          setInstructorCertifications([]);
+          setInstructorCurriculum('');
+          setInstructorYoutubeLink('');
+          setInstructorInstagramLink('');
+          setInstructorFacebookLink('');
         } else if (profile.userType === 'customer') {
-          setCustomerSwimmingLevel('');
-          setCustomerPreferredStyles([]);
-          setCustomerAllergies('');
-          setCustomerEmergencyContact('');
+          setCustomerNickname('');
         }
       } catch (error) {
         router.push(ROUTES.ONBOARDING.signin);
@@ -217,10 +220,44 @@ export default function Account() {
           </div>
         </div>
 
-        {/* 사용자 타입별 추가 필드 */}
+        {/* 사용자 타입별 추가 필드 (BE entity 기반) */}
         {userType === 'instructor' && (
           <>
-            <div className={styles.introduction_input_wrapper}>
+            <div className={styles.working_location_wrapper}>
+              <p className={styles.working_location_title}>근무지</p>
+              <div className={styles.input_wrapper}>
+                <input
+                  type="text"
+                  value={instructorWorkingLocation}
+                  onChange={(e) => {
+                    setInstructorWorkingLocation(e.target.value);
+                    handleSetEditableTrue();
+                  }}
+                  placeholder="예) 서울시 강남구"
+                  className={styles.working_location_input}
+                />
+                {editable && <IconInputValid width={18} height={18} />}
+              </div>
+            </div>
+
+            <div className={styles.career_wrapper}>
+              <p className={styles.career_title}>경력</p>
+              <div className={styles.input_wrapper}>
+                <input
+                  type="text"
+                  value={instructorCareer}
+                  onChange={(e) => {
+                    setInstructorCareer(e.target.value);
+                    handleSetEditableTrue();
+                  }}
+                  placeholder="예) 10년 경력"
+                  className={styles.career_input}
+                />
+                {editable && <IconInputValid width={18} height={18} />}
+              </div>
+            </div>
+
+            <div className={styles.introduction_wrapper}>
               <p className={styles.introduction_title}>강사 소개</p>
               <div className={styles.input_wrapper}>
                 <textarea
@@ -236,59 +273,23 @@ export default function Account() {
                 {editable && <IconInputValid width={18} height={18} />}
               </div>
             </div>
-
-            <div className={styles.experience_input_wrapper}>
-              <p className={styles.experience_title}>경력 (년수)</p>
-              <div className={styles.input_wrapper}>
-                <input
-                  type="text"
-                  value={instructorExperience}
-                  onChange={(e) => {
-                    setInstructorExperience(e.target.value);
-                    handleSetEditableTrue();
-                  }}
-                  placeholder="예) 5년"
-                  className={styles.experience_input}
-                />
-                {editable && <IconInputValid width={18} height={18} />}
-              </div>
-            </div>
           </>
         )}
 
         {userType === 'customer' && (
           <>
-            <div className={styles.swimming_level_wrapper}>
-              <p className={styles.swimming_level_title}>수영 실력 레벨</p>
+            <div className={styles.nickname_wrapper}>
+              <p className={styles.nickname_title}>닉네임</p>
               <div className={styles.input_wrapper}>
-                <select
-                  value={customerSwimmingLevel}
+                <input
+                  type="text"
+                  value={customerNickname}
                   onChange={(e) => {
-                    setCustomerSwimmingLevel(e.target.value);
+                    setCustomerNickname(e.target.value);
                     handleSetEditableTrue();
                   }}
-                  className={styles.swimming_level_select}>
-                  <option value="">선택해주세요</option>
-                  <option value="beginner">초급</option>
-                  <option value="intermediate">중급</option>
-                  <option value="advanced">고급</option>
-                </select>
-                {editable && <IconInputValid width={18} height={18} />}
-              </div>
-            </div>
-
-            <div className={styles.allergies_input_wrapper}>
-              <p className={styles.allergies_title}>알레르기/주의사항</p>
-              <div className={styles.input_wrapper}>
-                <textarea
-                  value={customerAllergies}
-                  onChange={(e) => {
-                    setCustomerAllergies(e.target.value);
-                    handleSetEditableTrue();
-                  }}
-                  placeholder="알레르기나 특별한 주의사항이 있다면 적어주세요"
-                  className={styles.allergies_textarea}
-                  rows={2}
+                  placeholder="사용할 닉네임을 입력해주세요"
+                  className={styles.nickname_input}
                 />
                 {editable && <IconInputValid width={18} height={18} />}
               </div>

@@ -31,25 +31,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     fileURL?: string | undefined;
   }>({ fileName: undefined, fileType: undefined, fileURL: undefined });
 
-  // 강사 전용 상태
+  // 강사 전용 상태 (BE Instructor entity 기반)
+  const [instructorWorkingLocation, setInstructorWorkingLocation] =
+    useState<string>('');
+  const [instructorCareer, setInstructorCareer] = useState<string>('');
+  const [instructorHistory, setInstructorHistory] = useState<string>('');
   const [instructorIntroduction, setInstructorIntroduction] =
     useState<string>('');
-  const [instructorExperience, setInstructorExperience] = useState<string>('');
-  const [instructorSpecialties, setInstructorSpecialties] = useState<string[]>(
-    [],
-  );
-  const [instructorCertifications, setInstructorCertifications] = useState<
-    string[]
-  >([]);
-
-  // 고객 전용 상태
-  const [customerSwimmingLevel, setCustomerSwimmingLevel] = useState<string>('');
-  const [customerPreferredStyles, setCustomerPreferredStyles] = useState<
-    string[]
-  >([]);
-  const [customerAllergies, setCustomerAllergies] = useState<string>('');
-  const [customerEmergencyContact, setCustomerEmergencyContact] =
+  const [instructorCurriculum, setInstructorCurriculum] = useState<string>('');
+  const [instructorYoutubeLink, setInstructorYoutubeLink] = useState<string>('');
+  const [instructorInstagramLink, setInstructorInstagramLink] =
     useState<string>('');
+  const [instructorFacebookLink, setInstructorFacebookLink] =
+    useState<string>('');
+
+  // 고객 전용 상태 (BE Customer entity 기반)
+  const [customerNickname, setCustomerNickname] = useState<string>('');
 
   useEffect(() => {
     const getToken = async () => {
@@ -73,11 +70,36 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
 
     try {
-      const data = await patchUserEdit({
+      // 기본 사용자 정보
+      const userData = {
         profileImage: profileImage.fileURL,
         name: userName,
         birth: userBirth,
         phoneNumber: userPhoneNumber,
+      };
+
+      // 사용자 타입별 추가 정보
+      let additionalData = {};
+      if (userType === 'instructor') {
+        additionalData = {
+          instructorWorkingLocation: instructorWorkingLocation || null,
+          instructorCareer: instructorCareer || null,
+          instructorHistory: instructorHistory || null,
+          instructorIntroduction: instructorIntroduction || null,
+          instructorCurriculum: instructorCurriculum || null,
+          instructorYoutubeLink: instructorYoutubeLink || null,
+          instructorInstagramLink: instructorInstagramLink || null,
+          instructorFacebookLink: instructorFacebookLink || null,
+        };
+      } else if (userType === 'customer') {
+        additionalData = {
+          customerNickname: customerNickname || null,
+        };
+      }
+
+      const data = await patchUserEdit({
+        ...userData,
+        ...additionalData,
       });
 
       if (data.status === HTTP_STATUS.OK) {
@@ -154,16 +176,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             fileType: undefined,
             fileURL: undefined,
           },
-          // 강사 전용 필드
+          // 강사 전용 필드 (BE Instructor entity 기반)
+          instructorWorkingLocation: instructorWorkingLocation,
+          instructorCareer: instructorCareer,
+          instructorHistory: instructorHistory,
           instructorIntroduction: instructorIntroduction,
-          instructorExperience: instructorExperience,
-          instructorSpecialties: instructorSpecialties,
-          instructorCertifications: instructorCertifications,
-          // 고객 전용 필드
-          customerSwimmingLevel: customerSwimmingLevel,
-          customerPreferredStyles: customerPreferredStyles,
-          customerAllergies: customerAllergies,
-          customerEmergencyContact: customerEmergencyContact,
+          instructorCurriculum: instructorCurriculum,
+          instructorYoutubeLink: instructorYoutubeLink,
+          instructorInstagramLink: instructorInstagramLink,
+          instructorFacebookLink: instructorFacebookLink,
+          // 고객 전용 필드 (BE Customer entity 기반)
+          customerNickname: customerNickname,
 
           setEditable: setEditable,
           setUserName: setUserName,
@@ -171,16 +194,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           setUserPhoneNumber: setUserPhoneNumber,
           setUserType: setUserType as any,
           setProfileImage: setProfileImage,
-          // 강사 전용 setter
+          // 강사 전용 setter (BE Instructor entity 기반)
+          setInstructorWorkingLocation: setInstructorWorkingLocation,
+          setInstructorCareer: setInstructorCareer,
+          setInstructorHistory: setInstructorHistory,
           setInstructorIntroduction: setInstructorIntroduction,
-          setInstructorExperience: setInstructorExperience,
-          setInstructorSpecialties: setInstructorSpecialties,
-          setInstructorCertifications: setInstructorCertifications,
-          // 고객 전용 setter
-          setCustomerSwimmingLevel: setCustomerSwimmingLevel,
-          setCustomerPreferredStyles: setCustomerPreferredStyles,
-          setCustomerAllergies: setCustomerAllergies,
-          setCustomerEmergencyContact: setCustomerEmergencyContact,
+          setInstructorCurriculum: setInstructorCurriculum,
+          setInstructorYoutubeLink: setInstructorYoutubeLink,
+          setInstructorInstagramLink: setInstructorInstagramLink,
+          setInstructorFacebookLink: setInstructorFacebookLink,
+          // 고객 전용 setter (BE Customer entity 기반)
+          setCustomerNickname: setCustomerNickname,
         }}>
         {children}
         {show && <ProfileEditCompleteToast unshowToast={unshowToast} />}

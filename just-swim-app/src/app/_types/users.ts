@@ -43,6 +43,17 @@ export interface PatchUserEditReq {
   name: string;
   birth: string;
   phoneNumber: string;
+  // Instructor 관련 필드
+  instructorWorkingLocation?: string | null;
+  instructorCareer?: string | null;
+  instructorHistory?: string | null;
+  instructorIntroduction?: string | null;
+  instructorCurriculum?: string | null;
+  instructorYoutubeLink?: string | null;
+  instructorInstagramLink?: string | null;
+  instructorFacebookLink?: string | null;
+  // Customer 관련 필드
+  customerNickname?: string | null;
 }
 
 export interface DeleteUserReq {
