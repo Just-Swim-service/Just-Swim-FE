@@ -20,7 +20,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | boolean>();
   const [show, setShow] = useState<boolean>(false);
   const [editable, setEditable] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
+  const [userBirth, setUserBirth] = useState<string>('');
+  const [userPhoneNumber, setUserPhoneNumber] = useState<string>('');
   const [profileImage, setProfileImage] = useState<{
     fileName?: string | undefined;
     fileType?: string | undefined;
@@ -44,31 +47,44 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const handleEditProfile = async () => {
-    const data = await patchUserEdit({
-      profileImage: profileImage.fileURL,
-      name: userName,
-    });
-    if (data.status === HTTP_STATUS.OK) {
-      await revalidateMyProfile();
+    if (isLoading) return; // 중복 클릭 방지
 
-      // 서버에서 최신 프로필 정보를 가져와서 스토어 업데이트
-      try {
-        const latestProfile = await getMyProfile();
-        const profileData = latestProfile.data.data;
+    setIsLoading(true);
 
-        // 로컬 스토리지의 user-store 업데이트
-        setProfileInfo(profileData);
+    try {
+      const data = await patchUserEdit({
+        profileImage: profileImage.fileURL,
+        name: userName,
+        birth: userBirth,
+        phoneNumber: userPhoneNumber,
+      });
 
-        setEditable(false);
-        showToast();
-        router.replace(ROUTES.ACCOUNT.root);
-      } catch (error) {
-        console.error('프로필 정보 업데이트 실패:', error);
-        // 에러가 발생해도 기본 동작은 수행
-        setEditable(false);
-        showToast();
-        router.replace(ROUTES.ACCOUNT.root);
+      if (data.status === HTTP_STATUS.OK) {
+        await revalidateMyProfile();
+
+        // 서버에서 최신 프로필 정보를 가져와서 스토어 업데이트
+        try {
+          const latestProfile = await getMyProfile();
+          const profileData = latestProfile.data.data;
+
+          // 로컬 스토리지의 user-store 업데이트
+          setProfileInfo(profileData);
+
+          setEditable(false);
+          showToast();
+          router.replace(ROUTES.ACCOUNT.root);
+        } catch (error) {
+          console.error('프로필 정보 업데이트 실패:', error);
+          // 에러가 발생해도 기본 동작은 수행
+          setEditable(false);
+          showToast();
+          router.replace(ROUTES.ACCOUNT.root);
+        }
       }
+    } catch (error) {
+      console.error('프로필 수정 중 오류 발생:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,10 +107,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </p>
           </div>
           {param === ROUTES.ACCOUNT.edit ? (
-            <div
-              className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled}`}>
-              <div onClick={handleEditProfile}>{TEXT.COMMON.done}</div>
-            </div>
+            <button
+              className={`${styles.edit_link} ${editable ? styles.abled : styles.disabled} ${isLoading ? styles.loading : ''}`}
+              onClick={handleEditProfile}
+              disabled={!editable || isLoading}>
+              {isLoading ? '저장 중...' : TEXT.COMMON.done}
+            </button>
           ) : null}
           {param === '/account/deletion' ? (
             <div
@@ -107,6 +125,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           userToken: token ?? false,
           editable: editable,
           userName: userName,
+          userBirth: userBirth,
+          userPhoneNumber: userPhoneNumber,
           profileImage: profileImage ?? {
             fileName: undefined,
             fileType: undefined,
@@ -114,6 +134,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           },
           setEditable: setEditable,
           setUserName: setUserName,
+          setUserBirth: setUserBirth,
+          setUserPhoneNumber: setUserPhoneNumber,
           setProfileImage: setProfileImage,
         }}>
         {children}

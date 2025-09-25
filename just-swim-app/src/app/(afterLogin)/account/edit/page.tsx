@@ -17,9 +17,13 @@ export default function Account() {
   const {
     editable,
     userName,
+    userBirth,
+    userPhoneNumber,
     profileImage,
     setEditable,
     setUserName,
+    setUserBirth,
+    setUserPhoneNumber,
     setProfileImage,
   } = accountContextData;
 
@@ -29,6 +33,8 @@ export default function Account() {
         const data = await getMyProfile();
         const profile = data.data.data;
         setUserName(profile.name);
+        setUserBirth(profile.birth || '');
+        setUserPhoneNumber(profile.phoneNumber || '');
         setProfileImage({ fileURL: profile.profileImage });
       } catch (error) {
         router.push(ROUTES.ONBOARDING.signin);
@@ -75,6 +81,36 @@ export default function Account() {
     handleSetEditableTrue();
   };
 
+  const handleUserBirth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, ''); // 숫자만 남김
+
+    if (value.length > 8) value = value.slice(0, 8);
+
+    if (value.length >= 7) {
+      value = `${value.slice(0, 4)}.${value.slice(4, 6)}.${value.slice(6)}`;
+    } else if (value.length >= 5) {
+      value = `${value.slice(0, 4)}.${value.slice(4)}`;
+    }
+
+    setUserBirth(value);
+    handleSetEditableTrue();
+  };
+
+  const handleUserPhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value.length > 11) value = value.slice(0, 11);
+
+    if (value.length >= 8) {
+      value = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7)}`;
+    } else if (value.length >= 4) {
+      value = `${value.slice(0, 3)}-${value.slice(3)}`;
+    }
+
+    setUserPhoneNumber(value);
+    handleSetEditableTrue();
+  };
+
   const handleSetEditableTrue = () => {
     if (!editable) {
       setEditable(true);
@@ -112,6 +148,32 @@ export default function Account() {
               value={userName}
               onChange={handleUserName}
               className={styles.name_input}
+            />
+            {editable && <IconInputValid width={18} height={18} />}
+          </div>
+        </div>
+        <div className={styles.birth_input_wrapper}>
+          <p className={styles.birth_title}>생년월일</p>
+          <div className={styles.input_wrapper}>
+            <input
+              type="text"
+              value={userBirth}
+              onChange={handleUserBirth}
+              placeholder="생년월일 ex) 1995.09.13"
+              className={styles.birth_input}
+            />
+            {editable && <IconInputValid width={18} height={18} />}
+          </div>
+        </div>
+        <div className={styles.phone_input_wrapper}>
+          <p className={styles.phone_title}>전화번호</p>
+          <div className={styles.input_wrapper}>
+            <input
+              type="tel"
+              value={userPhoneNumber}
+              onChange={handleUserPhoneNumber}
+              placeholder="전화번호 ex) 010-1234-5678"
+              className={styles.phone_input}
             />
             {editable && <IconInputValid width={18} height={18} />}
           </div>
