@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 22px 16px;
+  padding: 22px 16px 40px 16px; // 하단 패딩 추가
 
   .account_image_wrapper {
     position: relative;
@@ -110,7 +110,7 @@
         @include Title3-M;
 
         width: 100%;
-        min-height: 80px;
+        min-height: 100px; // 80px에서 100px로 증가
 
         padding: 15px 16px;
 
