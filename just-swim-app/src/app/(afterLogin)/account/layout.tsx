@@ -24,11 +24,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [userName, setUserName] = useState<string>('');
   const [userBirth, setUserBirth] = useState<string>('');
   const [userPhoneNumber, setUserPhoneNumber] = useState<string>('');
+  const [userType, setUserType] = useState<string>('');
   const [profileImage, setProfileImage] = useState<{
     fileName?: string | undefined;
     fileType?: string | undefined;
     fileURL?: string | undefined;
   }>({ fileName: undefined, fileType: undefined, fileURL: undefined });
+
+  // 강사 전용 상태
+  const [instructorIntroduction, setInstructorIntroduction] =
+    useState<string>('');
+  const [instructorExperience, setInstructorExperience] = useState<string>('');
+  const [instructorSpecialties, setInstructorSpecialties] = useState<string[]>(
+    [],
+  );
+  const [instructorCertifications, setInstructorCertifications] = useState<
+    string[]
+  >([]);
+
+  // 고객 전용 상태
+  const [customerSwimmingLevel, setCustomerSwimmingLevel] = useState<string>('');
+  const [customerPreferredStyles, setCustomerPreferredStyles] = useState<
+    string[]
+  >([]);
+  const [customerAllergies, setCustomerAllergies] = useState<string>('');
+  const [customerEmergencyContact, setCustomerEmergencyContact] =
+    useState<string>('');
 
   useEffect(() => {
     const getToken = async () => {
@@ -127,16 +148,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           userName: userName,
           userBirth: userBirth,
           userPhoneNumber: userPhoneNumber,
+          userType: userType as any,
           profileImage: profileImage ?? {
             fileName: undefined,
             fileType: undefined,
             fileURL: undefined,
           },
+          // 강사 전용 필드
+          instructorIntroduction: instructorIntroduction,
+          instructorExperience: instructorExperience,
+          instructorSpecialties: instructorSpecialties,
+          instructorCertifications: instructorCertifications,
+          // 고객 전용 필드
+          customerSwimmingLevel: customerSwimmingLevel,
+          customerPreferredStyles: customerPreferredStyles,
+          customerAllergies: customerAllergies,
+          customerEmergencyContact: customerEmergencyContact,
+
           setEditable: setEditable,
           setUserName: setUserName,
           setUserBirth: setUserBirth,
           setUserPhoneNumber: setUserPhoneNumber,
+          setUserType: setUserType as any,
           setProfileImage: setProfileImage,
+          // 강사 전용 setter
+          setInstructorIntroduction: setInstructorIntroduction,
+          setInstructorExperience: setInstructorExperience,
+          setInstructorSpecialties: setInstructorSpecialties,
+          setInstructorCertifications: setInstructorCertifications,
+          // 고객 전용 setter
+          setCustomerSwimmingLevel: setCustomerSwimmingLevel,
+          setCustomerPreferredStyles: setCustomerPreferredStyles,
+          setCustomerAllergies: setCustomerAllergies,
+          setCustomerEmergencyContact: setCustomerEmergencyContact,
         }}>
         {children}
         {show && <ProfileEditCompleteToast unshowToast={unshowToast} />}
