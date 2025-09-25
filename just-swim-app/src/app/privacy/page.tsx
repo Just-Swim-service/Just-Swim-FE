@@ -1,11 +1,23 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
 
 export default function PrivacyPolicyPage() {
+  const router = useRouter();
+
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <main className={styles.container}>
-      <h1>개인정보처리방침</h1>
+      <div className={styles.header}>
+        <button className={styles.backButton} onClick={handleGoBack}>
+          ← 뒤로가기
+        </button>
+        <h1>개인정보처리방침</h1>
+      </div>
 
       <p>
         <strong>시행일자:</strong> 2025-05-30
