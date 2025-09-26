@@ -15,6 +15,20 @@ export interface UserEntity {
   userCreatedAt: string;
   userUpdatedAt: string;
   userDeletedAt: string;
+  // 관계 데이터
+  instructor?: Array<{
+    workingLocation?: string;
+    career?: string;
+    history?: string;
+    introduction?: string;
+    curriculum?: string;
+    youtubeLink?: string;
+    instagramLink?: string;
+    facebookLink?: string;
+  }>;
+  customer?: Array<{
+    customerNickname?: string;
+  }>;
 }
 
 export interface PostUserLoginReq

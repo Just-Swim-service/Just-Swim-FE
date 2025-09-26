@@ -63,19 +63,28 @@ export default function Account() {
         setUserType(profile.userType);
         setProfileImage({ fileURL: profile.profileImage });
 
-        // 사용자 타입별 초기 데이터 설정 (실제 API에서 받아올 데이터)
-        // TODO: 실제 API에서 받아온 데이터로 초기화
-        if (profile.userType === 'instructor') {
-          setInstructorWorkingLocation('');
-          setInstructorCareer('');
-          setInstructorHistory('');
-          setInstructorIntroduction('');
-          setInstructorCurriculum('');
-          setInstructorYoutubeLink('');
-          setInstructorInstagramLink('');
-          setInstructorFacebookLink('');
-        } else if (profile.userType === 'customer') {
-          setCustomerNickname('');
+        // 사용자 타입별 초기 데이터 설정 (실제 API에서 받아온 데이터)
+        if (
+          profile.userType === 'instructor' &&
+          profile.instructor &&
+          profile.instructor.length > 0
+        ) {
+          const instructorData = profile.instructor[0];
+          setInstructorWorkingLocation(instructorData.workingLocation || '');
+          setInstructorCareer(instructorData.career || '');
+          setInstructorHistory(instructorData.history || '');
+          setInstructorIntroduction(instructorData.introduction || '');
+          setInstructorCurriculum(instructorData.curriculum || '');
+          setInstructorYoutubeLink(instructorData.youtubeLink || '');
+          setInstructorInstagramLink(instructorData.instagramLink || '');
+          setInstructorFacebookLink(instructorData.facebookLink || '');
+        } else if (
+          profile.userType === 'customer' &&
+          profile.customer &&
+          profile.customer.length > 0
+        ) {
+          const customerData = profile.customer[0];
+          setCustomerNickname(customerData.customerNickname || '');
         }
       } catch (error) {
         router.push(ROUTES.ONBOARDING.signin);
