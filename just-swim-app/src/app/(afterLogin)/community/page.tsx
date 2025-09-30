@@ -71,6 +71,19 @@ export default function CommunityPage() {
             <Spinner />
             <p>게시글을 불러오는 중...</p>
           </div>
+        ) : posts.length === 0 ? (
+          <div className={styled.emptyContainer}>
+            <div className={styled.emptyIcon}>🏊‍♂️</div>
+            <h3 className={styled.emptyTitle}>아직 게시글이 없어요</h3>
+            <p className={styled.emptyDescription}>
+              첫 번째 운동 기록을 공유해보세요!
+              <br />
+              동료들과 함께 성장해나가요.
+            </p>
+            <button className={styled.emptyButton} onClick={handleCreatePost}>
+              첫 게시글 작성하기
+            </button>
+          </div>
         ) : (
           <>
             <div className={styled.postsList}>

@@ -1,0 +1,281 @@
+@import '@/globals.scss';
+
+.container {
+  padding-bottom: calc(78px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: $--gray-50;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 78px - env(safe-area-inset-bottom));
+}
+
+.formContent {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.inputGroup {
+  margin-bottom: 24px;
+}
+
+.label {
+  @include Title4-SB;
+  display: block;
+  color: $--gray-800;
+  margin-bottom: 8px;
+}
+
+.required {
+  color: $--Cancel;
+}
+
+.input {
+  @include Body2-R;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid $--gray-300;
+  border-radius: 6px;
+  background-color: $--White;
+  color: $--gray-900;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $--Primary-blue;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  &::placeholder {
+    color: $--gray-500;
+  }
+
+  &.error {
+    border-color: $--Cancel;
+  }
+}
+
+.textarea {
+  @include Body2-R;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid $--gray-300;
+  border-radius: 6px;
+  background-color: $--White;
+  color: $--gray-900;
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $--Primary-blue;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  &::placeholder {
+    color: $--gray-500;
+  }
+
+  &.error {
+    border-color: $--Cancel;
+  }
+}
+
+.textareaFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.charCount {
+  @include Body4-R;
+  color: $--gray-500;
+}
+
+.errorMessage {
+  @include Body4-R;
+  color: $--Cancel;
+  margin-top: 4px;
+  display: block;
+}
+
+.workoutSection {
+  background-color: $--White;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid $--gray-200;
+}
+
+.sectionTitle {
+  @include Title4-SB;
+  color: $--gray-800;
+  margin: 0 0 8px 0;
+}
+
+.sectionDescription {
+  @include Body3-R;
+  color: $--gray-600;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.workoutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.workoutInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.workoutLabel {
+  @include Body3-R;
+  color: $--gray-700;
+  margin-bottom: 8px;
+}
+
+.inputWithUnit {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.workoutField {
+  @include Body2-R;
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 40px;
+  border: 1px solid $--gray-300;
+  border-radius: 6px;
+  background-color: $--White;
+  color: $--gray-900;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $--Primary-blue;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  &::placeholder {
+    color: $--gray-500;
+  }
+
+  &.error {
+    border-color: $--Cancel;
+  }
+}
+
+.unit {
+  @include Body3-R;
+  position: absolute;
+  right: 12px;
+  color: $--gray-600;
+  pointer-events: none;
+}
+
+.select {
+  @include Body2-R;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid $--gray-300;
+  border-radius: 6px;
+  background-color: $--White;
+  color: $--gray-900;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $--Primary-blue;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  &.error {
+    border-color: $--Cancel;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background-color: $--White;
+  border-top: 1px solid $--gray-200;
+}
+
+.cancelButton {
+  @include Title4-SB;
+  flex: 1;
+  padding: 14px 24px;
+  border: 1px solid $--gray-300;
+  border-radius: 6px;
+  background-color: $--White;
+  color: $--gray-700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $--gray-50;
+    border-color: $--gray-400;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.submitButton {
+  @include Title4-SB;
+  flex: 2;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 6px;
+  background-color: $--Primary-blue;
+  color: $--White;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $--Primary-blue;
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    background-color: $--gray-400;
+    cursor: not-allowed;
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 480px) {
+  .formContent {
+    padding: 12px;
+  }
+
+  .workoutSection {
+    padding: 16px;
+  }
+
+  .buttonGroup {
+    padding: 12px;
+  }
+
+  .workoutGrid {
+    grid-template-columns: 1fr;
+  }
+}
