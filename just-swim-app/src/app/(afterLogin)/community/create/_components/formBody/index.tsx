@@ -107,6 +107,9 @@ export function FormBody() {
             </div>
           </div>
 
+          {/* 구분선 */}
+          <div className={styled.divider} />
+
           {/* 운동 데이터 입력 */}
           <div className={styled.workoutSection}>
             <h3 className={styled.sectionTitle}>운동 정보 (선택사항)</h3>

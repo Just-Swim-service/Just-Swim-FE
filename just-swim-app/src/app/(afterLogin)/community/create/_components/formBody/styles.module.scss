@@ -4,7 +4,7 @@
   padding-bottom: calc(78px + env(safe-area-inset-bottom));
   box-sizing: border-box;
   min-height: 100vh;
-  background-color: $--gray-50;
+  background-color: $--White;
 }
 
 .form {
@@ -15,7 +15,7 @@
 
 .formContent {
   flex: 1;
-  padding: 16px;
+  padding: 24px 16px;
   overflow-y: auto;
 }
 
@@ -111,6 +111,13 @@
   padding: 20px;
   margin-bottom: 24px;
   border: 1px solid $--gray-200;
+}
+
+.divider {
+  width: 100%;
+  height: 8px;
+  background-color: $--gray-50;
+  margin: 0;
 }
 
 .sectionTitle {
@@ -212,9 +219,12 @@
 .buttonGroup {
   display: flex;
   gap: 12px;
-  padding: 16px;
+  padding: 20px 16px;
   background-color: $--White;
   border-top: 1px solid $--gray-200;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 .cancelButton {
@@ -264,7 +274,7 @@
 // 반응형 디자인
 @media (max-width: 480px) {
   .formContent {
-    padding: 12px;
+    padding: 20px 12px;
   }
 
   .workoutSection {
@@ -272,7 +282,7 @@
   }
 
   .buttonGroup {
-    padding: 12px;
+    padding: 16px 12px;
   }
 
   .workoutGrid {
