@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { BottomNav, UserIconHeader } from '@components';
+import { BottomNav, HistoryBackHeader } from '@components';
 import { createCommunity } from '@apis';
 import { useErrorHandler } from '@utils';
 import { communitySchema, type CommunityFormData } from './schema';
@@ -65,7 +65,7 @@ export function FormBody() {
 
   return (
     <div className={styled.container}>
-      <UserIconHeader title="게시글 작성" />
+      <HistoryBackHeader title="게시글 작성" />
 
       <form onSubmit={handleSubmit(onSubmit)} className={styled.form}>
         <div className={styled.formContent}>
