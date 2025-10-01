@@ -10,6 +10,7 @@ import { InlineLoader, Spinner } from '@components';
 import { getCommunities, type CommunityPost } from '@apis';
 
 import styled from './styles.module.scss';
+import Link from 'next/link';
 
 export default function CommunityPage() {
   const router = useRouter();
@@ -117,14 +118,9 @@ export default function CommunityPage() {
         )}
       </div>
 
-      <div className={styled.fab}>
-        <button
-          className={styled.fabButton}
-          onClick={handleCreatePost}
-          aria-label="게시글 작성">
-          <IconAdd width={24} height={24} />
-        </button>
-      </div>
+      <Link href="/community/create" className={styled.link}>
+        <IconAdd />
+      </Link>
 
       <BottomNav />
     </div>
