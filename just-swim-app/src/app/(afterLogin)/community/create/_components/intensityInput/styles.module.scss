@@ -1,0 +1,113 @@
+@import '@/globals.scss';
+
+.input_wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.intensity_input {
+  @include Title5-M;
+  width: 100%;
+  height: 51px;
+  padding: 15px 16px;
+  padding-right: 40px;
+  background-color: $--gray-50;
+  outline: 2px solid $--gray-100;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  &:focus {
+    outline: 2px solid $--Primary-blue;
+  }
+}
+
+.selected_value {
+  color: $--gray-900;
+}
+
+.placeholder {
+  color: $--gray-500;
+}
+
+.arrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: $--gray-600;
+  transition: transform 0.2s ease;
+}
+
+.arrow_down {
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.arrow_up {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.valid_wrapper {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 16px;
+  z-index: 1;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: $--White;
+  border: 1px solid $--gray-200;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.option {
+  @include Title5-M;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: $--gray-900;
+
+  &:hover {
+    background-color: $--gray-50;
+  }
+
+  &.selected {
+    background-color: $--Primary-blue;
+    color: $--White;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $--gray-100;
+  }
+}
+
+.invalid {
+  outline: 2px solid $--Cancel;
+}
+
+.error_message {
+  position: absolute;
+  left: 2px;
+  bottom: -22px;
+
+  & > p {
+    @include Body4-R;
+    color: $--Cancel;
+  }
+}

@@ -67,7 +67,6 @@
   outline: 2px solid $--gray-100;
   border-radius: 6px;
   border: none;
-  position: relative;
 
   &::placeholder {
     color: $--gray-500;
@@ -86,23 +85,7 @@
   transform: translateY(-50%);
   color: $--gray-600;
   pointer-events: none;
-  margin-top: -25px; // fieldset_title 높이만큼 조정
-}
-
-.workout_select {
-  @include Title5-M;
-  width: 100%;
-  height: 51px;
-  padding: 15px 16px;
-  background-color: $--gray-50;
-  outline: 2px solid $--gray-100;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-
-  &:focus {
-    outline: 2px solid $--Primary-blue;
-  }
+  z-index: 1;
 }
 
 .error_container {

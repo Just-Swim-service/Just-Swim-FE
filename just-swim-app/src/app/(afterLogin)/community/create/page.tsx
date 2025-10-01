@@ -1,11 +1,5 @@
-import { BottomNav } from '@components';
-import { FormBody } from './_components/formBody';
+import { FormBody } from '../create/_components';
 
 export default function CreateCommunityPage() {
-  return (
-    <>
-      <FormBody />
-      <BottomNav />
-    </>
-  );
+  return <FormBody />;
 }

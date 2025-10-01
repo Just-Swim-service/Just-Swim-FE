@@ -4,10 +4,11 @@ import { HTMLAttributes, MouseEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { FormButton, HistoryBackHeader, TextInput, TextArea } from '@components';
+import { FormButton, HistoryBackHeader, TextInput } from '@components';
 import { createCommunity } from '@apis';
 import { useErrorHandler } from '@utils';
 import { communitySchema, type CommunityFormData } from './schema';
+import { IntensityInput } from '../intensityInput';
 
 import styled from './styles.module.scss';
 
@@ -124,14 +125,14 @@ export function FormBody() {
                   name="내용"
                   required={true}
                   onClick={clearContentError}>
-                  <TextArea
+                  <TextInput
                     {...register('content')}
                     placeholder="운동 기록이나 경험을 공유해주세요"
-                    // @ts-ignore
-                    errors={[
-                      errors.content?.message || serverErrors.content,
-                    ].filter(Boolean)}
-                    height={120}
+                    valid={!errors.content && !serverErrors.content}
+                    errorMessage={
+                      errors.content?.message || serverErrors.content
+                    }
+                    maxLength={1000}
                   />
                 </InputWrapper>
               </div>
@@ -160,14 +161,10 @@ export function FormBody() {
                   <span className={styled.input_unit}>m</span>
                 </InputWrapper>
                 <InputWrapper name="운동 강도 (선택사항)">
-                  <select
+                  <IntensityInput
                     {...register('workoutIntensity')}
-                    className={styled.workout_select}>
-                    <option value="">선택해주세요</option>
-                    <option value="낮음">낮음</option>
-                    <option value="보통">보통</option>
-                    <option value="높음">높음</option>
-                  </select>
+                    placeholder="선택해주세요"
+                  />
                 </InputWrapper>
               </div>
             </div>
