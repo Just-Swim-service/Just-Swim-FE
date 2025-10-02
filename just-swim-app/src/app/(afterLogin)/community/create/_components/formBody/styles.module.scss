@@ -37,6 +37,25 @@
   margin-top: auto;
 }
 
+.submit_button {
+  @include Title3-SB;
+  width: 100%;
+  height: 72px;
+  color: white;
+  background-color: $--Primary-blue;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:disabled {
+    background-color: $--gray-300;
+    cursor: not-allowed;
+  }
+}
+
 .fieldset {
   position: relative;
 }
@@ -78,6 +97,7 @@
 }
 
 .input_unit {
+  margin-top: 15px;
   @include Body3-R;
   position: absolute;
   right: 16px;

@@ -116,3 +116,5 @@ function _IntensityInput(
  * @param {import('react').InputHTMLAttributes<HTMLInputElement>} attributes input에서 사용 가능한 모든 attributes
  */
 export const IntensityInput = forwardRef(_IntensityInput);
+
+

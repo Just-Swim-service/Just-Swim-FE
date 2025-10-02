@@ -4,7 +4,7 @@ import { HTMLAttributes, MouseEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { FormButton, HistoryBackHeader, TextInput } from '@components';
+import { HistoryBackHeader, TextInput } from '@components';
 import { createCommunity } from '@apis';
 import { useErrorHandler } from '@utils';
 import { communitySchema, type CommunityFormData } from './schema';
@@ -52,6 +52,8 @@ export function FormBody() {
 
   const onSubmit = handleSubmit(async (data: CommunityFormData) => {
     try {
+      console.log('Form data:', data); // 디버깅용
+
       // 운동 데이터 구성
       const workoutData: any = {};
       if (data.workoutTime) workoutData.workoutTime = `${data.workoutTime}분`;
@@ -60,18 +62,23 @@ export function FormBody() {
       if (data.workoutIntensity)
         workoutData.workoutIntensity = data.workoutIntensity;
 
-      const response = await createCommunity({
+      const requestData = {
         title: data.title,
         content: data.content,
         workoutData:
           Object.keys(workoutData).length > 0 ? workoutData : undefined,
-      });
+      };
 
-      if (response) {
-        // 성공 시 리다이렉트는 action에서 처리
-        window.location.href = '/community';
-      }
+      console.log('Request data:', requestData); // 디버깅용
+
+      const response = await createCommunity(requestData);
+      console.log('API response:', response); // 디버깅용
+
+      // 성공 시 리다이렉트
+      console.log('Community created successfully:', response);
+      window.location.href = '/community';
     } catch (error) {
+      console.error('Create community error:', error); // 디버깅용
       handleError(error);
       setServerErrors({
         title: '',
@@ -80,10 +87,6 @@ export function FormBody() {
       });
     }
   });
-
-  const onValid = async () => {
-    await onSubmit();
-  };
 
   const clearTitleError = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -106,7 +109,7 @@ export function FormBody() {
       <HistoryBackHeader title="게시글 작성" />
       <main>
         <section className={styled.container}>
-          <form action={onValid} className={styled.form}>
+          <form onSubmit={onSubmit} className={styled.form}>
             <div className={styled.form_body}>
               <div className={styled.upper_container}>
                 <InputWrapper
@@ -169,10 +172,14 @@ export function FormBody() {
               </div>
             </div>
             <div className={styled.button_container}>
-              <FormButton
-                text="게시하기"
-                active={isValid && !serverErrors.title && !serverErrors.content}
-              />
+              <button
+                type="submit"
+                disabled={
+                  !isValid || !!serverErrors.title || !!serverErrors.content
+                }
+                className={styled.submit_button}>
+                게시하기
+              </button>
             </div>
           </form>
           {(serverErrors.title ||
