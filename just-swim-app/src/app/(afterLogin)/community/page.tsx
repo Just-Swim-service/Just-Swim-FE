@@ -16,28 +16,10 @@ export default function CommunityPage() {
   console.log('=== CommunityPage 컴포넌트가 실행됨! ==='); // 디버깅용
 
   const router = useRouter();
-  // 테스트용 하드코딩된 데이터
-  const [posts, setPosts] = useState<CommunityPost[]>([
-    {
-      communityId: 1,
-      title: '테스트 게시글',
-      content: '테스트 내용입니다',
-      workoutData: null,
-      viewCount: 0,
-      likeCount: 0,
-      commentCount: 0,
-      user: {
-        userId: 1,
-        name: '테스트 사용자',
-        profileImage: 'https://via.placeholder.com/50',
-      },
-      communityCreatedAt: '2025-01-01T00:00:00.000Z',
-      communityUpdatedAt: '2025-01-01T00:00:00.000Z',
-    },
-  ]);
-  const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState<CommunityPost[]>([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   console.log('CommunityPage posts:', posts); // 디버깅용
 
@@ -67,10 +49,10 @@ export default function CommunityPage() {
     }
   };
 
-  // useEffect(() => {
-  //   console.log('=== useEffect 실행됨! fetchPosts 호출 ==='); // 디버깅용
-  //   fetchPosts();
-  // }, []);
+  useEffect(() => {
+    console.log('=== useEffect 실행됨! fetchPosts 호출 ==='); // 디버깅용
+    fetchPosts();
+  }, []);
 
   const handleCreatePost = () => {
     router.push('/community/create');

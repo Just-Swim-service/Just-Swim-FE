@@ -70,12 +70,34 @@ export const getCommunities = async (
 
   try {
     console.log('=== api 호출 전 ==='); // 디버깅용
-    const response = await api<PaginatedResponse<CommunityPost>>(
+    const response = await api<any>(
       `/community?page=${page}&limit=${limit}`,
       HTTP_METHODS.GET,
     );
     console.log('=== api 응답 받음 ===', response); // 디버깅용
-    return response.data;
+
+    // 데이터 변환: 문자열을 숫자로 변환
+    const transformedCommunities = response.data.communities.map(
+      (community: any) => ({
+        ...community,
+        communityId: parseInt(community.communityId),
+        viewCount: parseInt(community.viewCount),
+        likeCount: parseInt(community.likeCount),
+        commentCount: parseInt(community.commentCount),
+        user: {
+          ...community.user,
+          userId: parseInt(community.user.userId),
+          name: community.user.name,
+        },
+      }),
+    );
+
+    console.log('=== 변환된 데이터 ===', transformedCommunities); // 디버깅용
+
+    return {
+      communities: transformedCommunities,
+      pagination: response.data.pagination,
+    };
   } catch (error) {
     console.error('=== getCommunities 에러 ===', error); // 디버깅용
     throw error;
