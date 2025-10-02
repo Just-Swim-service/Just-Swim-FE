@@ -76,7 +76,7 @@ export function FormBody() {
 
       // 성공 시 리다이렉트
       console.log('Community created successfully:', response);
-      window.location.href = '/community';
+      // window.location.href = '/community';
     } catch (error) {
       console.error('Create community error:', error); // 디버깅용
       handleError(error);
