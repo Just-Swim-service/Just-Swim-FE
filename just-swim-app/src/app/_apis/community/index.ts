@@ -71,6 +71,9 @@ export const getCommunities = async (
     HTTP_METHODS.GET,
   );
 
+  console.log('getCommunities API response:', response); // 디버깅용
+  console.log('communities data:', response.data.communities); // 디버깅용
+
   // 데이터 변환: 문자열을 숫자로 변환
   const transformedCommunities = response.data.communities.map(
     (community: any) => ({
@@ -86,6 +89,8 @@ export const getCommunities = async (
       },
     }),
   );
+
+  console.log('transformed communities:', transformedCommunities); // 디버깅용
 
   return {
     communities: transformedCommunities,
