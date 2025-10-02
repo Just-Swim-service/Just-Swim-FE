@@ -19,21 +19,15 @@ export default function CommunityPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  console.log('posts state:', posts); // 디버깅용
-  console.log('posts length:', posts.length); // 디버깅용
+  console.log('CommunityPage posts:', posts); // 디버깅용
 
   const fetchPosts = async (pageNum: number = 1) => {
     try {
       setLoading(true);
       const response = await getCommunities(pageNum, 10);
 
-      console.log('fetchPosts response:', response); // 디버깅용
-      console.log('response.communities:', response.communities); // 디버깅용
-      console.log('response.communities length:', response.communities.length); // 디버깅용
-
       if (pageNum === 1) {
         setPosts(response.communities);
-        console.log('setPosts called with:', response.communities); // 디버깅용
       } else {
         setPosts((prev) => [...prev, ...response.communities]);
       }
