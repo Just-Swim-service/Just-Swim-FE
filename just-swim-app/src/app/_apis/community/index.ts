@@ -75,9 +75,14 @@ export const getCommunities = async (
       HTTP_METHODS.GET,
     );
     console.log('=== api 응답 받음 ===', response); // 디버깅용
+    console.log('=== response.data ===', response.data); // 디버깅용
+    console.log('=== response.data.data ===', response.data.data); // 디버깅용
+
+    // 실제 데이터는 response.data.data에 있음
+    const actualData = response.data.data;
 
     // 데이터 변환: 문자열을 숫자로 변환
-    const transformedCommunities = response.data.communities.map(
+    const transformedCommunities = actualData.communities.map(
       (community: any) => ({
         ...community,
         communityId: parseInt(community.communityId),
@@ -96,7 +101,7 @@ export const getCommunities = async (
 
     return {
       communities: transformedCommunities,
-      pagination: response.data.pagination,
+      pagination: actualData.pagination,
     };
   } catch (error) {
     console.error('=== getCommunities 에러 ===', error); // 디버깅용
