@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 export function AppWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isSchedule = pathname.startsWith('/schedule');
-  const isCommunityCreate = pathname.startsWith('/community/create');
-  const shouldApplyAppLayout = !isSchedule && !isCommunityCreate;
+  const isCommunity = pathname.startsWith('/community');
+  const shouldApplyAppLayout = !isSchedule && !isCommunity;
 
   return (
     <div className={shouldApplyAppLayout ? 'app_layout' : ''}>

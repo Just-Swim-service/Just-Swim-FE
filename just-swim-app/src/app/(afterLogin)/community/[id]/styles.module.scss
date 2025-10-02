@@ -1,0 +1,142 @@
+@import '@/globals.scss';
+
+.container {
+  min-height: 100vh;
+  background-color: $--gray-50;
+}
+
+.content {
+  padding: 16px;
+}
+
+.post {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profileImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: $--gray-200;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.userName {
+  @include Title4-SB;
+  color: $--gray-900;
+}
+
+.createdAt {
+  @include Body5-R;
+  color: $--gray-500;
+}
+
+.body {
+  margin-bottom: 20px;
+}
+
+.title {
+  @include Title2-SB;
+  color: $--gray-900;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.content {
+  @include Body3-R;
+  color: $--gray-700;
+  line-height: 1.6;
+  white-space: pre-wrap;
+
+  p {
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.workoutInfo {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: $--gray-50;
+  border-radius: 8px;
+
+  h3 {
+    @include Title5-SB;
+    color: $--gray-900;
+    margin-bottom: 12px;
+  }
+}
+
+.workoutTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  @include Body5-R;
+  padding: 6px 12px;
+  background-color: $--Primary-blue;
+  color: white;
+  border-radius: 16px;
+}
+
+.footer {
+  border-top: 1px solid $--gray-200;
+  padding-top: 16px;
+}
+
+.stats {
+  display: flex;
+  gap: 24px;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  @include Body4-R;
+  color: $--gray-600;
+}
+
+.statIcon {
+  font-size: 16px;
+}
+
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  @include Body3-R;
+  color: $--gray-600;
+}

@@ -111,11 +111,36 @@ export const getCommunities = async (
 
 // 게시글 상세 조회
 export const getCommunityById = async (id: number): Promise<CommunityPost> => {
-  const response = await api<CommunityPost>(
-    `/community/${id}`,
-    HTTP_METHODS.GET,
-  );
-  return response.data;
+  console.log('=== getCommunityById 함수 시작! ===', id); // 디버깅용
+
+  try {
+    console.log('=== api 호출 전 ==='); // 디버깅용
+    const response = await api<any>(`/community/${id}`, HTTP_METHODS.GET);
+    console.log('=== api 응답 받음 ===', response); // 디버깅용
+
+    // 실제 데이터는 response.data.data에 있음
+    const actualData = response.data.data;
+
+    // 데이터 변환: 문자열을 숫자로 변환
+    const transformedPost = {
+      ...actualData,
+      communityId: parseInt(actualData.communityId),
+      viewCount: parseInt(actualData.viewCount),
+      likeCount: parseInt(actualData.likeCount),
+      commentCount: parseInt(actualData.commentCount),
+      user: {
+        ...actualData.user,
+        userId: parseInt(actualData.user.userId),
+        name: actualData.user.name,
+      },
+    };
+
+    console.log('=== 변환된 게시글 ===', transformedPost); // 디버깅용
+    return transformedPost;
+  } catch (error) {
+    console.error('=== getCommunityById 에러 ===', error); // 디버깅용
+    throw error;
+  }
 };
 
 // 게시글 작성

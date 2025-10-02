@@ -12,7 +12,6 @@ interface CommunityCardProps {
 }
 
 export function CommunityCard({ post, onClick }: CommunityCardProps) {
-  console.log('CommunityCard post:', post); // 디버깅용
   const formatDate = (dateString: string) => {
     return formatDistanceToNow(new Date(dateString), {
       addSuffix: true,
