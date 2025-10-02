@@ -66,11 +66,20 @@ export const getCommunities = async (
   page: number = 1,
   limit: number = 10,
 ): Promise<PaginatedResponse<CommunityPost>> => {
-  const response = await api<PaginatedResponse<CommunityPost>>(
-    `/community?page=${page}&limit=${limit}`,
-    HTTP_METHODS.GET,
-  );
-  return response.data;
+  console.log('=== getCommunities 함수 시작! ===', page, limit); // 디버깅용
+
+  try {
+    console.log('=== api 호출 전 ==='); // 디버깅용
+    const response = await api<PaginatedResponse<CommunityPost>>(
+      `/community?page=${page}&limit=${limit}`,
+      HTTP_METHODS.GET,
+    );
+    console.log('=== api 응답 받음 ===', response); // 디버깅용
+    return response.data;
+  } catch (error) {
+    console.error('=== getCommunities 에러 ===', error); // 디버깅용
+    throw error;
+  }
 };
 
 // 게시글 상세 조회

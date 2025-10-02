@@ -13,6 +13,8 @@ import styled from './styles.module.scss';
 import Link from 'next/link';
 
 export default function CommunityPage() {
+  console.log('=== CommunityPage 컴포넌트가 실행됨! ==='); // 디버깅용
+
   const router = useRouter();
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,9 +24,12 @@ export default function CommunityPage() {
   console.log('CommunityPage posts:', posts); // 디버깅용
 
   const fetchPosts = async (pageNum: number = 1) => {
+    console.log('=== fetchPosts 함수 시작! ===', pageNum); // 디버깅용
     try {
       setLoading(true);
+      console.log('=== getCommunities 호출 전 ==='); // 디버깅용
       const response = await getCommunities(pageNum, 10);
+      console.log('=== getCommunities 응답 받음 ===', response); // 디버깅용
 
       if (pageNum === 1) {
         setPosts(response.communities);
@@ -45,6 +50,7 @@ export default function CommunityPage() {
   };
 
   useEffect(() => {
+    console.log('=== useEffect 실행됨! fetchPosts 호출 ==='); // 디버깅용
     fetchPosts();
   }, []);
 
