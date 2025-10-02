@@ -52,8 +52,6 @@ export function FormBody() {
 
   const onSubmit = handleSubmit(async (data: CommunityFormData) => {
     try {
-      console.log('Form data:', data); // 디버깅용
-
       // 운동 데이터 구성
       const workoutData: any = {};
       if (data.workoutTime) workoutData.workoutTime = `${data.workoutTime}분`;
@@ -69,16 +67,10 @@ export function FormBody() {
           Object.keys(workoutData).length > 0 ? workoutData : undefined,
       };
 
-      console.log('Request data:', requestData); // 디버깅용
+      await createCommunity(requestData);
 
-      const response = await createCommunity(requestData);
-      console.log('API response:', response); // 디버깅용
-
-      // 성공 시 리다이렉트
-      console.log('Community created successfully:', response);
-      // window.location.href = '/community';
+      window.location.href = '/community';
     } catch (error) {
-      console.error('Create community error:', error); // 디버깅용
       handleError(error);
       setServerErrors({
         title: '',

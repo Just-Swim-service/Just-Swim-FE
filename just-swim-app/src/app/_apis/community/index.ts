@@ -11,7 +11,7 @@ export interface CommunityPost {
   commentCount: number;
   user: {
     userId: number;
-    userName: string;
+    name: string; // userName -> name으로 변경
     profileImage?: string;
   };
   communityCreatedAt: string;
@@ -66,11 +66,31 @@ export const getCommunities = async (
   page: number = 1,
   limit: number = 10,
 ): Promise<PaginatedResponse<CommunityPost>> => {
-  const response = await api<PaginatedResponse<CommunityPost>>(
+  const response = await api<any>(
     `/community?page=${page}&limit=${limit}`,
     HTTP_METHODS.GET,
   );
-  return response.data;
+
+  // 데이터 변환: 문자열을 숫자로 변환
+  const transformedCommunities = response.data.communities.map(
+    (community: any) => ({
+      ...community,
+      communityId: parseInt(community.communityId),
+      viewCount: parseInt(community.viewCount),
+      likeCount: parseInt(community.likeCount),
+      commentCount: parseInt(community.commentCount),
+      user: {
+        ...community.user,
+        userId: parseInt(community.user.userId),
+        name: community.user.name,
+      },
+    }),
+  );
+
+  return {
+    communities: transformedCommunities,
+    pagination: response.data.pagination,
+  };
 };
 
 // 게시글 상세 조회

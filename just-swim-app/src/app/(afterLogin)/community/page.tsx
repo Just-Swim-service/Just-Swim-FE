@@ -24,6 +24,9 @@ export default function CommunityPage() {
       setLoading(true);
       const response = await getCommunities(pageNum, 10);
 
+      console.log('fetchPosts response:', response); // 디버깅용
+      console.log('response.communities:', response.communities); // 디버깅용
+
       if (pageNum === 1) {
         setPosts(response.communities);
       } else {

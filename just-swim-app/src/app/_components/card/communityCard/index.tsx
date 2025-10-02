@@ -31,14 +31,14 @@ export function CommunityCard({ post, onClick }: CommunityCardProps) {
           <div className={styled.profileImage}>
             <img
               src={post.user.profileImage || '/assets/no_profile.png'}
-              alt={post.user.userName}
+              alt={post.user.name}
               onError={(e) => {
                 e.currentTarget.src = '/assets/no_profile.png';
               }}
             />
           </div>
           <div className={styled.userDetails}>
-            <span className={styled.userName}>{post.user.userName}</span>
+            <span className={styled.userName}>{post.user.name}</span>
             <span className={styled.createdAt}>
               {formatDate(post.communityCreatedAt)}
             </span>
