@@ -252,7 +252,7 @@ export default function CommunityDetailPage() {
           {isAuthor && (
             <div className={styled.kebab_menu_container}>
               <button className={styled.kebab_button} onClick={handleKebabClick}>
-                <IconKebabMenu width={20} height={20} fill="#666" />
+                <IconKebabMenu width={16} height={16} fill="#666" />
               </button>
 
               {showDropdown && (

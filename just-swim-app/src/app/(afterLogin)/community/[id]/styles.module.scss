@@ -3,6 +3,8 @@
 .container {
   min-height: 100vh;
   background-color: $--gray-50;
+  padding-bottom: calc(78px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
 }
 
 .detail_container {
@@ -151,9 +153,9 @@
 
 .community_stats {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 32px;
-  padding: 12px 0;
+  padding-left: 10px;
   margin-bottom: 20px;
 
   .stat_item {
@@ -386,6 +388,15 @@
   background-color: white;
   cursor: pointer;
   transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+
+  // SVG 아이콘 정렬 개선
+  svg {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
 
   &:hover {
     background-color: $--gray-50;
