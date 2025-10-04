@@ -13,8 +13,14 @@ import {
   type CommunityPost,
 } from '@apis';
 import { getMyProfile } from '@apis';
-import { IconKebabMenu, IconTrashcan, IconSetting } from '@assets';
+import {
+  IconKebabMenu,
+  IconTrashcan,
+  IconSetting,
+  IconArrowDown,
+} from '@assets';
 import { DeleteConfirmModalProps } from '@types';
+import { useUserStore } from '@store';
 
 import styled from './styles.module.scss';
 
@@ -75,6 +81,7 @@ const ConfirmModal = ({
 export default function CommunityDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { profileInfo } = useUserStore();
   const [post, setPost] = useState<CommunityPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -189,8 +196,42 @@ export default function CommunityDetailPage() {
       <div className={styled.detail_container}>
         {/* 게시글 날짜 정보 */}
         <div className={styled.community_date}>
-          <span className={styled.icon}>📅</span>
-          {formatDate(post.communityCreatedAt)}
+          <div className={styled.date_info}>
+            <span className={styled.icon}>📅</span>
+            {formatDate(post.communityCreatedAt)}
+          </div>
+
+          {/* 케밥 메뉴 (작성자만 표시) */}
+          {isAuthor && (
+            <div className={styled.kebab_menu_container}>
+              <button className={styled.kebab_button} onClick={handleKebabClick}>
+                <IconKebabMenu width={20} height={20} fill="#666" />
+              </button>
+
+              {showDropdown && (
+                <>
+                  <div
+                    className={styled.dropdown_overlay}
+                    onClick={handleOutsideClick}
+                  />
+                  <div className={styled.dropdown_menu}>
+                    <button
+                      className={styled.dropdown_item}
+                      onClick={handleEdit}>
+                      <IconSetting width={16} height={16} fill="#666" />
+                      수정
+                    </button>
+                    <button
+                      className={styled.dropdown_item}
+                      onClick={handleDeleteClick}>
+                      <IconTrashcan width={16} height={16} fill="#FF4D4D" />
+                      삭제
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {/* 게시글 제목 */}
@@ -267,35 +308,84 @@ export default function CommunityDetailPage() {
           </div>
         </div>
 
-        {/* 케밥 메뉴 (작성자만 표시) */}
-        {isAuthor && (
-          <div className={styled.kebab_menu_container}>
-            <button className={styled.kebab_button} onClick={handleKebabClick}>
-              <IconKebabMenu width={24} height={24} fill="#666" />
-            </button>
-
-            {showDropdown && (
-              <>
-                <div
-                  className={styled.dropdown_overlay}
-                  onClick={handleOutsideClick}
-                />
-                <div className={styled.dropdown_menu}>
-                  <button className={styled.dropdown_item} onClick={handleEdit}>
-                    <IconSetting width={16} height={16} fill="#666" />
-                    수정
-                  </button>
-                  <button
-                    className={styled.dropdown_item}
-                    onClick={handleDeleteClick}>
-                    <IconTrashcan width={16} height={16} fill="#FF4D4D" />
-                    삭제
-                  </button>
-                </div>
-              </>
-            )}
+        {/* 댓글 섹션 */}
+        <div className={styled.comments_section}>
+          <div className={styled.comments_header}>
+            <h3 className={styled.comments_title}>댓글 {post.commentCount}개</h3>
+            <div className={styled.sort_dropdown}>
+              <span>정렬 기준</span>
+              <IconArrowDown width={16} height={16} fill="#666" />
+            </div>
           </div>
-        )}
+
+          {/* 댓글 입력 */}
+          <div className={styled.comment_input}>
+            <div className={styled.user_avatar}>
+              <img
+                src={profileInfo?.profileImage || '/assets/no_profile.png'}
+                alt="프로필"
+                onError={(e) => {
+                  e.currentTarget.src = '/assets/no_profile.png';
+                }}
+              />
+            </div>
+            <div className={styled.input_container}>
+              <input
+                type="text"
+                placeholder="댓글 추가..."
+                className={styled.comment_text_input}
+              />
+            </div>
+          </div>
+
+          {/* 댓글 목록 */}
+          <div className={styled.comments_list}>
+            {/* 임시 댓글 데이터 - 실제로는 API에서 가져와야 함 */}
+            <div className={styled.comment_item}>
+              <div className={styled.comment_avatar}>
+                <img src="/assets/no_profile.png" alt="사용자" />
+              </div>
+              <div className={styled.comment_content}>
+                <div className={styled.comment_header}>
+                  <span className={styled.comment_author}>사용자1</span>
+                  <span className={styled.comment_time}>1일 전</span>
+                </div>
+                <div className={styled.comment_text}>
+                  정말 유익한 정보네요! 감사합니다.
+                </div>
+                <div className={styled.comment_actions}>
+                  <button className={styled.like_button}>
+                    <span>👍</span>
+                    <span>5</span>
+                  </button>
+                  <button className={styled.reply_button}>답글</button>
+                </div>
+              </div>
+            </div>
+
+            <div className={styled.comment_item}>
+              <div className={styled.comment_avatar}>
+                <img src="/assets/no_profile.png" alt="사용자" />
+              </div>
+              <div className={styled.comment_content}>
+                <div className={styled.comment_header}>
+                  <span className={styled.comment_author}>사용자2</span>
+                  <span className={styled.comment_time}>2일 전</span>
+                </div>
+                <div className={styled.comment_text}>
+                  저도 비슷한 경험이 있어서 공감이 됩니다. 좋은 글 감사해요!
+                </div>
+                <div className={styled.comment_actions}>
+                  <button className={styled.like_button}>
+                    <span>👍</span>
+                    <span>3</span>
+                  </button>
+                  <button className={styled.reply_button}>답글</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 삭제 확인 모달 */}
