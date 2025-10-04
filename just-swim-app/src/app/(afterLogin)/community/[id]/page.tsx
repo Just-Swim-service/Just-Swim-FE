@@ -13,7 +13,7 @@ import {
   type CommunityPost,
 } from '@apis';
 import { getMyProfile } from '@apis';
-import { IconSetting, IconTrashcan } from '@assets';
+import { IconKebabMenu, IconTrashcan, IconSetting } from '@assets';
 import { DeleteConfirmModalProps } from '@types';
 
 import styled from './styles.module.scss';
@@ -81,6 +81,7 @@ export default function CommunityDetailPage() {
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const communityId = parseInt(params.id as string);
 
@@ -140,7 +141,21 @@ export default function CommunityDetailPage() {
 
   // 수정 페이지로 이동
   const handleEdit = () => {
+    setShowDropdown(false);
     router.push(`/community/edit/${communityId}`);
+  };
+
+  const handleDeleteClick = () => {
+    setShowDropdown(false);
+    setShowDeleteModal(true);
+  };
+
+  const handleKebabClick = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleOutsideClick = () => {
+    setShowDropdown(false);
   };
 
   if (loading) {
@@ -252,19 +267,33 @@ export default function CommunityDetailPage() {
           </div>
         </div>
 
-        {/* 수정/삭제 버튼 (작성자만 표시) */}
+        {/* 케밥 메뉴 (작성자만 표시) */}
         {isAuthor && (
-          <div className={styled.action_buttons}>
-            <button className={styled.edit_button} onClick={handleEdit}>
-              <IconSetting width={20} height={20} fill="#666" />
-              수정
+          <div className={styled.kebab_menu_container}>
+            <button className={styled.kebab_button} onClick={handleKebabClick}>
+              <IconKebabMenu width={24} height={24} fill="#666" />
             </button>
-            <button
-              className={styled.delete_button}
-              onClick={() => setShowDeleteModal(true)}>
-              <IconTrashcan width={20} height={20} fill="#FF4D4D" />
-              삭제
-            </button>
+
+            {showDropdown && (
+              <>
+                <div
+                  className={styled.dropdown_overlay}
+                  onClick={handleOutsideClick}
+                />
+                <div className={styled.dropdown_menu}>
+                  <button className={styled.dropdown_item} onClick={handleEdit}>
+                    <IconSetting width={16} height={16} fill="#666" />
+                    수정
+                  </button>
+                  <button
+                    className={styled.dropdown_item}
+                    onClick={handleDeleteClick}>
+                    <IconTrashcan width={16} height={16} fill="#FF4D4D" />
+                    삭제
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>

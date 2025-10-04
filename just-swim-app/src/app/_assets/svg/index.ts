@@ -43,6 +43,7 @@ import IconIndividual from './individual.svg';
 import IconGroup from './group.svg';
 import IconQRScan from './icon_qr_scan.svg';
 import IconCommunity from './icon_community.svg';
+import IconKebabMenu from './icon_kebab_menu.svg';
 
 export {
   IconArrowRight,
@@ -90,4 +91,5 @@ export {
   IconGroup,
   IconQRScan,
   IconCommunity,
+  IconKebabMenu,
 };
