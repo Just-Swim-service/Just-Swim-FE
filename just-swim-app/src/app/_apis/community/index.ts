@@ -177,11 +177,11 @@ export const deleteCommunity = async (id: number): Promise<void> => {
 export const getComments = async (
   communityId: number,
 ): Promise<CommunityComment[]> => {
-  const response = await api<CommunityComment[]>(
+  const response = await api<any>(
     `/community/${communityId}/comments`,
     HTTP_METHODS.GET,
   );
-  return response.data;
+  return response.data.data || [];
 };
 
 // 댓글 작성

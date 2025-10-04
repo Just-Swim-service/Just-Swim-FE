@@ -10,7 +10,10 @@ import {
   getCommunityById,
   updateCommunity,
   deleteCommunity,
+  getComments,
+  createComment,
   type CommunityPost,
+  type CommunityComment,
 } from '@apis';
 import { getMyProfile } from '@apis';
 import {
@@ -89,6 +92,9 @@ export default function CommunityDetailPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [comments, setComments] = useState<CommunityComment[]>([]);
+  const [newComment, setNewComment] = useState('');
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
   const communityId = parseInt(params.id as string);
 
@@ -97,14 +103,17 @@ export default function CommunityDetailPage() {
       try {
         setLoading(true);
 
-        // 현재 사용자 정보와 게시글 정보를 병렬로 가져오기
-        const [profileResponse, postResponse] = await Promise.all([
-          getMyProfile(),
-          getCommunityById(communityId),
-        ]);
+        // 현재 사용자 정보, 게시글 정보, 댓글 정보를 병렬로 가져오기
+        const [profileResponse, postResponse, commentsResponse] =
+          await Promise.all([
+            getMyProfile(),
+            getCommunityById(communityId),
+            getComments(communityId),
+          ]);
 
         setCurrentUserId(parseInt(profileResponse.data.data.userId));
         setPost(postResponse);
+        setComments(commentsResponse || []);
       } catch (error) {
         console.error('데이터 조회 실패:', error);
         setError('게시글을 불러올 수 없습니다.');
@@ -163,6 +172,44 @@ export default function CommunityDetailPage() {
 
   const handleOutsideClick = () => {
     setShowDropdown(false);
+  };
+
+  // 댓글 작성
+  const handleSubmitComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      setIsSubmittingComment(true);
+      const response = await createComment(communityId, { content: newComment });
+
+      // 댓글 목록 새로고침
+      const commentsResponse = await getComments(communityId);
+      setComments(commentsResponse || []);
+
+      // 입력 필드 초기화
+      setNewComment('');
+
+      // 게시글의 댓글 수 업데이트
+      if (post) {
+        setPost({ ...post, commentCount: post.commentCount + 1 });
+      }
+    } catch (error) {
+      console.error('댓글 작성 실패:', error);
+      alert('댓글 작성에 실패했습니다.');
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
+  const handleCommentInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewComment(e.target.value);
+  };
+
+  const handleCommentKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmitComment();
+    }
   };
 
   if (loading) {
@@ -293,18 +340,11 @@ export default function CommunityDetailPage() {
         <div className={styled.community_stats}>
           <div className={styled.stat_item}>
             <span className={styled.stat_icon}>👁</span>
-            <span className={styled.stat_label}>조회</span>
             <span className={styled.stat_value}>{post.viewCount}</span>
           </div>
           <div className={styled.stat_item}>
             <span className={styled.stat_icon}>❤</span>
-            <span className={styled.stat_label}>좋아요</span>
             <span className={styled.stat_value}>{post.likeCount}</span>
-          </div>
-          <div className={styled.stat_item}>
-            <span className={styled.stat_icon}>💬</span>
-            <span className={styled.stat_label}>댓글</span>
-            <span className={styled.stat_value}>{post.commentCount}</span>
           </div>
         </div>
 
@@ -334,56 +374,59 @@ export default function CommunityDetailPage() {
                 type="text"
                 placeholder="댓글 추가..."
                 className={styled.comment_text_input}
+                value={newComment}
+                onChange={handleCommentInputChange}
+                onKeyPress={handleCommentKeyPress}
+                disabled={isSubmittingComment}
               />
             </div>
           </div>
 
           {/* 댓글 목록 */}
           <div className={styled.comments_list}>
-            {/* 임시 댓글 데이터 - 실제로는 API에서 가져와야 함 */}
-            <div className={styled.comment_item}>
-              <div className={styled.comment_avatar}>
-                <img src="/assets/no_profile.png" alt="사용자" />
+            {comments.length === 0 ? (
+              <div className={styled.no_comments}>
+                <p>아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>
               </div>
-              <div className={styled.comment_content}>
-                <div className={styled.comment_header}>
-                  <span className={styled.comment_author}>사용자1</span>
-                  <span className={styled.comment_time}>1일 전</span>
+            ) : (
+              comments.map((comment) => (
+                <div key={comment.commentId} className={styled.comment_item}>
+                  <div className={styled.comment_avatar}>
+                    <img
+                      src={comment.user.profileImage || '/assets/no_profile.png'}
+                      alt={comment.user.userName}
+                      onError={(e) => {
+                        e.currentTarget.src = '/assets/no_profile.png';
+                      }}
+                    />
+                  </div>
+                  <div className={styled.comment_content}>
+                    <div className={styled.comment_header}>
+                      <span className={styled.comment_author}>
+                        {comment.user.userName}
+                      </span>
+                      <span className={styled.comment_time}>
+                        {formatDistanceToNow(
+                          new Date(comment.commentCreatedAt),
+                          {
+                            addSuffix: true,
+                            locale: ko,
+                          },
+                        )}
+                      </span>
+                    </div>
+                    <div className={styled.comment_text}>{comment.content}</div>
+                    <div className={styled.comment_actions}>
+                      <button className={styled.like_button}>
+                        <span>👍</span>
+                        <span>{comment.likeCount}</span>
+                      </button>
+                      <button className={styled.reply_button}>답글</button>
+                    </div>
+                  </div>
                 </div>
-                <div className={styled.comment_text}>
-                  정말 유익한 정보네요! 감사합니다.
-                </div>
-                <div className={styled.comment_actions}>
-                  <button className={styled.like_button}>
-                    <span>👍</span>
-                    <span>5</span>
-                  </button>
-                  <button className={styled.reply_button}>답글</button>
-                </div>
-              </div>
-            </div>
-
-            <div className={styled.comment_item}>
-              <div className={styled.comment_avatar}>
-                <img src="/assets/no_profile.png" alt="사용자" />
-              </div>
-              <div className={styled.comment_content}>
-                <div className={styled.comment_header}>
-                  <span className={styled.comment_author}>사용자2</span>
-                  <span className={styled.comment_time}>2일 전</span>
-                </div>
-                <div className={styled.comment_text}>
-                  저도 비슷한 경험이 있어서 공감이 됩니다. 좋은 글 감사해요!
-                </div>
-                <div className={styled.comment_actions}>
-                  <button className={styled.like_button}>
-                    <span>👍</span>
-                    <span>3</span>
-                  </button>
-                  <button className={styled.reply_button}>답글</button>
-                </div>
-              </div>
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>
