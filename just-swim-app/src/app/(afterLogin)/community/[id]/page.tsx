@@ -73,68 +73,87 @@ export default function CommunityDetailPage() {
     <div className={styled.container}>
       <HistoryBackHeader title="게시글 상세" />
 
-      <main className={styled.content}>
-        <article className={styled.post}>
-          <header className={styled.header}>
-            <div className={styled.userInfo}>
-              <div className={styled.profileImage}>
-                <img
-                  src={post.user.profileImage || '/assets/no_profile.png'}
-                  alt={post.user.name}
-                  onError={(e) => {
-                    e.currentTarget.src = '/assets/no_profile.png';
-                  }}
-                />
-              </div>
-              <div className={styled.userDetails}>
-                <span className={styled.userName}>{post.user.name}</span>
-                <span className={styled.createdAt}>
-                  {formatDate(post.communityCreatedAt)}
-                </span>
-              </div>
-            </div>
-          </header>
+      <div className={styled.detail_container}>
+        {/* 게시글 날짜 정보 */}
+        <div className={styled.community_date}>
+          <span className={styled.icon}>📅</span>
+          {formatDate(post.communityCreatedAt)}
+        </div>
 
-          <div className={styled.body}>
-            <h1 className={styled.title}>{post.title}</h1>
-            <div className={styled.content}>
-              {post.content.split('\n').map((line, index) => (
-                <p key={index}>{line}</p>
-              ))}
-            </div>
+        {/* 게시글 제목 */}
+        <div className={styled.detail_title}>
+          <h1>{post.title}</h1>
+        </div>
 
-            {post.workoutData && (
-              <div className={styled.workoutInfo}>
-                <h3>운동 정보</h3>
-                <div className={styled.workoutTags}>
-                  {Object.entries(post.workoutData).map(([key, value]) => (
-                    <span key={key} className={styled.tag}>
-                      {key}: {String(value)}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+        {/* 작성자 정보 */}
+        <div className={styled.author_info}>
+          <div className={styled.author_profile}>
+            <div className={styled.profile_image}>
+              <img
+                src={post.user.profileImage || '/assets/no_profile.png'}
+                alt={post.user.name}
+                onError={(e) => {
+                  e.currentTarget.src = '/assets/no_profile.png';
+                }}
+              />
+            </div>
+            <div className={styled.author_details}>
+              <span className={styled.author_name}>{post.user.name}</span>
+              <span className={styled.post_time}>
+                {formatDate(post.communityCreatedAt)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* 구분선 */}
+        <div className={styled.community_divider} />
+
+        {/* 게시글 내용 */}
+        <div className={styled.community_content}>
+          <div className={styled.content_text}>
+            {post.content.split('\n').map((line, index) => (
+              <p key={index}>{line}</p>
+            ))}
           </div>
 
-          <footer className={styled.footer}>
-            <div className={styled.stats}>
-              <div className={styled.statItem}>
-                <span className={styled.statIcon}>👁</span>
-                <span>{post.viewCount}</span>
-              </div>
-              <div className={styled.statItem}>
-                <span className={styled.statIcon}>❤</span>
-                <span>{post.likeCount}</span>
-              </div>
-              <div className={styled.statItem}>
-                <span className={styled.statIcon}>💬</span>
-                <span>{post.commentCount}</span>
+          {/* 운동 정보 */}
+          {post.workoutData && (
+            <div className={styled.workout_section}>
+              <h3>운동 정보</h3>
+              <div className={styled.workout_tags}>
+                {Object.entries(post.workoutData).map(([key, value]) => (
+                  <span key={key} className={styled.workout_tag}>
+                    {key}: {String(value)}
+                  </span>
+                ))}
               </div>
             </div>
-          </footer>
-        </article>
-      </main>
+          )}
+        </div>
+
+        {/* 구분선 */}
+        <div className={styled.community_divider} />
+
+        {/* 통계 정보 */}
+        <div className={styled.community_stats}>
+          <div className={styled.stat_item}>
+            <span className={styled.stat_icon}>👁</span>
+            <span className={styled.stat_label}>조회</span>
+            <span className={styled.stat_value}>{post.viewCount}</span>
+          </div>
+          <div className={styled.stat_item}>
+            <span className={styled.stat_icon}>❤</span>
+            <span className={styled.stat_label}>좋아요</span>
+            <span className={styled.stat_value}>{post.likeCount}</span>
+          </div>
+          <div className={styled.stat_item}>
+            <span className={styled.stat_icon}>💬</span>
+            <span className={styled.stat_label}>댓글</span>
+            <span className={styled.stat_value}>{post.commentCount}</span>
+          </div>
+        </div>
+      </div>
 
       <BottomNav />
     </div>

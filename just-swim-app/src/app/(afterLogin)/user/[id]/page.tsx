@@ -30,6 +30,7 @@ export default function User() {
   const memberId = params.id;
 
   const [member, setMember] = useState<MemberProps | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (!memberId) return;
@@ -66,6 +67,14 @@ export default function User() {
   const evenLectures = member?.lectures.filter((_, index) => index % 2 === 0);
   const oddLectures = member?.lectures.filter((_, index) => index % 2 !== 0);
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const handleImageLoad = () => {
+    setImageError(false);
+  };
+
   return (
     <>
       <Header title="회원 정보" />
@@ -76,7 +85,11 @@ export default function User() {
             <div className={styled.container}>
               <div className={styled.flex}>
                 <Image
-                  src={member?.profileImage || NoProfile}
+                  src={
+                    imageError || !member?.profileImage
+                      ? NoProfile
+                      : member.profileImage
+                  }
                   alt="회원 프로필 사진"
                   width={68}
                   height={68}
@@ -85,6 +98,8 @@ export default function User() {
                     textAlign: 'center',
                   }}
                   priority
+                  onError={handleImageError}
+                  onLoad={handleImageLoad}
                 />
               </div>
               <p className={styled.name}>{member.name}</p>

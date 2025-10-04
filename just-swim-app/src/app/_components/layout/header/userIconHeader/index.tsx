@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 
 import { useUserStore } from '@store';
 import NoProfile from '@/_assets/images/no_profile.png';
@@ -28,6 +29,7 @@ export function UserIconHeader({ title }: { title: string }) {
   const { profileInfo, loadProfileInfo } = useUserStore();
   const { unreadCount, setUnreadCount, setModalOpen, isModalOpen } =
     useNotificationStore();
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     loadProfileInfo();
@@ -49,6 +51,14 @@ export function UserIconHeader({ title }: { title: string }) {
 
   const handleNotificationClick = () => {
     setModalOpen(!isModalOpen);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const handleImageLoad = () => {
+    setImageError(false);
   };
 
   return (
@@ -77,11 +87,17 @@ export function UserIconHeader({ title }: { title: string }) {
           <Link href={`/account`}>
             <div className={styled.profile_image}>
               <Image
-                src={profileInfo?.profileImage || NoProfile}
-                alt={profileInfo?.name || ''}
+                src={
+                  imageError || !profileInfo?.profileImage
+                    ? NoProfile
+                    : profileInfo.profileImage
+                }
+                alt={profileInfo?.name || '프로필 이미지'}
                 width={34}
                 height={34}
                 priority
+                onError={handleImageError}
+                onLoad={handleImageLoad}
               />
             </div>
           </Link>

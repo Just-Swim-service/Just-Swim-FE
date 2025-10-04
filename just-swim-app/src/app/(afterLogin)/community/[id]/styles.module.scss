@@ -5,130 +5,172 @@
   background-color: $--gray-50;
 }
 
-.content {
-  padding: 16px;
+.detail_container {
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
-.post {
-  background-color: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header {
-  margin-bottom: 20px;
-}
-
-.userInfo {
+.community_date {
+  @include Title5-M;
+  color: $--gray-600;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  gap: 12px;
-}
+  margin-bottom: 22px;
 
-.profileImage {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: $--gray-200;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .icon {
+    font-size: 18px;
+    margin-right: 4px;
   }
 }
 
-.userDetails {
+.detail_title {
+  margin-bottom: 6px;
+
+  h1 {
+    @include Title3-M;
+    color: $--gray-900;
+    line-height: 1.4;
+  }
+}
+
+.author_info {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 25px 0px 30px 0px;
+  border-radius: 6px;
 
-.userName {
-  @include Title4-SB;
-  color: $--gray-900;
-}
+  .author_profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
-.createdAt {
-  @include Body5-R;
-  color: $--gray-500;
-}
+    .profile_image {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: $--gray-200;
 
-.body {
-  margin-bottom: 20px;
-}
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
 
-.title {
-  @include Title2-SB;
-  color: $--gray-900;
-  margin-bottom: 16px;
-  line-height: 1.4;
-}
+    .author_details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
 
-.content {
-  @include Body3-R;
-  color: $--gray-700;
-  line-height: 1.6;
-  white-space: pre-wrap;
+      .author_name {
+        @include Title4-SB;
+        color: $--gray-900;
+      }
 
-  p {
-    margin-bottom: 12px;
-
-    &:last-child {
-      margin-bottom: 0;
+      .post_time {
+        @include Body5-R;
+        color: $--gray-500;
+      }
     }
   }
 }
 
-.workoutInfo {
-  margin-top: 20px;
-  padding: 16px;
-  background-color: $--gray-50;
-  border-radius: 8px;
+.community_divider {
+  width: 100%;
+  height: 1px;
+  background-color: $--gray-200;
+  margin: 20px 0;
+}
 
-  h3 {
-    @include Title5-SB;
-    color: $--gray-900;
-    margin-bottom: 12px;
+.community_content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: $--gray-50;
+  margin-bottom: 22px;
+  word-break: keep-all;
+
+  .content_text {
+    @include Title5-M;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: $--gray-700;
+
+    p {
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .workout_section {
+    margin-top: 16px;
+    padding: 16px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid $--gray-200;
+
+    h3 {
+      @include Title5-SB;
+      color: $--gray-900;
+      margin-bottom: 12px;
+    }
+
+    .workout_tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      .workout_tag {
+        @include Body5-R;
+        padding: 6px 12px;
+        background-color: $--Primary-blue;
+        color: white;
+        border-radius: 16px;
+      }
+    }
   }
 }
 
-.workoutTags {
+.community_stats {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+  justify-content: space-around;
+  padding: 20px 0;
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
 
-.tag {
-  @include Body5-R;
-  padding: 6px 12px;
-  background-color: $--Primary-blue;
-  color: white;
-  border-radius: 16px;
-}
+  .stat_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 
-.footer {
-  border-top: 1px solid $--gray-200;
-  padding-top: 16px;
-}
+    .stat_icon {
+      font-size: 24px;
+    }
 
-.stats {
-  display: flex;
-  gap: 24px;
-}
+    .stat_label {
+      @include Body5-R;
+      color: $--gray-600;
+    }
 
-.statItem {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  @include Body4-R;
-  color: $--gray-600;
-}
-
-.statIcon {
-  font-size: 16px;
+    .stat_value {
+      @include Title4-SB;
+      color: $--gray-900;
+    }
+  }
 }
 
 .loadingContainer,
