@@ -44,3 +44,10 @@ export interface URLImageProps {
   priority?: boolean;
   [key: string]: any;
 }
+
+export interface DeleteConfirmModalProps {
+  isOpen: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  isDeleting?: boolean;
+}

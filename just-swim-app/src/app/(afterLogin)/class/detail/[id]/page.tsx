@@ -14,7 +14,7 @@ import {
   IconArrowRight,
 } from '@assets';
 import { Header } from '@components';
-import { LectureViewProps } from '@types';
+import { LectureViewProps, DeleteConfirmModalProps } from '@types';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import { QRCode } from '@/(afterLogin)/schedule/(general)/add/complete/[id]/_components';
@@ -24,13 +24,11 @@ import dayjs from 'dayjs';
 import styled from './classDetail.module.scss';
 import { fetchJson } from '@utils';
 
-interface ConfirmModalProps {
-  isOpen: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
-
-const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
+const ConfirmModal = ({
+  isOpen,
+  onConfirm,
+  onCancel,
+}: DeleteConfirmModalProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleConfirm = () => {
