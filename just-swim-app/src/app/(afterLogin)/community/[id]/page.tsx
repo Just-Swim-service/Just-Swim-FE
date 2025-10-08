@@ -97,6 +97,7 @@ export default function CommunityDetailPage() {
   const [comments, setComments] = useState<CommunityComment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0); // 강제 리렌더링용
 
   const communityId = parseInt(params.id as string);
 
@@ -115,9 +116,6 @@ export default function CommunityDetailPage() {
 
         setCurrentUserId(parseInt(profileResponse.data.data.userId));
         setPost(postResponse);
-        console.log('초기 댓글 목록 응답:', commentsResponse);
-        console.log('댓글 타입:', typeof commentsResponse);
-        console.log('댓글 배열인가:', Array.isArray(commentsResponse));
         setComments(commentsResponse || []);
       } catch (error) {
         console.error('데이터 조회 실패:', error);
@@ -185,10 +183,7 @@ export default function CommunityDetailPage() {
 
     try {
       setIsSubmittingComment(true);
-      console.log('댓글 작성 시작:', newComment);
-
       const response = await createComment(communityId, { content: newComment });
-      console.log('댓글 작성 응답:', response);
 
       // 응답에서 받은 댓글 데이터를 바로 상태에 추가
       if (response) {
@@ -202,7 +197,6 @@ export default function CommunityDetailPage() {
           },
         };
 
-        console.log('추가할 댓글 데이터:', newCommentData);
         setComments((prevComments) => [newCommentData, ...prevComments]);
       }
 
@@ -221,8 +215,6 @@ export default function CommunityDetailPage() {
       if (post) {
         setPost({ ...post, commentCount: post.commentCount + 1 });
       }
-
-      console.log('댓글 작성 완료, 현재 댓글 목록:', comments);
     } catch (error) {
       console.error('댓글 작성 실패:', error);
       alert('댓글 작성에 실패했습니다.');
@@ -258,19 +250,28 @@ export default function CommunityDetailPage() {
     try {
       const result = await toggleCommentLike(commentId);
 
-      // 댓글 목록에서 해당 댓글의 좋아요 상태 업데이트
-      setComments((prevComments) =>
-        prevComments.map((comment) =>
-          comment.commentId === commentId
-            ? {
-                ...comment,
-                likeCount: result.isLiked
-                  ? comment.likeCount + 1
-                  : Math.max(0, comment.likeCount - 1),
-              }
-            : comment,
-        ),
+      // 댓글 목록에서 해당 댓글의 좋아요 상태 업데이트 - 직접 상태 업데이트
+      const currentComments = [...comments];
+      const commentIndex = currentComments.findIndex(
+        (c) => c.commentId === commentId,
       );
+
+      if (commentIndex !== -1) {
+        const currentComment = currentComments[commentIndex];
+        const newLikeCount = result.isLiked
+          ? currentComment.likeCount + 1
+          : Math.max(0, currentComment.likeCount - 1);
+
+        currentComments[commentIndex] = {
+          ...currentComment,
+          likeCount: newLikeCount,
+        };
+
+        setComments(currentComments);
+      }
+
+      // 강제 리렌더링 트리거
+      setForceUpdate((prev) => prev + 1);
     } catch (error) {
       console.error('댓글 좋아요 실패:', error);
       alert('좋아요 처리에 실패했습니다.');
@@ -284,17 +285,19 @@ export default function CommunityDetailPage() {
     try {
       const result = await toggleCommunityLike(post.communityId);
 
-      // 게시글의 좋아요 수 업데이트
-      setPost((prevPost) =>
-        prevPost
-          ? {
-              ...prevPost,
-              likeCount: result.isLiked
-                ? prevPost.likeCount + 1
-                : Math.max(0, prevPost.likeCount - 1),
-            }
-          : null,
-      );
+      // 게시글의 좋아요 수 업데이트 - 직접 상태 업데이트
+      const currentPost = post;
+      const newLikeCount = result.isLiked
+        ? currentPost.likeCount + 1
+        : Math.max(0, currentPost.likeCount - 1);
+
+      setPost({
+        ...currentPost,
+        likeCount: newLikeCount,
+      });
+
+      // 강제 리렌더링 트리거
+      setForceUpdate((prev) => prev + 1);
     } catch (error) {
       console.error('게시글 좋아요 실패:', error);
       alert('좋아요 처리에 실패했습니다.');
@@ -483,9 +486,6 @@ export default function CommunityDetailPage() {
           {/* 댓글 목록 */}
           <div className={styled.comments_list}>
             {(() => {
-              console.log('댓글 렌더링 - 댓글 개수:', comments.length);
-              console.log('댓글 데이터:', comments);
-
               if (comments.length === 0) {
                 return (
                   <div className={styled.no_comments}>

@@ -69,14 +69,10 @@ export const getCommunities = async (
   console.log('=== getCommunities 함수 시작! ===', page, limit); // 디버깅용
 
   try {
-    console.log('=== api 호출 전 ==='); // 디버깅용
     const response = await api<any>(
       `/community?page=${page}&limit=${limit}`,
       HTTP_METHODS.GET,
     );
-    console.log('=== api 응답 받음 ===', response); // 디버깅용
-    console.log('=== response.data ===', response.data); // 디버깅용
-    console.log('=== response.data.data ===', response.data.data); // 디버깅용
 
     // 실제 데이터는 response.data.data에 있음
     const actualData = response.data.data;
@@ -96,8 +92,6 @@ export const getCommunities = async (
         },
       }),
     );
-
-    console.log('=== 변환된 데이터 ===', transformedCommunities); // 디버깅용
 
     return {
       communities: transformedCommunities,
@@ -181,9 +175,6 @@ export const getComments = async (
     `/community/${communityId}/comments`,
     HTTP_METHODS.GET,
   );
-  console.log('getComments API 응답:', response);
-  console.log('response.data:', response.data);
-  console.log('response.data.data:', response.data?.data);
   return response.data.data || [];
 };
 
@@ -199,9 +190,6 @@ export const createComment = async (
       body: JSON.stringify(data),
     },
   );
-  console.log('createComment API 응답:', response);
-  console.log('response.data:', response.data);
-  console.log('response.data.data:', (response.data as any)?.data);
   return response.data;
 };
 
