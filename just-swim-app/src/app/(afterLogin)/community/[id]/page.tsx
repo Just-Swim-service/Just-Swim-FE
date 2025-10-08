@@ -258,6 +258,7 @@ export default function CommunityDetailPage() {
 
       if (commentIndex !== -1) {
         const currentComment = currentComments[commentIndex];
+
         const newLikeCount = result.isLiked
           ? currentComment.likeCount + 1
           : Math.max(0, currentComment.likeCount - 1);

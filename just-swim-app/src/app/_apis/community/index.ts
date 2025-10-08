@@ -217,20 +217,22 @@ export const deleteComment = async (commentId: number): Promise<void> => {
 export const toggleCommunityLike = async (
   communityId: number,
 ): Promise<{ isLiked: boolean }> => {
-  const response = await api<{ isLiked: boolean }>(
+  const response = await api<any>(
     `/community/${communityId}/like`,
     HTTP_METHODS.POST,
   );
-  return response.data;
+
+  return response.data.data;
 };
 
 // 댓글 좋아요 토글
 export const toggleCommentLike = async (
   commentId: number,
 ): Promise<{ isLiked: boolean }> => {
-  const response = await api<{ isLiked: boolean }>(
+  const response = await api<any>(
     `/community/comments/${commentId}/like`,
     HTTP_METHODS.POST,
   );
-  return response.data;
+
+  return response.data.data;
 };
