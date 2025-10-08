@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
-import { BottomNav, HistoryBackHeader } from '@components';
+import { BottomNav, Header } from '@components';
 import {
   getCommunityById,
   updateCommunity,
@@ -215,7 +215,7 @@ export default function CommunityDetailPage() {
   if (loading) {
     return (
       <div className={styled.container}>
-        <HistoryBackHeader title="게시글 상세" />
+        <Header title="게시글 상세" routerBackUrl="/community" />
         <div className={styled.loadingContainer}>
           <p>게시글을 불러오는 중...</p>
         </div>
@@ -227,7 +227,7 @@ export default function CommunityDetailPage() {
   if (error || !post) {
     return (
       <div className={styled.container}>
-        <HistoryBackHeader title="게시글 상세" />
+        <Header title="게시글 상세" routerBackUrl="/community" />
         <div className={styled.errorContainer}>
           <p>{error || '게시글을 찾을 수 없습니다.'}</p>
         </div>
@@ -238,57 +238,18 @@ export default function CommunityDetailPage() {
 
   return (
     <div className={styled.container}>
-      <HistoryBackHeader title="게시글 상세" />
+      <Header title="게시글 상세" routerBackUrl="/community" />
 
       <div className={styled.detail_container}>
-        {/* 게시글 날짜 정보 */}
-        <div className={styled.community_date}>
-          <div className={styled.date_info}>
-            <span className={styled.icon}>📅</span>
-            {formatDate(post.communityCreatedAt)}
-          </div>
-
-          {/* 케밥 메뉴 (작성자만 표시) */}
-          {isAuthor && (
-            <div className={styled.kebab_menu_container}>
-              <button className={styled.kebab_button} onClick={handleKebabClick}>
-                <IconKebabMenu width={20} height={20} fill="#666" />
-              </button>
-
-              {showDropdown && (
-                <>
-                  <div
-                    className={styled.dropdown_overlay}
-                    onClick={handleOutsideClick}
-                  />
-                  <div className={styled.dropdown_menu}>
-                    <button
-                      className={styled.dropdown_item}
-                      onClick={handleEdit}>
-                      <IconSetting width={16} height={16} fill="#666" />
-                      수정
-                    </button>
-                    <button
-                      className={styled.dropdown_item}
-                      onClick={handleDeleteClick}>
-                      <IconTrashcan width={16} height={16} fill="#FF4D4D" />
-                      삭제
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-
         {/* 게시글 제목 */}
         <div className={styled.detail_title}>
           <h1>{post.title}</h1>
         </div>
 
-        {/* 작성자 정보 */}
-        <div className={styled.author_info}>
-          <div className={styled.author_profile}>
+        {/* 작성자 정보 + 날짜 + 케밥 메뉴 통합 */}
+        <div className={styled.post_header}>
+          {/* 왼쪽: 작성자 정보 */}
+          <div className={styled.author_section}>
             <div className={styled.profile_image}>
               <img
                 src={post.user.profileImage || '/assets/no_profile.png'}
@@ -304,6 +265,48 @@ export default function CommunityDetailPage() {
                 {formatDate(post.communityCreatedAt)}
               </span>
             </div>
+          </div>
+
+          {/* 오른쪽: 날짜 + 케밥 메뉴 */}
+          <div className={styled.actions_section}>
+            <div className={styled.date_info}>
+              <span className={styled.icon}>📅</span>
+              {formatDate(post.communityCreatedAt)}
+            </div>
+
+            {/* 케밥 메뉴 (작성자만 표시) */}
+            {isAuthor && (
+              <div className={styled.kebab_menu_container}>
+                <button
+                  className={styled.kebab_button}
+                  onClick={handleKebabClick}>
+                  <IconKebabMenu width={20} height={20} fill="#666" />
+                </button>
+
+                {showDropdown && (
+                  <>
+                    <div
+                      className={styled.dropdown_overlay}
+                      onClick={handleOutsideClick}
+                    />
+                    <div className={styled.dropdown_menu}>
+                      <button
+                        className={styled.dropdown_item}
+                        onClick={handleEdit}>
+                        <IconSetting width={16} height={16} fill="#666" />
+                        수정
+                      </button>
+                      <button
+                        className={styled.dropdown_item}
+                        onClick={handleDeleteClick}>
+                        <IconTrashcan width={16} height={16} fill="#FF4D4D" />
+                        삭제
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
