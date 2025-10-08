@@ -180,19 +180,33 @@ export default function CommunityDetailPage() {
 
     try {
       setIsSubmittingComment(true);
+      console.log('댓글 작성 시작:', newComment);
+
       const response = await createComment(communityId, { content: newComment });
+      console.log('댓글 작성 응답:', response);
 
       // 댓글 목록 새로고침
       const commentsResponse = await getComments(communityId);
+      console.log('새로고침된 댓글 목록:', commentsResponse);
       setComments(commentsResponse || []);
 
       // 입력 필드 초기화
       setNewComment('');
 
+      // textarea 높이 초기화
+      const textarea = document.querySelector(
+        `.${styled.comment_text_input}`,
+      ) as HTMLTextAreaElement;
+      if (textarea) {
+        textarea.style.height = 'auto';
+      }
+
       // 게시글의 댓글 수 업데이트
       if (post) {
         setPost({ ...post, commentCount: post.commentCount + 1 });
       }
+
+      console.log('댓글 작성 완료');
     } catch (error) {
       console.error('댓글 작성 실패:', error);
       alert('댓글 작성에 실패했습니다.');
@@ -201,15 +215,26 @@ export default function CommunityDetailPage() {
     }
   };
 
-  const handleCommentInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCommentInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     setNewComment(e.target.value);
+
+    // textarea 높이 자동 조절
+    const textarea = e.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
   };
 
-  const handleCommentKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+  const handleCommentKeyPress = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    // Ctrl + Enter 또는 Cmd + Enter로 댓글 전송
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       handleSubmitComment();
     }
+    // Enter만 누르면 줄바꿈 (기본 동작 허용)
   };
 
   if (loading) {
@@ -370,16 +395,23 @@ export default function CommunityDetailPage() {
               />
             </div>
             <div className={styled.input_container}>
-              <input
-                type="text"
+              <textarea
                 placeholder="댓글 추가..."
                 className={styled.comment_text_input}
                 value={newComment}
                 onChange={handleCommentInputChange}
-                onKeyPress={handleCommentKeyPress}
+                onKeyDown={handleCommentKeyPress}
                 disabled={isSubmittingComment}
+                rows={1}
               />
             </div>
+            <button
+              className={styled.submit_button}
+              onClick={handleSubmitComment}
+              disabled={!newComment.trim() || isSubmittingComment}
+              type="button">
+              {isSubmittingComment ? '전송 중...' : '전송'}
+            </button>
           </div>
 
           {/* 댓글 목록 */}
@@ -415,7 +447,16 @@ export default function CommunityDetailPage() {
                         )}
                       </span>
                     </div>
-                    <div className={styled.comment_text}>{comment.content}</div>
+                    <div className={styled.comment_text}>
+                      {comment.content.split('\n').map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          {index < comment.content.split('\n').length - 1 && (
+                            <br />
+                          )}
+                        </span>
+                      ))}
+                    </div>
                     <div className={styled.comment_actions}>
                       <button className={styled.like_button}>
                         <span>👍</span>

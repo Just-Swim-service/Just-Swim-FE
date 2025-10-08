@@ -271,6 +271,7 @@
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
+  align-items: flex-end;
 
   .user_avatar {
     width: 40px;
@@ -299,6 +300,11 @@
     @include Body3-R;
     color: $--gray-900;
     background-color: white;
+    resize: none;
+    min-height: 44px;
+    max-height: 120px;
+    font-family: inherit;
+    line-height: 1.5;
 
     &:focus {
       outline: none;
@@ -307,6 +313,41 @@
 
     &::placeholder {
       color: $--gray-400;
+    }
+
+    // 자동 높이 조절
+    &:not(:focus) {
+      overflow: hidden;
+    }
+  }
+
+  .submit_button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: $--Primary-blue;
+    color: white;
+    @include Body4-R;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    min-width: 60px;
+
+    &:hover:not(:disabled) {
+      background-color: darken($--Primary-blue, 10%);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background-color: $--gray-300;
+      color: $--gray-500;
+      cursor: not-allowed;
+      transform: none;
     }
   }
 }
