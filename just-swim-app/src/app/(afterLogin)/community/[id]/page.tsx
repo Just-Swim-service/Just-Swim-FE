@@ -241,11 +241,6 @@ export default function CommunityDetailPage() {
       <Header title="게시글 상세" routerBackUrl="/community" />
 
       <div className={styled.detail_container}>
-        {/* 게시글 제목 */}
-        <div className={styled.detail_title}>
-          <h1>{post.title}</h1>
-        </div>
-
         {/* 작성자 정보 + 날짜 + 케밥 메뉴 통합 */}
         <div className={styled.post_header}>
           {/* 왼쪽: 작성자 정보 */}
@@ -261,9 +256,6 @@ export default function CommunityDetailPage() {
             </div>
             <div className={styled.author_details}>
               <span className={styled.author_name}>{post.user.name}</span>
-              <span className={styled.post_time}>
-                {formatDate(post.communityCreatedAt)}
-              </span>
             </div>
           </div>
 
@@ -308,6 +300,11 @@ export default function CommunityDetailPage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* 게시글 제목 */}
+        <div className={styled.detail_title}>
+          <h1>{post.title}</h1>
         </div>
 
         {/* 구분선 */}
