@@ -232,6 +232,30 @@
       color: $--gray-700;
     }
   }
+
+  .like_stat_item {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $--gray-100;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    .stat_icon {
+      transition: transform 0.2s ease;
+    }
+
+    &:hover .stat_icon {
+      transform: scale(1.2);
+    }
+  }
 }
 
 // 댓글 섹션
@@ -433,14 +457,24 @@
       color: $--gray-600;
       cursor: pointer;
       border-radius: 4px;
-      transition: background-color 0.2s ease;
+      transition: all 0.2s ease;
 
       &:hover {
         background-color: $--gray-100;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.95);
       }
 
       span:first-child {
         font-size: 14px;
+        transition: transform 0.2s ease;
+      }
+
+      &:hover span:first-child {
+        transform: scale(1.2);
       }
     }
 

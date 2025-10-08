@@ -12,6 +12,8 @@ import {
   deleteCommunity,
   getComments,
   createComment,
+  toggleCommentLike,
+  toggleCommunityLike,
   type CommunityPost,
   type CommunityComment,
 } from '@apis';
@@ -113,6 +115,9 @@ export default function CommunityDetailPage() {
 
         setCurrentUserId(parseInt(profileResponse.data.data.userId));
         setPost(postResponse);
+        console.log('초기 댓글 목록 응답:', commentsResponse);
+        console.log('댓글 타입:', typeof commentsResponse);
+        console.log('댓글 배열인가:', Array.isArray(commentsResponse));
         setComments(commentsResponse || []);
       } catch (error) {
         console.error('데이터 조회 실패:', error);
@@ -185,10 +190,21 @@ export default function CommunityDetailPage() {
       const response = await createComment(communityId, { content: newComment });
       console.log('댓글 작성 응답:', response);
 
-      // 댓글 목록 새로고침
-      const commentsResponse = await getComments(communityId);
-      console.log('새로고침된 댓글 목록:', commentsResponse);
-      setComments(commentsResponse || []);
+      // 응답에서 받은 댓글 데이터를 바로 상태에 추가
+      if (response) {
+        // 현재 사용자 정보와 함께 댓글 객체 생성
+        const newCommentData: CommunityComment = {
+          ...response,
+          user: {
+            userId: currentUserId || 0,
+            userName: profileInfo?.name || '사용자',
+            profileImage: profileInfo?.profileImage,
+          },
+        };
+
+        console.log('추가할 댓글 데이터:', newCommentData);
+        setComments((prevComments) => [newCommentData, ...prevComments]);
+      }
 
       // 입력 필드 초기화
       setNewComment('');
@@ -206,7 +222,7 @@ export default function CommunityDetailPage() {
         setPost({ ...post, commentCount: post.commentCount + 1 });
       }
 
-      console.log('댓글 작성 완료');
+      console.log('댓글 작성 완료, 현재 댓글 목록:', comments);
     } catch (error) {
       console.error('댓글 작성 실패:', error);
       alert('댓글 작성에 실패했습니다.');
@@ -235,6 +251,54 @@ export default function CommunityDetailPage() {
       handleSubmitComment();
     }
     // Enter만 누르면 줄바꿈 (기본 동작 허용)
+  };
+
+  // 댓글 좋아요 토글
+  const handleCommentLike = async (commentId: number) => {
+    try {
+      const result = await toggleCommentLike(commentId);
+
+      // 댓글 목록에서 해당 댓글의 좋아요 상태 업데이트
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.commentId === commentId
+            ? {
+                ...comment,
+                likeCount: result.isLiked
+                  ? comment.likeCount + 1
+                  : Math.max(0, comment.likeCount - 1),
+              }
+            : comment,
+        ),
+      );
+    } catch (error) {
+      console.error('댓글 좋아요 실패:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
+  };
+
+  // 게시글 좋아요 토글
+  const handleCommunityLike = async () => {
+    if (!post) return;
+
+    try {
+      const result = await toggleCommunityLike(post.communityId);
+
+      // 게시글의 좋아요 수 업데이트
+      setPost((prevPost) =>
+        prevPost
+          ? {
+              ...prevPost,
+              likeCount: result.isLiked
+                ? prevPost.likeCount + 1
+                : Math.max(0, prevPost.likeCount - 1),
+            }
+          : null,
+      );
+    } catch (error) {
+      console.error('게시글 좋아요 실패:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
   };
 
   if (loading) {
@@ -367,7 +431,9 @@ export default function CommunityDetailPage() {
             <span className={styled.stat_icon}>👁</span>
             <span className={styled.stat_value}>{post.viewCount}</span>
           </div>
-          <div className={styled.stat_item}>
+          <div
+            className={`${styled.stat_item} ${styled.like_stat_item}`}
+            onClick={handleCommunityLike}>
             <span className={styled.stat_icon}>❤</span>
             <span className={styled.stat_value}>{post.likeCount}</span>
           </div>
@@ -416,58 +482,69 @@ export default function CommunityDetailPage() {
 
           {/* 댓글 목록 */}
           <div className={styled.comments_list}>
-            {comments.length === 0 ? (
-              <div className={styled.no_comments}>
-                <p>아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>
-              </div>
-            ) : (
-              comments.map((comment) => (
-                <div key={comment.commentId} className={styled.comment_item}>
-                  <div className={styled.comment_avatar}>
-                    <img
-                      src={comment.user.profileImage || '/assets/no_profile.png'}
-                      alt={comment.user.userName}
-                      onError={(e) => {
-                        e.currentTarget.src = '/assets/no_profile.png';
-                      }}
-                    />
+            {(() => {
+              console.log('댓글 렌더링 - 댓글 개수:', comments.length);
+              console.log('댓글 데이터:', comments);
+
+              if (comments.length === 0) {
+                return (
+                  <div className={styled.no_comments}>
+                    <p>아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>
                   </div>
-                  <div className={styled.comment_content}>
-                    <div className={styled.comment_header}>
-                      <span className={styled.comment_author}>
-                        {comment.user.userName}
-                      </span>
-                      <span className={styled.comment_time}>
-                        {formatDistanceToNow(
-                          new Date(comment.commentCreatedAt),
-                          {
-                            addSuffix: true,
-                            locale: ko,
-                          },
-                        )}
-                      </span>
+                );
+              } else {
+                return comments.map((comment) => (
+                  <div key={comment.commentId} className={styled.comment_item}>
+                    <div className={styled.comment_avatar}>
+                      <img
+                        src={
+                          comment.user.profileImage || '/assets/no_profile.png'
+                        }
+                        alt={comment.user.userName}
+                        onError={(e) => {
+                          e.currentTarget.src = '/assets/no_profile.png';
+                        }}
+                      />
                     </div>
-                    <div className={styled.comment_text}>
-                      {comment.content.split('\n').map((line, index) => (
-                        <span key={index}>
-                          {line}
-                          {index < comment.content.split('\n').length - 1 && (
-                            <br />
+                    <div className={styled.comment_content}>
+                      <div className={styled.comment_header}>
+                        <span className={styled.comment_author}>
+                          {comment.user.userName}
+                        </span>
+                        <span className={styled.comment_time}>
+                          {formatDistanceToNow(
+                            new Date(comment.commentCreatedAt),
+                            {
+                              addSuffix: true,
+                              locale: ko,
+                            },
                           )}
                         </span>
-                      ))}
-                    </div>
-                    <div className={styled.comment_actions}>
-                      <button className={styled.like_button}>
-                        <span>👍</span>
-                        <span>{comment.likeCount}</span>
-                      </button>
-                      <button className={styled.reply_button}>답글</button>
+                      </div>
+                      <div className={styled.comment_text}>
+                        {comment.content.split('\n').map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            {index < comment.content.split('\n').length - 1 && (
+                              <br />
+                            )}
+                          </span>
+                        ))}
+                      </div>
+                      <div className={styled.comment_actions}>
+                        <button
+                          className={styled.like_button}
+                          onClick={() => handleCommentLike(comment.commentId)}>
+                          <span>👍</span>
+                          <span>{comment.likeCount}</span>
+                        </button>
+                        <button className={styled.reply_button}>답글</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
+                ));
+              }
+            })()}
           </div>
         </div>
       </div>

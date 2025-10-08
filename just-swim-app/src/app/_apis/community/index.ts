@@ -181,6 +181,9 @@ export const getComments = async (
     `/community/${communityId}/comments`,
     HTTP_METHODS.GET,
   );
+  console.log('getComments API 응답:', response);
+  console.log('response.data:', response.data);
+  console.log('response.data.data:', response.data?.data);
   return response.data.data || [];
 };
 
@@ -196,6 +199,9 @@ export const createComment = async (
       body: JSON.stringify(data),
     },
   );
+  console.log('createComment API 응답:', response);
+  console.log('response.data:', response.data);
+  console.log('response.data.data:', (response.data as any)?.data);
   return response.data;
 };
 
