@@ -579,295 +579,296 @@
         cursor: not-allowed;
         transform: none;
       }
-  }
-
-  // 대댓글 목록
-  .replies_list {
-    margin-top: 12px;
-    padding-left: 12px;
-    border-left: 2px solid $--gray-200;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .reply_item {
-    display: flex;
-    gap: 8px;
-
-    .reply_avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      overflow: hidden;
-      background-color: $--gray-200;
-      flex-shrink: 0;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
     }
 
-    .reply_content {
-      flex: 1;
+    // 대댓글 목록
+    .replies_list {
+      margin-top: 12px;
+      padding-left: 12px;
+      border-left: 2px solid $--gray-200;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
     }
 
-    .reply_header {
+    .reply_item {
       display: flex;
-      align-items: center;
-      gap: 6px;
+      gap: 8px;
 
-      .reply_author {
-        @include Body5-SB;
-        color: $--gray-900;
+      .reply_avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: $--gray-200;
+        flex-shrink: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
 
-      .reply_time {
-        @include Body6-R;
-        color: $--gray-500;
+      .reply_content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
       }
-    }
 
-    .reply_text {
-      @include Body4-R;
-      color: $--gray-700;
-      line-height: 1.4;
-    }
-
-    .reply_actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      .like_button {
+      .reply_header {
         display: flex;
         align-items: center;
-        gap: 3px;
-        padding: 2px 6px;
-        border: none;
-        background-color: transparent;
-        @include Body6-R;
-        color: $--gray-600;
-        cursor: pointer;
-        border-radius: 3px;
-        transition: background-color 0.2s ease;
+        gap: 6px;
 
-        &:hover {
-          background-color: $--gray-100;
-          transform: scale(1.05);
+        .reply_author {
+          @include Body5-SB;
+          color: $--gray-900;
         }
 
-        &:active {
-          transform: scale(0.95);
+        .reply_time {
+          @include Body6-R;
+          color: $--gray-500;
         }
+      }
 
-        span:first-child {
-          font-size: 12px;
-          transition: transform 0.2s ease;
-        }
+      .reply_text {
+        @include Body4-R;
+        color: $--gray-700;
+        line-height: 1.4;
+      }
 
-        &:hover span:first-child {
-          transform: scale(1.2);
+      .reply_actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .like_button {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          padding: 2px 6px;
+          border: none;
+          background-color: transparent;
+          @include Body6-R;
+          color: $--gray-600;
+          cursor: pointer;
+          border-radius: 3px;
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: $--gray-100;
+            transform: scale(1.05);
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+
+          span:first-child {
+            font-size: 12px;
+            transition: transform 0.2s ease;
+          }
+
+          &:hover span:first-child {
+            transform: scale(1.2);
+          }
         }
       }
     }
   }
-}
 
-.loadingContainer,
-.errorContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  @include Body3-R;
-  color: $--gray-600;
-}
-
-// 케밥 메뉴
-.kebab_menu_container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.kebab_button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
-  margin: 0;
-  border-radius: 4px;
-
-  // SVG 아이콘 정렬 개선
-  svg {
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-
-  &:hover {
-    background-color: $--gray-100;
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-}
-
-.dropdown_overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 998;
-  background-color: transparent;
-}
-
-.dropdown_menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  z-index: 999;
-  min-width: 120px;
-  background-color: white;
-  border: 1px solid $--gray-300;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  margin-top: 4px;
-}
-
-.dropdown_item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px 16px;
-  border: none;
-  background-color: white;
-  @include Title4-M;
-  color: $--gray-700;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: $--gray-50;
-  }
-
-  &:active {
-    background-color: $--gray-100;
-  }
-
-  &:first-child {
-    border-bottom: 1px solid $--gray-200;
-  }
-}
-
-// 삭제 확인 모달
-.modal_overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-}
-
-.delete_modal {
-  background-color: white;
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-
-  h3 {
-    @include Title3-SB;
-    color: $--gray-900;
-    margin-bottom: 12px;
-    text-align: center;
-  }
-
-  p {
+  .loadingContainer,
+  .errorContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
     @include Body3-R;
     color: $--gray-600;
-    line-height: 1.5;
-    text-align: center;
-    margin-bottom: 20px;
   }
 
-  form {
+  // 케밥 메뉴
+  .kebab_menu_container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .kebab_button {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 24px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
 
-    input[type='checkbox'] {
-      margin-right: 8px;
+    // SVG 아이콘 정렬 개선
+    svg {
+      display: block;
+      margin: 0;
+      padding: 0;
     }
 
-    label {
-      @include Body4-R;
-      color: $--gray-700;
-      cursor: pointer;
+    &:hover {
+      background-color: $--gray-100;
+    }
+
+    &:active {
+      transform: translateY(1px);
     }
   }
 
-  .modal_buttons {
+  .dropdown_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 998;
+    background-color: transparent;
+  }
+
+  .dropdown_menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 999;
+    min-width: 120px;
+    background-color: white;
+    border: 1px solid $--gray-300;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .dropdown_item {
     display: flex;
-    gap: 12px;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background-color: white;
+    @include Title4-M;
+    color: $--gray-700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 
-    .button_cancel,
-    .button_delete {
-      flex: 1;
-      padding: 12px 16px;
-      border-radius: 8px;
-      @include Title4-M;
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
+    &:hover {
+      background-color: $--gray-50;
     }
 
-    .button_cancel {
+    &:active {
       background-color: $--gray-100;
-      color: $--gray-700;
-      border: 1px solid $--gray-300;
+    }
 
-      &:hover:not(:disabled) {
-        background-color: $--gray-200;
+    &:first-child {
+      border-bottom: 1px solid $--gray-200;
+    }
+  }
+
+  // 삭제 확인 모달
+  .modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+  }
+
+  .delete_modal {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+    h3 {
+      @include Title3-SB;
+      color: $--gray-900;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    p {
+      @include Body3-R;
+      color: $--gray-600;
+      line-height: 1.5;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+
+      input[type='checkbox'] {
+        margin-right: 8px;
+      }
+
+      label {
+        @include Body4-R;
+        color: $--gray-700;
+        cursor: pointer;
       }
     }
 
-    .button_delete {
-      background-color: #ff4d4d;
-      color: white;
-      border: 1px solid #ff4d4d;
+    .modal_buttons {
+      display: flex;
+      gap: 12px;
 
-      &:hover:not(:disabled) {
-        background-color: #e63939;
-        border-color: #e63939;
+      .button_cancel,
+      .button_delete {
+        flex: 1;
+        padding: 12px 16px;
+        border-radius: 8px;
+        @include Title4-M;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .button_cancel {
+        background-color: $--gray-100;
+        color: $--gray-700;
+        border: 1px solid $--gray-300;
+
+        &:hover:not(:disabled) {
+          background-color: $--gray-200;
+        }
+      }
+
+      .button_delete {
+        background-color: #ff4d4d;
+        color: white;
+        border: 1px solid #ff4d4d;
+
+        &:hover:not(:disabled) {
+          background-color: #e63939;
+          border-color: #e63939;
+        }
       }
     }
   }
