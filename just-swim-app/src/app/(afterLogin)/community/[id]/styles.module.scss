@@ -623,12 +623,12 @@
         gap: 6px;
 
         .reply_author {
-          @include Body5-SB;
+          @include Title5-SB;
           color: $--gray-900;
         }
 
         .reply_time {
-          @include Body6-R;
+          @include Body5-R;
           color: $--gray-500;
         }
       }
@@ -651,7 +651,7 @@
           padding: 2px 6px;
           border: none;
           background-color: transparent;
-          @include Body6-R;
+          @include Body5-R;
           color: $--gray-600;
           cursor: pointer;
           border-radius: 3px;
