@@ -98,6 +98,9 @@ export default function CommunityDetailPage() {
   const [newComment, setNewComment] = useState('');
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(0); // 강제 리렌더링용
+  const [replyingTo, setReplyingTo] = useState<number | null>(null); // 답글 작성 중인 댓글 ID
+  const [replyContent, setReplyContent] = useState(''); // 답글 내용
+  const [isSubmittingReply, setIsSubmittingReply] = useState(false);
 
   const communityId = parseInt(params.id as string);
 
@@ -276,6 +279,77 @@ export default function CommunityDetailPage() {
     } catch (error) {
       console.error('댓글 좋아요 실패:', error);
       alert('좋아요 처리에 실패했습니다.');
+    }
+  };
+
+  // 답글 버튼 클릭 핸들러
+  const handleReplyClick = (commentId: number) => {
+    setReplyingTo(replyingTo === commentId ? null : commentId);
+    setReplyContent('');
+  };
+
+  // 답글 작성 핸들러
+  const handleSubmitReply = async (parentCommentId: number) => {
+    if (!replyContent.trim()) return;
+
+    try {
+      setIsSubmittingReply(true);
+      const response = await createComment(communityId, {
+        content: replyContent,
+        parentCommentId: parentCommentId,
+      });
+
+      // 응답에서 받은 댓글 데이터를 바로 상태에 추가
+      if (response) {
+        // 현재 사용자 정보와 함께 댓글 객체 생성
+        const newReplyData: CommunityComment = {
+          ...response,
+          user: {
+            userId: currentUserId || 0,
+            userName: profileInfo?.name || '사용자',
+            profileImage: profileInfo?.profileImage,
+          },
+          parentComment: comments.find((c) => c.commentId === parentCommentId),
+        };
+
+        setComments((prevComments) => [newReplyData, ...prevComments]);
+      }
+
+      // 답글 입력 필드 초기화
+      setReplyContent('');
+      setReplyingTo(null);
+
+      // 게시글의 댓글 수 업데이트
+      if (post) {
+        setPost({ ...post, commentCount: post.commentCount + 1 });
+      }
+    } catch (error) {
+      console.error('답글 작성 실패:', error);
+      alert('답글 작성에 실패했습니다.');
+    } finally {
+      setIsSubmittingReply(false);
+    }
+  };
+
+  // 답글 입력 변경 핸들러
+  const handleReplyInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setReplyContent(e.target.value);
+
+    // textarea 높이 자동 조절
+    const textarea = e.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+  };
+
+  // 답글 키보드 이벤트 핸들러
+  const handleReplyKeyPress = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+    parentCommentId: number,
+  ) => {
+    // Ctrl + Enter 또는 Cmd + Enter로 답글 전송
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      handleSubmitReply(parentCommentId);
     }
   };
 
@@ -539,8 +613,113 @@ export default function CommunityDetailPage() {
                           <span>👍</span>
                           <span>{comment.likeCount}</span>
                         </button>
-                        <button className={styled.reply_button}>답글</button>
+                        <button
+                          className={styled.reply_button}
+                          onClick={() => handleReplyClick(comment.commentId)}>
+                          답글
+                        </button>
                       </div>
+
+                      {/* 답글 입력 영역 */}
+                      {replyingTo === comment.commentId && (
+                        <div className={styled.reply_input}>
+                          <div className={styled.reply_user_avatar}>
+                            <img
+                              src={
+                                profileInfo?.profileImage ||
+                                '/assets/no_profile.png'
+                              }
+                              alt="프로필"
+                              onError={(e) => {
+                                e.currentTarget.src = '/assets/no_profile.png';
+                              }}
+                            />
+                          </div>
+                          <div className={styled.reply_input_container}>
+                            <textarea
+                              placeholder="답글 추가..."
+                              className={styled.reply_text_input}
+                              value={replyContent}
+                              onChange={handleReplyInputChange}
+                              onKeyDown={(e) =>
+                                handleReplyKeyPress(e, comment.commentId)
+                              }
+                              disabled={isSubmittingReply}
+                              rows={1}
+                            />
+                          </div>
+                          <button
+                            className={styled.reply_submit_button}
+                            onClick={() => handleSubmitReply(comment.commentId)}
+                            disabled={!replyContent.trim() || isSubmittingReply}
+                            type="button">
+                            {isSubmittingReply ? '전송 중...' : '전송'}
+                          </button>
+                        </div>
+                      )}
+
+                      {/* 대댓글 목록 */}
+                      {comment.replies && comment.replies.length > 0 && (
+                        <div className={styled.replies_list}>
+                          {comment.replies.map((reply) => (
+                            <div
+                              key={reply.commentId}
+                              className={styled.reply_item}>
+                              <div className={styled.reply_avatar}>
+                                <img
+                                  src={
+                                    reply.user.profileImage ||
+                                    '/assets/no_profile.png'
+                                  }
+                                  alt={reply.user.userName}
+                                  onError={(e) => {
+                                    e.currentTarget.src =
+                                      '/assets/no_profile.png';
+                                  }}
+                                />
+                              </div>
+                              <div className={styled.reply_content}>
+                                <div className={styled.reply_header}>
+                                  <span className={styled.reply_author}>
+                                    {reply.user.userName}
+                                  </span>
+                                  <span className={styled.reply_time}>
+                                    {formatDistanceToNow(
+                                      new Date(reply.commentCreatedAt),
+                                      {
+                                        addSuffix: true,
+                                        locale: ko,
+                                      },
+                                    )}
+                                  </span>
+                                </div>
+                                <div className={styled.reply_text}>
+                                  {reply.content
+                                    .split('\n')
+                                    .map((line, index) => (
+                                      <span key={index}>
+                                        {line}
+                                        {index <
+                                          reply.content.split('\n').length -
+                                            1 && <br />}
+                                      </span>
+                                    ))}
+                                </div>
+                                <div className={styled.reply_actions}>
+                                  <button
+                                    className={styled.like_button}
+                                    onClick={() =>
+                                      handleCommentLike(reply.commentId)
+                                    }>
+                                    <span>👍</span>
+                                    <span>{reply.likeCount}</span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ));
