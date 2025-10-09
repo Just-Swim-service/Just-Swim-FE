@@ -1,0 +1,321 @@
+@import '@/globals.scss';
+
+.container {
+  min-height: 100vh;
+  background-color: $--gray-50;
+  padding-bottom: calc(78px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.content {
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+// 스켈레톤 애니메이션
+@keyframes skeleton-loading {
+  0% {
+    background-color: $--gray-200;
+  }
+  50% {
+    background-color: $--gray-300;
+  }
+  100% {
+    background-color: $--gray-200;
+  }
+}
+
+.skeleton {
+  background-color: $--gray-200;
+  border-radius: 6px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+// 헤더 스켈레톤
+.header {
+  padding: 16px;
+  background-color: white;
+  border-bottom: 1px solid $--gray-200;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.backButton {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  @extend .skeleton;
+}
+
+.title {
+  width: 120px;
+  height: 20px;
+  @extend .skeleton;
+}
+
+// 작성자 섹션 스켈레톤
+.authorSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profileImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  @extend .skeleton;
+}
+
+.authorDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.authorName {
+  width: 80px;
+  height: 16px;
+  @extend .skeleton;
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date {
+  width: 60px;
+  height: 14px;
+  @extend .skeleton;
+}
+
+// 제목 섹션 스켈레톤
+.titleSection {
+  margin-bottom: 12px;
+}
+
+.postTitle {
+  width: 100%;
+  height: 20px;
+  margin-bottom: 8px;
+  @extend .skeleton;
+}
+
+.postTitleShort {
+  width: 70%;
+  height: 20px;
+  @extend .skeleton;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: $--gray-200;
+  margin: 20px 0;
+}
+
+// 내용 섹션 스켈레톤
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: $--gray-50;
+  margin-bottom: 22px;
+}
+
+.contentLine {
+  width: 100%;
+  height: 16px;
+  @extend .skeleton;
+}
+
+.contentLineShort {
+  width: 60%;
+  height: 16px;
+  @extend .skeleton;
+}
+
+// 통계 섹션 스켈레톤
+.statsSection {
+  display: flex;
+  justify-content: flex-start;
+  gap: 32px;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  @extend .skeleton;
+}
+
+.statValue {
+  width: 20px;
+  height: 16px;
+  @extend .skeleton;
+}
+
+// 댓글 섹션 스켈레톤
+.commentsSection {
+  margin-top: 24px;
+  padding: 20px 0;
+  border-top: 1px solid $--gray-200;
+}
+
+.commentsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.commentsTitle {
+  width: 80px;
+  height: 18px;
+  @extend .skeleton;
+}
+
+.sortDropdown {
+  width: 60px;
+  height: 16px;
+  @extend .skeleton;
+}
+
+// 댓글 입력 스켈레톤
+.commentInput {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  align-items: flex-end;
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  @extend .skeleton;
+}
+
+.inputContainer {
+  flex: 1;
+}
+
+.inputField {
+  width: 100%;
+  height: 44px;
+  border-radius: 20px;
+  @extend .skeleton;
+}
+
+.submitButton {
+  width: 60px;
+  height: 36px;
+  border-radius: 18px;
+  @extend .skeleton;
+}
+
+// 댓글 목록 스켈레톤
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.commentItem {
+  display: flex;
+  gap: 12px;
+}
+
+.commentAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  @extend .skeleton;
+}
+
+.commentContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.commentAuthor {
+  width: 60px;
+  height: 14px;
+  @extend .skeleton;
+}
+
+.commentTime {
+  width: 50px;
+  height: 12px;
+  @extend .skeleton;
+}
+
+.commentText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.commentTextLine {
+  width: 100%;
+  height: 14px;
+  @extend .skeleton;
+}
+
+.commentTextLineShort {
+  width: 70%;
+  height: 14px;
+  @extend .skeleton;
+}
+
+.commentActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.likeButton {
+  width: 40px;
+  height: 24px;
+  border-radius: 4px;
+  @extend .skeleton;
+}
+
+.replyButton {
+  width: 30px;
+  height: 24px;
+  border-radius: 4px;
+  @extend .skeleton;
+}

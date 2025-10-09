@@ -376,6 +376,42 @@
   }
 }
 
+// 에러 메시지
+.error_message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background-color: #fff2f2;
+  border: 1px solid #ffcccc;
+  border-radius: 8px;
+
+  span {
+    @include Body4-R;
+    color: #d32f2f;
+    flex: 1;
+  }
+
+  .error_close {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    color: #d32f2f;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #ffebee;
+    }
+  }
+}
+
 .comments_list {
   display: flex;
   flex-direction: column;
