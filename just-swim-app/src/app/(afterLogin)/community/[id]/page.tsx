@@ -19,12 +19,7 @@ import {
 } from '@apis';
 import { CommunityDetailSkeleton } from './_components/communityDetailSkeleton';
 import { getMyProfile } from '@apis';
-import {
-  IconKebabMenu,
-  IconTrashcan,
-  IconSetting,
-  IconArrowDown,
-} from '@assets';
+import { IconKebabMenu, IconTrashcan, IconSetting } from '@assets';
 import { DeleteConfirmModalProps } from '@types';
 import { useUserStore } from '@store';
 
@@ -522,10 +517,6 @@ export default function CommunityDetailPage() {
               }
               개
             </h3>
-            <div className={styled.sort_dropdown}>
-              <span>정렬 기준</span>
-              <IconArrowDown width={16} height={16} fill="#666" />
-            </div>
           </div>
 
           {/* 에러 메시지 */}

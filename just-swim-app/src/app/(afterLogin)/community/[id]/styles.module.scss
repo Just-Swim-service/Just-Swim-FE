@@ -267,7 +267,7 @@
 
 .comments_header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 20px;
 
@@ -275,19 +275,6 @@
     @include Title3-SB;
     color: $--gray-900;
     margin: 0;
-  }
-
-  .sort_dropdown {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    @include Body4-R;
-    color: $--gray-600;
-    cursor: pointer;
-
-    &:hover {
-      color: $--gray-800;
-    }
   }
 }
 
@@ -652,7 +639,6 @@
         transform: none;
       }
     }
-
   }
 
   // 대댓글 목록 - 유튜브 스타일
