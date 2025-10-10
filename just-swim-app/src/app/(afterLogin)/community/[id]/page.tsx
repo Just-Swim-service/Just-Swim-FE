@@ -207,7 +207,7 @@ export default function CommunityDetailPage() {
         textarea.style.height = 'auto';
       }
 
-      // 게시글의 댓글 수 업데이트
+      // 게시글의 댓글 수 업데이트 (일반 댓글만 카운트)
       if (post) {
         setPost({ ...post, commentCount: post.commentCount + 1 });
       }
@@ -303,10 +303,8 @@ export default function CommunityDetailPage() {
       setReplyContent('');
       setReplyingTo(null);
 
-      // 게시글의 댓글 수 업데이트
-      if (post) {
-        setPost({ ...post, commentCount: post.commentCount + 1 });
-      }
+      // 답글은 댓글 수에 포함되지 않음 (대댓글이므로)
+      // 게시글의 댓글 수는 변경하지 않음
     } catch (error) {
       console.error('답글 작성 실패:', error);
       setCommentError('답글 작성에 실패했습니다. 다시 시도해주세요.');
@@ -502,7 +500,10 @@ export default function CommunityDetailPage() {
         {/* 댓글 섹션 */}
         <div className={styled.comments_section}>
           <div className={styled.comments_header}>
-            <h3 className={styled.comments_title}>댓글 {comments.length}개</h3>
+            <h3 className={styled.comments_title}>
+              댓글 {comments.filter((comment) => !comment.parentComment).length}
+              개
+            </h3>
             <div className={styled.sort_dropdown}>
               <span>정렬 기준</span>
               <IconArrowDown width={16} height={16} fill="#666" />
@@ -555,173 +556,173 @@ export default function CommunityDetailPage() {
           {/* 댓글 목록 */}
           <div className={styled.comments_list}>
             {(() => {
-              if (comments.length === 0) {
+              // 일반 댓글만 필터링 (대댓글이 아닌 것만)
+              const mainComments = comments.filter(
+                (comment) => !comment.parentComment,
+              );
+
+              if (mainComments.length === 0) {
                 return (
                   <div className={styled.no_comments}>
                     <p>아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>
                   </div>
                 );
               } else {
-                return comments
-                  .filter((comment) => !comment.parentComment) // 일반 댓글만 표시
-                  .map((comment) => (
-                    <div key={comment.commentId} className={styled.comment_item}>
-                      <div className={styled.comment_avatar}>
-                        <img
-                          src={
-                            comment.user.profileImage || '/assets/no_profile.png'
-                          }
-                          alt={comment.user.userName}
-                          onError={(e) => {
-                            e.currentTarget.src = '/assets/no_profile.png';
-                          }}
-                        />
+                return mainComments.map((comment) => (
+                  <div key={comment.commentId} className={styled.comment_item}>
+                    <div className={styled.comment_avatar}>
+                      <img
+                        src={
+                          comment.user.profileImage || '/assets/no_profile.png'
+                        }
+                        alt={comment.user.userName}
+                        onError={(e) => {
+                          e.currentTarget.src = '/assets/no_profile.png';
+                        }}
+                      />
+                    </div>
+                    <div className={styled.comment_content}>
+                      <div className={styled.comment_header}>
+                        <span className={styled.comment_author}>
+                          {comment.user.userName}
+                        </span>
+                        <span className={styled.comment_time}>
+                          {formatDistanceToNow(
+                            new Date(comment.commentCreatedAt),
+                            {
+                              addSuffix: true,
+                              locale: ko,
+                            },
+                          )}
+                        </span>
                       </div>
-                      <div className={styled.comment_content}>
-                        <div className={styled.comment_header}>
-                          <span className={styled.comment_author}>
-                            {comment.user.userName}
-                          </span>
-                          <span className={styled.comment_time}>
-                            {formatDistanceToNow(
-                              new Date(comment.commentCreatedAt),
-                              {
-                                addSuffix: true,
-                                locale: ko,
-                              },
+                      <div className={styled.comment_text}>
+                        {comment.content.split('\n').map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            {index < comment.content.split('\n').length - 1 && (
+                              <br />
                             )}
                           </span>
-                        </div>
-                        <div className={styled.comment_text}>
-                          {comment.content.split('\n').map((line, index) => (
-                            <span key={index}>
-                              {line}
-                              {index <
-                                comment.content.split('\n').length - 1 && <br />}
-                            </span>
-                          ))}
-                        </div>
-                        <div className={styled.comment_actions}>
-                          <button
-                            className={styled.like_button}
-                            onClick={() => handleCommentLike(comment.commentId)}>
-                            <span>👍</span>
-                            <span>{comment.likeCount}</span>
-                          </button>
-                          <button
-                            className={styled.reply_button}
-                            onClick={() => handleReplyClick(comment.commentId)}>
-                            답글
-                          </button>
-                        </div>
+                        ))}
+                      </div>
+                      <div className={styled.comment_actions}>
+                        <button
+                          className={styled.like_button}
+                          onClick={() => handleCommentLike(comment.commentId)}>
+                          <span>👍</span>
+                          <span>{comment.likeCount}</span>
+                        </button>
+                        <button
+                          className={styled.reply_button}
+                          onClick={() => handleReplyClick(comment.commentId)}>
+                          답글
+                        </button>
+                      </div>
 
-                        {/* 답글 입력 영역 */}
-                        {replyingTo === comment.commentId && (
-                          <div className={styled.reply_input}>
-                            <div className={styled.reply_user_avatar}>
-                              <img
-                                src={
-                                  profileInfo?.profileImage ||
-                                  '/assets/no_profile.png'
-                                }
-                                alt="프로필"
-                                onError={(e) => {
-                                  e.currentTarget.src = '/assets/no_profile.png';
-                                }}
-                              />
-                            </div>
-                            <div className={styled.reply_input_container}>
-                              <textarea
-                                placeholder="답글 추가..."
-                                className={styled.reply_text_input}
-                                value={replyContent}
-                                onChange={handleReplyInputChange}
-                                onKeyDown={(e) =>
-                                  handleReplyKeyPress(e, comment.commentId)
-                                }
-                                disabled={isSubmittingReply}
-                                rows={1}
-                              />
-                            </div>
-                            <button
-                              className={styled.reply_submit_button}
-                              onClick={() =>
-                                handleSubmitReply(comment.commentId)
+                      {/* 답글 입력 영역 */}
+                      {replyingTo === comment.commentId && (
+                        <div className={styled.reply_input}>
+                          <div className={styled.reply_user_avatar}>
+                            <img
+                              src={
+                                profileInfo?.profileImage ||
+                                '/assets/no_profile.png'
                               }
-                              disabled={
-                                !replyContent.trim() || isSubmittingReply
-                              }
-                              type="button">
-                              {isSubmittingReply ? '전송 중...' : '전송'}
-                            </button>
+                              alt="프로필"
+                              onError={(e) => {
+                                e.currentTarget.src = '/assets/no_profile.png';
+                              }}
+                            />
                           </div>
-                        )}
+                          <div className={styled.reply_input_container}>
+                            <textarea
+                              placeholder="답글 추가..."
+                              className={styled.reply_text_input}
+                              value={replyContent}
+                              onChange={handleReplyInputChange}
+                              onKeyDown={(e) =>
+                                handleReplyKeyPress(e, comment.commentId)
+                              }
+                              disabled={isSubmittingReply}
+                              rows={1}
+                            />
+                          </div>
+                          <button
+                            className={styled.reply_submit_button}
+                            onClick={() => handleSubmitReply(comment.commentId)}
+                            disabled={!replyContent.trim() || isSubmittingReply}
+                            type="button">
+                            {isSubmittingReply ? '전송 중...' : '전송'}
+                          </button>
+                        </div>
+                      )}
 
-                        {/* 대댓글 목록 */}
-                        {comment.replies && comment.replies.length > 0 && (
-                          <div className={styled.replies_list}>
-                            {comment.replies.map((reply) => (
-                              <div
-                                key={reply.commentId}
-                                className={styled.reply_item}>
-                                <div className={styled.reply_avatar}>
-                                  <img
-                                    src={
-                                      reply.user.profileImage ||
-                                      '/assets/no_profile.png'
-                                    }
-                                    alt={reply.user.userName}
-                                    onError={(e) => {
-                                      e.currentTarget.src =
-                                        '/assets/no_profile.png';
-                                    }}
-                                  />
+                      {/* 대댓글 목록 */}
+                      {comment.replies && comment.replies.length > 0 && (
+                        <div className={styled.replies_list}>
+                          {comment.replies.map((reply) => (
+                            <div
+                              key={reply.commentId}
+                              className={styled.reply_item}>
+                              <div className={styled.reply_avatar}>
+                                <img
+                                  src={
+                                    reply.user.profileImage ||
+                                    '/assets/no_profile.png'
+                                  }
+                                  alt={reply.user.userName}
+                                  onError={(e) => {
+                                    e.currentTarget.src =
+                                      '/assets/no_profile.png';
+                                  }}
+                                />
+                              </div>
+                              <div className={styled.reply_content}>
+                                <div className={styled.reply_header}>
+                                  <span className={styled.reply_author}>
+                                    {reply.user.userName}
+                                  </span>
+                                  <span className={styled.reply_time}>
+                                    {formatDistanceToNow(
+                                      new Date(reply.commentCreatedAt),
+                                      {
+                                        addSuffix: true,
+                                        locale: ko,
+                                      },
+                                    )}
+                                  </span>
                                 </div>
-                                <div className={styled.reply_content}>
-                                  <div className={styled.reply_header}>
-                                    <span className={styled.reply_author}>
-                                      {reply.user.userName}
-                                    </span>
-                                    <span className={styled.reply_time}>
-                                      {formatDistanceToNow(
-                                        new Date(reply.commentCreatedAt),
-                                        {
-                                          addSuffix: true,
-                                          locale: ko,
-                                        },
-                                      )}
-                                    </span>
-                                  </div>
-                                  <div className={styled.reply_text}>
-                                    {reply.content
-                                      .split('\n')
-                                      .map((line, index) => (
-                                        <span key={index}>
-                                          {line}
-                                          {index <
-                                            reply.content.split('\n').length -
-                                              1 && <br />}
-                                        </span>
-                                      ))}
-                                  </div>
-                                  <div className={styled.reply_actions}>
-                                    <button
-                                      className={styled.like_button}
-                                      onClick={() =>
-                                        handleCommentLike(reply.commentId)
-                                      }>
-                                      <span>👍</span>
-                                      <span>{reply.likeCount}</span>
-                                    </button>
-                                  </div>
+                                <div className={styled.reply_text}>
+                                  {reply.content
+                                    .split('\n')
+                                    .map((line, index) => (
+                                      <span key={index}>
+                                        {line}
+                                        {index <
+                                          reply.content.split('\n').length -
+                                            1 && <br />}
+                                      </span>
+                                    ))}
+                                </div>
+                                <div className={styled.reply_actions}>
+                                  <button
+                                    className={styled.like_button}
+                                    onClick={() =>
+                                      handleCommentLike(reply.commentId)
+                                    }>
+                                    <span>👍</span>
+                                    <span>{reply.likeCount}</span>
+                                  </button>
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  ));
+                  </div>
+                ));
               }
             })()}
           </div>
