@@ -642,12 +642,12 @@ export default function CommunityDetailPage() {
                             onClick={() => toggleReplies(comment.commentId)}>
                             {expandedReplies.has(comment.commentId) ? (
                               <>
-                                <span>↗</span>
+                                <span>↑</span>
                                 <span>답글 숨기기</span>
                               </>
                             ) : (
                               <>
-                                <span>↙</span>
+                                <span>↓</span>
                                 <span>답글 {comment.replies.length}개</span>
                               </>
                             )}
