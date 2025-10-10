@@ -103,6 +103,7 @@ export default function CommunityDetailPage() {
   const [replyContent, setReplyContent] = useState(''); // 답글 내용
   const [isSubmittingReply, setIsSubmittingReply] = useState(false);
   const [commentError, setCommentError] = useState<string | null>(null);
+  const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set()); // 펼쳐진 대댓글 목록
 
   const communityId = parseInt(params.id as string);
 
@@ -280,6 +281,17 @@ export default function CommunityDetailPage() {
     setReplyingTo(replyingTo === commentId ? null : commentId);
     setReplyContent('');
     setCommentError(null); // 에러 상태 초기화
+  };
+
+  // 대댓글 접기/펼치기 핸들러
+  const toggleReplies = (commentId: number) => {
+    const newExpandedReplies = new Set(expandedReplies);
+    if (newExpandedReplies.has(commentId)) {
+      newExpandedReplies.delete(commentId);
+    } else {
+      newExpandedReplies.add(commentId);
+    }
+    setExpandedReplies(newExpandedReplies);
   };
 
   // 답글 작성 핸들러
@@ -501,7 +513,13 @@ export default function CommunityDetailPage() {
         <div className={styled.comments_section}>
           <div className={styled.comments_header}>
             <h3 className={styled.comments_title}>
-              댓글 {comments.filter((comment) => !comment.parentComment).length}
+              댓글{' '}
+              {
+                comments.filter(
+                  (comment) =>
+                    !comment.parentComment && !comment.parentCommentId,
+                ).length
+              }
               개
             </h3>
             <div className={styled.sort_dropdown}>
@@ -556,9 +574,8 @@ export default function CommunityDetailPage() {
           {/* 댓글 목록 */}
           <div className={styled.comments_list}>
             {(() => {
-              // 일반 댓글만 필터링 (대댓글이 아닌 것만)
               const mainComments = comments.filter(
-                (comment) => !comment.parentComment,
+                (comment) => !comment.parentComment && !comment.parentCommentId,
               );
 
               if (mainComments.length === 0) {
@@ -618,6 +635,24 @@ export default function CommunityDetailPage() {
                           onClick={() => handleReplyClick(comment.commentId)}>
                           답글
                         </button>
+                        {/* 대댓글 개수 표시 및 접기/펼치기 버튼 */}
+                        {comment.replies && comment.replies.length > 0 && (
+                          <button
+                            className={styled.toggle_replies_button}
+                            onClick={() => toggleReplies(comment.commentId)}>
+                            {expandedReplies.has(comment.commentId) ? (
+                              <>
+                                <span>↗</span>
+                                <span>답글 숨기기</span>
+                              </>
+                            ) : (
+                              <>
+                                <span>↙</span>
+                                <span>답글 {comment.replies.length}개</span>
+                              </>
+                            )}
+                          </button>
+                        )}
                       </div>
 
                       {/* 답글 입력 영역 */}
@@ -658,68 +693,70 @@ export default function CommunityDetailPage() {
                         </div>
                       )}
 
-                      {/* 대댓글 목록 */}
-                      {comment.replies && comment.replies.length > 0 && (
-                        <div className={styled.replies_list}>
-                          {comment.replies.map((reply) => (
-                            <div
-                              key={reply.commentId}
-                              className={styled.reply_item}>
-                              <div className={styled.reply_avatar}>
-                                <img
-                                  src={
-                                    reply.user.profileImage ||
-                                    '/assets/no_profile.png'
-                                  }
-                                  alt={reply.user.userName}
-                                  onError={(e) => {
-                                    e.currentTarget.src =
-                                      '/assets/no_profile.png';
-                                  }}
-                                />
+                      {/* 대댓글 목록 - 접기/펼치기 기능 */}
+                      {comment.replies &&
+                        comment.replies.length > 0 &&
+                        expandedReplies.has(comment.commentId) && (
+                          <div className={styled.replies_list}>
+                            {comment.replies.map((reply) => (
+                              <div
+                                key={reply.commentId}
+                                className={styled.reply_item}>
+                                <div className={styled.reply_avatar}>
+                                  <img
+                                    src={
+                                      reply.user.profileImage ||
+                                      '/assets/no_profile.png'
+                                    }
+                                    alt={reply.user.userName}
+                                    onError={(e) => {
+                                      e.currentTarget.src =
+                                        '/assets/no_profile.png';
+                                    }}
+                                  />
+                                </div>
+                                <div className={styled.reply_content}>
+                                  <div className={styled.reply_header}>
+                                    <span className={styled.reply_author}>
+                                      {reply.user.userName}
+                                    </span>
+                                    <span className={styled.reply_time}>
+                                      {formatDistanceToNow(
+                                        new Date(reply.commentCreatedAt),
+                                        {
+                                          addSuffix: true,
+                                          locale: ko,
+                                        },
+                                      )}
+                                    </span>
+                                  </div>
+                                  <div className={styled.reply_text}>
+                                    {reply.content
+                                      .split('\n')
+                                      .map((line, index) => (
+                                        <span key={index}>
+                                          {line}
+                                          {index <
+                                            reply.content.split('\n').length -
+                                              1 && <br />}
+                                        </span>
+                                      ))}
+                                  </div>
+                                  <div className={styled.reply_actions}>
+                                    <button
+                                      className={styled.like_button}
+                                      onClick={() =>
+                                        handleCommentLike(reply.commentId)
+                                      }>
+                                      <span>👍</span>
+                                      <span>{reply.likeCount}</span>
+                                    </button>
+                                  </div>
+                                </div>
                               </div>
-                              <div className={styled.reply_content}>
-                                <div className={styled.reply_header}>
-                                  <span className={styled.reply_author}>
-                                    {reply.user.userName}
-                                  </span>
-                                  <span className={styled.reply_time}>
-                                    {formatDistanceToNow(
-                                      new Date(reply.commentCreatedAt),
-                                      {
-                                        addSuffix: true,
-                                        locale: ko,
-                                      },
-                                    )}
-                                  </span>
-                                </div>
-                                <div className={styled.reply_text}>
-                                  {reply.content
-                                    .split('\n')
-                                    .map((line, index) => (
-                                      <span key={index}>
-                                        {line}
-                                        {index <
-                                          reply.content.split('\n').length -
-                                            1 && <br />}
-                                      </span>
-                                    ))}
-                                </div>
-                                <div className={styled.reply_actions}>
-                                  <button
-                                    className={styled.like_button}
-                                    onClick={() =>
-                                      handleCommentLike(reply.commentId)
-                                    }>
-                                    <span>👍</span>
-                                    <span>{reply.likeCount}</span>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                            ))}
+                          </div>
+                        )}
                     </div>
                   </div>
                 ));

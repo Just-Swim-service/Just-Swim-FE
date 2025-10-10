@@ -46,6 +46,7 @@ export interface CommunityComment {
     profileImage?: string;
   };
   parentComment?: CommunityComment;
+  parentCommentId?: number; // 대댓글을 위한 부모 댓글 ID
   replies?: CommunityComment[];
   commentCreatedAt: string;
   commentUpdatedAt: string;

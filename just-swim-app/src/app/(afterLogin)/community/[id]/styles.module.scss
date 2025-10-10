@@ -528,14 +528,50 @@
         background-color: $--gray-100;
       }
     }
+
+    // 유튜브 스타일 답글 토글 버튼
+    .toggle_replies_button {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border: none;
+      background-color: transparent;
+      @include Body5-R;
+      font-weight: 600;
+      color: $--gray-700;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      margin-left: 8px;
+
+      &:hover {
+        background-color: $--gray-100;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      span:first-child {
+        font-size: 14px;
+        transition: transform 0.2s ease;
+      }
+
+      &:hover span:first-child {
+        transform: scale(1.1);
+      }
+    }
   }
 
-  // 답글 입력 영역
+  // 답글 입력 영역 - 유튜브 스타일
   .reply_input {
     display: flex;
     gap: 12px;
     margin-top: 12px;
-    padding: 12px 0 0 12px;
+    margin-left: 16px; // 유튜브처럼 한 칸 들여쓰기
+    padding: 12px 0 0 16px;
     border-left: 2px solid $--gray-200;
     align-items: flex-end;
 
@@ -617,11 +653,12 @@
       }
     }
 
-    // 대댓글 목록
+    // 대댓글 목록 - 유튜브 스타일
     .replies_list {
-      margin-top: 12px;
-      padding-left: 12px;
+      margin-top: 8px;
+      margin-left: 16px; // 유튜브처럼 한 칸 들여쓰기
       border-left: 2px solid $--gray-200;
+      padding-left: 16px;
       display: flex;
       flex-direction: column;
       gap: 8px;
