@@ -430,17 +430,19 @@ export default function CommunityDetailPage() {
                 {/* 간단한 테스트 */}
                 <div
                   style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: '0',
-                    zIndex: 999,
+                    position: 'fixed',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 9999,
                     backgroundColor: 'red',
                     color: 'white',
-                    padding: '10px',
-                    border: '2px solid black',
-                    marginTop: '4px',
+                    padding: '20px',
+                    border: '3px solid black',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
                   }}>
-                  테스트 드롭다운
+                  테스트 드롭다운 (고정 위치)
                 </div>
 
                 {/* 더 간단한 테스트 */}
