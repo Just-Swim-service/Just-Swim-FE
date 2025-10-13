@@ -9,3 +9,4 @@ export * from './monthModal';
 export * from './timeModal';
 export * from './tipModal';
 export * from './ImageFocusModal';
+export * from '../common/modal/dropdownModal';

@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
-import { BottomNav, Header } from '@components';
+import { BottomNav, Header, DropdownModal } from '@components';
 import {
   getCommunityById,
   updateCommunity,
@@ -171,13 +171,7 @@ export default function CommunityDetailPage() {
   };
 
   const handleKebabClick = () => {
-    console.log('Kebab clicked! Current showDropdown:', showDropdown);
     setShowDropdown(!showDropdown);
-    console.log('New showDropdown will be:', !showDropdown);
-  };
-
-  const handleOutsideClick = () => {
-    setShowDropdown(false);
   };
 
   // 댓글 작성
@@ -431,124 +425,26 @@ export default function CommunityDetailPage() {
                   <IconKebabMenu width={20} height={20} fill="#666" />
                 </button>
 
-                {/* 항상 보이는 테스트 드롭다운 */}
-                <div
-                  id="debug-dropdown-menu-always"
-                  style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: '0',
-                    zIndex: 999,
-                    minWidth: '120px',
-                    backgroundColor: 'white',
-                    border: '3px solid red',
-                    borderRadius: '8px',
-                    boxShadow:
-                      '0 8px 24px rgba(255, 0, 0, 0.5), 0 4px 12px rgba(255, 0, 0, 0.3)',
-                    overflow: 'hidden',
-                    marginTop: '4px',
-                  }}>
-                  <button
-                    onClick={handleEdit}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      width: '100%',
-                      padding: '12px 16px',
-                      border: 'none',
-                      backgroundColor: 'white',
-                      cursor: 'pointer',
-                      fontSize: '15px',
-                      color: '#5c5e62',
-                    }}>
-                    <IconSetting width={16} height={16} fill="#666" />
-                    수정
-                  </button>
-                  <button
-                    onClick={handleDeleteClick}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      width: '100%',
-                      padding: '12px 16px',
-                      border: 'none',
-                      backgroundColor: 'white',
-                      cursor: 'pointer',
-                      fontSize: '15px',
-                      color: '#5c5e62',
-                      borderTop: '1px solid #ebecee',
-                    }}>
-                    <IconTrashcan width={16} height={16} fill="#FF4D4D" />
-                    삭제
-                  </button>
-                </div>
-
-                {/* 원래 조건부 렌더링 */}
-                {showDropdown && (
-                  <>
-                    {console.log(
-                      'Rendering dropdown menu! showDropdown is true',
-                    )}
-                    <div
-                      className={styled.dropdown_overlay}
-                      onClick={handleOutsideClick}
-                    />
-                    <div
-                      id="debug-dropdown-menu"
-                      style={{
-                        position: 'absolute',
-                        top: '100%',
-                        right: '0',
-                        zIndex: 999,
-                        minWidth: '120px',
-                        backgroundColor: 'white',
-                        border: '3px solid red',
-                        borderRadius: '8px',
-                        boxShadow:
-                          '0 8px 24px rgba(255, 0, 0, 0.5), 0 4px 12px rgba(255, 0, 0, 0.3)',
-                        overflow: 'hidden',
-                        marginTop: '4px',
-                      }}>
-                      <button
-                        onClick={handleEdit}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          width: '100%',
-                          padding: '12px 16px',
-                          border: 'none',
-                          backgroundColor: 'white',
-                          cursor: 'pointer',
-                          fontSize: '15px',
-                          color: '#5c5e62',
-                        }}>
-                        <IconSetting width={16} height={16} fill="#666" />
-                        수정
-                      </button>
-                      <button
-                        onClick={handleDeleteClick}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          width: '100%',
-                          padding: '12px 16px',
-                          border: 'none',
-                          backgroundColor: 'white',
-                          cursor: 'pointer',
-                          fontSize: '15px',
-                          color: '#5c5e62',
-                          borderTop: '1px solid #ebecee',
-                        }}>
+                <DropdownModal
+                  isOpen={showDropdown}
+                  onClose={() => setShowDropdown(false)}
+                  items={[
+                    {
+                      label: '수정',
+                      icon: <IconSetting width={16} height={16} fill="#666" />,
+                      onClick: handleEdit,
+                    },
+                    {
+                      label: '삭제',
+                      icon: (
                         <IconTrashcan width={16} height={16} fill="#FF4D4D" />
-                        삭제
-                      </button>
-                    </div>
-                  </>
-                )}
+                      ),
+                      onClick: handleDeleteClick,
+                      danger: true,
+                    },
+                  ]}
+                  position={{ top: '100%', right: '0' }}
+                />
               </div>
             )}
           </div>

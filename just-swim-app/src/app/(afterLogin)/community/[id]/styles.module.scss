@@ -786,58 +786,6 @@
     }
   }
 
-  .dropdown_overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 998;
-    background-color: transparent;
-  }
-
-  .dropdown_menu {
-    position: absolute !important;
-    top: 100% !important;
-    right: 0 !important;
-    z-index: 999 !important;
-    min-width: 120px !important;
-    background-color: white !important;
-    border: 2px solid #bfc5c9 !important;
-    border-radius: 8px !important;
-    box-shadow:
-      0 8px 24px rgba(0, 0, 0, 0.25),
-      0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    overflow: hidden !important;
-    margin-top: 4px !important;
-  }
-
-  .dropdown_item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 12px 16px;
-    border: none;
-    background-color: white;
-    @include Title4-M;
-    color: $--gray-700;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: $--gray-50;
-    }
-
-    &:active {
-      background-color: $--gray-100;
-    }
-
-    &:first-child {
-      border-bottom: 1px solid $--gray-200;
-    }
-  }
-
   // 삭제 확인 모달
   .modal_overlay {
     position: fixed;
