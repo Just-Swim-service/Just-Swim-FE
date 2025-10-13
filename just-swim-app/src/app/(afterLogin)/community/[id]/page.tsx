@@ -443,7 +443,6 @@ export default function CommunityDetailPage() {
                       danger: true,
                     },
                   ]}
-                  position={{ top: '100%', right: '0' }}
                 />
               </div>
             )}

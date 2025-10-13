@@ -12,20 +12,9 @@ interface DropdownModalProps {
     onClick: () => void;
     danger?: boolean;
   }>;
-  position?: {
-    top?: string;
-    right?: string;
-    left?: string;
-    bottom?: string;
-  };
 }
 
-export function DropdownModal({
-  isOpen,
-  onClose,
-  items,
-  position = { top: '100%', right: '0' },
-}: DropdownModalProps) {
+export function DropdownModal({ isOpen, onClose, items }: DropdownModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -34,14 +23,7 @@ export function DropdownModal({
       <div className={styles.dropdown_overlay} onClick={onClose} />
 
       {/* 드롭다운 메뉴 */}
-      <div
-        className={styles.dropdown_menu}
-        style={{
-          top: position.top,
-          right: position.right,
-          left: position.left,
-          bottom: position.bottom,
-        }}>
+      <div className={styles.dropdown_menu}>
         {items.map((item, index) => (
           <button
             key={index}
