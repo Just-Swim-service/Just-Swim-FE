@@ -83,6 +83,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    overflow: visible;
 
     .date_info {
       @include Body5-R;
