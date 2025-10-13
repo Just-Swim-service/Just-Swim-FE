@@ -797,19 +797,19 @@
   }
 
   .dropdown_menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 999;
-    min-width: 120px;
-    background-color: white;
-    border: 1px solid $--gray-400;
-    border-radius: 8px;
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    z-index: 999 !important;
+    min-width: 120px !important;
+    background-color: white !important;
+    border: 2px solid #bfc5c9 !important;
+    border-radius: 8px !important;
     box-shadow:
       0 8px 24px rgba(0, 0, 0, 0.25),
-      0 4px 12px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    margin-top: 4px;
+      0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    overflow: hidden !important;
+    margin-top: 4px !important;
   }
 
   .dropdown_item {

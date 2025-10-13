@@ -435,16 +435,54 @@ export default function CommunityDetailPage() {
                       className={styled.dropdown_overlay}
                       onClick={handleOutsideClick}
                     />
-                    <div className={styled.dropdown_menu}>
+                    <div
+                      id="debug-dropdown-menu"
+                      style={{
+                        position: 'absolute',
+                        top: '100%',
+                        right: '0',
+                        zIndex: 999,
+                        minWidth: '120px',
+                        backgroundColor: 'white',
+                        border: '3px solid red',
+                        borderRadius: '8px',
+                        boxShadow:
+                          '0 8px 24px rgba(255, 0, 0, 0.5), 0 4px 12px rgba(255, 0, 0, 0.3)',
+                        overflow: 'hidden',
+                        marginTop: '4px',
+                      }}>
                       <button
-                        className={styled.dropdown_item}
-                        onClick={handleEdit}>
+                        onClick={handleEdit}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          width: '100%',
+                          padding: '12px 16px',
+                          border: 'none',
+                          backgroundColor: 'white',
+                          cursor: 'pointer',
+                          fontSize: '15px',
+                          color: '#5c5e62',
+                        }}>
                         <IconSetting width={16} height={16} fill="#666" />
                         수정
                       </button>
                       <button
-                        className={styled.dropdown_item}
-                        onClick={handleDeleteClick}>
+                        onClick={handleDeleteClick}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          width: '100%',
+                          padding: '12px 16px',
+                          border: 'none',
+                          backgroundColor: 'white',
+                          cursor: 'pointer',
+                          fontSize: '15px',
+                          color: '#5c5e62',
+                          borderTop: '1px solid #ebecee',
+                        }}>
                         <IconTrashcan width={16} height={16} fill="#FF4D4D" />
                         삭제
                       </button>
