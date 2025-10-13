@@ -171,7 +171,9 @@ export default function CommunityDetailPage() {
   };
 
   const handleKebabClick = () => {
+    console.log('Kebab clicked! Current showDropdown:', showDropdown);
     setShowDropdown(!showDropdown);
+    console.log('New showDropdown will be:', !showDropdown);
   };
 
   const handleOutsideClick = () => {
