@@ -171,9 +171,7 @@ export default function CommunityDetailPage() {
   };
 
   const handleKebabClick = () => {
-    console.log('Kebab clicked! Current showDropdown:', showDropdown);
     setShowDropdown(!showDropdown);
-    console.log('New showDropdown will be:', !showDropdown);
   };
 
   // 댓글 작성
@@ -427,58 +425,6 @@ export default function CommunityDetailPage() {
                   <IconKebabMenu width={20} height={20} fill="#666" />
                 </button>
 
-                {/* 간단한 테스트 */}
-                <div
-                  style={{
-                    position: 'fixed',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 9999,
-                    backgroundColor: 'red',
-                    color: 'white',
-                    padding: '20px',
-                    border: '3px solid black',
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                  }}>
-                  테스트 드롭다운 (고정 위치)
-                </div>
-
-                {/* 더 간단한 테스트 */}
-                <div
-                  style={{
-                    backgroundColor: 'blue',
-                    color: 'white',
-                    padding: '5px',
-                    marginTop: '10px',
-                  }}>
-                  간단한 테스트
-                </div>
-
-                {/* 항상 보이는 테스트 모달 */}
-                <DropdownModal
-                  isOpen={true}
-                  onClose={() => console.log('Test modal closed')}
-                  items={[
-                    {
-                      label: '테스트 수정',
-                      icon: <IconSetting width={16} height={16} fill="#666" />,
-                      onClick: () => console.log('Test edit clicked'),
-                    },
-                    {
-                      label: '테스트 삭제',
-                      icon: (
-                        <IconTrashcan width={16} height={16} fill="#FF4D4D" />
-                      ),
-                      onClick: () => console.log('Test delete clicked'),
-                      danger: true,
-                    },
-                  ]}
-                  position={{ top: '100%', right: '0' }}
-                />
-
-                {/* 원래 조건부 모달 */}
                 <DropdownModal
                   isOpen={showDropdown}
                   onClose={() => setShowDropdown(false)}
