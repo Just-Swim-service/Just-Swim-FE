@@ -26,8 +26,14 @@ export function DropdownModal({
   items,
   position = { top: '100%', right: '0' },
 }: DropdownModalProps) {
-  if (!isOpen) return null;
+  console.log('DropdownModal render - isOpen:', isOpen, 'items:', items.length);
 
+  if (!isOpen) {
+    console.log('DropdownModal: Not rendering because isOpen is false');
+    return null;
+  }
+
+  console.log('DropdownModal: Rendering dropdown with', items.length, 'items');
   return (
     <>
       {/* 오버레이 */}
