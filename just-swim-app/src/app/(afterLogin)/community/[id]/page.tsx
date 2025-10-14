@@ -240,6 +240,9 @@ export default function CommunityDetailPage() {
 
       // 댓글 목록에서 해당 댓글의 좋아요 상태 업데이트 - 직접 상태 업데이트
       const currentComments = [...comments];
+      let updated = false;
+
+      // 최상위 댓글에서 찾기
       const commentIndex = currentComments.findIndex(
         (c) => c.commentId === commentId,
       );
@@ -256,6 +259,38 @@ export default function CommunityDetailPage() {
           likeCount: newLikeCount,
         };
 
+        updated = true;
+      } else {
+        // 대댓글에서 찾기
+        for (let i = 0; i < currentComments.length; i++) {
+          const comment = currentComments[i];
+          if (comment.replies && comment.replies.length > 0) {
+            const replyIndex = comment.replies.findIndex(
+              (r) => r.commentId === commentId,
+            );
+
+            if (replyIndex !== -1) {
+              const currentReply = comment.replies[replyIndex];
+
+              const newLikeCount = result.isLiked
+                ? currentReply.likeCount + 1
+                : Math.max(0, currentReply.likeCount - 1);
+
+              currentComments[i] = {
+                ...comment,
+                replies: comment.replies.map((r, idx) =>
+                  idx === replyIndex ? { ...r, likeCount: newLikeCount } : r,
+                ),
+              };
+
+              updated = true;
+              break;
+            }
+          }
+        }
+      }
+
+      if (updated) {
         setComments(currentComments);
       }
 
