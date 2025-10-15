@@ -489,18 +489,6 @@ export default function CommunityDetailPage() {
           <h1>{post.title}</h1>
         </div>
 
-        {/* 카테고리와 태그 */}
-        <div className={styled.post_meta}>
-          {post.category && (
-            <span className={styled.category_badge}>{post.category}</span>
-          )}
-          {post.communityTags && post.communityTags.length > 0 && (
-            <div className={styled.tags_container}>
-              <TagDisplay tags={post.communityTags} />
-            </div>
-          )}
-        </div>
-
         {/* 구분선 */}
         <div className={styled.community_divider} />
 
@@ -543,6 +531,21 @@ export default function CommunityDetailPage() {
             <span className={styled.stat_value}>{post.likeCount}</span>
           </div>
         </div>
+
+        {/* 카테고리와 태그 */}
+        {(post.category ||
+          (post.communityTags && post.communityTags.length > 0)) && (
+          <div className={styled.post_meta}>
+            {post.category && (
+              <span className={styled.category_badge}>{post.category}</span>
+            )}
+            {post.communityTags && post.communityTags.length > 0 && (
+              <div className={styled.tags_container}>
+                <TagDisplay tags={post.communityTags} />
+              </div>
+            )}
+          </div>
+        )}
 
         {/* 댓글 섹션 */}
         <div className={styled.comments_section}>
