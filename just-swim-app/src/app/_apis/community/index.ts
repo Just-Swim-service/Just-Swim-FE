@@ -1,10 +1,33 @@
 import { HTTP_METHODS } from '@data';
 import api from '../api';
 
+// 카테고리 타입
+export enum CategoryType {
+  QUESTION = '질문',
+  RECORD = '운동기록',
+  TIP = '수영팁',
+  REVIEW = '후기',
+  STORY = '수영일상',
+}
+
+// 태그 인터페이스
+export interface Tag {
+  tagId: number;
+  tagName: string;
+  usageCount: number;
+  tagCreatedAt: string;
+  tagUpdatedAt: string;
+}
+
+export interface CommunityTag {
+  tag: Tag;
+}
+
 export interface CommunityPost {
   communityId: number;
   title: string;
   content: string;
+  category: CategoryType;
   workoutData?: any;
   viewCount: number;
   likeCount: number;
@@ -14,6 +37,7 @@ export interface CommunityPost {
     name: string;
     profileImage?: string;
   };
+  communityTags?: CommunityTag[];
   communityCreatedAt: string;
   communityUpdatedAt: string;
   communityDeletedAt?: string;
@@ -22,12 +46,16 @@ export interface CommunityPost {
 export interface CreateCommunityDto {
   title: string;
   content: string;
+  category?: CategoryType;
+  tags?: string[];
   workoutData?: any;
 }
 
 export interface UpdateCommunityDto {
   title?: string;
   content?: string;
+  category?: CategoryType;
+  tags?: string[];
   workoutData?: any;
 }
 
@@ -62,18 +90,25 @@ export interface PaginatedResponse<T> {
   };
 }
 
-// 게시글 목록 조회
+// 게시글 목록 조회 (카테고리/태그 필터 지원)
 export const getCommunities = async (
   page: number = 1,
   limit: number = 10,
+  category?: CategoryType,
+  tags?: string[],
 ): Promise<PaginatedResponse<CommunityPost>> => {
-  console.log('=== getCommunities 함수 시작! ===', page, limit); // 디버깅용
+  console.log('=== getCommunities 함수 시작! ===', page, limit, category, tags);
 
   try {
-    const response = await api<any>(
-      `/community?page=${page}&limit=${limit}`,
-      HTTP_METHODS.GET,
-    );
+    let url = `/community?page=${page}&limit=${limit}`;
+    if (category) {
+      url += `&category=${encodeURIComponent(category)}`;
+    }
+    if (tags && tags.length > 0) {
+      url += `&tags=${encodeURIComponent(tags.join(','))}`;
+    }
+
+    const response = await api<any>(url, HTTP_METHODS.GET);
 
     // 실제 데이터는 response.data.data에 있음
     const actualData = response.data.data;
@@ -99,7 +134,7 @@ export const getCommunities = async (
       pagination: actualData.pagination,
     };
   } catch (error) {
-    console.error('=== getCommunities 에러 ===', error); // 디버깅용
+    console.error('=== getCommunities 에러 ===', error);
     throw error;
   }
 };
@@ -236,4 +271,36 @@ export const toggleCommentLike = async (
   );
 
   return response.data.data;
+};
+
+// 인기 태그 목록 조회
+export const getPopularTags = async (limit: number = 20): Promise<Tag[]> => {
+  const response = await api<any>(
+    `/community/tags/popular?limit=${limit}`,
+    HTTP_METHODS.GET,
+  );
+  return response.data.data || [];
+};
+
+// 태그 자동완성 검색
+export const searchTags = async (
+  query: string,
+  limit: number = 10,
+): Promise<Tag[]> => {
+  const response = await api<any>(
+    `/community/tags/search?q=${encodeURIComponent(query)}&limit=${limit}`,
+    HTTP_METHODS.GET,
+  );
+  return response.data.data || [];
+};
+
+// 카테고리별 게시글 수 통계
+export const getCategoryStats = async (): Promise<
+  { category: CategoryType; count: number }[]
+> => {
+  const response = await api<any>(
+    '/community/categories/stats',
+    HTTP_METHODS.GET,
+  );
+  return response.data.data || [];
 };

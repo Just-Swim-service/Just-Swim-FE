@@ -3,8 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNotificationStore } from '../../../_store/notification';
 import { notificationApi } from '../../../_apis/notification';
-import NotificationItem from '../notificationItem/NotificationItem';
-import styles from './NotificationModal.module.scss';
+import NotificationItem from '../notificationItem';
+import styles from './styles.module.scss';
 
 const NotificationModal: React.FC = () => {
   const {

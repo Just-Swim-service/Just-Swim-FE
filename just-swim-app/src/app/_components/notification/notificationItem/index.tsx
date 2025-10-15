@@ -6,7 +6,7 @@ import { useNotificationStore } from '@store';
 import { notificationApi } from '@apis';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import styles from './NotificationItem.module.scss';
+import styles from './styles.module.scss';
 
 interface NotificationItemProps {
   notification: Notification;

@@ -1,11 +1,11 @@
 'use client';
 
 import { HTMLAttributes, MouseEvent, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { HistoryBackHeader, TextInput } from '@components';
-import { createCommunity } from '@apis';
+import { HistoryBackHeader, TextInput, TagInput } from '@components';
+import { createCommunity, CategoryType } from '@apis';
 import { useErrorHandler } from '@utils';
 import { communitySchema, type CommunityFormData } from './schema';
 import { IntensityInput } from '../intensityInput';
@@ -40,14 +40,19 @@ export function FormBody() {
     content: string;
     error?: string;
   }>({ title: '', content: '' });
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isValid },
   } = useForm<CommunityFormData>({
     resolver: zodResolver(communitySchema),
     mode: 'onChange',
+    defaultValues: {
+      category: CategoryType.STORY,
+    },
   });
 
   const onSubmit = handleSubmit(async (data: CommunityFormData) => {
@@ -63,6 +68,8 @@ export function FormBody() {
       const requestData = {
         title: data.title,
         content: data.content,
+        category: data.category,
+        tags: selectedTags.length > 0 ? selectedTags : undefined,
         workoutData:
           Object.keys(workoutData).length > 0 ? workoutData : undefined,
       };
@@ -128,6 +135,31 @@ export function FormBody() {
                       errors.content?.message || serverErrors.content
                     }
                     maxLength={1000}
+                  />
+                </InputWrapper>
+                <InputWrapper name="카테고리" required={true}>
+                  <Controller
+                    name="category"
+                    control={control}
+                    render={({ field }) => (
+                      <select
+                        {...field}
+                        className={styled.category_select}
+                        value={field.value || CategoryType.STORY}>
+                        <option value={CategoryType.STORY}>수영일상</option>
+                        <option value={CategoryType.QUESTION}>질문</option>
+                        <option value={CategoryType.RECORD}>운동기록</option>
+                        <option value={CategoryType.TIP}>수영팁</option>
+                        <option value={CategoryType.REVIEW}>후기</option>
+                      </select>
+                    )}
+                  />
+                </InputWrapper>
+                <InputWrapper name="태그 (선택사항)">
+                  <TagInput
+                    selectedTags={selectedTags}
+                    onTagsChange={setSelectedTags}
+                    maxTags={5}
                   />
                 </InputWrapper>
               </div>

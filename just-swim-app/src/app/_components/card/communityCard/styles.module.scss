@@ -21,12 +21,26 @@
 
 .header {
   margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .userInfo {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.categoryBadge {
+  @include Body4-R;
+  font-weight: 600;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 .profileImage {

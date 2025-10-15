@@ -15,6 +15,70 @@
   gap: 12px;
 }
 
+.postItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selectedTagsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filterLabel {
+  @include Title5-M;
+  color: $--gray-600;
+  white-space: nowrap;
+}
+
+.selectedTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.selectedTag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+
+  span {
+    line-height: 1;
+  }
+}
+
+.removeTagButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
 .loadingContainer {
   display: flex;
   flex-direction: column;

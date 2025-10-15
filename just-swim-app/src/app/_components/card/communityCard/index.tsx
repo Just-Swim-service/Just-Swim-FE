@@ -44,6 +44,9 @@ export function CommunityCard({ post, onClick }: CommunityCardProps) {
             </span>
           </div>
         </div>
+        {post.category && (
+          <span className={styled.categoryBadge}>{post.category}</span>
+        )}
       </div>
 
       <div className={styled.content}>

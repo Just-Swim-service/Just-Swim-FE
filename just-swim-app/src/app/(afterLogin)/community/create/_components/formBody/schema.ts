@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { CategoryType } from '@apis';
 
 // Community 게시글 작성 폼 스키마
 export const communitySchema = z.object({
@@ -10,6 +11,7 @@ export const communitySchema = z.object({
     .string()
     .min(1, '내용을 입력해주세요')
     .max(1000, '내용은 1000자 이하로 입력해주세요'),
+  category: z.nativeEnum(CategoryType).optional(),
   workoutTime: z
     .string()
     .optional()

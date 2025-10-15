@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useUserStore } from '@store';
 import NoProfile from '@/_assets/images/no_profile.png';
 import { useNotificationStore } from '@/_store/notification';
-import NotificationModal from '@/_components/notification/notificationModal/NotificationModal';
+import NotificationModal from '@/_components/notification/notificationModal';
 import { notificationApi } from '@/_apis/notification';
 import IconBell from '@assets/icon_bell.svg';
 

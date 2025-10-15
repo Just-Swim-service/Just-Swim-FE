@@ -17,3 +17,6 @@ export * from './mobileNav';
 export * from './accessibility';
 export * from './keyboard';
 export * from './performance';
+export * from './categoryFilter';
+export * from './tagInput';
+export * from './tagDisplay';

@@ -3,8 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
-import { BottomNav, HistoryBackHeader } from '@components';
-import { getCommunityById, updateCommunity, type CommunityPost } from '@apis';
+import { BottomNav, HistoryBackHeader, TagInput } from '@components';
+import {
+  getCommunityById,
+  updateCommunity,
+  type CommunityPost,
+  CategoryType,
+} from '@apis';
 import { getMyProfile } from '@apis';
 
 import styled from './styles.module.scss';
@@ -21,8 +26,10 @@ export default function CommunityEditPage() {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
+    category: CategoryType.STORY,
     workoutData: null as any,
   });
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const communityId = parseInt(params.id as string);
 
@@ -53,8 +60,19 @@ export default function CommunityEditPage() {
         setFormData({
           title: postResponse.title,
           content: postResponse.content,
+          category: postResponse.category || CategoryType.STORY,
           workoutData: postResponse.workoutData,
         });
+
+        // 태그 초기화
+        if (
+          postResponse.communityTags &&
+          postResponse.communityTags.length > 0
+        ) {
+          setSelectedTags(
+            postResponse.communityTags.map((ct) => ct.tag.tagName),
+          );
+        }
       } catch (error) {
         console.error('데이터 조회 실패:', error);
         setError('게시글을 불러올 수 없습니다.');
@@ -88,7 +106,10 @@ export default function CommunityEditPage() {
 
     try {
       setSaving(true);
-      await updateCommunity(communityId, formData);
+      await updateCommunity(communityId, {
+        ...formData,
+        tags: selectedTags.length > 0 ? selectedTags : undefined,
+      });
       alert('게시글이 수정되었습니다.');
       router.push(`/community/${communityId}`);
     } catch (error) {
@@ -169,6 +190,40 @@ export default function CommunityEditPage() {
               placeholder="내용을 입력하세요"
               rows={10}
               required
+            />
+          </div>
+
+          {/* 카테고리 선택 */}
+          <div className={styled.input_group}>
+            <label htmlFor="category" className={styled.label}>
+              카테고리
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  category: e.target.value as CategoryType,
+                }))
+              }
+              className={styled.category_select}>
+              <option value={CategoryType.STORY}>수영일상</option>
+              <option value={CategoryType.QUESTION}>질문</option>
+              <option value={CategoryType.RECORD}>운동기록</option>
+              <option value={CategoryType.TIP}>수영팁</option>
+              <option value={CategoryType.REVIEW}>후기</option>
+            </select>
+          </div>
+
+          {/* 태그 입력 */}
+          <div className={styled.input_group}>
+            <label className={styled.label}>태그</label>
+            <TagInput
+              selectedTags={selectedTags}
+              onTagsChange={setSelectedTags}
+              maxTags={5}
             />
           </div>
 

@@ -7,7 +7,8 @@ import { IconAdd } from '@assets';
 import { BottomNav, UserIconHeader } from '@components';
 import { CommunityCard } from '@components';
 import { InlineLoader, Spinner } from '@components';
-import { getCommunities, type CommunityPost } from '@apis';
+import { CategoryFilter, TagDisplay } from '@components';
+import { getCommunities, type CommunityPost, type CategoryType } from '@apis';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
@@ -18,13 +19,22 @@ export default function CommunityPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+    null,
+  );
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const fetchPosts = async (pageNum: number = 1) => {
+  const fetchPosts = async (pageNum: number = 1, reset: boolean = false) => {
     try {
       setLoading(true);
-      const response = await getCommunities(pageNum, 10);
+      const response = await getCommunities(
+        pageNum,
+        10,
+        selectedCategory || undefined,
+        selectedTags.length > 0 ? selectedTags : undefined,
+      );
 
-      if (pageNum === 1) {
+      if (pageNum === 1 || reset) {
         setPosts(response.communities);
       } else {
         setPosts((prev) => [...prev, ...response.communities]);
@@ -34,7 +44,7 @@ export default function CommunityPage() {
     } catch (error) {
       console.error('게시글 조회 실패:', error);
       // 에러 발생 시 빈 배열로 설정
-      if (pageNum === 1) {
+      if (pageNum === 1 || reset) {
         setPosts([]);
       }
     } finally {
@@ -45,6 +55,12 @@ export default function CommunityPage() {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  // 필터가 변경될 때마다 첫 페이지부터 다시 조회
+  useEffect(() => {
+    setPage(1);
+    fetchPosts(1, true);
+  }, [selectedCategory, selectedTags]);
 
   const handleCreatePost = () => {
     router.push('/community/create');
@@ -62,9 +78,50 @@ export default function CommunityPage() {
     }
   };
 
+  const handleCategoryChange = (category: CategoryType | null) => {
+    setSelectedCategory(category);
+    setSelectedTags([]); // 카테고리 변경 시 태그 필터 초기화
+  };
+
+  const handleTagClick = (tagName: string) => {
+    if (!selectedTags.includes(tagName)) {
+      setSelectedTags([tagName]);
+      setSelectedCategory(null); // 태그 선택 시 카테고리 필터 초기화
+    }
+  };
+
+  const handleRemoveTag = (tagName: string) => {
+    setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
+  };
+
   return (
     <div className={styled.container}>
       <UserIconHeader title="커뮤니티" />
+
+      {/* 카테고리 필터 */}
+      <CategoryFilter
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+      />
+
+      {/* 선택된 태그 표시 */}
+      {selectedTags.length > 0 && (
+        <div className={styled.selectedTagsContainer}>
+          <span className={styled.filterLabel}>필터:</span>
+          <div className={styled.selectedTags}>
+            {selectedTags.map((tag) => (
+              <div key={tag} className={styled.selectedTag}>
+                <span>#{tag}</span>
+                <button
+                  onClick={() => handleRemoveTag(tag)}
+                  className={styled.removeTagButton}>
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className={styled.content}>
         {loading && posts.length === 0 ? (
@@ -89,11 +146,18 @@ export default function CommunityPage() {
           <>
             <div className={styled.postsList}>
               {posts.map((post) => (
-                <CommunityCard
-                  key={post.communityId}
-                  post={post}
-                  onClick={() => handlePostClick(post.communityId)}
-                />
+                <div key={post.communityId} className={styled.postItem}>
+                  <CommunityCard
+                    post={post}
+                    onClick={() => handlePostClick(post.communityId)}
+                  />
+                  {post.communityTags && post.communityTags.length > 0 && (
+                    <TagDisplay
+                      tags={post.communityTags}
+                      onTagClick={handleTagClick}
+                    />
+                  )}
+                </div>
               ))}
             </div>
 
