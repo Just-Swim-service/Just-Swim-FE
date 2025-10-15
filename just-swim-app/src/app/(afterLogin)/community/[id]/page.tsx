@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
-import { BottomNav, Header, DropdownModal } from '@components';
+import { BottomNav, Header, DropdownModal, TagDisplay } from '@components';
 import {
   getCommunityById,
   updateCommunity,
@@ -487,6 +487,18 @@ export default function CommunityDetailPage() {
         {/* 게시글 제목 */}
         <div className={styled.detail_title}>
           <h1>{post.title}</h1>
+        </div>
+
+        {/* 카테고리와 태그 */}
+        <div className={styled.post_meta}>
+          {post.category && (
+            <span className={styled.category_badge}>{post.category}</span>
+          )}
+          {post.communityTags && post.communityTags.length > 0 && (
+            <div className={styled.tags_container}>
+              <TagDisplay tags={post.communityTags} />
+            </div>
+          )}
         </div>
 
         {/* 구분선 */}

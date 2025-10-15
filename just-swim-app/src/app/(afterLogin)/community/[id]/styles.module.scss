@@ -109,6 +109,30 @@
   }
 }
 
+.post_meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.category_badge {
+  @include Body4-R;
+  font-weight: 600;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px;
+  font-size: 12px;
+  align-self: flex-start;
+}
+
+.tags_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 // 레거시 스타일 (사용 안 함, 삭제 가능)
 .author_info {
   display: flex;
