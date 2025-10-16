@@ -12,6 +12,7 @@ import { getCommunities, type CommunityPost, type CategoryType } from '@apis';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
+import SearchBar from '@/_components/common/searchBar';
 
 export default function CommunityPage() {
   const router = useRouter();
@@ -94,9 +95,23 @@ export default function CommunityPage() {
     setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
   };
 
+  const handleSearch = (query: string) => {
+    router.push(`/community/search?q=${encodeURIComponent(query)}`);
+  };
+
   return (
     <div className={styled.container}>
       <UserIconHeader title="커뮤니티" />
+
+      {/* 검색바 */}
+      <div className={styled.searchSection}>
+        <SearchBar
+          placeholder="게시글을 검색해보세요..."
+          onSearch={handleSearch}
+          showSuggestions={true}
+          className={styled.searchBar}
+        />
+      </div>
 
       {/* 카테고리 필터 */}
       <CategoryFilter

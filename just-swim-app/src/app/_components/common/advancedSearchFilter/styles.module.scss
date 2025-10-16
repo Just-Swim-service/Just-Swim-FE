@@ -1,0 +1,294 @@
+.filterContainer {
+  background: #fff;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.toggleButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+
+  &:hover {
+    background: #e9ecef;
+  }
+
+  &.expanded {
+    background: #e3f2fd;
+    border-bottom: 1px solid #e1e5e9;
+  }
+}
+
+.filterCount {
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+  color: #666;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.filterContent {
+  padding: 20px;
+  background: white;
+}
+
+.filterGroup {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.filterLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.select,
+.numberInput,
+.dateInput {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  }
+}
+
+.tagInputContainer {
+  position: relative;
+}
+
+.tagInput {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  }
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tagRemove {
+  background: none;
+  border: none;
+  color: #1976d2;
+  cursor: pointer;
+  margin-left: 4px;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+
+  &:hover {
+    background: rgba(25, 118, 210, 0.1);
+  }
+}
+
+.dateRange {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dateInput {
+  flex: 1;
+}
+
+.dateSeparator {
+  color: #666;
+  font-weight: 500;
+}
+
+.filterActions {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e1e5e9;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clearButton {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: #5a6268;
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .toggleButton {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .filterContent {
+    padding: 16px;
+  }
+
+  .filterGroup {
+    margin-bottom: 16px;
+  }
+
+  .dateRange {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dateSeparator {
+    display: none;
+  }
+
+  .filterActions {
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+}
+
+// 다크 모드 지원
+@media (prefers-color-scheme: dark) {
+  .filterContainer {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .toggleButton {
+    background: #4a5568;
+    color: #e2e8f0;
+
+    &:hover {
+      background: #2d3748;
+    }
+
+    &.expanded {
+      background: #2b6cb0;
+    }
+  }
+
+  .filterContent {
+    background: #2d3748;
+  }
+
+  .filterLabel {
+    color: #e2e8f0;
+  }
+
+  .select,
+  .numberInput,
+  .dateInput,
+  .tagInput {
+    background: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+
+    &:focus {
+      border-color: #63b3ed;
+      box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.1);
+    }
+
+    &::placeholder {
+      color: #a0aec0;
+    }
+  }
+
+  .tag {
+    background: #2b6cb0;
+    color: #e2e8f0;
+  }
+
+  .tagRemove {
+    color: #e2e8f0;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .dateSeparator {
+    color: #a0aec0;
+  }
+
+  .filterActions {
+    border-top-color: #4a5568;
+  }
+
+  .clearButton {
+    background: #718096;
+
+    &:hover {
+      background: #4a5568;
+    }
+  }
+}

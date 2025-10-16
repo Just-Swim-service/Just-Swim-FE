@@ -1,0 +1,205 @@
+.searchBar {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: border-color 0.2s ease;
+
+  &:focus-within {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  }
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  background: transparent;
+  color: #333;
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #007bff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #0056b3;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.loading {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.suggestionGroup {
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.suggestionType {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  background: #f8f9fa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.suggestionItem {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover,
+  &.selected {
+    background: #f8f9fa;
+  }
+
+  &.selected {
+    background: #e3f2fd;
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .searchBar {
+    max-width: 100%;
+  }
+
+  .input {
+    font-size: 16px; // iOS 줌 방지
+  }
+
+  .suggestions {
+    max-height: 250px;
+  }
+
+  .suggestionItem {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+}
+
+// 다크 모드 지원
+@media (prefers-color-scheme: dark) {
+  .inputContainer {
+    background: #2d3748;
+    border-color: #4a5568;
+
+    &:focus-within {
+      border-color: #63b3ed;
+      box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.1);
+    }
+  }
+
+  .input {
+    color: #e2e8f0;
+
+    &::placeholder {
+      color: #a0aec0;
+    }
+  }
+
+  .suggestions {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .suggestionType {
+    background: #4a5568;
+    color: #a0aec0;
+  }
+
+  .suggestionItem {
+    color: #e2e8f0;
+    border-bottom-color: #4a5568;
+
+    &:hover,
+    &.selected {
+      background: #4a5568;
+    }
+
+    &.selected {
+      background: #2b6cb0;
+    }
+  }
+}

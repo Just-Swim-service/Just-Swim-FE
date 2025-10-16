@@ -304,3 +304,150 @@ export const getCategoryStats = async (): Promise<
   );
   return response.data.data || [];
 };
+
+// 검색 관련 인터페이스
+export interface SearchParams {
+  query?: string;
+  category?: CategoryType;
+  tags?: string[];
+  startDate?: string;
+  endDate?: string;
+  minLikes?: number;
+  minComments?: number;
+  sortBy?: 'recent' | 'popular' | 'relevance' | 'likes' | 'comments' | 'views';
+}
+
+export interface SearchResponse {
+  communities: CommunityPost[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  searchQuery?: string;
+  searchParams?: SearchParams;
+  sortBy?: string;
+}
+
+export interface SearchSuggestion {
+  suggestions: string[];
+  type: 'title' | 'tag' | 'content';
+}
+
+// 통합 검색 (공통 검색 API 사용)
+export const searchCommunities = async (
+  query: string,
+  page: number = 1,
+  limit: number = 10,
+  sortBy: 'recent' | 'popular' | 'relevance' = 'relevance',
+): Promise<SearchResponse> => {
+  const response = await api<any>(
+    `/search/community/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}&sortBy=${sortBy}`,
+    HTTP_METHODS.GET,
+  );
+
+  const actualData = response.data.data;
+
+  // 데이터 변환
+  const transformedCommunities = (
+    actualData.items ||
+    actualData.communities ||
+    []
+  ).map((community: any) => ({
+    ...community,
+    communityId: parseInt(community.communityId),
+    viewCount: parseInt(community.viewCount),
+    likeCount: parseInt(community.likeCount),
+    commentCount: parseInt(community.commentCount),
+    user: {
+      ...community.user,
+      userId: parseInt(community.user.userId),
+      name: community.user.name,
+    },
+  }));
+
+  return {
+    ...actualData,
+    communities: transformedCommunities,
+  };
+};
+
+// 고급 검색
+export const advancedSearchCommunities = async (
+  searchParams: SearchParams,
+  page: number = 1,
+  limit: number = 10,
+): Promise<SearchResponse> => {
+  const params = new URLSearchParams();
+
+  if (searchParams.query) params.append('q', searchParams.query);
+  if (searchParams.category) params.append('category', searchParams.category);
+  if (searchParams.tags && searchParams.tags.length > 0) {
+    params.append('tags', searchParams.tags.join(','));
+  }
+  if (searchParams.startDate) params.append('startDate', searchParams.startDate);
+  if (searchParams.endDate) params.append('endDate', searchParams.endDate);
+  if (searchParams.minLikes !== undefined)
+    params.append('minLikes', searchParams.minLikes.toString());
+  if (searchParams.minComments !== undefined)
+    params.append('minComments', searchParams.minComments.toString());
+  if (searchParams.sortBy) params.append('sortBy', searchParams.sortBy);
+
+  params.append('page', page.toString());
+  params.append('limit', limit.toString());
+
+  const response = await api<any>(
+    `/search/community/search/advanced?${params.toString()}`,
+    HTTP_METHODS.GET,
+  );
+
+  const actualData = response.data.data;
+
+  // 데이터 변환
+  const transformedCommunities = (
+    actualData.items ||
+    actualData.communities ||
+    []
+  ).map((community: any) => ({
+    ...community,
+    communityId: parseInt(community.communityId),
+    viewCount: parseInt(community.viewCount),
+    likeCount: parseInt(community.likeCount),
+    commentCount: parseInt(community.commentCount),
+    user: {
+      ...community.user,
+      userId: parseInt(community.user.userId),
+      name: community.user.name,
+    },
+  }));
+
+  return {
+    ...actualData,
+    communities: transformedCommunities,
+  };
+};
+
+// 검색어 자동완성 (공통 검색 API 사용)
+export const getSearchSuggestions = async (
+  query: string,
+  limit: number = 5,
+): Promise<SearchSuggestion[]> => {
+  const response = await api<any>(
+    `/search/community/search/suggestions?q=${encodeURIComponent(query)}&limit=${limit}`,
+    HTTP_METHODS.GET,
+  );
+  return response.data.data || [];
+};
+
+// 관련 태그 추천 (공통 검색 API 사용)
+export const getRelatedTags = async (
+  query: string,
+  limit: number = 10,
+): Promise<Tag[]> => {
+  const response = await api<any>(
+    `/search/community/search/related-tags?q=${encodeURIComponent(query)}&limit=${limit}`,
+    HTTP_METHODS.GET,
+  );
+  return response.data.data || [];
+};

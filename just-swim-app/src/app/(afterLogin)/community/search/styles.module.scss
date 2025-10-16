@@ -1,0 +1,279 @@
+.searchPage {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 20px 0;
+}
+
+.searchContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.searchHeader {
+  text-align: center;
+  margin-bottom: 40px;
+
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    color: #666;
+  }
+}
+
+.searchSection {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.searchBar {
+  margin-bottom: 20px;
+}
+
+.advancedToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #e9ecef;
+    border-color: #007bff;
+  }
+
+  &.active {
+    background: #e3f2fd;
+    border-color: #007bff;
+    color: #007bff;
+  }
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.advancedFilter {
+  margin-top: 20px;
+}
+
+.relatedTags {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.relatedTag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #e3f2fd;
+  color: #1976d2;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #bbdefb;
+    transform: translateY(-1px);
+  }
+}
+
+.tagCount {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.searchResults {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loadMoreContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.loadMoreButton {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #0056b3;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .searchPage {
+    padding: 16px 0;
+  }
+
+  .searchContainer {
+    padding: 0 16px;
+  }
+
+  .searchHeader {
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .searchSection {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .relatedTags {
+    padding: 16px;
+    margin-bottom: 16px;
+
+    h3 {
+      font-size: 16px;
+    }
+  }
+
+  .searchResults {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .tagList {
+    gap: 6px;
+  }
+
+  .relatedTag {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+// 다크 모드 지원
+@media (prefers-color-scheme: dark) {
+  .searchPage {
+    background: #1a202c;
+  }
+
+  .searchHeader {
+    h1 {
+      color: #e2e8f0;
+    }
+
+    p {
+      color: #a0aec0;
+    }
+  }
+
+  .searchSection,
+  .relatedTags,
+  .searchResults {
+    background: #2d3748;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .advancedToggle {
+    background: #4a5568;
+    border-color: #718096;
+    color: #a0aec0;
+
+    &:hover {
+      background: #2d3748;
+      border-color: #63b3ed;
+    }
+
+    &.active {
+      background: #2b6cb0;
+      border-color: #63b3ed;
+      color: #e2e8f0;
+    }
+  }
+
+  .relatedTags h3 {
+    color: #e2e8f0;
+  }
+
+  .relatedTag {
+    background: #2b6cb0;
+    color: #e2e8f0;
+
+    &:hover {
+      background: #3182ce;
+    }
+  }
+
+  .loadMoreButton {
+    background: #63b3ed;
+
+    &:hover:not(:disabled) {
+      background: #3182ce;
+    }
+
+    &:disabled {
+      background: #4a5568;
+    }
+  }
+}
