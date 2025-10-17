@@ -335,7 +335,7 @@ export interface SearchSuggestion {
   type: 'title' | 'tag' | 'content';
 }
 
-// 통합 검색 (공통 검색 API 사용)
+// 통합 검색 (커뮤니티 검색 API 사용)
 export const searchCommunities = async (
   query: string,
   page: number = 1,
@@ -343,7 +343,7 @@ export const searchCommunities = async (
   sortBy: 'recent' | 'popular' | 'relevance' = 'relevance',
 ): Promise<SearchResponse> => {
   const response = await api<any>(
-    `/search/community/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}&sortBy=${sortBy}`,
+    `/community/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}&sortBy=${sortBy}`,
     HTTP_METHODS.GET,
   );
 
@@ -398,7 +398,7 @@ export const advancedSearchCommunities = async (
   params.append('limit', limit.toString());
 
   const response = await api<any>(
-    `/search/community/search/advanced?${params.toString()}`,
+    `/community/search/advanced?${params.toString()}`,
     HTTP_METHODS.GET,
   );
 
@@ -428,25 +428,25 @@ export const advancedSearchCommunities = async (
   };
 };
 
-// 검색어 자동완성 (공통 검색 API 사용)
+// 검색어 자동완성 (커뮤니티 검색 API 사용)
 export const getSearchSuggestions = async (
   query: string,
   limit: number = 5,
 ): Promise<SearchSuggestion[]> => {
   const response = await api<any>(
-    `/search/community/search/suggestions?q=${encodeURIComponent(query)}&limit=${limit}`,
+    `/community/search/suggestions?q=${encodeURIComponent(query)}&limit=${limit}`,
     HTTP_METHODS.GET,
   );
   return response.data.data || [];
 };
 
-// 관련 태그 추천 (공통 검색 API 사용)
+// 관련 태그 추천 (커뮤니티 검색 API 사용)
 export const getRelatedTags = async (
   query: string,
   limit: number = 10,
 ): Promise<Tag[]> => {
   const response = await api<any>(
-    `/search/community/search/related-tags?q=${encodeURIComponent(query)}&limit=${limit}`,
+    `/community/search/related-tags?q=${encodeURIComponent(query)}&limit=${limit}`,
     HTTP_METHODS.GET,
   );
   return response.data.data || [];

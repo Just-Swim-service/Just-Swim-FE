@@ -6,13 +6,39 @@
 }
 
 .searchSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 16px;
   background: #f8f9fa;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .searchBar {
+  flex: 1;
   max-width: 100%;
+}
+
+.clearSearchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: #e5e7eb;
+  color: #6b7280;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #d1d5db;
+    color: #374151;
+  }
 }
 
 .content {
@@ -195,10 +221,25 @@
   }
 }
 
+.searchResults {
+  // 검색 결과 컴포넌트 스타일은 별도 파일에서 관리
+}
+
 // 반응형 디자인
 @media (max-width: 480px) {
   .content {
     padding: 12px;
+  }
+
+  .searchSection {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .clearSearchButton {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
   }
 
   .fab {

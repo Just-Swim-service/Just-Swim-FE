@@ -8,11 +8,18 @@ import { BottomNav, UserIconHeader } from '@components';
 import { CommunityCard } from '@components';
 import { InlineLoader, Spinner } from '@components';
 import { CategoryFilter, TagDisplay } from '@components';
-import { getCommunities, type CommunityPost, type CategoryType } from '@apis';
+import {
+  getCommunities,
+  searchCommunities,
+  type CommunityPost,
+  type CategoryType,
+  type SearchResponse,
+} from '@apis';
 
 import styled from './styles.module.scss';
 import Link from 'next/link';
 import SearchBar from '@/_components/common/searchBar';
+import SearchResults from '@/_components/common/searchResults';
 
 export default function CommunityPage() {
   const router = useRouter();
@@ -24,6 +31,13 @@ export default function CommunityPage() {
     null,
   );
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // 검색 관련 상태
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<CommunityPost[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchTotal, setSearchTotal] = useState(0);
+  const [isSearchMode, setIsSearchMode] = useState(false);
 
   const fetchPosts = async (pageNum: number = 1, reset: boolean = false) => {
     try {
@@ -95,8 +109,44 @@ export default function CommunityPage() {
     setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
   };
 
+  // 검색 실행 함수
+  const performSearch = async (query: string) => {
+    if (!query.trim()) {
+      // 검색어가 비어있으면 일반 게시글 목록으로 돌아가기
+      setIsSearchMode(false);
+      setSearchQuery('');
+      setSearchResults([]);
+      setSearchTotal(0);
+      return;
+    }
+
+    setSearchLoading(true);
+    setIsSearchMode(true);
+    setSearchQuery(query);
+
+    try {
+      const response = await searchCommunities(query, 1, 10, 'relevance');
+      setSearchResults(response.communities);
+      setSearchTotal(response.pagination.total);
+    } catch (error) {
+      console.error('검색 오류:', error);
+      setSearchResults([]);
+      setSearchTotal(0);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
   const handleSearch = (query: string) => {
-    router.push(`/community/search?q=${encodeURIComponent(query)}`);
+    performSearch(query);
+  };
+
+  // 검색 취소 함수
+  const handleClearSearch = () => {
+    setIsSearchMode(false);
+    setSearchQuery('');
+    setSearchResults([]);
+    setSearchTotal(0);
   };
 
   return (
@@ -111,6 +161,14 @@ export default function CommunityPage() {
           showSuggestions={true}
           className={styled.searchBar}
         />
+        {isSearchMode && (
+          <button
+            className={styled.clearSearchButton}
+            onClick={handleClearSearch}
+            title="검색 취소">
+            ✕
+          </button>
+        )}
       </div>
 
       {/* 카테고리 필터 */}
@@ -139,59 +197,78 @@ export default function CommunityPage() {
       )}
 
       <div className={styled.content}>
-        {loading && posts.length === 0 ? (
-          <div className={styled.loadingContainer}>
-            <Spinner />
-            <p>게시글을 불러오는 중...</p>
-          </div>
-        ) : posts.length === 0 ? (
-          <div className={styled.emptyContainer}>
-            <div className={styled.emptyIcon}>🏊‍♂️</div>
-            <h3 className={styled.emptyTitle}>아직 게시글이 없어요</h3>
-            <p className={styled.emptyDescription}>
-              첫 번째 운동 기록을 공유해보세요!
-              <br />
-              동료들과 함께 성장해나가요.
-            </p>
-            <button className={styled.emptyButton} onClick={handleCreatePost}>
-              첫 게시글 작성하기
-            </button>
-          </div>
+        {isSearchMode ? (
+          // 검색 모드일 때 검색 결과 표시
+          <SearchResults
+            communities={searchResults}
+            searchQuery={searchQuery}
+            total={searchTotal}
+            isLoading={searchLoading}
+            onCommunityClick={(community) =>
+              handlePostClick(community.communityId)
+            }
+            className={styled.searchResults}
+          />
         ) : (
+          // 일반 모드일 때 게시글 목록 표시
           <>
-            <div className={styled.postsList}>
-              {posts.map((post) => (
-                <div key={post.communityId} className={styled.postItem}>
-                  <CommunityCard
-                    post={post}
-                    onClick={() => handlePostClick(post.communityId)}
-                  />
-                  {post.communityTags && post.communityTags.length > 0 && (
-                    <TagDisplay
-                      tags={post.communityTags}
-                      onTagClick={handleTagClick}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {hasMore && (
-              <div className={styled.loadMoreContainer}>
+            {loading && posts.length === 0 ? (
+              <div className={styled.loadingContainer}>
+                <Spinner />
+                <p>게시글을 불러오는 중...</p>
+              </div>
+            ) : posts.length === 0 ? (
+              <div className={styled.emptyContainer}>
+                <div className={styled.emptyIcon}>🏊‍♂️</div>
+                <h3 className={styled.emptyTitle}>아직 게시글이 없어요</h3>
+                <p className={styled.emptyDescription}>
+                  첫 번째 운동 기록을 공유해보세요!
+                  <br />
+                  동료들과 함께 성장해나가요.
+                </p>
                 <button
-                  className={styled.loadMoreButton}
-                  onClick={handleLoadMore}
-                  disabled={loading}>
-                  {loading ? (
-                    <>
-                      <InlineLoader />
-                      <span>로딩 중...</span>
-                    </>
-                  ) : (
-                    '더 보기'
-                  )}
+                  className={styled.emptyButton}
+                  onClick={handleCreatePost}>
+                  첫 게시글 작성하기
                 </button>
               </div>
+            ) : (
+              <>
+                <div className={styled.postsList}>
+                  {posts.map((post) => (
+                    <div key={post.communityId} className={styled.postItem}>
+                      <CommunityCard
+                        post={post}
+                        onClick={() => handlePostClick(post.communityId)}
+                      />
+                      {post.communityTags && post.communityTags.length > 0 && (
+                        <TagDisplay
+                          tags={post.communityTags}
+                          onTagClick={handleTagClick}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {hasMore && (
+                  <div className={styled.loadMoreContainer}>
+                    <button
+                      className={styled.loadMoreButton}
+                      onClick={handleLoadMore}
+                      disabled={loading}>
+                      {loading ? (
+                        <>
+                          <InlineLoader />
+                          <span>로딩 중...</span>
+                        </>
+                      ) : (
+                        '더 보기'
+                      )}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}
