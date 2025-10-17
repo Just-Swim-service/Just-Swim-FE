@@ -50,22 +50,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     return colors[category] || '#6c757d';
   };
 
-  const renderHighlightedText = (text: string, query?: string) => {
-    if (!query || !text) return text;
-
-    const regex = new RegExp(`(${query})`, 'gi');
-    const parts = text.split(regex);
-
-    return parts.map((part, index) => {
-      if (regex.test(part)) {
-        return (
-          <mark key={index} className={styles.highlight}>
-            {part}
-          </mark>
-        );
-      }
-      return part;
-    });
+  const renderText = (text: string) => {
+    return text || '';
   };
 
   if (isLoading) {
@@ -139,16 +125,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               </span>
             </div>
 
-            <h3 className={styles.resultTitle}>
-              {renderHighlightedText(community.title, searchQuery)}
-            </h3>
+            <h3 className={styles.resultTitle}>{renderText(community.title)}</h3>
 
             <p className={styles.resultContent}>
-              {renderHighlightedText(
+              {renderText(
                 community.content.length > 150
                   ? community.content.substring(0, 150) + '...'
                   : community.content,
-                searchQuery,
               )}
             </p>
 
@@ -156,10 +139,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               <div className={styles.resultTags}>
                 {community.communityTags.map((communityTag, index) => (
                   <span key={index} className={styles.tag}>
-                    {renderHighlightedText(
-                      communityTag.tag.tagName,
-                      searchQuery,
-                    )}
+                    {renderText(communityTag.tag.tagName)}
                   </span>
                 ))}
               </div>
