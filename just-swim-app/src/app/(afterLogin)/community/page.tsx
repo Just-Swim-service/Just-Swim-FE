@@ -243,17 +243,11 @@ export default function CommunityPage() {
           <SearchBar
             placeholder="게시글을 검색해보세요..."
             onSearch={handleSearch}
+            onClear={handleClearSearch}
             showSuggestions={true}
             className={styled.searchBar}
+            value={searchQuery}
           />
-          {isSearchMode && (
-            <button
-              className={styled.clearSearchButton}
-              onClick={handleClearSearch}
-              title="검색 취소">
-              ✕
-            </button>
-          )}
         </div>
 
         {isSearchMode && (

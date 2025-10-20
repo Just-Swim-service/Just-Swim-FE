@@ -26,28 +26,6 @@
   max-width: 100%;
 }
 
-.clearSearchButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  background: #e5e7eb;
-  color: #6b7280;
-  border-radius: 50%;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #d1d5db;
-    color: #374151;
-  }
-}
-
 .advancedToggle {
   display: flex;
   align-items: center;

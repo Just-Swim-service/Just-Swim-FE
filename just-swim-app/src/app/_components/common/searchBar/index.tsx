@@ -10,6 +10,8 @@ interface SearchBarProps {
   onSearch?: (query: string) => void;
   showSuggestions?: boolean;
   className?: string;
+  onClear?: () => void;
+  value?: string;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -17,8 +19,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   showSuggestions = true,
   className = '',
+  onClear,
+  value,
 }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(value || '');
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestionsList, setShowSuggestionsList] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +32,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
+
+  // value prop이 변경될 때 query 상태 동기화
+  useEffect(() => {
+    setQuery(value || '');
+  }, [value]);
 
   // 디바운스된 검색어 자동완성
   useEffect(() => {
@@ -147,6 +156,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
     handleSearch(suggestion);
   };
 
+  const handleClear = () => {
+    setQuery('');
+    setShowSuggestionsList(false);
+    setSelectedIndex(-1);
+    if (onClear) {
+      onClear();
+    }
+  };
+
   const handleSearch = (searchQuery?: string) => {
     const finalQuery = searchQuery || query;
     if (finalQuery.trim()) {
@@ -210,6 +228,27 @@ const SearchBar: React.FC<SearchBarProps> = ({
           placeholder={placeholder}
           className={styles.input}
         />
+        {query && (
+          <button
+            onClick={handleClear}
+            className={styles.clearButton}
+            title="검색어 지우기">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M18 6L6 18M6 6L18 18"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
         <button
           onClick={() => handleSearch()}
           className={styles.searchButton}
@@ -241,4 +280,3 @@ const SearchBar: React.FC<SearchBarProps> = ({
 };
 
 export default SearchBar;
-
