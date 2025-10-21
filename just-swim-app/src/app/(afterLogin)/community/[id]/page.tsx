@@ -513,6 +513,36 @@ export default function CommunityDetailPage() {
               </div>
             </div>
           )}
+
+          {/* 이미지/동영상 갤러리 */}
+          {post.images && post.images.length > 0 && (
+            <div className={styled.images_section}>
+              <div className={styled.images_grid}>
+                {post.images.map((image, index) => (
+                  <div key={image.imageId} className={styled.image_item}>
+                    {image.fileType === 'video' ? (
+                      <video
+                        controls
+                        poster={image.thumbnailPath}
+                        className={styled.media_content}>
+                        <source src={image.imagePath} type="video/mp4" />
+                        브라우저가 비디오 재생을 지원하지 않습니다.
+                      </video>
+                    ) : (
+                      <img
+                        src={image.imagePath}
+                        alt={image.fileName || `이미지 ${index + 1}`}
+                        className={styled.media_content}
+                        onError={(e) => {
+                          e.currentTarget.src = '/assets/placeholder.png';
+                        }}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 구분선 */}

@@ -12,6 +12,10 @@ export const communitySchema = z.object({
     .min(1, '내용을 입력해주세요')
     .max(1000, '내용은 1000자 이하로 입력해주세요'),
   category: z.nativeEnum(CategoryType).optional(),
+  file: z
+    .array(z.instanceof(File))
+    .max(10, '이미지는 최대 10개까지 업로드할 수 있습니다')
+    .optional(),
   workoutTime: z
     .string()
     .optional()

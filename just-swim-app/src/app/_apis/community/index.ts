@@ -23,6 +23,16 @@ export interface CommunityTag {
   tag: Tag;
 }
 
+export interface CommunityImage {
+  imageId: number;
+  imagePath: string;
+  fileType: 'image' | 'video';
+  fileName?: string;
+  fileSize?: number;
+  duration?: string;
+  thumbnailPath?: string;
+}
+
 export interface CommunityPost {
   communityId: number;
   title: string;
@@ -37,10 +47,20 @@ export interface CommunityPost {
     name: string;
     profileImage?: string;
   };
+  images?: CommunityImage[];
   communityTags?: CommunityTag[];
   communityCreatedAt: string;
   communityUpdatedAt: string;
   communityDeletedAt?: string;
+}
+
+export interface CreateCommunityImageDto {
+  filePath: string;
+  fileType: 'image' | 'video';
+  fileName?: string;
+  fileSize?: number;
+  duration?: string;
+  thumbnailPath?: string;
 }
 
 export interface CreateCommunityDto {
@@ -49,6 +69,7 @@ export interface CreateCommunityDto {
   category?: CategoryType;
   tags?: string[];
   workoutData?: any;
+  communityImages?: CreateCommunityImageDto[];
 }
 
 export interface UpdateCommunityDto {
@@ -57,6 +78,7 @@ export interface UpdateCommunityDto {
   category?: CategoryType;
   tags?: string[];
   workoutData?: any;
+  communityImages?: CreateCommunityImageDto[];
 }
 
 export interface CreateCommentDto {

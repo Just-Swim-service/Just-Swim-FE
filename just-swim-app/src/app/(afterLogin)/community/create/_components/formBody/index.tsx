@@ -4,8 +4,9 @@ import { HTMLAttributes, MouseEvent, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { HistoryBackHeader, TextInput, TagInput } from '@components';
-import { createCommunity, CategoryType } from '@apis';
+import { HistoryBackHeader, TextInput, TagInput, FileInput } from '@components';
+import { createCommunity, CategoryType, CreateCommunityImageDto } from '@apis';
+import { getCommunityPresignedURL } from '@/_apis/image';
 import { useErrorHandler } from '@utils';
 import { communitySchema, type CommunityFormData } from './schema';
 import { IntensityInput } from '../intensityInput';
@@ -46,6 +47,7 @@ export function FormBody() {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isValid },
   } = useForm<CommunityFormData>({
     resolver: zodResolver(communitySchema),
@@ -57,6 +59,65 @@ export function FormBody() {
 
   const onSubmit = handleSubmit(async (data: CommunityFormData) => {
     try {
+      // 파일 업로드 처리
+      let communityImages: CreateCommunityImageDto[] = [];
+
+      if (data.file && data.file.length > 0) {
+        const uploadedFiles = await Promise.all(
+          data.file.map(async (file) => {
+            try {
+              // Presigned URL 받기
+              const [presigned] = await getCommunityPresignedURL([file.name]);
+              const { presignedUrl, contentType } = presigned;
+
+              // S3에 업로드
+              const response = await fetch(presignedUrl, {
+                method: 'PUT',
+                body: file,
+                headers: {
+                  'Content-Type': contentType,
+                },
+              });
+
+              if (!response.ok) throw new Error('파일 업로드 실패');
+
+              // 파일 타입 확인
+              const isVideo = file.type.startsWith('video/');
+              let duration: string | undefined = undefined;
+
+              // 동영상인 경우 duration 추출
+              if (isVideo) {
+                const video = document.createElement('video');
+                video.src = URL.createObjectURL(file);
+                duration = await new Promise((resolve) => {
+                  video.onloadedmetadata = () => {
+                    resolve(video.duration.toFixed(1));
+                    URL.revokeObjectURL(video.src);
+                  };
+                  video.onerror = () => resolve(undefined);
+                });
+              }
+
+              return {
+                filePath: presignedUrl.split('?')[0], // query string 제거
+                fileType: isVideo ? ('video' as const) : ('image' as const),
+                fileName: file.name,
+                fileSize: file.size,
+                duration: duration ?? undefined,
+                thumbnailPath: undefined,
+              };
+            } catch (err) {
+              console.error('[파일 업로드 실패]', err);
+              return null;
+            }
+          }),
+        );
+
+        communityImages = uploadedFiles.filter(
+          (f) => f !== null,
+        ) as CreateCommunityImageDto[];
+      }
+
       // 운동 데이터 구성
       const workoutData: any = {};
       if (data.workoutTime) workoutData.workoutTime = `${data.workoutTime}분`;
@@ -72,6 +133,8 @@ export function FormBody() {
         tags: selectedTags.length > 0 ? selectedTags : undefined,
         workoutData:
           Object.keys(workoutData).length > 0 ? workoutData : undefined,
+        communityImages:
+          communityImages.length > 0 ? communityImages : undefined,
       };
 
       await createCommunity(requestData);
@@ -160,6 +223,16 @@ export function FormBody() {
                     selectedTags={selectedTags}
                     onTagsChange={setSelectedTags}
                     maxTags={5}
+                  />
+                </InputWrapper>
+                <InputWrapper name="이미지/동영상 (선택사항)">
+                  <FileInput
+                    name="file"
+                    length={10}
+                    size={100}
+                    setValue={setValue as any}
+                    accept="image/*,video/*"
+                    allowVideo={true}
                   />
                 </InputWrapper>
               </div>

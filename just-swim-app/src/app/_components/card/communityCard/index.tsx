@@ -70,6 +70,44 @@ export function CommunityCard({ post, onClick }: CommunityCardProps) {
             </div>
           </div>
         )}
+
+        {/* 이미지/동영상 썸네일 */}
+        {post.images && post.images.length > 0 && (
+          <div className={styled.mediaThumbnails}>
+            {post.images.slice(0, 4).map((image, index) => (
+              <div key={image.imageId} className={styled.thumbnailItem}>
+                {image.fileType === 'video' ? (
+                  <div className={styled.videoThumbnail}>
+                    {image.thumbnailPath ? (
+                      <img
+                        src={image.thumbnailPath}
+                        alt={`동영상 ${index + 1}`}
+                        className={styled.thumbnailImage}
+                      />
+                    ) : (
+                      <video
+                        src={image.imagePath}
+                        className={styled.thumbnailImage}
+                      />
+                    )}
+                    <div className={styled.playIcon}>▶</div>
+                  </div>
+                ) : (
+                  <img
+                    src={image.imagePath}
+                    alt={image.fileName || `이미지 ${index + 1}`}
+                    className={styled.thumbnailImage}
+                  />
+                )}
+              </div>
+            ))}
+            {post.images.length > 4 && (
+              <div className={styled.moreImagesOverlay}>
+                +{post.images.length - 4}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className={styled.footer}>

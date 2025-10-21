@@ -112,6 +112,75 @@
   border: 1px solid $--gray-200;
 }
 
+// 이미지/동영상 썸네일
+.mediaThumbnails {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .thumbnailItem {
+    position: relative;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: $--gray-100;
+
+    .thumbnailImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .videoThumbnail {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      .playIcon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 24px;
+        height: 24px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 10px;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .moreImagesOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include Title4-SB;
+    border-radius: 8px;
+  }
+}
+
 .footer {
   border-top: 1px solid $--gray-200;
   padding-top: 12px;

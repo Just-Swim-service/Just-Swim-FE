@@ -62,6 +62,47 @@ export async function getFeedbackPresignedURL(
   }
 }
 
+export async function getCommunityPresignedURL(files: string[]): Promise<
+  {
+    fileName: string;
+    presignedUrl: string;
+    contentType: string;
+    fileType: string;
+  }[]
+> {
+  try {
+    const result = await Fetch<{
+      success: boolean;
+      data: {
+        fileName: string;
+        presignedUrl: string;
+        contentType: string;
+        fileType: string;
+      }[];
+    }>({
+      url: `${URL}/community/presigned-url`,
+      method: 'POST',
+      header: {
+        credential: true,
+        json: true,
+      },
+      body: {
+        files: files,
+      },
+    });
+
+    if (result.success) {
+      return result.data;
+    } else {
+      console.error('커뮤니티 이미지 presigned URL 가져오기 실패');
+      return [];
+    }
+  } catch (error) {
+    console.error('커뮤니티 이미지 presigned URL 가져오기 실패:', error);
+    return [];
+  }
+}
+
 export async function deleteFeedbackImageFromS3(fileURL: string) {
   try {
     const result = await Fetch<{ success: boolean; data: string }>({
