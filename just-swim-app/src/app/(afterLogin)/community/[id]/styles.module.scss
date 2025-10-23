@@ -78,22 +78,29 @@
     }
   }
 
-  // 오른쪽: 날짜 + 케밥 메뉴
+  // 오른쪽: 북마크 + 케밥 메뉴
   .actions_section {
     display: flex;
     align-items: center;
     gap: 12px;
     overflow: visible;
 
-    .date_info {
-      @include Body5-R;
-      color: $--gray-600;
+    .bookmark_button {
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
+      background-color: $--gray-100;
 
-      .icon {
-        font-size: 16px;
-        margin-right: 4px;
+      &:hover {
+        background-color: $--gray-200;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.95);
       }
     }
   }
@@ -267,32 +274,6 @@
     &:hover {
       background-color: $--gray-100;
       transform: scale(1.05);
-    }
-  }
-
-  .bookmark_stat_item {
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-
-    &:hover {
-      background-color: $--gray-100;
-      transform: scale(1.05);
-    }
-
-    &:active {
-      transform: scale(0.95);
-    }
-
-    .stat_icon {
-      transition: transform 0.2s ease;
-    }
-
-    &:hover .stat_icon {
-      transform: scale(1.2);
     }
   }
 }

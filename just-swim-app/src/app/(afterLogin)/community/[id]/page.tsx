@@ -470,11 +470,18 @@ export default function CommunityDetailPage() {
             </div>
           </div>
 
-          {/* 오른쪽: 날짜 + 케밥 메뉴 */}
+          {/* 오른쪽: 북마크 + 케밥 메뉴 */}
           <div className={styled.actions_section}>
-            <div className={styled.date_info}>
-              <span className={styled.icon}>📅</span>
-              {formatDate(post.communityCreatedAt)}
+            {/* 북마크 버튼 */}
+            <div
+              className={styled.bookmark_button}
+              onClick={handleBookmarkToggle}
+              title={isBookmarked ? '북마크 해제' : '북마크 추가'}>
+              {isBookmarked ? (
+                <IconBookmarkFilled width={20} height={20} fill="#4A90E2" />
+              ) : (
+                <IconBookmark width={20} height={20} fill="white" />
+              )}
             </div>
 
             {/* 케밥 메뉴 (작성자만 표시) */}
@@ -586,15 +593,11 @@ export default function CommunityDetailPage() {
             <span className={styled.stat_icon}>❤</span>
             <span className={styled.stat_value}>{post.likeCount}</span>
           </div>
-          <div
-            className={`${styled.stat_item} ${styled.bookmark_stat_item}`}
-            onClick={handleBookmarkToggle}
-            title={isBookmarked ? '북마크 해제' : '북마크 추가'}>
-            {isBookmarked ? (
-              <IconBookmarkFilled width={20} height={20} fill="#4A90E2" />
-            ) : (
-              <IconBookmark width={20} height={20} fill="#666" />
-            )}
+          <div className={styled.stat_item}>
+            <span className={styled.stat_icon}>📅</span>
+            <span className={styled.stat_value}>
+              {formatDate(post.communityCreatedAt)}
+            </span>
           </div>
         </div>
 
