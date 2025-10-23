@@ -126,10 +126,8 @@ export default function CommunityDetailPage() {
         setCurrentUserId(parseInt(profileResponse.data.data.userId));
         setPost(postResponse);
         setComments(commentsResponse || []);
-        // 북마크 상태 설정 (백엔드에서 isBookmarked 정보가 오는 경우)
-        if ('isBookmarked' in postResponse) {
-          setIsBookmarked((postResponse as any).isBookmarked);
-        }
+        // 북마크 상태 설정
+        setIsBookmarked(postResponse.isBookmarked || false);
       } catch (error) {
         console.error('데이터 조회 실패:', error);
         setError('게시글을 불러올 수 없습니다.');

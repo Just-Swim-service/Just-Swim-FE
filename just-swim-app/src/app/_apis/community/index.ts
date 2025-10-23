@@ -42,6 +42,7 @@ export interface CommunityPost {
   viewCount: number;
   likeCount: number;
   commentCount: number;
+  isBookmarked?: boolean; // 북마크 상태 추가
   user: {
     userId: number;
     name: string;
@@ -180,6 +181,7 @@ export const getCommunityById = async (id: number): Promise<CommunityPost> => {
       viewCount: parseInt(actualData.viewCount),
       likeCount: parseInt(actualData.likeCount),
       commentCount: parseInt(actualData.commentCount),
+      isBookmarked: actualData.isBookmarked || false, // 북마크 상태 추가
       user: {
         ...actualData.user,
         userId: parseInt(actualData.user.userId),
