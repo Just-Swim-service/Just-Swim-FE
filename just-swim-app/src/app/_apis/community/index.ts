@@ -473,3 +473,62 @@ export const getRelatedTags = async (
   );
   return response.data.data || [];
 };
+
+// 북마크 관련 인터페이스 및 함수
+export interface BookmarkResponse {
+  isBookmarked: boolean;
+}
+
+export interface BookmarkedCommunitiesResponse {
+  bookmarks: CommunityPost[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+// 게시글 북마크 토글
+export const toggleBookmark = async (
+  communityId: number,
+): Promise<BookmarkResponse> => {
+  const response = await api<any>(
+    `/community/${communityId}/bookmark`,
+    HTTP_METHODS.POST,
+  );
+
+  return response.data.data;
+};
+
+// 내 북마크 목록 조회
+export const getUserBookmarks = async (
+  page: number = 1,
+  limit: number = 10,
+): Promise<BookmarkedCommunitiesResponse> => {
+  const response = await api<any>(
+    `/community/bookmarks/my?page=${page}&limit=${limit}`,
+    HTTP_METHODS.GET,
+  );
+
+  const actualData = response.data.data;
+
+  // 데이터 변환: 문자열을 숫자로 변환
+  const transformedBookmarks = actualData.bookmarks.map((community: any) => ({
+    ...community,
+    communityId: parseInt(community.communityId),
+    viewCount: parseInt(community.viewCount),
+    likeCount: parseInt(community.likeCount),
+    commentCount: parseInt(community.commentCount),
+    user: {
+      ...community.user,
+      userId: parseInt(community.user.userId),
+      name: community.user.name,
+    },
+  }));
+
+  return {
+    bookmarks: transformedBookmarks,
+    pagination: actualData.pagination,
+  };
+};

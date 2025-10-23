@@ -14,12 +14,19 @@ import {
   createComment,
   toggleCommentLike,
   toggleCommunityLike,
+  toggleBookmark,
   type CommunityPost,
   type CommunityComment,
 } from '@apis';
 import { CommunityDetailSkeleton } from './_components/communityDetailSkeleton';
 import { getMyProfile } from '@apis';
-import { IconKebabMenu, IconTrashcan, IconSetting } from '@assets';
+import {
+  IconKebabMenu,
+  IconTrashcan,
+  IconSetting,
+  IconBookmark,
+  IconBookmarkFilled,
+} from '@assets';
 import { DeleteConfirmModalProps } from '@types';
 import { useUserStore } from '@store';
 
@@ -99,6 +106,7 @@ export default function CommunityDetailPage() {
   const [isSubmittingReply, setIsSubmittingReply] = useState(false);
   const [commentError, setCommentError] = useState<string | null>(null);
   const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set()); // 펼쳐진 대댓글 목록
+  const [isBookmarked, setIsBookmarked] = useState(false); // 북마크 상태
 
   const communityId = parseInt(params.id as string);
 
@@ -118,6 +126,10 @@ export default function CommunityDetailPage() {
         setCurrentUserId(parseInt(profileResponse.data.data.userId));
         setPost(postResponse);
         setComments(commentsResponse || []);
+        // 북마크 상태 설정 (백엔드에서 isBookmarked 정보가 오는 경우)
+        if ('isBookmarked' in postResponse) {
+          setIsBookmarked((postResponse as any).isBookmarked);
+        }
       } catch (error) {
         console.error('데이터 조회 실패:', error);
         setError('게시글을 불러올 수 없습니다.');
@@ -399,6 +411,22 @@ export default function CommunityDetailPage() {
     }
   };
 
+  // 북마크 토글
+  const handleBookmarkToggle = async () => {
+    if (!post) return;
+
+    try {
+      const result = await toggleBookmark(post.communityId);
+      setIsBookmarked(result.isBookmarked);
+
+      // 강제 리렌더링 트리거
+      setForceUpdate((prev) => prev + 1);
+    } catch (error) {
+      console.error('북마크 처리 실패:', error);
+      alert('북마크 처리에 실패했습니다.');
+    }
+  };
+
   if (loading) {
     return (
       <div className={styled.container}>
@@ -559,6 +587,16 @@ export default function CommunityDetailPage() {
             onClick={handleCommunityLike}>
             <span className={styled.stat_icon}>❤</span>
             <span className={styled.stat_value}>{post.likeCount}</span>
+          </div>
+          <div
+            className={`${styled.stat_item} ${styled.bookmark_stat_item}`}
+            onClick={handleBookmarkToggle}
+            title={isBookmarked ? '북마크 해제' : '북마크 추가'}>
+            {isBookmarked ? (
+              <IconBookmarkFilled width={20} height={20} fill="#4A90E2" />
+            ) : (
+              <IconBookmark width={20} height={20} fill="#666" />
+            )}
           </div>
         </div>
 
