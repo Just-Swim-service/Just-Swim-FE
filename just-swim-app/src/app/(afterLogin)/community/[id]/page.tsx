@@ -468,14 +468,10 @@ export default function CommunityDetailPage() {
           <div className={styled.actions_section}>
             {/* 북마크 버튼 */}
             <div
-              className={styled.bookmark_button}
+              className={`${styled.bookmark_button} ${isBookmarked ? styled.active : ''}`}
               onClick={handleBookmarkToggle}
               title={isBookmarked ? '북마크 해제' : '북마크 추가'}>
-              {isBookmarked ? (
-                <IconBookmark width={20} height={20} fill="#4A90E2" />
-              ) : (
-                <IconBookmark width={20} height={20} fill="white" />
-              )}
+              <IconBookmark className={styled.bookmark_icon} />
             </div>
 
             {/* 케밥 메뉴 (작성자만 표시) */}

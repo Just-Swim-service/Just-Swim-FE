@@ -86,21 +86,16 @@
     overflow: visible;
 
     .bookmark_button {
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      background-color: $--gray-100;
-
-      &:hover {
-        background-color: $--gray-200;
-        transform: scale(1.05);
+      .bookmark_icon {
+        fill: white;
+        stroke: white;
       }
 
-      &:active {
-        transform: scale(0.95);
+      &.active {
+        .bookmark_icon {
+          fill: #4a90e2;
+          stroke: #4a90e2;
+        }
       }
     }
   }
