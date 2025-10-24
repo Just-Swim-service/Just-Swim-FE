@@ -469,8 +469,7 @@ export default function CommunityDetailPage() {
             {/* 북마크 버튼 */}
             <div
               className={`${styled.bookmark_button} ${isBookmarked ? styled.active : ''}`}
-              onClick={handleBookmarkToggle}
-              title={isBookmarked ? '북마크 해제' : '북마크 추가'}>
+              onClick={handleBookmarkToggle}>
               <IconBookmark className={styled.bookmark_icon} />
             </div>
 

@@ -87,14 +87,12 @@
 
     .bookmark_button {
       .bookmark_icon {
-        fill: white;
-        stroke: white;
+        color: white;
       }
 
       &.active {
         .bookmark_icon {
-          fill: #4a90e2;
-          stroke: #4a90e2;
+          color: #4a90e2;
         }
       }
     }
