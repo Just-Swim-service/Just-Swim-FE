@@ -7,7 +7,7 @@ import { ko } from 'date-fns/locale';
 
 import { BottomNav, Header } from '@components';
 import { getUserBookmarks, type CommunityPost } from '@apis';
-import { IconBookmarkFilled } from '@assets';
+import { IconBookmark } from '@assets';
 
 import styled from './styles.module.scss';
 
@@ -92,7 +92,7 @@ export default function BookmarksPage() {
       <div className={styled.bookmarks_container}>
         {bookmarks.length === 0 ? (
           <div className={styled.empty_state}>
-            <IconBookmarkFilled width={48} height={48} fill="#ddd" />
+            <IconBookmark width={48} height={48} fill="white" />
             <h3>북마크한 게시글이 없습니다</h3>
             <p>마음에 드는 게시글을 북마크해보세요!</p>
           </div>
@@ -107,11 +107,7 @@ export default function BookmarksPage() {
                   <div className={styled.card_content}>
                     <div className={styled.card_header}>
                       <h3 className={styled.title}>{post.title}</h3>
-                      <IconBookmarkFilled
-                        width={20}
-                        height={20}
-                        fill="#4A90E2"
-                      />
+                      <IconBookmark width={20} height={20} fill="#4A90E2" />
                     </div>
 
                     <p className={styled.content}>

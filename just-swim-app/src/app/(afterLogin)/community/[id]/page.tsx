@@ -20,13 +20,7 @@ import {
 } from '@apis';
 import { CommunityDetailSkeleton } from './_components/communityDetailSkeleton';
 import { getMyProfile } from '@apis';
-import {
-  IconKebabMenu,
-  IconTrashcan,
-  IconSetting,
-  IconBookmark,
-  IconBookmarkFilled,
-} from '@assets';
+import { IconKebabMenu, IconTrashcan, IconSetting, IconBookmark } from '@assets';
 import { DeleteConfirmModalProps } from '@types';
 import { useUserStore } from '@store';
 
@@ -478,7 +472,7 @@ export default function CommunityDetailPage() {
               onClick={handleBookmarkToggle}
               title={isBookmarked ? '북마크 해제' : '북마크 추가'}>
               {isBookmarked ? (
-                <IconBookmarkFilled width={20} height={20} fill="#4A90E2" />
+                <IconBookmark width={20} height={20} fill="#4A90E2" />
               ) : (
                 <IconBookmark width={20} height={20} fill="white" />
               )}
