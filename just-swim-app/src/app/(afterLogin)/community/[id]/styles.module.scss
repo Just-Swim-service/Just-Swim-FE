@@ -92,6 +92,7 @@
         // 비활성화 상태: 테두리만 보임 (outline만 표시)
         #bookmark-fill {
           opacity: 0;
+          fill: currentColor;
         }
         #bookmark-outline {
           opacity: 1;
@@ -105,6 +106,7 @@
           // 활성화 상태: 채워진 형태 (fill만 표시)
           #bookmark-fill {
             opacity: 1;
+            fill: currentColor;
           }
           #bookmark-outline {
             opacity: 0;
