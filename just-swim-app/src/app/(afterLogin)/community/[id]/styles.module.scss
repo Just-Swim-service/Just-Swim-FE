@@ -88,11 +88,26 @@
     .bookmark_button {
       .bookmark_icon {
         color: white;
+
+        #bookmark-fill {
+          display: none;
+        }
+        #bookmark-outline {
+          display: block;
+        }
       }
 
       &.active {
         .bookmark_icon {
           color: #4a90e2;
+
+          // 활성화 상태: 채워진 형태 (fill만 표시)
+          #bookmark-fill {
+            display: block;
+          }
+          #bookmark-outline {
+            display: none;
+          }
         }
       }
     }
