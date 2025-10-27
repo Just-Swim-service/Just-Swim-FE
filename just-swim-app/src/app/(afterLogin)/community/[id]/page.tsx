@@ -20,7 +20,13 @@ import {
 } from '@apis';
 import { CommunityDetailSkeleton } from './_components/communityDetailSkeleton';
 import { getMyProfile } from '@apis';
-import { IconKebabMenu, IconTrashcan, IconSetting, IconBookmark } from '@assets';
+import {
+  IconKebabMenu,
+  IconTrashcan,
+  IconSetting,
+  IconBookmark,
+  IconBookmarkFilled,
+} from '@assets';
 import { DeleteConfirmModalProps } from '@types';
 import { useUserStore } from '@store';
 
@@ -468,9 +474,13 @@ export default function CommunityDetailPage() {
           <div className={styled.actions_section}>
             {/* 북마크 버튼 */}
             <div
-              className={`${styled.bookmark_button} ${isBookmarked ? styled.active : ''}`}
+              className={styled.bookmark_button}
               onClick={handleBookmarkToggle}>
-              <IconBookmark className={styled.bookmark_icon} />
+              {isBookmarked ? (
+                <IconBookmarkFilled className={styled.bookmark_icon} />
+              ) : (
+                <IconBookmark className={styled.bookmark_icon} />
+              )}
             </div>
 
             {/* 케밥 메뉴 (작성자만 표시) */}

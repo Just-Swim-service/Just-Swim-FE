@@ -45,6 +45,7 @@ import IconQRScan from './icon_qr_scan.svg';
 import IconCommunity from './icon_community.svg';
 import IconKebabMenu from './icon_kebab_menu.svg';
 import IconBookmark from './icon_bookmark.svg';
+import IconBookmarkFilled from './icon_bookmark_filled.svg';
 
 export {
   IconArrowRight,
@@ -94,4 +95,5 @@ export {
   IconCommunity,
   IconKebabMenu,
   IconBookmark,
+  IconBookmarkFilled,
 };

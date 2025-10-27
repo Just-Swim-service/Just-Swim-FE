@@ -87,25 +87,7 @@
 
     .bookmark_button {
       .bookmark_icon {
-        // 비활성화 상태: 테두리만 보임
         color: #4a90e2;
-        #bookmark {
-          fill: white;
-          stroke: #4a90e2;
-          stroke-width: 1.5;
-        }
-      }
-
-      &.active {
-        .bookmark_icon {
-          // 활성화 상태: 채워진 형태
-          color: #4a90e2;
-          #bookmark {
-            fill: #4a90e2;
-            stroke: #4a90e2;
-            stroke-width: 1.5;
-          }
-        }
       }
     }
   }
