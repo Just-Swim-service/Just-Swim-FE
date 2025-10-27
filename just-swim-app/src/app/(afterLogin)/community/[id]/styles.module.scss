@@ -89,11 +89,12 @@
       .bookmark_icon {
         color: white;
 
+        // 비활성화 상태: 테두리만 보임 (outline만 표시)
         #bookmark-fill {
-          display: none;
+          opacity: 0;
         }
         #bookmark-outline {
-          display: block;
+          opacity: 1;
         }
       }
 
@@ -103,10 +104,10 @@
 
           // 활성화 상태: 채워진 형태 (fill만 표시)
           #bookmark-fill {
-            display: block;
+            opacity: 1;
           }
           #bookmark-outline {
-            display: none;
+            opacity: 0;
           }
         }
       }
