@@ -3,6 +3,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { type CommunityPost } from '@apis';
+import { IconBookmark, IconBookmarkFilled } from '@assets';
 
 import styled from './styles.module.scss';
 
@@ -44,9 +45,16 @@ export function CommunityCard({ post, onClick }: CommunityCardProps) {
             </span>
           </div>
         </div>
-        {post.category && (
-          <span className={styled.categoryBadge}>{post.category}</span>
-        )}
+        <div className={styled.rightSection}>
+          {post.isBookmarked && (
+            <div className={styled.bookmarkIcon}>
+              <IconBookmarkFilled width={20} height={20} />
+            </div>
+          )}
+          {post.category && (
+            <span className={styled.categoryBadge}>{post.category}</span>
+          )}
+        </div>
       </div>
 
       <div className={styled.content}>

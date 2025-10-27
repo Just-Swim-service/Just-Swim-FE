@@ -26,6 +26,19 @@
   align-items: center;
 }
 
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bookmarkIcon {
+  color: #4a90e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .userInfo {
   display: flex;
   align-items: center;

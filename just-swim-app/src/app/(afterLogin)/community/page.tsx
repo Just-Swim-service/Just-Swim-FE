@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { IconAdd } from '@assets';
+import { IconAdd, IconBookmark, IconBookmarkFilled } from '@assets';
+import { toggleBookmark } from '@apis';
 import { BottomNav, UserIconHeader } from '@components';
 import { CommunityCard } from '@components';
 import { InlineLoader, Spinner } from '@components';
@@ -15,7 +16,6 @@ import {
   getRelatedTags,
   type CommunityPost,
   type CategoryType,
-  type SearchResponse,
   type SearchParams,
   type Tag,
 } from '@apis';
@@ -37,6 +37,7 @@ export default function CommunityPage() {
     null,
   );
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showBookmarkOnly, setShowBookmarkOnly] = useState(false);
 
   // 검색 관련 상태
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -233,6 +234,17 @@ export default function CommunityPage() {
     setSearchFilters(newFilters);
   };
 
+  // 북마크 토글 핸들러
+  const handleBookmarkToggle = async (communityId: number) => {
+    try {
+      await toggleBookmark(communityId);
+      // 목록 업데이트
+      fetchPosts(page, true);
+    } catch (error) {
+      console.error('북마크 처리 실패:', error);
+    }
+  };
+
   return (
     <div className={styled.container}>
       <UserIconHeader title="커뮤니티" />
@@ -252,26 +264,39 @@ export default function CommunityPage() {
 
         {isSearchMode && (
           <>
-            {/* 고급 검색 필터 토글 버튼 */}
-            <button
-              className={`${styled.advancedToggle} ${showAdvancedFilter ? styled.active : ''}`}
-              onClick={() => setShowAdvancedFilter(!showAdvancedFilter)}>
-              고급 검색 필터
-              <svg
-                className={`${styled.arrow} ${showAdvancedFilter ? styled.rotated : ''}`}
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none">
-                <path
-                  d="M6 9L12 15L18 9"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
+            {/* 고급 검색 필터 토글 버튼과 북마크 버튼 */}
+            <div className={styled.filterButtons}>
+              <button
+                className={`${styled.advancedToggle} ${showAdvancedFilter ? styled.active : ''}`}
+                onClick={() => setShowAdvancedFilter(!showAdvancedFilter)}>
+                고급 검색 필터
+                <svg
+                  className={`${styled.arrow} ${showAdvancedFilter ? styled.rotated : ''}`}
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none">
+                  <path
+                    d="M6 9L12 15L18 9"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <button
+                className={`${styled.bookmarkToggle} ${showBookmarkOnly ? styled.active : ''}`}
+                onClick={() => setShowBookmarkOnly(!showBookmarkOnly)}
+                title="북마크한 글">
+                {showBookmarkOnly ? (
+                  <IconBookmarkFilled width={20} height={20} />
+                ) : (
+                  <IconBookmark width={20} height={20} />
+                )}
+              </button>
+            </div>
 
             {/* 고급 검색 필터 */}
             {showAdvancedFilter && (
@@ -303,9 +328,22 @@ export default function CommunityPage() {
         )}
       </div>
 
-      {/* 카테고리 필터 (일반 모드일 때만 표시) */}
+      {/* 카테고리 필터 및 북마크 버튼 (일반 모드일 때만 표시) */}
       {!isSearchMode && (
         <>
+          <div className={styled.bookmarkButtonContainer}>
+            <button
+              className={`${styled.bookmarkButton} ${showBookmarkOnly ? styled.active : ''}`}
+              onClick={() => setShowBookmarkOnly(!showBookmarkOnly)}
+              title="북마크한 글">
+              {showBookmarkOnly ? (
+                <IconBookmarkFilled width={24} height={24} />
+              ) : (
+                <IconBookmark width={24} height={24} />
+              )}
+            </button>
+          </div>
+
           <CategoryFilter
             selectedCategory={selectedCategory}
             onCategoryChange={handleCategoryChange}
@@ -359,20 +397,22 @@ export default function CommunityPage() {
               </div>
             ) : (
               <div className={styled.postsList}>
-                {searchResults.map((post) => (
-                  <div key={post.communityId} className={styled.postItem}>
-                    <CommunityCard
-                      post={post}
-                      onClick={() => handlePostClick(post.communityId)}
-                    />
-                    {post.communityTags && post.communityTags.length > 0 && (
-                      <TagDisplay
-                        tags={post.communityTags}
-                        onTagClick={handleTagClick}
+                {searchResults
+                  .filter((post) => !showBookmarkOnly || post.isBookmarked)
+                  .map((post) => (
+                    <div key={post.communityId} className={styled.postItem}>
+                      <CommunityCard
+                        post={post}
+                        onClick={() => handlePostClick(post.communityId)}
                       />
-                    )}
-                  </div>
-                ))}
+                      {post.communityTags && post.communityTags.length > 0 && (
+                        <TagDisplay
+                          tags={post.communityTags}
+                          onTagClick={handleTagClick}
+                        />
+                      )}
+                    </div>
+                  ))}
               </div>
             )}
           </>
@@ -402,20 +442,22 @@ export default function CommunityPage() {
             ) : (
               <>
                 <div className={styled.postsList}>
-                  {posts.map((post) => (
-                    <div key={post.communityId} className={styled.postItem}>
-                      <CommunityCard
-                        post={post}
-                        onClick={() => handlePostClick(post.communityId)}
-                      />
-                      {post.communityTags && post.communityTags.length > 0 && (
-                        <TagDisplay
-                          tags={post.communityTags}
-                          onTagClick={handleTagClick}
+                  {posts
+                    .filter((post) => !showBookmarkOnly || post.isBookmarked)
+                    .map((post) => (
+                      <div key={post.communityId} className={styled.postItem}>
+                        <CommunityCard
+                          post={post}
+                          onClick={() => handlePostClick(post.communityId)}
                         />
-                      )}
-                    </div>
-                  ))}
+                        {post.communityTags && post.communityTags.length > 0 && (
+                          <TagDisplay
+                            tags={post.communityTags}
+                            onTagClick={handleTagClick}
+                          />
+                        )}
+                      </div>
+                    ))}
                 </div>
 
                 {hasMore && (
