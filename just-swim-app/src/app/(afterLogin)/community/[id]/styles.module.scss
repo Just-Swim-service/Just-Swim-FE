@@ -91,8 +91,8 @@
 
         // 비활성화 상태: 테두리만 보임
         #bookmark {
-          fill: none;
-          stroke: currentColor;
+          fill: none !important;
+          stroke: #999 !important;
           stroke-width: 2;
         }
       }
@@ -103,8 +103,8 @@
 
           // 활성화 상태: 채워진 형태
           #bookmark {
-            fill: currentColor;
-            stroke: none;
+            fill: #4a90e2 !important;
+            stroke: none !important;
           }
         }
       }
