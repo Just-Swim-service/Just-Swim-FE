@@ -313,11 +313,7 @@ export default function CommunityPage() {
                 className={`${styled.bookmarkToggle} ${showBookmarkOnly ? styled.active : ''}`}
                 onClick={() => setShowBookmarkOnly(!showBookmarkOnly)}
                 title="북마크한 글">
-                {showBookmarkOnly ? (
-                  <IconBookmarkFilled width={20} height={20} />
-                ) : (
-                  <IconBookmark width={20} height={20} />
-                )}
+                {showBookmarkOnly ? <IconBookmarkFilled /> : <IconBookmark />}
               </button>
             </div>
 
