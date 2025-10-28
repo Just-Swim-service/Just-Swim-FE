@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { IconAdd, IconBookmark, IconBookmarkFilled } from '@assets';
@@ -14,6 +14,7 @@ import {
   searchCommunities,
   advancedSearchCommunities,
   getRelatedTags,
+  getUserBookmarks,
   type CommunityPost,
   type CategoryType,
   type SearchParams,
@@ -51,33 +52,48 @@ export default function CommunityPage() {
   const [searchFilters, setSearchFilters] = useState<SearchParams>({});
   const [relatedTags, setRelatedTags] = useState<Tag[]>([]);
 
-  const fetchPosts = async (pageNum: number = 1, reset: boolean = false) => {
-    try {
-      setLoading(true);
-      const response = await getCommunities(
-        pageNum,
-        10,
-        selectedCategory || undefined,
-        selectedTags.length > 0 ? selectedTags : undefined,
-      );
+  const fetchPosts = useCallback(
+    async (pageNum: number = 1, reset: boolean = false) => {
+      try {
+        setLoading(true);
 
-      if (pageNum === 1 || reset) {
-        setPosts(response.communities);
-      } else {
-        setPosts((prev) => [...prev, ...response.communities]);
-      }
+        let response: any;
 
-      setHasMore(response.pagination.page < response.pagination.totalPages);
-    } catch (error) {
-      console.error('게시글 조회 실패:', error);
-      // 에러 발생 시 빈 배열로 설정
-      if (pageNum === 1 || reset) {
-        setPosts([]);
+        // 북마크 토글이 활성화되어 있으면 북마크 API 호출
+        if (showBookmarkOnly) {
+          const bookmarkResponse = await getUserBookmarks(pageNum, 10);
+          response = {
+            communities: bookmarkResponse.bookmarks,
+            pagination: bookmarkResponse.pagination,
+          };
+        } else {
+          response = await getCommunities(
+            pageNum,
+            10,
+            selectedCategory || undefined,
+            selectedTags.length > 0 ? selectedTags : undefined,
+          );
+        }
+
+        if (pageNum === 1 || reset) {
+          setPosts(response.communities);
+        } else {
+          setPosts((prev) => [...prev, ...response.communities]);
+        }
+
+        setHasMore(response.pagination.page < response.pagination.totalPages);
+      } catch (error) {
+        console.error('게시글 조회 실패:', error);
+        // 에러 발생 시 빈 배열로 설정
+        if (pageNum === 1 || reset) {
+          setPosts([]);
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [showBookmarkOnly, selectedCategory, selectedTags],
+  );
 
   // URL 파라미터에서 초기 검색어 로드
   useEffect(() => {
@@ -88,6 +104,7 @@ export default function CommunityPage() {
     } else {
       fetchPosts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 필터가 변경될 때마다 첫 페이지부터 다시 조회
@@ -96,7 +113,13 @@ export default function CommunityPage() {
       setPage(1);
       fetchPosts(1, true);
     }
-  }, [selectedCategory, selectedTags]);
+  }, [
+    selectedCategory,
+    selectedTags,
+    showBookmarkOnly,
+    isSearchMode,
+    fetchPosts,
+  ]);
 
   // 검색 쿼리나 필터가 변경되면 검색 실행
   useEffect(() => {
@@ -308,7 +331,7 @@ export default function CommunityPage() {
             )}
 
             {/* 관련 태그 */}
-            {relatedTags.length > 0 && (
+            {relatedTags.length > 0 && !showBookmarkOnly && (
               <div className={styled.relatedTags}>
                 <h3 className={styled.relatedTagsTitle}>관련 태그</h3>
                 <div className={styled.relatedTagsList}>
@@ -331,26 +354,27 @@ export default function CommunityPage() {
       {/* 카테고리 필터 및 북마크 버튼 (일반 모드일 때만 표시) */}
       {!isSearchMode && (
         <>
-          <div className={styled.bookmarkButtonContainer}>
+          <div className={styled.filterWrapper}>
             <button
               className={`${styled.bookmarkButton} ${showBookmarkOnly ? styled.active : ''}`}
               onClick={() => setShowBookmarkOnly(!showBookmarkOnly)}
               title="북마크한 글">
               {showBookmarkOnly ? (
-                <IconBookmarkFilled width={24} height={24} />
+                <IconBookmarkFilled width={20} height={20} />
               ) : (
-                <IconBookmark width={24} height={24} />
+                <IconBookmark width={20} height={20} />
               )}
             </button>
+
+            {!showBookmarkOnly && (
+              <CategoryFilter
+                selectedCategory={selectedCategory}
+                onCategoryChange={handleCategoryChange}
+              />
+            )}
           </div>
 
-          <CategoryFilter
-            selectedCategory={selectedCategory}
-            onCategoryChange={handleCategoryChange}
-          />
-
-          {/* 선택된 태그 표시 */}
-          {selectedTags.length > 0 && (
+          {!showBookmarkOnly && selectedTags.length > 0 && (
             <div className={styled.selectedTagsContainer}>
               <span className={styled.filterLabel}>필터:</span>
               <div className={styled.selectedTags}>
@@ -397,22 +421,20 @@ export default function CommunityPage() {
               </div>
             ) : (
               <div className={styled.postsList}>
-                {searchResults
-                  .filter((post) => !showBookmarkOnly || post.isBookmarked)
-                  .map((post) => (
-                    <div key={post.communityId} className={styled.postItem}>
-                      <CommunityCard
-                        post={post}
-                        onClick={() => handlePostClick(post.communityId)}
+                {searchResults.map((post) => (
+                  <div key={post.communityId} className={styled.postItem}>
+                    <CommunityCard
+                      post={post}
+                      onClick={() => handlePostClick(post.communityId)}
+                    />
+                    {post.communityTags && post.communityTags.length > 0 && (
+                      <TagDisplay
+                        tags={post.communityTags}
+                        onTagClick={handleTagClick}
                       />
-                      {post.communityTags && post.communityTags.length > 0 && (
-                        <TagDisplay
-                          tags={post.communityTags}
-                          onTagClick={handleTagClick}
-                        />
-                      )}
-                    </div>
-                  ))}
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </>
@@ -426,38 +448,54 @@ export default function CommunityPage() {
               </div>
             ) : posts.length === 0 ? (
               <div className={styled.emptyContainer}>
-                <div className={styled.emptyIcon}>🏊‍♂️</div>
-                <h3 className={styled.emptyTitle}>아직 게시글이 없어요</h3>
+                <div className={styled.emptyIcon}>
+                  {showBookmarkOnly ? '🔖' : '🏊‍♂️'}
+                </div>
+                <h3 className={styled.emptyTitle}>
+                  {showBookmarkOnly
+                    ? '북마크한 게시글이 없어요'
+                    : '아직 게시글이 없어요'}
+                </h3>
                 <p className={styled.emptyDescription}>
-                  첫 번째 운동 기록을 공유해보세요!
-                  <br />
-                  동료들과 함께 성장해나가요.
+                  {showBookmarkOnly ? (
+                    <>
+                      북마크한 게시글이 없습니다.
+                      <br />
+                      관심있는 게시글을 북마크해보세요.
+                    </>
+                  ) : (
+                    <>
+                      첫 번째 운동 기록을 공유해보세요!
+                      <br />
+                      동료들과 함께 성장해나가요.
+                    </>
+                  )}
                 </p>
-                <button
-                  className={styled.emptyButton}
-                  onClick={handleCreatePost}>
-                  첫 게시글 작성하기
-                </button>
+                {!showBookmarkOnly && (
+                  <button
+                    className={styled.emptyButton}
+                    onClick={handleCreatePost}>
+                    첫 게시글 작성하기
+                  </button>
+                )}
               </div>
             ) : (
               <>
                 <div className={styled.postsList}>
-                  {posts
-                    .filter((post) => !showBookmarkOnly || post.isBookmarked)
-                    .map((post) => (
-                      <div key={post.communityId} className={styled.postItem}>
-                        <CommunityCard
-                          post={post}
-                          onClick={() => handlePostClick(post.communityId)}
+                  {posts.map((post) => (
+                    <div key={post.communityId} className={styled.postItem}>
+                      <CommunityCard
+                        post={post}
+                        onClick={() => handlePostClick(post.communityId)}
+                      />
+                      {post.communityTags && post.communityTags.length > 0 && (
+                        <TagDisplay
+                          tags={post.communityTags}
+                          onTagClick={handleTagClick}
                         />
-                        {post.communityTags && post.communityTags.length > 0 && (
-                          <TagDisplay
-                            tags={post.communityTags}
-                            onTagClick={handleTagClick}
-                          />
-                        )}
-                      </div>
-                    ))}
+                      )}
+                    </div>
+                  ))}
                 </div>
 
                 {hasMore && (
