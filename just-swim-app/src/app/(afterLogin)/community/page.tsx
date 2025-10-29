@@ -308,13 +308,6 @@ export default function CommunityPage() {
                   />
                 </svg>
               </button>
-
-              <button
-                className={`${styled.bookmarkToggle} ${showBookmarkOnly ? styled.active : ''}`}
-                onClick={() => setShowBookmarkOnly(!showBookmarkOnly)}
-                title="북마크한 글">
-                {showBookmarkOnly ? <IconBookmarkFilled /> : <IconBookmark />}
-              </button>
             </div>
 
             {/* 고급 검색 필터 */}
