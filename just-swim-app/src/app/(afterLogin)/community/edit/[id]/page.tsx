@@ -188,6 +188,7 @@ export default function CommunityEditPage() {
               onChange={handleInputChange}
               className={styled.content_textarea}
               placeholder="내용을 입력하세요"
+              maxLength={5000}
               rows={10}
               required
             />

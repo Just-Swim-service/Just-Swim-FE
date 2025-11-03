@@ -4,7 +4,13 @@ import { HTMLAttributes, MouseEvent, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { HistoryBackHeader, TextInput, TagInput, FileInput } from '@components';
+import {
+  HistoryBackHeader,
+  TextInput,
+  TagInput,
+  FileInput,
+  TextArea,
+} from '@components';
 import { createCommunity, CategoryType, CreateCommunityImageDto } from '@apis';
 import { getCommunityPresignedURL } from '@/_apis/image';
 import { useErrorHandler } from '@utils';
@@ -183,21 +189,23 @@ export function FormBody() {
                     placeholder="게시글 제목을 입력해주세요"
                     valid={!errors.title && !serverErrors.title}
                     errorMessage={errors.title?.message || serverErrors.title}
-                    maxLength={50}
+                    maxLength={100}
                   />
                 </InputWrapper>
                 <InputWrapper
                   name="내용"
                   required={true}
                   onClick={clearContentError}>
-                  <TextInput
+                  <TextArea
                     {...register('content')}
-                    placeholder="운동 기록이나 경험을 공유해주세요"
-                    valid={!errors.content && !serverErrors.content}
-                    errorMessage={
+                    placeholder="운동 기록이나 경험을 공유해주세요. 최대 5000자까지 입력 가능합니다."
+                    height={200}
+                    maxLength={5000}
+                    errors={
                       errors.content?.message || serverErrors.content
+                        ? [errors.content?.message || serverErrors.content]
+                        : []
                     }
-                    maxLength={1000}
                   />
                 </InputWrapper>
                 <InputWrapper name="카테고리" required={true}>

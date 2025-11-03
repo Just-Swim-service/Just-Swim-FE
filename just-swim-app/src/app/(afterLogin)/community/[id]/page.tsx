@@ -224,7 +224,16 @@ export default function CommunityDetailPage() {
   const handleCommentInputChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    setNewComment(e.target.value);
+    const value = e.target.value;
+
+    // 댓글 길이 제한 (1000자)
+    if (value.length > 1000) {
+      setCommentError('댓글은 1000자 이하로 입력해주세요.');
+      return;
+    }
+
+    setCommentError(null);
+    setNewComment(value);
 
     // textarea 높이 자동 조절
     const textarea = e.target;
@@ -363,7 +372,16 @@ export default function CommunityDetailPage() {
 
   // 답글 입력 변경 핸들러
   const handleReplyInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setReplyContent(e.target.value);
+    const value = e.target.value;
+
+    // 답글 길이 제한 (1000자)
+    if (value.length > 1000) {
+      setCommentError('답글은 1000자 이하로 입력해주세요.');
+      return;
+    }
+
+    setCommentError(null);
+    setReplyContent(value);
 
     // textarea 높이 자동 조절
     const textarea = e.target;
@@ -661,6 +679,7 @@ export default function CommunityDetailPage() {
                 onChange={handleCommentInputChange}
                 onKeyDown={handleCommentKeyPress}
                 disabled={isSubmittingComment}
+                maxLength={1000}
                 rows={1}
               />
             </div>
@@ -782,6 +801,7 @@ export default function CommunityDetailPage() {
                                 handleReplyKeyPress(e, comment.commentId)
                               }
                               disabled={isSubmittingReply}
+                              maxLength={1000}
                               rows={1}
                             />
                           </div>

@@ -73,6 +73,7 @@ export interface TextAreaProps {
   name: string;
   height?: number;
   onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  errors?: string[];
 }
 
 export interface SelectInputProps {

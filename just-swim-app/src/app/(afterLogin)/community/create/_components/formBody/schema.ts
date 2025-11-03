@@ -6,11 +6,11 @@ export const communitySchema = z.object({
   title: z
     .string()
     .min(1, '제목을 입력해주세요')
-    .max(50, '제목은 50자 이하로 입력해주세요'),
+    .max(100, '제목은 100자 이하로 입력해주세요'),
   content: z
     .string()
     .min(1, '내용을 입력해주세요')
-    .max(1000, '내용은 1000자 이하로 입력해주세요'),
+    .max(5000, '내용은 5000자 이하로 입력해주세요'),
   category: z.nativeEnum(CategoryType).optional(),
   file: z
     .array(z.instanceof(File))

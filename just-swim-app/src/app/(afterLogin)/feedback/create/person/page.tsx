@@ -281,8 +281,9 @@ export default function FeedbackWrite() {
                 피드백 남기기 <span>(필수)</span>
               </div>
               <TextArea
-                placeholder="피드백을 입력해주세요"
-                height={100}
+                placeholder="피드백을 입력해주세요 (최대 2000자)"
+                height={200}
+                maxLength={2000}
                 {...register('content')}
                 // @ts-ignore
                 errors={[errors.content?.message ?? '']}

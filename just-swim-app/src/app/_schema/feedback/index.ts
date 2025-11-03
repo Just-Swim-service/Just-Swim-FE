@@ -30,7 +30,10 @@ export const formSchema = z.object({
   date: z.string().min(1),
   file: z.any().optional(),
   link: z.string().nullable().optional(),
-  content: z.string().refine((str) => str.length !== 0, '피드백은 필수입니다.'),
+  content: z
+    .string()
+    .min(1, '피드백은 필수입니다.')
+    .max(2000, '피드백 내용은 2000자 이하여야 합니다.'),
 });
 
 // 자동 완성을 위해 type 선언
