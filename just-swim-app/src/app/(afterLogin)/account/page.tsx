@@ -7,7 +7,7 @@ import { IconArrowRight, IconSetting } from '@assets';
 import { useEffect, useState } from 'react';
 import { EXTERNAL_LINKS, ROUTES, TEXT } from '@data';
 import { useUserStore } from '@store';
-import { URLImage, LogoutModal, ProfileInfo } from '@components';
+import { URLImage, LogoutModal, ProfileInfo, DashboardPreview } from '@components';
 import Link from 'next/link';
 import { getMyProfile, postUserLogout, revalidateMyProfile } from '@apis';
 import { removeTokenInCookies, removeTokenInCookiesClient } from '@utils';
@@ -72,6 +72,13 @@ export default function Account() {
 
   return (
     <>
+      {/* 대시보드 미리보기 - 수강생만 (상단 배치) */}
+      {profileInfo?.userType === 'customer' && (
+        <div className={styles.dashboard_preview}>
+          <DashboardPreview />
+        </div>
+      )}
+
       <div className={styles.account_profile}>
         <div className={styles.account_image_wrapper}>
           <div className={styles.account_img}>
@@ -90,23 +97,22 @@ export default function Account() {
           </Link>
         </button>
       </div>
+
       <div className={styles.account_setting}>
         <div className={styles.account_setting_title}>
           <IconSetting />
           <div>{TEXT.ACCOUNT_PAGE.appSetting}</div>
         </div>
         <div className={styles.app_setting}>
-          {/* 내 성과 대시보드 */}
-          <Link
-            className={styles.app_setting_menu}
-            href={
-              profileInfo?.userType === 'instructor'
-                ? '/dashboard/instructor'
-                : '/dashboard/customer'
-            }>
-            <span>📊 내 성과</span>
-            <IconArrowRight width={12} height={12} fill="#000000" />
-          </Link>
+          {/* 강사는 대시보드 링크 표시 */}
+          {profileInfo?.userType === 'instructor' && (
+            <Link
+              className={styles.app_setting_menu}
+              href="/dashboard/instructor">
+              <span>📊 강사 통계</span>
+              <IconArrowRight width={12} height={12} fill="#000000" />
+            </Link>
+          )}
           {/* <Link
             className={styles.app_setting_menu}
             href={ROUTES.ONBOARDING.root}>

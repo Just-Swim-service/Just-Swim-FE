@@ -62,7 +62,38 @@ export default function CustomerDashboardPage() {
       <>
         <Header title="내 성과" />
         <main className={styles.container}>
-          <div className={styles.error}>데이터를 불러올 수 없습니다.</div>
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>📊</div>
+            <h2 className={styles.emptyTitle}>아직 활동 내역이 없어요</h2>
+            <p className={styles.emptyDescription}>
+              수영 강의를 등록하고 피드백을 받으면
+              <br />
+              나만의 성장 그래프를 확인할 수 있어요!
+            </p>
+            <div className={styles.emptyActions}>
+              <button
+                className={styles.primaryAction}
+                onClick={() => router.push('/class')}
+              >
+                강의 둘러보기
+              </button>
+              <button
+                className={styles.secondaryAction}
+                onClick={() => router.push('/community')}
+              >
+                커뮤니티 참여하기
+              </button>
+            </div>
+            <div className={styles.emptyTips}>
+              <h3>💡 이렇게 시작해보세요</h3>
+              <ul>
+                <li>🏊 강의에 등록하면 <strong>50 exp</strong> 획득</li>
+                <li>📝 피드백을 받으면 <strong>10 exp</strong> 획득</li>
+                <li>✍️ 커뮤니티에 글 작성하면 <strong>5 exp</strong> 획득</li>
+                <li>🎓 첫 강의 등록 시 <strong>배지</strong> 획득</li>
+              </ul>
+            </div>
+          </div>
         </main>
         <BottomNav />
       </>

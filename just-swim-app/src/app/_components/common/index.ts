@@ -22,3 +22,5 @@ export * from './tagInput';
 export * from './tagDisplay';
 export * from './searchBar';
 export * from './advancedSearchFilter';
+export * from './levelBadge';
+export * from './dashboardPreview';

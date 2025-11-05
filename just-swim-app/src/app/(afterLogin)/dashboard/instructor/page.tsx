@@ -51,7 +51,38 @@ export default function InstructorDashboardPage() {
       <>
         <Header title="강사 통계" />
         <main className={styles.container}>
-          <div className={styles.error}>데이터를 불러올 수 없습니다.</div>
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>👨‍🏫</div>
+            <h2 className={styles.emptyTitle}>아직 강의가 없어요</h2>
+            <p className={styles.emptyDescription}>
+              첫 강의를 만들고 수강생을 모집해보세요!
+              <br />
+              강의 활동 통계와 수강생 성과를 확인할 수 있어요.
+            </p>
+            <div className={styles.emptyActions}>
+              <button
+                className={styles.primaryAction}
+                onClick={() => router.push('/schedule/add')}
+              >
+                첫 강의 만들기
+              </button>
+              <button
+                className={styles.secondaryAction}
+                onClick={() => router.push('/community')}
+              >
+                수영팁 공유하기
+              </button>
+            </div>
+            <div className={styles.emptyTips}>
+              <h3>💡 강사로서 할 수 있는 일</h3>
+              <ul>
+                <li>📚 강의를 만들고 수강생 모집</li>
+                <li>📝 수강생에게 <strong>피드백 제공</strong></li>
+                <li>💬 커뮤니티에 <strong>수영팁</strong> 공유</li>
+                <li>🏆 활동하면서 <strong>배지와 레벨</strong> 획득</li>
+              </ul>
+            </div>
+          </div>
         </main>
         <BottomNav />
       </>
