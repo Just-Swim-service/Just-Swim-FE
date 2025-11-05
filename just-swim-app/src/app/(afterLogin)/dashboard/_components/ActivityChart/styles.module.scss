@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 14px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.emoji {
+  font-size: 18px;
+}
+
+.category {
+  font-weight: 600;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.count {
+  font-weight: 600;
+  color: #666;
+}
+
+.barBackground {
+  width: 100%;
+  height: 32px;
+  background: #f0f0f0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  transition: width 0.3s ease;
+  min-width: 60px;
+}
+
+.percentage {
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+

@@ -5,3 +5,4 @@ export * from './lecture';
 export * from './notification';
 export * from './users';
 export * from './community';
+export * from './statistics';

@@ -1,0 +1,70 @@
+.container {
+  padding: 16px 0;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 14px;
+}
+
+.chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  height: 200px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.barWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.barContainer {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bar {
+  width: 100%;
+  max-width: 48px;
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px 8px 0 0;
+  min-height: 4px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-4px);
+  }
+}
+
+.count {
+  position: absolute;
+  top: -24px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+

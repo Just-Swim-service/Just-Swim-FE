@@ -1,0 +1,254 @@
+.container {
+  padding: 20px;
+  padding-bottom: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  font-size: 16px;
+  color: #666;
+}
+
+.section {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.subTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 20px 0 12px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.lectureList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lectureItem {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+  }
+}
+
+.lectureHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.lectureTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.activeBadge {
+  font-size: 12px;
+  padding: 4px 8px;
+  background: #4caf50;
+  color: white;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.lectureInfo {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+.feedbackStats,
+.communityStats {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  flex-wrap: wrap;
+}
+
+.statItem {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.statLabel {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.statValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.studentList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.studentItem {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  align-items: flex-start;
+}
+
+.studentAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.studentInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.studentName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nickname {
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+}
+
+.studentDetails {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lecture {
+  font-weight: 500;
+  color: #667eea;
+}
+
+.divider {
+  color: #ddd;
+}
+
+.studentMeta {
+  font-size: 12px;
+  color: #999;
+  display: flex;
+  gap: 12px;
+}
+
+.popularPosts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.postItem {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+  }
+}
+
+.postTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.postStats {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
