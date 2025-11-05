@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  getStudentDashboard,
+  getCustomerDashboard,
   type StudentDashboard,
   type FeedbackStats,
   type LectureStats,
@@ -22,7 +22,7 @@ import {
 
 import styles from './styles.module.scss';
 
-export default function StudentDashboardPage() {
+export default function CustomerDashboardPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [dashboard, setDashboard] = useState<StudentDashboard | null>(null);
@@ -34,7 +34,7 @@ export default function StudentDashboardPage() {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await getStudentDashboard();
+      const response = await getCustomerDashboard();
       if (response.ok) {
         setDashboard(response.data.data);
       }

@@ -10,9 +10,9 @@ interface ApiResponse<T> {
 }
 
 // 수강생 대시보드
-export async function getStudentDashboard() {
+export async function getCustomerDashboard() {
   const response = await api<ApiResponse<StudentDashboard>>(
-    `${BASE_URL}/student/dashboard`,
+    `${BASE_URL}/customer/dashboard`,
     'GET',
   );
   return response;

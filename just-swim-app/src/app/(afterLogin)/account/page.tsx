@@ -95,8 +95,18 @@ export default function Account() {
           <IconSetting />
           <div>{TEXT.ACCOUNT_PAGE.appSetting}</div>
         </div>
-        {/* 디자인 정해지면 구현 예정 */}
         <div className={styles.app_setting}>
+          {/* 내 성과 대시보드 */}
+          <Link
+            className={styles.app_setting_menu}
+            href={
+              profileInfo?.userType === 'instructor'
+                ? '/dashboard/instructor'
+                : '/dashboard/customer'
+            }>
+            <span>📊 내 성과</span>
+            <IconArrowRight width={12} height={12} fill="#000000" />
+          </Link>
           {/* <Link
             className={styles.app_setting_menu}
             href={ROUTES.ONBOARDING.root}>
