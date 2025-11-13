@@ -4,7 +4,7 @@ import styled from './styles.module.scss';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { IconAdd, IconQRScan, IconArrowLeft } from '@assets';
-import { getMyProfile } from '@apis';
+import { getMyProfile, getLecturePreview } from '@apis';
 import { useRouter } from 'next/navigation';
 import { isEmpty } from 'lodash';
 import { Html5Qrcode } from 'html5-qrcode';
@@ -44,7 +44,31 @@ export function ScheduleAddButton() {
         return;
       }
 
-      const response = await fetchJson(`/member/qr-code?lectureId=${lectureId}`);
+      // 1단계: 강의 정보 미리보기
+      const lectureInfo = await getLecturePreview(parseInt(lectureId));
+      
+      if (!lectureInfo) {
+        alert('❌ 강의 정보를 불러올 수 없습니다.');
+        return;
+      }
+
+      // 2단계: 사용자에게 확인받기
+      const confirmed = confirm(
+        `📚 수업 정보\n\n` +
+        `제목: ${lectureInfo.lectureTitle}\n` +
+        `강사: ${lectureInfo.instructorName}\n` +
+        `시간: ${lectureInfo.lectureTime}\n` +
+        `요일: ${lectureInfo.lectureDays}\n` +
+        `장소: ${lectureInfo.lectureLocation}\n\n` +
+        `이 수업에 등록하시겠습니까?`
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      // 3단계: 수업 등록
+      await fetchJson(`/member/qr-code?lectureId=${lectureId}`);
 
       alert('✅ 수업 등록 완료! 스케줄로 이동합니다.');
       router.push('/schedule');
@@ -53,10 +77,14 @@ export function ScheduleAddButton() {
 
       if (error?.status === 409) {
         alert('⚠️ 이미 등록된 수업입니다.');
+      } else if (error?.status === 400) {
+        alert('❌ 삭제되었거나 종료된 강의입니다.');
+      } else if (error?.status === 404) {
+        alert('❌ 존재하지 않는 강의입니다.');
       } else if (error?.status === 403) {
         alert('❌ 수업 등록 권한이 없습니다.');
       } else {
-        alert(`❌ 수업 등록에 실패했습니다.\n${error.message}`);
+        alert(`❌ 수업 등록에 실패했습니다.\n${error.message || '알 수 없는 오류'}`);
       }
     } finally {
       // 무조건 스캐너 종료
