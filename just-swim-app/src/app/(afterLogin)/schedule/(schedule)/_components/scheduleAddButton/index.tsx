@@ -36,16 +36,33 @@ export function ScheduleAddButton() {
   // QR 스캔 처리 함수
   const handleQrScan = async (scannedValue: string) => {
     try {
-      const url = new URL(scannedValue);
+      // URL 파싱 시도
+      let url: URL;
+      try {
+        url = new URL(scannedValue);
+      } catch (error) {
+        alert('❌ 유효하지 않은 QR 코드 형식입니다.');
+        return;
+      }
+
+      const token = url.searchParams.get('token');
       const lectureId = url.searchParams.get('lectureId');
 
-      if (!lectureId) {
-        alert('QR 코드에 유효한 lectureId가 없습니다.');
+      // 토큰이 있으면 토큰 방식, 없으면 기존 lectureId 방식 (하위 호환성)
+      if (!token && !lectureId) {
+        alert('❌ QR 코드에 유효한 토큰 또는 강의 ID가 없습니다.');
         return;
       }
 
       // 1단계: 강의 정보 미리보기
-      const lectureInfo = await getLecturePreview(parseInt(lectureId));
+      let lectureInfo;
+      if (token) {
+        // 토큰 방식
+        lectureInfo = await getLecturePreview(token, true);
+      } else {
+        // 기존 lectureId 방식
+        lectureInfo = await getLecturePreview(parseInt(lectureId!));
+      }
       
       if (!lectureInfo) {
         alert('❌ 강의 정보를 불러올 수 없습니다.');
@@ -68,7 +85,13 @@ export function ScheduleAddButton() {
       }
 
       // 3단계: 수업 등록
-      await fetchJson(`/member/qr-code?lectureId=${lectureId}`);
+      if (token) {
+        // 토큰 방식
+        await fetchJson(`/member/qr-code?token=${encodeURIComponent(token)}`);
+      } else {
+        // 기존 lectureId 방식
+        await fetchJson(`/member/qr-code?lectureId=${lectureId}`);
+      }
 
       alert('✅ 수업 등록 완료! 스케줄로 이동합니다.');
       router.push('/schedule');
@@ -79,6 +102,8 @@ export function ScheduleAddButton() {
         alert('⚠️ 이미 등록된 수업입니다.');
       } else if (error?.status === 400) {
         alert('❌ 삭제되었거나 종료된 강의입니다.');
+      } else if (error?.status === 401) {
+        alert('❌ 유효하지 않거나 만료된 QR 코드입니다.');
       } else if (error?.status === 404) {
         alert('❌ 존재하지 않는 강의입니다.');
       } else if (error?.status === 403) {

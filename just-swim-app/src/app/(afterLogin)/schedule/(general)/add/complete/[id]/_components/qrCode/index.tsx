@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { toPng } from 'html-to-image';
 import { ClipboardItem } from 'clipboard-polyfill';
 import * as clipboard from 'clipboard-polyfill';
@@ -8,6 +8,7 @@ import saveAs from 'file-saver';
 
 import { IconDownload, IconShare, ImageQRCode } from '@assets';
 import { QRInstructorProfileProps, LectureQRCodeProps } from '@types';
+import { getQRCode } from '@apis';
 import NoProfile from '@/_assets/images/no_profile.png';
 
 import styled from './styles.module.scss';
@@ -15,11 +16,44 @@ import styled from './styles.module.scss';
 export function QRCode({
   lectureData,
   instructorData,
+  lectureId,
+  style,
 }: {
   lectureData: LectureQRCodeProps;
   instructorData: QRInstructorProfileProps;
+  lectureId: number;
+  style?: React.CSSProperties;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [qrCodeImage, setQrCodeImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 동적 QR 코드 생성
+  useEffect(() => {
+    const fetchQRCode = async () => {
+      if (!lectureId || lectureId <= 0) {
+        // lectureId가 유효하지 않으면 기존 방식 사용
+        setQrCodeImage(lectureData.lectureQRCode || null);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        const qrCode = await getQRCode(lectureId);
+        setQrCodeImage(qrCode);
+      } catch (error: any) {
+        console.error('QR 코드 생성 실패:', error);
+        // 실패 시 기존 lectureQRCode 사용 (하위 호환성)
+        setQrCodeImage(lectureData.lectureQRCode || null);
+        // 에러가 발생해도 사용자에게는 조용히 처리 (기존 QR 코드 표시)
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchQRCode();
+  }, [lectureId, lectureData.lectureQRCode]);
 
   const waitForImagesToLoad = (element: HTMLElement) => {
     const images = Array.from(element.getElementsByTagName('img'));
@@ -97,7 +131,7 @@ export function QRCode({
 
       <div className={styled.line} />
 
-      <div className={styled.capture_area} ref={containerRef}>
+      <div className={styled.capture_area} ref={containerRef} style={style}>
         <div className={styled.title_wrapper}>
           <p className={styled.title}>{lectureData.lectureTitle}</p>
           <span className={styled.description}>
@@ -119,12 +153,18 @@ export function QRCode({
         </div>
 
         <div className={styled.qr_code}>
-          <img
-            src={lectureData.lectureQRCode || ImageQRCode.src}
-            alt="QR 코드 이미지"
-            width={114}
-            height={114}
-          />
+          {isLoading ? (
+            <div style={{ width: 114, height: 114, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span>로딩 중...</span>
+            </div>
+          ) : (
+            <img
+              src={qrCodeImage || ImageQRCode.src}
+              alt="QR 코드 이미지"
+              width={114}
+              height={114}
+            />
+          )}
         </div>
 
         <div className={styled.qr_bottom}>

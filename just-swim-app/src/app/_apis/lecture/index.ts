@@ -4,3 +4,4 @@ export * from './getLectureDetail';
 export * from './getLecturePreview';
 export * from './updateLecture';
 export * from './getLectureMembers';
+export * from './getQRCode';

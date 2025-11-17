@@ -2,8 +2,15 @@
 
 import { Fetch } from '@utils';
 
-export async function getLecturePreview(lectureId: number) {
+export async function getLecturePreview(
+  lectureIdOrToken: number | string,
+  isToken: boolean = false,
+) {
   try {
+    const url = isToken
+      ? `${process.env.NEXT_PUBLIC_API_URL}/lecture/preview?token=${encodeURIComponent(lectureIdOrToken as string)}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureIdOrToken}/preview`;
+
     const result = await Fetch<{
       success: boolean;
       message: string;
@@ -19,7 +26,7 @@ export async function getLecturePreview(lectureId: number) {
         instructorProfileImage: string;
       };
     }>({
-      url: `${process.env.NEXT_PUBLIC_API_URL}/lecture/${lectureId}/preview`,
+      url,
       header: {
         json: true,
         credential: false, // 미리보기는 인증 필요 없음

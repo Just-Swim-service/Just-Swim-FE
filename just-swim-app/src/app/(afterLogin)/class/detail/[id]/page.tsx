@@ -79,7 +79,7 @@ export default function ClassDetail() {
   const params = useParams();
   const router = useRouter();
 
-  const lectureId = params.id;
+  const lectureId = Array.isArray(params.id) ? params.id[0] : params.id;
 
   const [lecture, setLecture] = useState<LectureViewProps | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -112,8 +112,12 @@ export default function ClassDetail() {
   }
 
   const DeleteHandler = async () => {
+    if (!lectureId) return;
+    const id = Array.isArray(lectureId) ? lectureId[0] : lectureId;
+    if (!id) return;
+
     try {
-      const response = await fetchJson(`/lecture/${lectureId}`, {
+      const response = await fetchJson(`/lecture/${id}`, {
         method: 'DELETE',
       });
 
@@ -145,7 +149,11 @@ export default function ClassDetail() {
       <Header
         title="수업 정보"
         routerBackUrl="/schedule/weekly"
-        editURL={type === 'instructor' ? `/class/edit/${lectureId}` : undefined}
+        editURL={
+          type === 'instructor' && lectureId
+            ? `/class/edit/${Array.isArray(lectureId) ? lectureId[0] : lectureId}`
+            : undefined
+        }
       />
 
       <div className={styled.qr}>
@@ -163,6 +171,7 @@ export default function ClassDetail() {
               // @ts-ignore
               image: lecture.instructor.instructorProfileImage || NoProfile,
             }}
+            lectureId={lectureId ? parseInt(lectureId) : 0}
             style={{ backgroundColor: '#fff' }}
           />
         )}
@@ -180,7 +189,7 @@ export default function ClassDetail() {
             </div>
             <Link
               className={`${styled.profile} ${styled.box}`}
-              href={`/class/detail/${lectureId}/members`}>
+              href={`/class/detail/${lectureId || ''}/members`}>
               {lecture.members && lecture.members.length > 0 ? (
                 <>
                   <div className={styled.profile_position}>

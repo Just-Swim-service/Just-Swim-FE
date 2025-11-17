@@ -19,6 +19,7 @@ export default async function Complete({ params }: { params: { id: string } }) {
           <QRCode
             lectureData={lectureDetail}
             instructorData={profileInfo.data.data!}
+            lectureId={parseInt(params.id)}
           />
           <ButtonWrapper id={params.id} />
         </div>
