@@ -19,6 +19,7 @@ import {
   StatsCard,
   ActivityChart,
 } from '../_components';
+import { DashboardSkeleton } from '../_components/dashboardSkeleton';
 
 import styles from './styles.module.scss';
 
@@ -26,6 +27,7 @@ export default function CustomerDashboardPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [dashboard, setDashboard] = useState<StudentDashboard | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDashboard();
@@ -34,12 +36,16 @@ export default function CustomerDashboardPage() {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await getCustomerDashboard();
       if (response.ok) {
         setDashboard(response.data.data);
+      } else {
+        setError('대시보드 정보를 불러오는데 실패했습니다.');
       }
     } catch (error) {
       console.error('대시보드 조회 실패:', error);
+      setError('대시보드 정보를 불러오는데 실패했습니다. 다시 시도해주세요.');
     } finally {
       setLoading(false);
     }
@@ -50,7 +56,31 @@ export default function CustomerDashboardPage() {
       <>
         <Header title="내 성과" />
         <main className={styles.container}>
-          <div className={styles.loading}>로딩중...</div>
+          <DashboardSkeleton />
+        </main>
+        <BottomNav />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Header title="내 성과" />
+        <main className={styles.container}>
+          <div className={styles.errorState}>
+            <div className={styles.errorIcon}>⚠️</div>
+            <h2 className={styles.errorTitle}>오류가 발생했습니다</h2>
+            <p className={styles.errorDescription}>{error}</p>
+            <button
+              className={styles.retryButton}
+              onClick={() => {
+                setError(null);
+                fetchDashboard();
+              }}>
+              다시 시도
+            </button>
+          </div>
         </main>
         <BottomNav />
       </>

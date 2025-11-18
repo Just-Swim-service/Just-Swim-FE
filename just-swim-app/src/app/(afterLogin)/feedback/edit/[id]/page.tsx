@@ -53,6 +53,7 @@ export default function FeedbackInfoEdit() {
   const [feedback, setFeedback] = useState<FeedbackInfo | null>(null);
   const [feedbackTarget, setFeedbackTarget] = useState<Members[]>([]);
   const [feedbackCreatedAt, setFeedbackCreatedAt] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { modal, showModal, hideModal } = useModal();
   const { setFeedbackFormData, getFeedbackFormData } = feedbackStore();
 
@@ -178,15 +179,20 @@ export default function FeedbackInfoEdit() {
 
   const handleConfirm = async () => {
     try {
+      setIsSubmitting(true);
       const response = await updateFeedback(formDataState, feedbackId);
       if (response && response.status === 200) {
         setIsModalOpen(false);
         router.push(`/feedback/feedbackDetail/${feedbackId}`);
       } else {
         console.error('Feedback submission failed:', response);
+        alert('피드백 수정에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error) {
       console.error('Error processing feedback update response:', error);
+      alert('피드백 수정 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -294,7 +300,8 @@ export default function FeedbackInfoEdit() {
         <button
           type="submit"
           className={`${styled.submit_btn} ${!isValid || !isDirty ? styled.disabled : ''}`}
-          disabled={!isValid || !isDirty}>
+          disabled={!isValid || !isDirty}
+          aria-label="피드백 수정 완료">
           작성완료
         </button>
 
@@ -304,8 +311,19 @@ export default function FeedbackInfoEdit() {
               <p>피드백을 수정하시겠습니까?</p>
               <span>작성된 내용이 수강생에게 전달됩니다.</span>
               <div className={styled.modal_button_box}>
-                <button onClick={() => setIsModalOpen(false)}>취소</button>
-                <button onClick={handleConfirm}>확인</button>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  disabled={isSubmitting}
+                  aria-label="취소">
+                  취소
+                </button>
+                <button
+                  onClick={handleConfirm}
+                  disabled={isSubmitting}
+                  aria-label="확인"
+                  aria-busy={isSubmitting}>
+                  {isSubmitting ? '처리 중...' : '확인'}
+                </button>
               </div>
             </div>
           </div>

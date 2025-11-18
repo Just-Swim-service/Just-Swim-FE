@@ -1,0 +1,38 @@
+.container {
+  padding: 20px;
+  padding-bottom: 80px;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+}
+
+.levelProgress {
+  margin-bottom: 8px;
+}
+
+.badgeList {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+}
+
