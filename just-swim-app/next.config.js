@@ -130,6 +130,10 @@ const nextConfig = {
         source: '/auth/:path*',
         destination: 'https://api.just-swim.kr/api/auth/:path*',
       },
+      {
+        source: '/statistics/:path*',
+        destination: 'https://api.just-swim.kr/api/statistics/:path*',
+      },
     ];
   },
 };
