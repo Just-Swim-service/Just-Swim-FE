@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { type StudentDashboard } from '@apis';
 import { fetchJson } from '@utils';
-import Cookies from 'js-cookie';
 import { useUserStore } from '@store';
 import styles from './styles.module.scss';
 
@@ -40,19 +39,11 @@ export function DashboardPreview() {
 
   const fetchDashboard = async () => {
     try {
-      const token = Cookies.get('authorization');
-      const headers: HeadersInit = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
       const data = await fetchJson<{
         success: boolean;
         message: string;
         data: StudentDashboard;
-      }>('/statistics/customer/dashboard', {
-        headers,
-      });
+      }>('/statistics/customer/dashboard');
 
       if (data.success) {
         setDashboard(data.data);

@@ -11,7 +11,6 @@ import {
   type BadgeInfo,
 } from '@apis';
 import { fetchJson } from '@utils';
-import Cookies from 'js-cookie';
 import { Header, BottomNav } from '@components';
 import {
   FeedbackChart,
@@ -74,20 +73,12 @@ export default function CustomerDashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      
-      const token = Cookies.get('authorization');
-      const headers: HeadersInit = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
 
       const data = await fetchJson<{
         success: boolean;
         message: string;
         data: StudentDashboard;
-      }>('/statistics/customer/dashboard', {
-        headers,
-      });
+      }>('/statistics/customer/dashboard');
 
       if (data.success) {
         setDashboard(data.data);

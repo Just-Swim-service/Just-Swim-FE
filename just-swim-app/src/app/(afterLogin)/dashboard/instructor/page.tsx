@@ -6,7 +6,6 @@ import {
   type InstructorDashboard,
 } from '@apis';
 import { fetchJson } from '@utils';
-import Cookies from 'js-cookie';
 import { Header, BottomNav } from '@components';
 import { StatsCard, FeedbackChart } from '../_components';
 import { DashboardSkeleton } from '../_components/dashboardSkeleton';
@@ -63,20 +62,12 @@ export default function InstructorDashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      
-      const token = Cookies.get('authorization');
-      const headers: HeadersInit = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
 
       const data = await fetchJson<{
         success: boolean;
         message: string;
         data: InstructorDashboard;
-      }>('/statistics/instructor/dashboard', {
-        headers,
-      });
+      }>('/statistics/instructor/dashboard');
 
       if (data.success) {
         setDashboard(data.data);
