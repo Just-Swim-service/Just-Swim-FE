@@ -9,18 +9,44 @@ import {
 import { Header, BottomNav } from '@components';
 import { StatsCard, FeedbackChart } from '../_components';
 import { DashboardSkeleton } from '../_components/dashboardSkeleton';
+import { useUserStore } from '@store';
 
 import styles from './styles.module.scss';
 
 export default function InstructorDashboardPage() {
   const router = useRouter();
+  const { profileInfo, loadProfileInfo, isLoading: profileLoading } = useUserStore();
   const [loading, setLoading] = useState(true);
   const [dashboard, setDashboard] = useState<InstructorDashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchDashboard();
-  }, []);
+    checkUserTypeAndRedirect();
+  }, [profileInfo, profileLoading]);
+
+  const checkUserTypeAndRedirect = async () => {
+    // 프로필 정보가 없으면 로드
+    if (!profileInfo && !profileLoading) {
+      await loadProfileInfo();
+      return;
+    }
+
+    // 프로필 정보가 로딩 중이면 대기
+    if (profileLoading) {
+      return;
+    }
+
+    // 사용자 타입이 customer이면 customer 대시보드로 리다이렉트
+    if (profileInfo?.userType === 'customer') {
+      router.replace('/dashboard/customer');
+      return;
+    }
+
+    // instructor 타입이거나 타입이 없으면 대시보드 데이터 로드
+    if (profileInfo?.userType === 'instructor' || !profileInfo?.userType) {
+      fetchDashboard();
+    }
+  };
 
   const fetchDashboard = async () => {
     try {
@@ -40,7 +66,7 @@ export default function InstructorDashboardPage() {
     }
   };
 
-  if (loading) {
+  if (loading || profileLoading) {
     return (
       <>
         <Header title="강사 통계" />
