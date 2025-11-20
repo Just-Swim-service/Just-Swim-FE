@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  getInstructorDashboardClient,
   type InstructorDashboard,
 } from '@apis';
+import { fetchJson } from '@utils';
+import Cookies from 'js-cookie';
 import { Header, BottomNav } from '@components';
 import { StatsCard, FeedbackChart } from '../_components';
 import { DashboardSkeleton } from '../_components/dashboardSkeleton';
@@ -62,13 +63,25 @@ export default function InstructorDashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await getInstructorDashboardClient();
-      console.log('Instructor Dashboard Response:', response);
-      if (response.ok && response.data?.success) {
-        setDashboard(response.data.data);
+      
+      const token = Cookies.get('authorization');
+      const headers: HeadersInit = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const data = await fetchJson<{
+        success: boolean;
+        message: string;
+        data: InstructorDashboard;
+      }>('/statistics/instructor/dashboard', {
+        headers,
+      });
+
+      if (data.success) {
+        setDashboard(data.data);
       } else {
-        console.error('Instructor Dashboard API Error:', response);
-        setError(response.data?.message || '대시보드 정보를 불러오는데 실패했습니다.');
+        setError(data.message || '대시보드 정보를 불러오는데 실패했습니다.');
       }
     } catch (error: any) {
       console.error('대시보드 조회 실패:', error);

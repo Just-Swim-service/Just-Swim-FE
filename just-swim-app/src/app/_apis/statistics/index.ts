@@ -2,12 +2,6 @@ import api from '../api';
 
 const BASE_URL = '/statistics';
 
-// 클라이언트 사이드 API 함수들 export
-export {
-  getCustomerDashboardClient,
-  getInstructorDashboardClient,
-} from './client';
-
 // API 응답 타입
 interface ApiResponse<T> {
   statusCode: number;

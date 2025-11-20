@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCustomerDashboardClient, type StudentDashboard } from '@apis';
+import { type StudentDashboard } from '@apis';
+import { fetchJson } from '@utils';
+import Cookies from 'js-cookie';
 import { useUserStore } from '@store';
 import styles from './styles.module.scss';
 
@@ -38,9 +40,22 @@ export function DashboardPreview() {
 
   const fetchDashboard = async () => {
     try {
-      const response = await getCustomerDashboardClient();
-      if (response.ok && response.data?.success) {
-        setDashboard(response.data.data);
+      const token = Cookies.get('authorization');
+      const headers: HeadersInit = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const data = await fetchJson<{
+        success: boolean;
+        message: string;
+        data: StudentDashboard;
+      }>('/statistics/customer/dashboard', {
+        headers,
+      });
+
+      if (data.success) {
+        setDashboard(data.data);
       }
     } catch (error) {
       console.error('대시보드 미리보기 조회 실패:', error);

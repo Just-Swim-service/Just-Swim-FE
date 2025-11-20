@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  getCustomerDashboardClient,
   type StudentDashboard,
   type FeedbackStats,
   type LectureStats,
@@ -11,6 +10,8 @@ import {
   type LevelInfo,
   type BadgeInfo,
 } from '@apis';
+import { fetchJson } from '@utils';
+import Cookies from 'js-cookie';
 import { Header, BottomNav } from '@components';
 import {
   FeedbackChart,
@@ -73,13 +74,25 @@ export default function CustomerDashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await getCustomerDashboardClient();
-      console.log('Customer Dashboard Response:', response);
-      if (response.ok && response.data?.success) {
-        setDashboard(response.data.data);
+      
+      const token = Cookies.get('authorization');
+      const headers: HeadersInit = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const data = await fetchJson<{
+        success: boolean;
+        message: string;
+        data: StudentDashboard;
+      }>('/statistics/customer/dashboard', {
+        headers,
+      });
+
+      if (data.success) {
+        setDashboard(data.data);
       } else {
-        console.error('Customer Dashboard API Error:', response);
-        setError(response.data?.message || '대시보드 정보를 불러오는데 실패했습니다.');
+        setError(data.message || '대시보드 정보를 불러오는데 실패했습니다.');
       }
     } catch (error: any) {
       console.error('대시보드 조회 실패:', error);
