@@ -29,7 +29,26 @@ export async function fetchJson<T = any>(
         throw new Error('세션이 만료되었습니다');
       }
 
+      // refresh 성공 후 잠시 대기하여 쿠키가 업데이트되도록 함
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       res = await doRequest(); // refresh 성공했으면 재요청
+      
+      // 재요청 후에도 401이면 다시 refresh 시도 (최대 1회)
+      if (res.status === 401) {
+        const retryRefresh = await fetch('/auth/refresh', {
+          method: 'POST',
+          credentials: 'include',
+        });
+
+        if (retryRefresh.ok) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          res = await doRequest();
+        } else {
+          window.location.href = '/signin';
+          throw new Error('세션이 만료되었습니다');
+        }
+      }
     }
 
     if (!res.ok) {
