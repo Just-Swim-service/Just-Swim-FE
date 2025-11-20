@@ -3,15 +3,38 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCustomerDashboard, type StudentDashboard } from '@apis';
+import { useUserStore } from '@store';
 import styles from './styles.module.scss';
 
 export function DashboardPreview() {
   const router = useRouter();
+  const { profileInfo, loadProfileInfo, isLoading: profileLoading } = useUserStore();
   const [dashboard, setDashboard] = useState<StudentDashboard | null>(null);
 
   useEffect(() => {
+    checkUserTypeAndFetch();
+  }, [profileInfo, profileLoading]);
+
+  const checkUserTypeAndFetch = async () => {
+    // 프로필 정보가 없으면 로드
+    if (!profileInfo && !profileLoading) {
+      await loadProfileInfo();
+      return;
+    }
+
+    // 프로필 정보가 로딩 중이면 대기
+    if (profileLoading) {
+      return;
+    }
+
+    // customer 타입이 아니면 아무것도 표시하지 않음
+    if (profileInfo?.userType !== 'customer') {
+      return;
+    }
+
+    // customer 타입일 때만 대시보드 데이터 로드
     fetchDashboard();
-  }, []);
+  };
 
   const fetchDashboard = async () => {
     try {
@@ -23,6 +46,11 @@ export function DashboardPreview() {
       console.error('대시보드 미리보기 조회 실패:', error);
     }
   };
+
+  // 프로필 정보가 로딩 중이거나 customer가 아니면 표시하지 않음
+  if (profileLoading || profileInfo?.userType !== 'customer') {
+    return null;
+  }
 
   if (!dashboard) return null;
 

@@ -70,10 +70,15 @@ export default function Account() {
     setShowLogoutModal(true);
   };
 
+  // 사용자 타입이 명확히 customer일 때만 대시보드 미리보기 표시
+  const shouldShowDashboardPreview = 
+    profileInfo && 
+    profileInfo.userType === 'customer';
+
   return (
     <>
       {/* 대시보드 미리보기 - 수강생만 (상단 배치) */}
-      {profileInfo?.userType === 'customer' && (
+      {shouldShowDashboardPreview && (
         <div className={styles.dashboard_preview}>
           <DashboardPreview />
         </div>
