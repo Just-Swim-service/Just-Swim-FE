@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCustomerDashboard, type StudentDashboard } from '@apis';
+import { getCustomerDashboardClient, type StudentDashboard } from '@apis';
 import { useUserStore } from '@store';
 import styles from './styles.module.scss';
 
@@ -38,8 +38,8 @@ export function DashboardPreview() {
 
   const fetchDashboard = async () => {
     try {
-      const response = await getCustomerDashboard();
-      if (response.ok) {
+      const response = await getCustomerDashboardClient();
+      if (response.ok && response.data?.success) {
         setDashboard(response.data.data);
       }
     } catch (error) {

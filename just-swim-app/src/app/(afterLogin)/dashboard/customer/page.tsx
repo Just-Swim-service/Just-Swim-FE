@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  getCustomerDashboard,
+  getCustomerDashboardClient,
   type StudentDashboard,
   type FeedbackStats,
   type LectureStats,
@@ -73,17 +73,17 @@ export default function CustomerDashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await getCustomerDashboard();
+      const response = await getCustomerDashboardClient();
       console.log('Customer Dashboard Response:', response);
-      if (response.ok) {
+      if (response.ok && response.data?.success) {
         setDashboard(response.data.data);
       } else {
         console.error('Customer Dashboard API Error:', response);
-        setError('대시보드 정보를 불러오는데 실패했습니다.');
+        setError(response.data?.message || '대시보드 정보를 불러오는데 실패했습니다.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('대시보드 조회 실패:', error);
-      setError('대시보드 정보를 불러오는데 실패했습니다. 다시 시도해주세요.');
+      setError(error.message || '대시보드 정보를 불러오는데 실패했습니다. 다시 시도해주세요.');
     } finally {
       setLoading(false);
     }
