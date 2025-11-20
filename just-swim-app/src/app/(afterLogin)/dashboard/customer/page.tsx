@@ -30,6 +30,7 @@ export default function CustomerDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [dashboard, setDashboard] = useState<StudentDashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
     checkUserTypeAndRedirect();
@@ -53,9 +54,18 @@ export default function CustomerDashboardPage() {
       return;
     }
 
-    // customer 타입이거나 타입이 없으면 대시보드 데이터 로드
-    if (profileInfo?.userType === 'customer' || !profileInfo?.userType) {
-      fetchDashboard();
+    // customer 타입일 때만 대시보드 데이터 로드 (한 번만)
+    if (profileInfo?.userType === 'customer') {
+      if (!hasFetched) {
+        setHasFetched(true);
+        fetchDashboard();
+      }
+    } else if (!profileInfo?.userType) {
+      // userType이 없으면 기본적으로 customer로 처리 (한 번만)
+      if (!hasFetched) {
+        setHasFetched(true);
+        fetchDashboard();
+      }
     }
   };
 
@@ -64,9 +74,11 @@ export default function CustomerDashboardPage() {
       setLoading(true);
       setError(null);
       const response = await getCustomerDashboard();
+      console.log('Customer Dashboard Response:', response);
       if (response.ok) {
         setDashboard(response.data.data);
       } else {
+        console.error('Customer Dashboard API Error:', response);
         setError('대시보드 정보를 불러오는데 실패했습니다.');
       }
     } catch (error) {

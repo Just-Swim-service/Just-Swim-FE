@@ -19,6 +19,7 @@ export default function InstructorDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [dashboard, setDashboard] = useState<InstructorDashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
     checkUserTypeAndRedirect();
@@ -42,9 +43,18 @@ export default function InstructorDashboardPage() {
       return;
     }
 
-    // instructor 타입이거나 타입이 없으면 대시보드 데이터 로드
-    if (profileInfo?.userType === 'instructor' || !profileInfo?.userType) {
-      fetchDashboard();
+    // instructor 타입일 때만 대시보드 데이터 로드 (한 번만)
+    if (profileInfo?.userType === 'instructor') {
+      if (!hasFetched) {
+        setHasFetched(true);
+        fetchDashboard();
+      }
+    } else if (!profileInfo?.userType) {
+      // userType이 없으면 기본적으로 instructor로 처리 (한 번만)
+      if (!hasFetched) {
+        setHasFetched(true);
+        fetchDashboard();
+      }
     }
   };
 
@@ -53,9 +63,11 @@ export default function InstructorDashboardPage() {
       setLoading(true);
       setError(null);
       const response = await getInstructorDashboard();
+      console.log('Instructor Dashboard Response:', response);
       if (response.ok) {
         setDashboard(response.data.data);
       } else {
+        console.error('Instructor Dashboard API Error:', response);
         setError('대시보드 정보를 불러오는데 실패했습니다.');
       }
     } catch (error) {
